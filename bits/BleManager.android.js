@@ -12,7 +12,7 @@ import {
     AppState
 } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
-import { region } from './BleConstants';
+import BleConstants from './BleConstants';
 
 export default class BleManager extends React.Component {
     constructor() {
@@ -21,8 +21,8 @@ export default class BleManager extends React.Component {
         // Request for authorization while the app is open
         // Beacons.requestWhenInUseAuthorization();
 
-        Beacons.startMonitoringForRegion(region);
-        Beacons.startRangingBeaconsInRegion(region);
+        Beacons.startMonitoringForRegion(BleConstants.region);
+        Beacons.startRangingBeaconsInRegion(BleConstants.region);
 
         // Beacons.startUpdatingLocation();
 
