@@ -1,39 +1,15 @@
-import i18n from 'i18next';
-import Expo from 'expo';
+import I18n, { getLanguages } from 'react-native-i18n';
 
-import de from '../i18n/de';
-import en from '../i18n/en';
-import jp from '../i18n/jp';
+import de from '../locales/de';
+import en from '../locales/en';
+import jp from '../locales/jp';
 
-// creating a language detection plugin using expo
-// http://i18next.com/docs/ownplugin/#languagedetector
-const languageDetector = {
-    type: 'languageDetector',
-    async: true, // async detection
-    detect: (cb) => {
-        return Expo.Util.getCurrentLocaleAsync()
-            .then(lng => { cb(lng); })
-    },
-    init: () => { },
-    cacheUserLanguage: () => {}
+I18n.fallbacks = false;
+I18n.translations = {
+    'en': de,
+    'en': en,
+    'jp': jp
 };
+I18n.defaultLocale = 'en';
 
-i18n
-    .use(languageDetector)
-    .init({
-        fallbackLng: 'en',
-        // TODO: move to webpack
-        resources: {
-            en: en,
-            de: de,
-            jp: jp,
-            // have a initial namespace
-            ns: ['common', 'translation'],
-            defaultNS: 'translation',
-            interpolation: {
-                escapeValue: false // not needed for react
-            }
-        }
-    });
-
-export default i18n;
+export default I18n;

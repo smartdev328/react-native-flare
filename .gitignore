@@ -1,7 +1,9 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-
 # expo
 .expo/
+
+# build
+android/app/build/intermediates
+android/.gradle/
 
 # dependencies
 /node_modules

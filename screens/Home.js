@@ -1,20 +1,18 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
-import { LinearGradient } from 'expo';
+import LinearGradient from 'react-native-linear-gradient';
 
 import Colors from '../bits/Colors';
+import Strings from '../locales/en';
 
-// using the translation hoc to provie t function in props using home as default namespace
-// https://react.i18next.com/components/translate-hoc.html
-@translate(['home', 'common'], {wait: true})
 export default class Home extends React.Component {
-    // static navigationOptions = ({navigation, screenProps}) => ({
-    //     title: screenProps.t('home:title')
-    // });
+    static navigationOptions = ({navigation, screenProps}) => ({
+        header: null
+    });
 
     render() {
-        const { t, i18n, navigation } = this.props;
+        const { navigation } = this.props;
         const { navigate } = navigation;
         return (
             <View style={styles.container}>
@@ -25,21 +23,6 @@ export default class Home extends React.Component {
                     <Image
                         source={require('../assets/FLARE-white.png')}
                         style={styles.logo}
-                    />
-                    <Text style={styles.choosePrompt}>
-                        {t('chooseLanguage', {lng: i18n.language})}
-                    </Text>
-                    <Button
-                        onPress={() => {i18n.changeLanguage('en')}}
-                        title={t('common:actions.toggleToEnglish')}
-                    />
-                    <Button
-                        onPress={() => { i18n.changeLanguage('de') }}
-                        title={t('common:actions.toggleToGerman')}
-                    />
-                    <Button
-                        onPress={() => { i18n.changeLanguage('jp') }}
-                        title={t('common:actions.toggleToJapanese')}
                     />
                 </LinearGradient>
             </View>
