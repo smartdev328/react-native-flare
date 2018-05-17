@@ -9,8 +9,9 @@ const Strings = {
     signin: {
         usernamePrompt: 'Email or phone',
         passwordPrompt: 'Password',
-        signInLabel: 'Sign In',
-    }
+        signInLabel: 'SIGN IN',
+        invalid: 'Please enter a valid username and password.',
+    },
 };
 
 export default Strings;

@@ -10,8 +10,6 @@ import SignIn from './screens/SignIn';
 
 const AppStack = createStackNavigator({ Home: { screen: Home } });
 const AuthStack = createStackNavigator({ SignInScreen: SignIn });
-
-
 const AuthenticatedAppStack = createSwitchNavigator(
     {
         AuthLoading: AuthLoading,
@@ -23,14 +21,10 @@ const AuthenticatedAppStack = createSwitchNavigator(
     }
 );
 
-
 export default class App extends React.Component {
     constructor() {
         super();
         BleManager.startListening();
-    }
-
-    componentWillUnmount() {
     }
 
     render() {
