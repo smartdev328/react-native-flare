@@ -1,12 +1,15 @@
 const Strings = {
+    auth: {
+        loading: 'Loading af',
+    },
     home: {
         title: 'Welcome',
-        chooseLanguage: 'Choose language'
+        chooseLanguage: 'Choose language',
     },
-    actions: {
-        'toggleToEnglish': 'English',
-        'toggleToGerman': 'Deutsche',
-        'toggleToJapanese': '日本語'
+    signin: {
+        usernamePrompt: 'Email or phone',
+        passwordPrompt: 'Password',
+        signInLabel: 'Sign In',
     }
 };
 

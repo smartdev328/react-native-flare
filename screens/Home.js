@@ -1,7 +1,6 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import Colors from '../bits/Colors';
 import Strings from '../locales/en';
@@ -16,15 +15,10 @@ export default class Home extends React.Component {
         const { navigate } = navigation;
         return (
             <View style={styles.container}>
-                <LinearGradient 
-                    colors={[Colors.theme.orange, Colors.theme.purple]}
-                    style={styles.gradient}
-                >
-                    <Image
-                        source={require('../assets/FLARE-white.png')}
-                        style={styles.logo}
-                    />
-                </LinearGradient>
+                <Image
+                    source={require('../assets/FLARE-white.png')}
+                    style={styles.logo}
+                />
             </View>
         );
     }
@@ -36,7 +30,11 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         width: '100%',
-        height: '100%'
+        height: '100%',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 0        
     },
     separate: {
         marginTop: 50
@@ -50,11 +48,5 @@ const styles = StyleSheet.create({
         marginBottom: 90,
         padding: 8,
         resizeMode: 'contain'
-    },
-    gradient: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 0
     }
 });

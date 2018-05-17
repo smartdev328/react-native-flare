@@ -1,12 +1,8 @@
-package com.flare;
+package com.app;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.reactnative.photoview.PhotoViewPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
-import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -26,11 +22,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new PhotoViewPackage(),
-            new VectorIconsPackage(),
-            new RNI18nPackage(),
-            new BeaconsAndroidPackage()
+          new MainReactPackage()
       );
     }
 

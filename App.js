@@ -1,14 +1,28 @@
 import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
 import './bits/ReactotronConfig';
 
+import AuthLoading from './screens/AuthLoading';
 import BleManager from './bits/BleManager';
 import Home from './screens/Home';
+import SignIn from './screens/SignIn';
 
-const Stack = createStackNavigator({
-    Home: { screen: Home },
-});
+const AppStack = createStackNavigator({ Home: { screen: Home } });
+const AuthStack = createStackNavigator({ SignInScreen: SignIn });
+
+
+const AuthenticatedAppStack = createSwitchNavigator(
+    {
+        AuthLoading: AuthLoading,
+        App: AppStack,
+        Auth: AuthStack,
+    },
+    {
+        initialRouteName: 'AuthLoading',
+    }
+);
+
 
 export default class App extends React.Component {
     constructor() {
@@ -21,7 +35,7 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <Stack />
+            <AuthenticatedAppStack />
         );
     }
 }
