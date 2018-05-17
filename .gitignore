@@ -1,12 +1,17 @@
 # expo
 .expo/
 
-# build
+# android build
 android/.gradle/
 android/app/build/
 android/app/build/
 android/app/build/
 android/.idea/
+
+# ios build
+ios/build/
+ios/flare.xcodeproj/xcuserdata/
+ios/flare.xcodeproj/project.xcworkspace/xcuserdata/
 
 # dependencies
 /node_modules
