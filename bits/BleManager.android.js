@@ -1,24 +1,27 @@
 import React from 'react';
-import {
-    DeviceEventEmitter,
-} from 'react-native';
+import { DeviceEventEmitter } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
 import BleConstants from './BleConstants';
 
-export default class BleManager extends React.Component {
+export default class BleManager {
+
     constructor() {
-        super();
+        this.beaconsDidRange = null;
+        this.regionDidEnterEvent = null;
+    }
+
+    static startListening() {
+        console.log('started listening');
 
         // Request for authorization while the app is open
         // Beacons.requestWhenInUseAuthorization();
+        Beacons.detectIBeacons();
 
         Beacons.startMonitoringForRegion(BleConstants.region);
         Beacons.startRangingBeaconsInRegion(BleConstants.region);
 
-        // Beacons.startUpdatingLocation();
-
         // Listen for beacon changes
-        DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
+        this.beaconsDidRange = DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
             // data.region - The current region
             // data.region.identifier
             // data.region.uuid
@@ -42,5 +45,12 @@ export default class BleManager extends React.Component {
                 console.log(`Detected beacon: ${uuid}, proximity: ${proximity}, accuracy: ${accuracy}`);
             }
         });
+
+        this.regionDidEnterEvent = DeviceEventEmitter.addListener(
+            'regionDidEnter',
+            (data) => {
+                console.log('monitoring - regionDidEnter data: ', data);
+            },
+        );
     }
 }
