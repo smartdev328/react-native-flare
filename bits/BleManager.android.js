@@ -5,12 +5,15 @@ import BleConstants from './BleConstants';
 
 export default class BleManager {
 
-    constructor() {
+    constructor(options) {
         this.beaconsDidRange = null;
         this.regionDidEnterEvent = null;
+        if (options) {
+            this.onBeaconDetected = options.onBeaconDetected;
+        }
     }
 
-    static startListening() {
+    static startListening(options) {
         console.log('started listening');
 
         // Request for authorization while the app is open
@@ -39,10 +42,13 @@ export default class BleManager {
                 const lastBeacon = data.beacons[numBeacons - 1];
                 const uuid = lastBeacon.uuid.substring(0, 7);
                 const { proximity, accuracy } = lastBeacon;
-                // this.setState({
-                //     lastDevice: 'Detected beacon: ' + uuid + ', proximity: ' + proximity + ', accuracy: ' + accuracy
-                // });
-                console.log(`Detected beacon: ${uuid}, proximity: ${proximity}, accuracy: ${accuracy}`);
+                if (options && options.onBeaconDetected) {
+                    options.onBeaconDetected({
+                        uuid,
+                        proximity,
+                        accuracy,
+                    });
+                }
             }
         });
 

@@ -12,22 +12,39 @@ const AppStack = createStackNavigator({ Home: { screen: Home } });
 const AuthStack = createStackNavigator({ SignInScreen: SignIn });
 const AuthenticatedAppStack = createSwitchNavigator(
     {
-        AuthLoading: AuthLoading,
+        AuthLoading,
         App: AppStack,
         Auth: AuthStack,
     },
     {
         initialRouteName: 'AuthLoading',
-    }
+    },
 );
 
 export default class App extends React.Component {
     constructor() {
         super();
-        BleManager.startListening();
+
+        this.state = {
+            lastBeacon: null,
+        };
+
+        BleManager.startListening({
+            onBeaconDetected: (beacon) => {
+                this.onBeaconDetected(beacon);
+            },
+        });
+    }
+
+    onBeaconDetected(beacon) {
+        console.log(`Detected beacon: ${beacon.uuid}, proximity: ${beacon.proximity}, accuracy: ${beacon.accuracy}`);
+        this.setState({
+            lastBeacon: beacon,
+        });
     }
 
     render() {
+        console.log(`Last beacon ${this.state.lastBeacon}`);
         return (
             <AuthenticatedAppStack />
         );

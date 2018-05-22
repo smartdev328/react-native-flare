@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { AsyncStorage, StyleSheet } from 'react-native';
 
 import { Examples, Button, Image, Screen, Text, TextInput, View } from '@shoutem/ui';
 
@@ -51,7 +51,6 @@ export default class SignIn extends React.Component {
             invalid: false
         });
 
-        console.log(`sign in w/ ${this.state.username} / ${this.state.password}`);
         let response = await signIn(username, password);
         if (response === false) {
             this.setState({
@@ -59,10 +58,12 @@ export default class SignIn extends React.Component {
                 signedIn: false,
             });
         } else {
+            await AsyncStorage.setItem('userToken', response.auth_token);
             this.setState({
                 invalid: false,
                 signedIn: true,
-            });            
+            });
+            this.props.navigation.navigate('App');
         }
     }
 

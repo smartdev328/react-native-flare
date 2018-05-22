@@ -10,7 +10,7 @@ export default class BleManager {
         this.regionDidEnterEvent = null;
     }
 
-    static startListening() {
+    static startListening(options) {
         console.log('started listening iOS');
 
         // Tells the library to detect iBeacons
@@ -43,7 +43,13 @@ export default class BleManager {
                 // this.setState({
                 //     lastDevice: 'Detected beacon: ' + uuid + ', proximity: ' + proximity + ', accuracy: ' + accuracy
                 // });
-                console.log(`Detected beacon: ${uuid}, proximity: ${proximity}, accuracy: ${accuracy}`);
+                if (options && options.onBeaconDetected) {
+                    options.onBeaconDetected({
+                        uuid,
+                        proximity,
+                        accuracy,
+                    });
+                }
             }
         });
 
