@@ -1,9 +1,11 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import moment from 'moment';
 
 import Colors from '../bits/Colors';
 import Strings from '../locales/en';
+
 
 export default class Home extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -11,14 +13,25 @@ export default class Home extends React.Component {
     });
 
     render() {
-        const { navigation } = this.props;
-        const { navigate } = navigation;
+        const { screenProps } = this.props;
+        const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
+        const lastBeaconTimeHeading = hasTimestamp ? 
+            Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
+
         return (
             <View style={styles.container}>
                 <Image
                     source={require('../assets/FLARE-white.png')}
                     style={styles.logo}
                 />
+                <Text>
+                    {lastBeaconTimeHeading}
+                </Text>
+                {hasTimestamp &&
+                    <Text>
+                        {moment(screenProps.lastBeacon.timestamp).toLocaleString()}
+                    </Text>
+                }
             </View>
         );
     }

@@ -12,6 +12,10 @@ const Strings = {
         signInLabel: 'SIGN IN',
         invalid: 'Please enter a valid username and password.',
     },
+    beacons: {
+        lastReceived: 'Latest beacon',
+        notYetReceived: 'No beacons detected',
+    },
 };
 
 export default Strings;

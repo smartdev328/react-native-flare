@@ -21,18 +21,23 @@ const AuthenticatedAppStack = createSwitchNavigator(
     },
 );
 
+const AppNavigation = props => (
+    <AuthenticatedAppStack
+        {...props}
+    />
+);
+
 export default class App extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             lastBeacon: null,
         };
 
+        const boundDetectedMethod = this.onBeaconDetected.bind(this);
         BleManager.startListening({
-            onBeaconDetected: (beacon) => {
-                this.onBeaconDetected(beacon);
-            },
+            onBeaconDetected: beacon => boundDetectedMethod(beacon),
         });
     }
 
@@ -44,9 +49,10 @@ export default class App extends React.Component {
     }
 
     render() {
-        console.log(`Last beacon ${this.state.lastBeacon}`);
         return (
-            <AuthenticatedAppStack />
+            <AppNavigation
+                screenProps={{ lastBeacon: this.state.lastBeacon }}
+            />
         );
     }
 }

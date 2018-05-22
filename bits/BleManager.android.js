@@ -47,6 +47,7 @@ export default class BleManager {
                         uuid,
                         proximity,
                         accuracy,
+                        timestamp: Date.now(),
                     });
                 }
             }
