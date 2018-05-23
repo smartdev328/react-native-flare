@@ -47,7 +47,14 @@ export default class AuthLoading extends React.Component {
 
     async checkUserToken() {
         const userToken = await AsyncStorage.getItem('userToken');
-        this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+        if (userToken) {
+            this.props.screenProps.flareAPI.authenticated = true;
+            this.props.navigation.navigate('App');
+        } else {
+            this.props.screenProps.flareAPI.authenticated = false;
+            this.props.navigation.navigate('Auth');
+        }
+        
     }
 
     render() {

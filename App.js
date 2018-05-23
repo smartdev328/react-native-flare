@@ -3,6 +3,7 @@ import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
 import './bits/ReactotronConfig';
 
+import API from './bits/API';
 import AuthLoading from './screens/AuthLoading';
 import BleManager from './bits/BleManager';
 import Home from './screens/Home';
@@ -27,6 +28,8 @@ const AppNavigation = props => (
     />
 );
 
+const flareAPI = new API();
+
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -46,12 +49,16 @@ export default class App extends React.Component {
         this.setState({
             lastBeacon: beacon,
         });
+        flareAPI.call();
     }
 
     render() {
         return (
             <AppNavigation
-                screenProps={{ lastBeacon: this.state.lastBeacon }}
+                screenProps={{
+                    lastBeacon: this.state.lastBeacon,
+                    flareAPI,
+                }}
             />
         );
     }

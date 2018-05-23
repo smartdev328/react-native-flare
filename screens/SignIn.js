@@ -4,7 +4,6 @@ import { AsyncStorage, StyleSheet } from 'react-native';
 
 import { Examples, Button, Image, Screen, Text, TextInput, View } from '@shoutem/ui';
 
-import signIn from '../bits/Auth';
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
@@ -39,6 +38,7 @@ export default class SignIn extends React.Component {
     }
 
     async startSignIn() {
+        const { flareAPI } = this.props.screenProps;
         const { username, password } = this.state;
         if (username === null || username.length === 0 || password === null || password.length === 0) {
             this.setState({
@@ -51,7 +51,7 @@ export default class SignIn extends React.Component {
             invalid: false
         });
 
-        let response = await signIn(username, password);
+        let response = await flareAPI.signIn(username, password);
         if (response === false) {
             this.setState({
                 invalid: true,
@@ -101,9 +101,6 @@ export default class SignIn extends React.Component {
                         <Text>{Strings.signin.signInLabel}</Text>
                     </Button>
                 </View>
-                {this.state.signedIn &&
-                    <Text>💥 OMG YOU ARE SIGNED IN 🦄</Text>
-                }
             </View>
         );
     }
