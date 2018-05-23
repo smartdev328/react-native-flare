@@ -3,7 +3,8 @@ import { AsyncStorage } from 'react-native';
 class API {
     constructor() {
         this.authenticated = false;
-        this.serverUrl = 'https://app.flarejewelry.co/api';
+        // this.serverUrl = 'https://app.flarejewelry.co/api';
+        this.serverUrl = 'http://192.168.135.236/api';
         this.requestStatus = {
             failure: 'failure',
             requested: 'requested',
@@ -33,23 +34,27 @@ class API {
             });
     }
 
+    static async getAuthorizationHeader() {
+        const userToken = await AsyncStorage.getItem('userToken');
+        const headers = {};
+        headers.Authorization = `Bearer ${userToken}`;
+        return headers;
+    }
+
     async call() {
-        console.log('Calling');
         if (!this.authenticated) {
-            console.log('No calls without authentication.');
+            console.debug('No calls without authentication.');
             return false;
         }
 
-        const userToken = await AsyncStorage.getItem('userToken');
+        console.debug('Calling');
+
+        const headers = await API.getAuthorizationHeader();
+        headers['Content-Type'] = 'application/json';
+
         return fetch(`${this.serverUrl}/sos/call`, {
             method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                headers: {
-                    Authorization: `Bearer ${userToken}`,
-                },
-            },
+            headers,
         })
             .then(response => response.json())
             .then((data) => {
