@@ -5,6 +5,7 @@ class API {
         this.authenticated = false;
         // this.serverUrl = 'https://app.flarejewelry.co/api';
         this.serverUrl = 'http://192.168.135.236/api';
+        // this.serverUrl = 'http://192.168.86.24/api';
         this.requestStatus = {
             failure: 'failure',
             requested: 'requested',
@@ -61,6 +62,26 @@ class API {
                 if (data.status === this.requestStatus.success) {
                     return data;
                 }
+                return false;
+            });
+    }
+
+    async ping() {
+        console.debug('Ping');
+        const headers = await API.getAuthorizationHeader();
+        headers['Content-Type'] = 'application/json';
+
+        return fetch(`${this.serverUrl}/ping`, {
+            method: 'GET',
+            headers,
+        })
+            .then(response => response.json())
+            .then((data) => {
+                if (data.status === this.requestStatus.success) {
+                    return data;
+                }
+                // We're no longer authenticated.
+                this.authenticated = false;
                 return false;
             });
     }

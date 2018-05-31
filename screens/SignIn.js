@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { AsyncStorage, StyleSheet } from 'react-native';
+import { AsyncStorage, KeyboardAvoidingView, StyleSheet } from 'react-native';
 
 import { Examples, Button, Image, Screen, Text, TextInput, View } from '@shoutem/ui';
 
@@ -69,7 +69,7 @@ export default class SignIn extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Image 
                     source={require('../assets/FLARE-white.png')}
                     style={styles.logo}
@@ -101,7 +101,7 @@ export default class SignIn extends React.Component {
                         <Text>{Strings.signin.signInLabel}</Text>
                     </Button>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }

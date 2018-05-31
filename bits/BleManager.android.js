@@ -1,10 +1,10 @@
 import React from 'react';
 import { DeviceEventEmitter } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
-import BleConstants from './BleConstants';
+import { Regions } from './BleConstants';
+import BleUtils from './BleUtils';
 
 export default class BleManager {
-
     constructor(options) {
         this.beaconsDidRange = null;
         this.regionDidEnterEvent = null;
@@ -14,37 +14,36 @@ export default class BleManager {
     }
 
     static startListening(options) {
-        console.log('started listening');
-
-        // Request for authorization while the app is open
-        // Beacons.requestWhenInUseAuthorization();
         Beacons.detectIBeacons();
 
-        Beacons.startMonitoringForRegion(BleConstants.region);
-        Beacons.startRangingBeaconsInRegion(BleConstants.region);
+        Regions.forEach((region) => {
+            Beacons.startMonitoringForRegion(region);
+            Beacons.startRangingBeaconsInRegion(region);
+        });
 
-        // Listen for beacon changes
         this.beaconsDidRange = DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
-            // data.region - The current region
-            // data.region.identifier
-            // data.region.uuid
-
-            // data.beacons - Array of all beacons inside a region
-            //  in the following structure:
-            //    .uuid
-            //    .major - The major version of a beacon
-            //    .minor - The minor version of a beacon
-            //    .rssi - Signal strength: RSSI value (between -100 and 0)
-            //    .proximity - Proximity value, can either be "unknown", "far", "near" or "immediate"
-            //    .accuracy - The accuracy of a beacon
             const numBeacons = data.beacons.length;
             if (numBeacons > 0) {
                 const lastBeacon = data.beacons[numBeacons - 1];
                 const uuid = lastBeacon.uuid.substring(0, 7);
-                const { proximity, accuracy } = lastBeacon;
+                const { major, minor, rssi, proximity, accuracy } = lastBeacon;
+
+                const majorBits = major.toString(2).padStart(16, '0');
+                const beaconType = BleUtils.getBeaconTypeFromMajorBits(majorBits);
+                const deviceID = BleUtils.getDeviceIDFromMajorBits(majorBits);
+
+                const minorBits = minor.toString(2);
+                const nonce = BleUtils.getNonceFromMinorBits(minorBits);
+
+                console.log(`Beacon type ${beaconType} from device ${deviceID} with nonce ${nonce}`);
+
                 if (options && options.onBeaconDetected) {
                     options.onBeaconDetected({
                         uuid,
+                        nonce,
+                        type: beaconType,
+                        deviceID,
+                        rssi,
                         proximity,
                         accuracy,
                         timestamp: Date.now(),

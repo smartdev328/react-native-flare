@@ -8,6 +8,7 @@ import AuthLoading from './screens/AuthLoading';
 import BleManager from './bits/BleManager';
 import Home from './screens/Home';
 import SignIn from './screens/SignIn';
+import { BeaconTypes } from './bits/BleConstants';
 
 const AppStack = createStackNavigator({ Home: { screen: Home } });
 const AuthStack = createStackNavigator({ SignInScreen: SignIn });
@@ -45,11 +46,21 @@ export default class App extends React.Component {
     }
 
     onBeaconDetected(beacon) {
-        console.log(`Detected beacon: ${beacon.uuid}, proximity: ${beacon.proximity}, accuracy: ${beacon.accuracy}`);
+        const myDeviceID = 176;
+
+        // For now, only act on beacons from my device. We want to propagate calls and flares
+        // for all devices in the future.
+        if (beacon.deviceID !== myDeviceID) {
+            return;
+        }
+
+        if (beacon.type === BeaconTypes.Short.name) {
+            flareAPI.call();
+        }
+
         this.setState({
             lastBeacon: beacon,
         });
-        flareAPI.call();
     }
 
     render() {

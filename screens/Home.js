@@ -6,11 +6,24 @@ import moment from 'moment';
 import Colors from '../bits/Colors';
 import Strings from '../locales/en';
 
+import { API } from '../bits/API';
+
 
 export default class Home extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => ({
         header: null
     });
+
+    async checkAuth() {
+        const pingResponse = await this.props.screenProps.flareAPI.ping();
+        if (pingResponse.status === this.props.screenProps.flareAPI.requestStatus.failure) {
+            this.props.navigation.navigate('SignIn');
+        }
+    }
+
+    componentDidMount() {
+        this.checkAuth();
+    }
 
     render() {
         const { screenProps } = this.props;

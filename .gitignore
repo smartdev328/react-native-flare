@@ -12,6 +12,8 @@ android/.idea/
 ios/build/
 ios/flare.xcodeproj/xcuserdata/
 ios/flare.xcodeproj/project.xcworkspace/xcuserdata/
+ios/app.xcodeproj/xcuserdata/
+ios/app.xcodeproj/project.xcworkspace/xcuserdata/
 
 # dependencies
 /node_modules
