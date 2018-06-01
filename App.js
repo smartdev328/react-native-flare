@@ -54,9 +54,11 @@ export default class App extends React.Component {
             return;
         }
 
-        if (beacon.type === BeaconTypes.Short.name) {
-            flareAPI.call();
-        }
+        console.log('boop');
+
+        // if (beacon.type === BeaconTypes.Short.name) {
+        //     flareAPI.call();
+        // }
 
         this.setState({
             lastBeacon: beacon,
