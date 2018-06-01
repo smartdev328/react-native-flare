@@ -1,16 +1,19 @@
 import { AsyncStorage } from 'react-native';
+import BeaconCache from './BeaconCache';
+import { FlareException } from './FlareException';
 
 class API {
     constructor() {
         this.authenticated = false;
         // this.serverUrl = 'https://app.flarejewelry.co/api';
-        this.serverUrl = 'http://192.168.135.236/api';
-        // this.serverUrl = 'http://192.168.86.24/api';
+        // this.serverUrl = 'http://192.168.135.236/api';
+        this.serverUrl = 'http://192.168.86.227/api';
         this.requestStatus = {
             failure: 'failure',
             requested: 'requested',
             success: 'success',
         };
+        this.beaconCache = new BeaconCache();
     }
 
     async signIn(email, password) {
@@ -19,6 +22,7 @@ class API {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                'Cache-Control': 'no-store',
             },
             body: JSON.stringify({
                 email,
@@ -42,11 +46,18 @@ class API {
         return headers;
     }
 
-    async call() {
+    async call(beacon) {
         if (!this.authenticated) {
             console.debug('No calls without authentication.');
             return false;
         }
+
+        if (this.beaconCache.hasAlreadyHandled(beacon)) {
+            console.log('Ignoring call that we\'ve already handled.');
+            return false;
+        }
+
+        this.beaconCache.markAsHandled(beacon);
 
         console.debug('Calling');
 
@@ -56,6 +67,11 @@ class API {
         return fetch(`${this.serverUrl}/sos/call`, {
             method: 'POST',
             headers,
+            body: JSON.stringify({
+                deviceID: beacon.deviceID,
+                nonce: beacon.nonce,
+                timestamp: beacon.timestamp,
+            }),
         })
             .then(response => response.json())
             .then((data) => {
@@ -63,7 +79,15 @@ class API {
                     return data;
                 }
                 return false;
+            })
+            .catch((reason) => {
+                console.warn(`Request for call failed with reason ${reason}`);
+                return false;
             });
+    }
+
+    static checkin(beacon) {
+        throw new FlareException('Not yet implemented');
     }
 
     async ping() {
@@ -82,6 +106,10 @@ class API {
                 }
                 // We're no longer authenticated.
                 this.authenticated = false;
+                return false;
+            })
+            .catch((reason) => {
+                console.warn(`Ping failed with reason ${reason}`);
                 return false;
             });
     }

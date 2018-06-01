@@ -54,11 +54,20 @@ export default class App extends React.Component {
             return;
         }
 
-        console.log('boop');
-
-        // if (beacon.type === BeaconTypes.Short.name) {
-        //     flareAPI.call();
-        // }
+        switch (beacon.type) {
+        case BeaconTypes.Short.name:
+            flareAPI.call(beacon);
+            break;
+        case BeaconTypes.Long.name:
+            flareAPI.flare(beacon);
+            break;
+        case BeaconTypes.Checkin.name:
+            flareAPI.checkin(beacon);
+            break;
+        default:
+            console.warn(`Unrecognized beacon type ${beacon.type}`);
+            break;
+        }
 
         this.setState({
             lastBeacon: beacon,
