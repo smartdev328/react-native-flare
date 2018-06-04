@@ -86,6 +86,46 @@ class API {
             });
     }
 
+    async flare(beacon) {
+        if (!this.authenticated) {
+            console.debug('No calls without authentication.');
+            return false;
+        }
+
+        if (this.beaconCache.hasAlreadyHandled(beacon)) {
+            console.log('Ignoring call that we\'ve already handled.');
+            return false;
+        }
+
+        this.beaconCache.markAsHandled(beacon);
+
+        console.debug('Sending Flare');
+
+        const headers = await API.getAuthorizationHeader();
+        headers['Content-Type'] = 'application/json';
+
+        return fetch(`${this.serverUrl}/sos/flare`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                device_id: beacon.deviceID,
+                nonce: beacon.nonce,
+                timestamp: beacon.timestamp,
+            }),
+        })
+            .then(response => response.json())
+            .then((data) => {
+                if (data.status === this.requestStatus.success) {
+                    return data;
+                }
+                return false;
+            })
+            .catch((reason) => {
+                console.warn(`Request for call failed with reason ${reason}`);
+                return false;
+            });
+    }
+
     static checkin(beacon) {
         throw new FlareException('Not yet implemented');
     }
