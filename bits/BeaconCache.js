@@ -16,10 +16,6 @@ export default class BeaconCache {
         }, this.pruneFrequencyInMilliseconds);
     }
 
-    roundTimestamp(date) {
-        return moment(Math.ceil((+date) / (+this.durationInMinutes)) * (+this.durationInMinutes)).unix();
-    }
-
     hasAlreadyHandled(beacon) {
         const {
             type,
@@ -27,11 +23,18 @@ export default class BeaconCache {
             timestamp,
             nonce,
         } = beacon;
-        const roundedTimestamp = this.roundTimestamp(timestamp);
-        const handled = this.beaconCache[type] &&
+
+        let handled = false;
+        const lastTimestampForNonce = this.beaconCache[type] &&
             this.beaconCache[type][deviceID] &&
-            this.beaconCache[type][deviceID][roundedTimestamp] &&
-            this.beaconCache[type][deviceID][roundedTimestamp][nonce];
+            this.beaconCache[type][deviceID][nonce];
+
+        // Putting nonce under the deviceID lets us compare timestamps across hour/day boundaries.
+        // We consider beacons to be the same if they have the same nonce and were received within
+        // 30 seconds of each other.
+        if (lastTimestampForNonce) {
+            handled = moment(lastTimestampForNonce).diff(timestamp) < 30000;
+        }
 
         console.debug(`Beacon was handled ${beacon}? ${handled}`);
         return handled;
@@ -45,7 +48,6 @@ export default class BeaconCache {
             nonce,
         } = beacon;
         console.debug(`Marking as handled ${beacon}`);
-        const roundedTimestamp = this.roundTimestamp(timestamp);
 
         if (!this.beaconCache[type]) {
             this.beaconCache[type] = {};
@@ -55,11 +57,11 @@ export default class BeaconCache {
             this.beaconCache[type][deviceID] = {};
         }
 
-        if (!this.beaconCache[type][deviceID][roundedTimestamp]) {
-            this.beaconCache[type][deviceID][roundedTimestamp] = {};
+        if (!this.beaconCache[type][deviceID][nonce]) {
+            this.beaconCache[type][deviceID][nonce] = null;
         }
 
-        this.beaconCache[type][deviceID][roundedTimestamp][nonce] = 1;
+        this.beaconCache[type][deviceID][nonce] = timestamp;
     }
 
     prune() {
