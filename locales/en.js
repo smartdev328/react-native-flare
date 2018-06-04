@@ -5,6 +5,7 @@ const Strings = {
     home: {
         title: 'Welcome',
         chooseLanguage: 'Choose language',
+        cancelActiveFlare: 'CANCEL FLARE',
     },
     signin: {
         usernamePrompt: 'Email or phone',

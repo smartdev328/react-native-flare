@@ -38,12 +38,24 @@ export default class App extends React.Component {
         this.state = {
             lastBeacon: null,
             hasActiveFlare: false,
+            cancelingFlare: false,
         };
 
         const boundDetectedMethod = this.onBeaconDetected.bind(this);
         BleManager.startListening({
             onBeaconDetected: beacon => boundDetectedMethod(beacon),
         });
+    }
+
+    async onCancelFlare() {
+        this.setState({
+            cancelingFlare: true,
+        });
+        await flareAPI.cancelActiveFlare();
+        this.setState({
+            cancelingFlare: false,
+            hasActiveFlare: false,
+        })
     }
 
     onBeaconDetected(beacon) {
@@ -83,6 +95,8 @@ export default class App extends React.Component {
                     lastBeacon: this.state.lastBeacon,
                     flareAPI,
                     hasActiveFlare: this.state.hasActiveFlare,
+                    cancelingFlare: this.state.cancelingFlare,
+                    onCancelFlare: () => this.onCancelFlare(),
                 }}
             />
         );

@@ -54,6 +54,10 @@ export default class Home extends React.Component {
         this.checkAuth();
     }
 
+    async cancelActiveFlare() {
+        await this.props.screenProps.onCancelFlare();
+    }
+
     render() {
         const { screenProps } = this.props;
         const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
@@ -78,6 +82,12 @@ export default class Home extends React.Component {
                     <Text>
                         {moment(screenProps.lastBeacon.timestamp).toLocaleString()}
                     </Text>
+                }
+                {screenProps.hasActiveFlare &&
+                    <Button 
+                        title={Strings.home.cancelActiveFlare}
+                        onPress={() => this.cancelActiveFlare()}
+                    />
                 }
             </View>
         );

@@ -6,8 +6,8 @@ class API {
     constructor() {
         this.authenticated = false;
         // this.serverUrl = 'https://app.flarejewelry.co/api';
-        // this.serverUrl = 'http://192.168.135.236/api';
-        this.serverUrl = 'http://192.168.86.227/api';
+        this.serverUrl = 'http://192.168.135.236/api';
+        // this.serverUrl = 'http://192.168.86.227/api';
         this.requestStatus = {
             failure: 'failure',
             requested: 'requested',
@@ -126,7 +126,41 @@ class API {
             });
     }
 
-    static checkin(beacon) {
+    async cancelActiveFlare() {
+        console.debug('Cancel active Flare');
+        const headers = await API.getAuthorizationHeader();
+        headers['Content-Type'] = 'application/json';
+
+        return fetch(`${this.serverUrl}/sos/flare/cancel`, {
+            method: 'POST',
+            headers,
+        })
+            .then(response => response.json())
+            .then((data) => {
+                if (data.status === this.requestStatus.success) {
+                    return data;
+                }
+                return false;
+            })
+            .catch((reason) => {
+                console.warn(`Cancel Active Flare failed with reason ${reason}`);
+                return false;
+            });
+    }
+
+    async checkin(beacon) {
+        if (!this.authenticated) {
+            console.debug('No calls without authentication.');
+            return false;
+        }
+
+        if (this.beaconCache.hasAlreadyHandled(beacon)) {
+            console.log('Ignoring call that we\'ve already handled.');
+            return false;
+        }
+
+        this.beaconCache.markAsHandled(beacon);
+        
         throw new FlareException('Not yet implemented');
     }
 
