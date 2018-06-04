@@ -8,6 +8,35 @@ import Strings from '../locales/en';
 
 import { API } from '../bits/API';
 
+const styles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 0        
+    },
+    containerWithActiveFlare: {
+        backgroundColor: Colors.theme.orange,
+    },
+    separate: {
+        marginTop: 50
+    },
+    choosePrompt: {
+        marginBottom: 12
+    },
+    logo: {
+        width: 200,
+        margin: 25,
+        marginBottom: 90,
+        padding: 8,
+        resizeMode: 'contain'
+    },
+});
 
 export default class Home extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => ({
@@ -31,8 +60,13 @@ export default class Home extends React.Component {
         const lastBeaconTimeHeading = hasTimestamp ? 
             Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
 
+        const containerStyles = [styles.container];
+        if (screenProps.hasActiveFlare) {
+            containerStyles.push(styles.containerWithActiveFlare);
+        }
+
         return (
-            <View style={styles.container}>
+            <View style={containerStyles}>
                 <Image
                     source={require('../assets/FLARE-white.png')}
                     style={styles.logo}
@@ -49,30 +83,3 @@ export default class Home extends React.Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 0        
-    },
-    separate: {
-        marginTop: 50
-    },
-    choosePrompt: {
-        marginBottom: 12
-    },
-    logo: {
-        width: 200,
-        margin: 25,
-        marginBottom: 90,
-        padding: 8,
-        resizeMode: 'contain'
-    }
-});

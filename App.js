@@ -37,6 +37,7 @@ export default class App extends React.Component {
 
         this.state = {
             lastBeacon: null,
+            hasActiveFlare: false,
         };
 
         const boundDetectedMethod = this.onBeaconDetected.bind(this);
@@ -71,6 +72,7 @@ export default class App extends React.Component {
 
         this.setState({
             lastBeacon: beacon,
+            hasActiveFlare: beacon.type === BeaconTypes.Long.name,
         });
     }
 
@@ -80,6 +82,7 @@ export default class App extends React.Component {
                 screenProps={{
                     lastBeacon: this.state.lastBeacon,
                     flareAPI,
+                    hasActiveFlare: this.state.hasActiveFlare,
                 }}
             />
         );
