@@ -1,4 +1,5 @@
 import React from 'react';
+import { AsyncStorage } from 'react-native';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
 import './bits/ReactotronConfig';
@@ -7,6 +8,7 @@ import API from './bits/API';
 import AuthLoading from './screens/AuthLoading';
 import BleManager from './bits/BleManager';
 import Home from './screens/Home';
+import CodeInput from './screens/CodeInput';
 import SignIn from './screens/SignIn';
 import { BeaconTypes } from './bits/BleConstants';
 
@@ -17,6 +19,7 @@ const AuthenticatedAppStack = createSwitchNavigator(
         AuthLoading,
         App: AppStack,
         Auth: AuthStack,
+        CodeInput,
     },
     {
         initialRouteName: 'AuthLoading',
@@ -38,7 +41,6 @@ export default class App extends React.Component {
         this.state = {
             lastBeacon: null,
             hasActiveFlare: false,
-            cancelingFlare: false,
         };
 
         const boundDetectedMethod = this.onBeaconDetected.bind(this);
@@ -48,14 +50,10 @@ export default class App extends React.Component {
     }
 
     async onCancelFlare() {
+        await AsyncStorage.setItem('hasActiveFlare', 'no');
         this.setState({
-            cancelingFlare: true,
-        });
-        await flareAPI.cancelActiveFlare();
-        this.setState({
-            cancelingFlare: false,
             hasActiveFlare: false,
-        })
+        });
     }
 
     onBeaconDetected(beacon) {
@@ -73,6 +71,7 @@ export default class App extends React.Component {
             break;
         case BeaconTypes.Long.name:
             flareAPI.flare(beacon);
+            AsyncStorage.setItem('hasActiveFlare', 'yes');
             break;
         case BeaconTypes.Checkin.name:
             flareAPI.checkin(beacon);
@@ -88,6 +87,13 @@ export default class App extends React.Component {
         });
     }
 
+    async checkForActiveFlare() {
+        const hasActiveFlare = await AsyncStorage.getItem('hasActiveFlare');
+        this.setState({
+            hasActiveFlare: hasActiveFlare === 'yes',
+        });
+    }
+
     render() {
         return (
             <AppNavigation
@@ -95,8 +101,8 @@ export default class App extends React.Component {
                     lastBeacon: this.state.lastBeacon,
                     flareAPI,
                     hasActiveFlare: this.state.hasActiveFlare,
-                    cancelingFlare: this.state.cancelingFlare,
                     onCancelFlare: () => this.onCancelFlare(),
+                    checkForActiveFlare: () => this.checkForActiveFlare(),
                 }}
             />
         );

@@ -7,6 +7,10 @@ const Strings = {
         chooseLanguage: 'Choose language',
         cancelActiveFlare: 'CANCEL FLARE',
     },
+    pin: {
+        prompt: 'Enter your Flare PIN',
+        failure: 'Invalid PIN',
+    },
     signin: {
         usernamePrompt: 'Email or phone',
         passwordPrompt: 'Password',

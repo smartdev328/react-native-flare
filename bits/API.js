@@ -88,12 +88,12 @@ class API {
 
     async flare(beacon) {
         if (!this.authenticated) {
-            console.debug('No calls without authentication.');
+            console.debug('No flares without authentication.');
             return false;
         }
 
         if (this.beaconCache.hasAlreadyHandled(beacon)) {
-            console.log('Ignoring call that we\'ve already handled.');
+            console.log('Ignoring flare that we\'ve already handled.');
             return false;
         }
 
@@ -126,7 +126,7 @@ class API {
             });
     }
 
-    async cancelActiveFlare() {
+    async cancelActiveFlare(pin) {
         console.debug('Cancel active Flare');
         const headers = await API.getAuthorizationHeader();
         headers['Content-Type'] = 'application/json';
@@ -134,6 +134,9 @@ class API {
         return fetch(`${this.serverUrl}/sos/flare/cancel`, {
             method: 'POST',
             headers,
+            body: JSON.stringify({
+                pin,
+            }),
         })
             .then(response => response.json())
             .then((data) => {

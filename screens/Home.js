@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 0        
+        padding: 0
     },
     containerWithActiveFlare: {
         backgroundColor: Colors.theme.orange,
@@ -52,10 +52,11 @@ export default class Home extends React.Component {
 
     componentDidMount() {
         this.checkAuth();
+        this.props.screenProps.checkForActiveFlare();
     }
 
-    async cancelActiveFlare() {
-        await this.props.screenProps.onCancelFlare();
+    cancelActiveFlare() {
+        this.props.navigation.navigate('CodeInput');
     }
 
     render() {
