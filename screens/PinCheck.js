@@ -7,7 +7,7 @@ import {
     Text,
     View,
 } from 'react-native';
-import CodePin from 'react-native-pin-code';
+import CodeInput from 'react-native-confirmation-code-input';
 
 import Colors from '../bits/Colors';
 import Strings from '../locales/en';
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'center',
         padding: 0,
+        backgroundColor: Colors.theme.orange,
     },
     logo: {
         width: 200,
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class CodeInput extends React.Component {
+export default class PinCheck extends React.Component {
 
     constructor(props) {
         super(props);
@@ -44,7 +45,7 @@ export default class CodeInput extends React.Component {
         };
     }
 
-    async checkCode(code, callback) {
+    async checkCode(code) {
         const { flareAPI } = this.props.screenProps;
         this.setState({
             checking: true,
@@ -53,31 +54,26 @@ export default class CodeInput extends React.Component {
         this.setState({
             checking: false,
         });
-        callback(response.status === flareAPI.requestStatus.success);
+        await this.props.screenProps.onCancelFlare();
+        this.props.navigation.navigate('Home');
     }
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <KeyboardAvoidingView style={styles.container}>
                 <Image
                     source={require('../assets/FLARE-white.png')}
                     style={styles.logo}
-                />}
-                <CodePin
-                    number={4}
-                    checkPinCode={(code, callback) => {
-                        this.checkCode(code, callback);
-                    }}
-                    success={() => this.props.screenProps.onCancelFlare()}
-                    text={Strings.pin.prompt}
-                    error={Strings.pin.failure}
+                />
+                <Text style={styles.prompt}>
+                    {Strings.pin.prompt}
+                </Text>
+                <CodeInput
+                    codeLength={4}
+                    secureTextEntry
+                    onFulfill={code => this.checkCode(code)}
                     keyboardType="numeric"
                 />
-                {this.state.checking &&
-                    <Text>
-                        <ActivityIndicator />
-                    </Text>
-                }
             </KeyboardAvoidingView>
         );
     }

@@ -55,8 +55,8 @@ export default class Home extends React.Component {
         this.props.screenProps.checkForActiveFlare();
     }
 
-    cancelActiveFlare() {
-        this.props.navigation.navigate('CodeInput');
+    handleCancelClick() {
+        this.props.navigation.navigate('PinCheck');
     }
 
     render() {
@@ -87,7 +87,7 @@ export default class Home extends React.Component {
                 {screenProps.hasActiveFlare &&
                     <Button 
                         title={Strings.home.cancelActiveFlare}
-                        onPress={() => this.cancelActiveFlare()}
+                        onPress={() => this.handleCancelClick()}
                     />
                 }
             </View>

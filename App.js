@@ -2,13 +2,13 @@ import React from 'react';
 import { AsyncStorage } from 'react-native';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 
-import './bits/ReactotronConfig';
+// import './bits/ReactotronConfig';
 
 import API from './bits/API';
 import AuthLoading from './screens/AuthLoading';
 import BleManager from './bits/BleManager';
 import Home from './screens/Home';
-import CodeInput from './screens/CodeInput';
+import PinCheck from './screens/PinCheck';
 import SignIn from './screens/SignIn';
 import { BeaconTypes } from './bits/BleConstants';
 
@@ -19,7 +19,7 @@ const AuthenticatedAppStack = createSwitchNavigator(
         AuthLoading,
         App: AppStack,
         Auth: AuthStack,
-        CodeInput,
+        PinCheck,
     },
     {
         initialRouteName: 'AuthLoading',
