@@ -31,6 +31,7 @@ export default class BleManager {
 
         this.beaconsDidRange = DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
             data.beacons.forEach((beacon) => {
+                console.debug(beacon);
                 const parsedBeacon = BleUtils.parseBeacon(beacon);
                 console.debug(`Beacon type ${parsedBeacon.type} from device ${parsedBeacon.deviceID} with nonce ${parsedBeacon.nonce}`);
 

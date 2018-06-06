@@ -62,6 +62,7 @@ export default class App extends React.Component {
         // For now, only act on beacons from my device. We want to propagate calls and flares
         // for all devices in the future.
         if (beacon.deviceID !== myDeviceID) {
+            console.log(`Ignoring beacon from device ID ${beacon.deviceID}.`);
             return;
         }
 

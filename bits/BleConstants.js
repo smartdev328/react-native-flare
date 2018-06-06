@@ -25,7 +25,7 @@ export const Regions = [
 ];
 
 export const BeaconTypes = {
-    Short: { name: 'Short', bits: '00' },
-    Long: { name: 'Long', bits: '01' },
-    Checkin: { name: 'Checkin', bits: '10' },
+    Short: { name: 'Short', value: 0 },
+    Long: { name: 'Long', value: 1 },
+    Checkin: { name: 'Checkin', value: 2 },
 };

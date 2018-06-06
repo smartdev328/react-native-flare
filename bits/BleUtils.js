@@ -6,15 +6,43 @@ import { BeaconTypes } from './BleConstants';
  * competent firmware developers.
  */
 class BleUtils {
-    static getBeaconTypeFromMajorBits(majorBits) {
-        const typeBits = majorBits.substring(6, 8);
-        const beaconType = Object.keys(BeaconTypes).find(type => BeaconTypes[type].bits === typeBits);
-        return beaconType;
+    static getDeviceVersionAndBeaconType(majorBits) {
+        const typeBits = majorBits.substring(0, 8);
+        const typeNumber = parseInt(typeBits, 2);
+        const versionRangeSize = 10;
+        const deviceVersion =
+            (typeNumber + (versionRangeSize - (typeNumber % versionRangeSize))) / versionRangeSize;
+        const beaconTypeNumber = typeNumber % versionRangeSize;
+        const beaconType =
+            Object.keys(BeaconTypes).find(type => BeaconTypes[type].value === beaconTypeNumber);
+        return {
+            deviceVersion,
+            beaconType,
+        };
     }
 
-    static getDeviceIDFromMajorBits(majorBits) {
-        const typeBits = majorBits.substring(8);
-        const deviceID = parseInt(typeBits, 2);
+    static getDeviceID(majorBits, minorBits, deviceVersion) {
+        // Legacy firmware used single byte for device ID
+        if (deviceVersion === 1) {
+            const bits = majorBits.substring(8);
+            const deviceID = parseInt(bits, 2);
+            return deviceID;
+        }
+
+        const bits = majorBits.substring(8) + minorBits.padStart(16, '0');
+        const bytes = [
+            bits.substring(0, 8),
+            bits.substring(8, 16),
+            bits.substring(16, 24),
+        ];
+
+        let deviceID = 0;
+        let byteIndex = 0;
+        for (byteIndex = 0; byteIndex < 3; byteIndex += 1) {
+            /* eslint no-bitwise: 0 */
+            const byteValue = (parseInt(bytes[byteIndex], 2) * (16 ** (bytes.length - 1 - byteIndex)));
+            deviceID += byteValue;
+        }
         return deviceID;
     }
 
@@ -35,17 +63,17 @@ class BleUtils {
         } = beacon;
 
         const majorBits = major.toString(2).padStart(16, '0');
-        const type = BleUtils.getBeaconTypeFromMajorBits(majorBits);
-        const deviceID = BleUtils.getDeviceIDFromMajorBits(majorBits);
-
         const minorBits = minor.toString(2);
-        const nonce = BleUtils.getNonceFromMinorBits(minorBits);
+        const { deviceVersion, beaconType } = BleUtils.getDeviceVersionAndBeaconType(majorBits);
+        const deviceID = BleUtils.getDeviceID(majorBits, minorBits, deviceVersion);
+        const nonce = deviceVersion === 1 ? BleUtils.getNonceFromMinorBits(minorBits) : null;
 
         return {
             uuid,
             nonce,
-            type,
+            type: beaconType,
             deviceID,
+            deviceVersion,
             rssi,
             proximity,
             accuracy,
