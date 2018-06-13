@@ -1,12 +1,9 @@
 import React from 'react';
-import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import moment from 'moment';
 
 import Colors from '../bits/Colors';
 import Strings from '../locales/en';
-
-import { API } from '../bits/API';
 
 const styles = StyleSheet.create({
     container: {
@@ -44,10 +41,11 @@ export default class Home extends React.Component {
     });
 
     async checkAuth() {
-        const pingResponse = await this.props.screenProps.flareAPI.ping();
-        if (pingResponse.status === this.props.screenProps.flareAPI.requestStatus.failure) {
-            this.props.navigation.navigate('SignIn');
-        }
+        this.props.screenProps.flareAPI.ping().catch((status, json) => {
+            if (status === 401 || status === 403) {
+                this.props.navigation.navigate('SignIn');
+            }
+        });
     }
 
     componentDidMount() {

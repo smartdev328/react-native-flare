@@ -1,6 +1,6 @@
 import React from 'react';
 import { AsyncStorage } from 'react-native';
-import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator, createSwitchNavigator, NavigationActions } from 'react-navigation';
 
 // import './bits/ReactotronConfig';
 
@@ -26,15 +26,18 @@ const AuthenticatedAppStack = createSwitchNavigator(
     },
 );
 
-const AppNavigation = props => (
-    <AuthenticatedAppStack
-        {...props}
-    />
-);
-
 const flareAPI = new API();
 
+let navigatorRef = null;
+
 export default class App extends React.Component {
+    static signOut() {
+        flareAPI.resetAuthentication();
+        navigatorRef.dispatch(NavigationActions.navigate({
+            routeName: 'Auth',
+        }));
+    }
+
     constructor(props) {
         super(props);
 
@@ -47,6 +50,12 @@ export default class App extends React.Component {
         BleManager.startListening({
             onBeaconDetected: beacon => boundDetectedMethod(beacon),
         });
+
+        navigatorRef = null;
+    }
+
+    componentDidMount() {
+        navigatorRef = this.navigatorObj;
     }
 
     async onCancelFlare() {
@@ -68,14 +77,28 @@ export default class App extends React.Component {
 
         switch (beacon.type) {
         case BeaconTypes.Short.name:
-            flareAPI.call(beacon);
+            flareAPI.call(beacon)
+                .catch((status) => {
+                    if (status === 401 || status === 403) {
+                        App.signOut();
+                    }
+                });
             break;
         case BeaconTypes.Long.name:
-            flareAPI.flare(beacon);
-            AsyncStorage.setItem('hasActiveFlare', 'yes');
+            flareAPI.flare(beacon)
+                .then((response) => {
+                    console.log(`Started flare: ${response}`);
+                    AsyncStorage.setItem('hasActiveFlare', 'yes');
+                })
+                .catch((status) => {
+                    if (status === 401 || status === 403) {
+                        App.signOut();
+                    }
+                });
             break;
         case BeaconTypes.Checkin.name:
-            flareAPI.checkin(beacon);
+            console.debug(`RSSI: ${beacon.rssi}`);
+            // flareAPI.checkin(beacon);
             break;
         default:
             console.warn(`Unrecognized beacon type ${beacon.type}`);
@@ -97,7 +120,8 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <AppNavigation
+            <AuthenticatedAppStack
+                ref={(nav) => { this.navigatorObj = nav; }}
                 screenProps={{
                     lastBeacon: this.state.lastBeacon,
                     flareAPI,

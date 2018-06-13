@@ -50,12 +50,17 @@ export default class PinCheck extends React.Component {
         this.setState({
             checking: true,
         });
-        const response = await flareAPI.cancelActiveFlare(code);
-        this.setState({
-            checking: false,
-        });
-        await this.props.screenProps.onCancelFlare();
-        this.props.navigation.navigate('Home');
+        flareAPI.cancelActiveFlare(code)
+            .then(() => {
+                this.setState({
+                    checking: false,
+                });
+                this.props.screenProps.onCancelFlare();
+                this.props.navigation.navigate('Home');
+            })
+            .catch((status, json) => {
+                console.log(`Failed to cancel Flare: ${status} ${json}`);
+            });
     }
 
     render() {
@@ -74,6 +79,9 @@ export default class PinCheck extends React.Component {
                     onFulfill={code => this.checkCode(code)}
                     keyboardType="numeric"
                 />
+                {this.state.checking &&
+                    <ActivityIndicator />
+                }
             </KeyboardAvoidingView>
         );
     }

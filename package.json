@@ -34,7 +34,6 @@
     "i18next": "^11.3.2",
     "moment": "^2.22.1",
     "react": "^16.3.1",
-    "react-i18next": "^7.6.1",
     "react-native": "~0.55.2",
     "react-native-background-timer": "^2.0.1",
     "react-native-beacons-manager": "^1.0.7",

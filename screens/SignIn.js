@@ -14,9 +14,6 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 16,
-        backgroundGradient: {
-            colors: [Colors.theme.orange, Colors.theme.purple]
-        },
     },
     separate: {
         marginTop: 50,
@@ -67,6 +64,8 @@ export default class SignIn extends React.Component {
             password: null,
             invalid: false,
         };
+
+        this.props.screenProps.flareAPI.resetAuthentication();
     }
 
     changeUserName(newValue) {
@@ -125,12 +124,14 @@ export default class SignIn extends React.Component {
                 }
                 <View style={styles.inputs}>
                     <TextInput
+                        autoCapitalize="none"
                         placeholder={Strings.signin.usernamePrompt}
                         style={styles.input}
                         value={this.state.username}
                         onChangeText={v => this.changeUserName(v)}
                     />
                     <TextInput
+                        autoCapitalize="none"
                         placeholder={Strings.signin.passwordPrompt}
                         secureTextEntry
                         style={styles.input}

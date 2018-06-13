@@ -15,7 +15,7 @@ export default class BleManager {
 
         if (Platform.OS === 'ios') {
             // IOS BLE SETUP
-            Beacons.requestWhenInUseAuthorization();
+            Beacons.requestAlwaysAuthorization();
             Regions.forEach((region) => {
                 Beacons.startMonitoringForRegion(region);
             });

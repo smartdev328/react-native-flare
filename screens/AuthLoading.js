@@ -9,7 +9,6 @@ import {
     View,
 } from 'react-native';
 
-import Colors from '../bits/Colors';
 import Strings from '../locales/en';
 
 const styles = StyleSheet.create({

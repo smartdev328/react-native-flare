@@ -30,19 +30,7 @@ class BleUtils {
         }
 
         const bits = majorBits.substring(8) + minorBits.padStart(16, '0');
-        const bytes = [
-            bits.substring(0, 8),
-            bits.substring(8, 16),
-            bits.substring(16, 24),
-        ];
-
-        let deviceID = 0;
-        let byteIndex = 0;
-        for (byteIndex = 0; byteIndex < 3; byteIndex += 1) {
-            /* eslint no-bitwise: 0 */
-            const byteValue = (parseInt(bytes[byteIndex], 2) * (16 ** (bytes.length - 1 - byteIndex)));
-            deviceID += byteValue;
-        }
+        const deviceID = parseInt(bits, 2);
         return deviceID;
     }
 

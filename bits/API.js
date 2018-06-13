@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import BeaconCache from './BeaconCache';
+import ProtectedAPICall from './ProtectedAPICall';
 import { FlareException } from './FlareException';
 
 class API {
@@ -15,6 +16,11 @@ class API {
         };
         this.beaconCache = new BeaconCache();
     }
+
+    async resetAuthentication() {
+        this.authenticated = false;
+        await AsyncStorage.removeItem('userToken');
+    }    
 
     async signIn(email, password) {
         return fetch(`${this.serverUrl}/auth/login`, {
@@ -39,156 +45,69 @@ class API {
             });
     }
 
-    static async getAuthorizationHeader() {
-        const userToken = await AsyncStorage.getItem('userToken');
-        const headers = {};
-        headers.Authorization = `Bearer ${userToken}`;
-        return headers;
-    }
-
     async call(beacon) {
-        if (!this.authenticated) {
-            console.debug('No calls without authentication.');
-            return false;
-        }
-
         if (this.beaconCache.hasAlreadyHandled(beacon)) {
             console.log('Ignoring call that we\'ve already handled.');
             return false;
         }
-
         this.beaconCache.markAsHandled(beacon);
 
         console.debug('Calling');
 
-        const headers = await API.getAuthorizationHeader();
-        headers['Content-Type'] = 'application/json';
-
-        return fetch(`${this.serverUrl}/sos/call`, {
+        return ProtectedAPICall(this.serverUrl, '/sos/call', {
             method: 'POST',
-            headers,
             body: JSON.stringify({
                 deviceID: beacon.deviceID,
                 nonce: beacon.nonce,
                 timestamp: beacon.timestamp,
             }),
-        })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.status === this.requestStatus.success) {
-                    return data;
-                }
-                return false;
-            })
-            .catch((reason) => {
-                console.warn(`Request for call failed with reason ${reason}`);
-                return false;
-            });
+        });
     }
 
     async flare(beacon) {
-        if (!this.authenticated) {
-            console.debug('No flares without authentication.');
-            return false;
-        }
-
         if (this.beaconCache.hasAlreadyHandled(beacon)) {
             console.log('Ignoring flare that we\'ve already handled.');
             return false;
         }
-
         this.beaconCache.markAsHandled(beacon);
 
         console.debug('Sending Flare');
 
-        const headers = await API.getAuthorizationHeader();
-        headers['Content-Type'] = 'application/json';
-
-        return fetch(`${this.serverUrl}/sos/flare`, {
+        return ProtectedAPICall(this.serverUrl, '/sos/flare', {
             method: 'POST',
-            headers,
             body: JSON.stringify({
-                device_id: beacon.deviceID,
+                deviceID: beacon.deviceID,
                 nonce: beacon.nonce,
                 timestamp: beacon.timestamp,
             }),
-        })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.status === this.requestStatus.success) {
-                    return data;
-                }
-                return false;
-            })
-            .catch((reason) => {
-                console.warn(`Request for call failed with reason ${reason}`);
-                return false;
-            });
+        });
     }
 
     async cancelActiveFlare(pin) {
         console.debug('Cancel active Flare');
-        const headers = await API.getAuthorizationHeader();
-        headers['Content-Type'] = 'application/json';
 
-        return fetch(`${this.serverUrl}/sos/flare/cancel`, {
+        return ProtectedAPICall(this.serverUrl, '/sos/flare/cancel', {
             method: 'POST',
-            headers,
             body: JSON.stringify({
                 pin,
             }),
-        })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.status === this.requestStatus.success) {
-                    return data;
-                }
-                return false;
-            })
-            .catch((reason) => {
-                console.warn(`Cancel Active Flare failed with reason ${reason}`);
-                return false;
-            });
+        });
     }
 
     async checkin(beacon) {
-        if (!this.authenticated) {
-            console.debug('No calls without authentication.');
-            return false;
-        }
-
         if (this.beaconCache.hasAlreadyHandled(beacon)) {
             console.log('Ignoring call that we\'ve already handled.');
             return false;
         }
-
         this.beaconCache.markAsHandled(beacon);
         
         throw new FlareException('Not yet implemented');
     }
 
     async ping() {
-        console.debug('Ping');
-        const headers = await API.getAuthorizationHeader();
-        headers['Content-Type'] = 'application/json';
-
-        return fetch(`${this.serverUrl}/ping`, {
+        return ProtectedAPICall(this.serverUrl, '/ping', {
             method: 'GET',
-            headers,
-        })
-            .then(response => response.json())
-            .then((data) => {
-                if (data.status === this.requestStatus.success) {
-                    return data;
-                }
-                // We're no longer authenticated.
-                this.authenticated = false;
-                return false;
-            })
-            .catch((reason) => {
-                console.warn(`Ping failed with reason ${reason}`);
-                return false;
-            });
+        });
     }
 }
 
