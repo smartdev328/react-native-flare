@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import moment from 'moment';
 
 import Colors from '../bits/Colors';
+import DeviceSelector from '../bits/DeviceSelector';
 import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
@@ -14,24 +15,25 @@ const styles = StyleSheet.create({
         height: '100%',
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         padding: 0
     },
     containerWithActiveFlare: {
         backgroundColor: Colors.theme.orange,
-    },
-    separate: {
-        marginTop: 50
     },
     choosePrompt: {
         marginBottom: 12
     },
     logo: {
         width: 200,
-        margin: 25,
-        marginBottom: 90,
-        padding: 8,
+        margin: 16,
         resizeMode: 'contain'
+    },
+    footer: {
+        padding: 16,
+    },
+    centered: {
+        textAlign: 'center',
     },
 });
 
@@ -71,23 +73,26 @@ export default class Home extends React.Component {
         return (
             <View style={containerStyles}>
                 <Image
-                    source={require('../assets/FLARE-white.png')}
+                    source={require('../assets/FLARE-black.png')}
                     style={styles.logo}
                 />
-                <Text>
-                    {lastBeaconTimeHeading}
-                </Text>
-                {hasTimestamp &&
-                    <Text>
-                        {moment(screenProps.lastBeacon.timestamp).toLocaleString()}
-                    </Text>
-                }
+                <DeviceSelector />
                 {screenProps.hasActiveFlare &&
                     <Button 
                         title={Strings.home.cancelActiveFlare}
                         onPress={() => this.handleCancelClick()}
                     />
                 }
+                <View style={styles.footer}>
+                    <Text style={styles.centered}>
+                        {lastBeaconTimeHeading}
+                    </Text>
+                    {hasTimestamp &&
+                        <Text style={styles.centered}>
+                            {moment(screenProps.lastBeacon.timestamp).toLocaleString()}
+                        </Text>
+                    }
+                </View>
             </View>
         );
     }

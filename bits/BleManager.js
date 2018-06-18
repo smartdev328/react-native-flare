@@ -1,4 +1,3 @@
-import React from 'react';
 import { DeviceEventEmitter, Platform } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
 import { Regions } from './BleConstants';

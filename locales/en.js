@@ -21,6 +21,11 @@ const Strings = {
         lastReceived: 'Latest beacon',
         notYetReceived: 'No beacons detected',
     },
+    jewelry: {
+        cuffV1: {
+            name: 'Flare Cuff',
+        },
+    }
 };
 
 export default Strings;
