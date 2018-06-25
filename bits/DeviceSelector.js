@@ -3,6 +3,7 @@ import CodeInput from 'react-native-confirmation-code-input';
 import Icon from 'react-native-vector-icons/Entypo';
 import { StyleSheet, Text, View, TouchableOpacity, Button, Image } from 'react-native';
 
+import { DeviceTypes } from './DeviceConstants';
 import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
@@ -30,10 +31,13 @@ const styles = StyleSheet.create({
     },
     targetHasDeviceContent: {
     },
-    device: {
+    deviceImage: {
         width: 200,
         height: 200,
         resizeMode: 'contain',
+    },
+    deviceName: {
+        textAlign: 'center',
     },
     hasDevice: {
     },
@@ -50,7 +54,7 @@ export default class DeviceSelector extends React.Component {
     constructor(props) {
         super(props);
 
-        const availableDevices = props.availableDevices || [];
+        const availableDevices = props.devices || [];
         const currentDevice = availableDevices.length > 0 ? availableDevices[0] : null;
 
         this.state = {
@@ -59,6 +63,15 @@ export default class DeviceSelector extends React.Component {
             addingDevice: false,
             errorAddingDevice: false,
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const availableDevices = nextProps.devices || [];
+        const currentDevice = availableDevices.length > 0 ? availableDevices[0] : null;
+        this.setState({
+            availableDevices,
+            currentDevice,
+        });
     }
 
     onPressAddDevice() {
@@ -70,12 +83,15 @@ export default class DeviceSelector extends React.Component {
 
     async addDevice(deviceID) {
         await this.props.addDevice(deviceID)
-            .then(() => {
+            .then((response) => {
                 this.setState({
                     addingDevice: false,
+                    availableDevices: response.devices,
+                    currentDevice: response.devices[0],
                 });
             })
             .catch(() => {
+                this.deviceInputField.clear();
                 this.setState({
                     errorAddingDevice: true,
                 });
@@ -106,6 +122,7 @@ export default class DeviceSelector extends React.Component {
                                         <Text>{Strings.deviceSelector.errorAddingDevice}</Text>
                                     }
                                     <CodeInput
+                                        ref={(c) => { this.deviceInputField = c; }}
                                         inputPosition="full-width"
                                         containerStyle={{height: '100%'}}
                                         secureTextEntry={false}
@@ -119,10 +136,10 @@ export default class DeviceSelector extends React.Component {
                     {this.state.currentDevice && !this.state.addingDevice &&
                         <View style={styles.targetHasDeviceContent}>
                             <Image
-                                source={require('../assets/cuff_v1.png')}
-                                style={styles.device}
+                                source={DeviceTypes[this.state.currentDevice.type - 1].image}
+                                style={styles.deviceImage}
                             />
-                            <Text>
+                            <Text style={styles.deviceName}>
                                 {Strings.jewelry.cuffV1.name}
                             </Text>
                         </View>

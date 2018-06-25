@@ -38,6 +38,7 @@ class API {
             .then(response => response.json())
             .then((data) => {
                 if (data.status === this.requestStatus.success) {
+                    AsyncStorage.setItem('userToken', data.auth_token);
                     this.authenticated = true;
                     return data;
                 }
@@ -115,7 +116,12 @@ class API {
 
         return ProtectedAPICall(this.serverUrl, `/device/${deviceID}/claim`, {
             method: 'POST',
-        });
+        })
+            .then((response) => {
+                const { devices } = response;
+                AsyncStorage.setItem('devices', JSON.stringify(devices));
+                return response;
+            });
     }
 }
 

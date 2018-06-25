@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, KeyboardAvoidingView } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 
 import { Button, Image, Text, TextInput, View } from '@shoutem/ui';
 
@@ -100,7 +100,6 @@ export default class SignIn extends React.Component {
                 invalid: true,
             });
         } else {
-            await AsyncStorage.setItem('userToken', response.auth_token);
             this.setState({
                 invalid: false,
             });

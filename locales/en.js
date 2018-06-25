@@ -27,7 +27,7 @@ const Strings = {
     },
     jewelry: {
         cuffV1: {
-            name: 'Flare Cuff',
+            name: 'Ruff Cuff',
         },
     },
 };

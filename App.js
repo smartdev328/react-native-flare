@@ -56,6 +56,12 @@ export default class App extends React.Component {
 
     componentDidMount() {
         navigatorRef = this.navigatorObj;
+        AsyncStorage.getItem('devices').then((devicesAsString) => {
+            const devices = JSON.parse(devicesAsString);
+            this.setState({
+                devices,
+            });
+        });
     }
 
     async onCancelFlare() {
@@ -124,6 +130,7 @@ export default class App extends React.Component {
                 ref={(nav) => { this.navigatorObj = nav; }}
                 screenProps={{
                     lastBeacon: this.state.lastBeacon,
+                    devices: this.state.devices,
                     flareAPI,
                     hasActiveFlare: this.state.hasActiveFlare,
                     onCancelFlare: () => this.onCancelFlare(),

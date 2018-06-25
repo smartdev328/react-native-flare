@@ -90,6 +90,7 @@ export default class Home extends React.Component {
                 />
                 <DeviceSelector 
                     addDevice={(deviceID) => this.props.screenProps.flareAPI.addDevice(deviceID)}
+                    devices={this.props.screenProps.devices}
                 />
                 {screenProps.hasActiveFlare &&
                     <Button 
