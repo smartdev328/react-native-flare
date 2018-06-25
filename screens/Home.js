@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import moment from 'moment';
+import BackgroundTimer from 'react-native-background-timer';
 
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
@@ -43,7 +44,11 @@ export default class Home extends React.Component {
     });
 
     async checkAuth() {
-        this.props.screenProps.flareAPI.ping().catch((status, json) => {
+        this.props.screenProps.flareAPI.ping()
+            .then(response => {
+                console.log(response);
+            })
+            .catch((status, json) => {
             if (status === 401 || status === 403) {
                 this.props.navigation.navigate('SignIn');
             }
@@ -52,7 +57,14 @@ export default class Home extends React.Component {
 
     componentDidMount() {
         this.checkAuth();
+        BackgroundTimer.runBackgroundTimer(() => { 
+            this.checkAuth();
+        }, 300000);
         this.props.screenProps.checkForActiveFlare();
+    }
+
+    componentWillUnmount() {
+        BackgroundTimer.stopBackgroundTimer();
     }
 
     handleCancelClick() {
@@ -76,7 +88,9 @@ export default class Home extends React.Component {
                     source={require('../assets/FLARE-black.png')}
                     style={styles.logo}
                 />
-                <DeviceSelector />
+                <DeviceSelector 
+                    addDevice={(deviceID) => this.props.screenProps.flareAPI.addDevice(deviceID)}
+                />
                 {screenProps.hasActiveFlare &&
                     <Button 
                         title={Strings.home.cancelActiveFlare}

@@ -100,13 +100,21 @@ class API {
             return false;
         }
         this.beaconCache.markAsHandled(beacon);
-        
+
         throw new FlareException('Not yet implemented');
     }
 
     async ping() {
-        return ProtectedAPICall(this.serverUrl, '/ping', {
+        return ProtectedAPICall(this.serverUrl, '/auth/status', {
             method: 'GET',
+        });
+    }
+
+    async addDevice(deviceID) {
+        console.debug(`Add device ${deviceID}`);
+
+        return ProtectedAPICall(this.serverUrl, `/device/${deviceID}/claim`, {
+            method: 'POST',
         });
     }
 }
