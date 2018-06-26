@@ -106,8 +106,12 @@ export default class App extends React.Component {
                 });
             break;
         case BeaconTypes.Checkin.name:
-            console.debug(`RSSI: ${beacon.rssi}`);
-            // flareAPI.checkin(beacon);
+            flareAPI.checkin(beacon)
+                .catch((status) => {
+                    if (status === 401 || status === 403) {
+                        App.signOut();
+                    }
+                });
             break;
         default:
             console.warn(`Unrecognized beacon type ${beacon.type}`);

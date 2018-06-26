@@ -102,7 +102,21 @@ class API {
         }
         this.beaconCache.markAsHandled(beacon);
 
-        throw new FlareException('Not yet implemented');
+        return ProtectedAPICall(this.serverUrl, '/sos/checkin', {
+            method: 'POST',
+            body: JSON.stringify({
+                device_id: beacon.deviceID,
+                timestamp: beacon.timestamp,
+                details: {
+                    proximity: beacon.proximity,
+                    distance: beacon.distance,
+                    rssi: beacon.rssi,
+                    major: beacon.major,
+                    minor: beacon.minor,
+                    uuid: beacon.uuid,
+                },
+            }),
+        });
     }
 
     async ping() {
