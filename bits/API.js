@@ -20,7 +20,7 @@ class API {
     async resetAuthentication() {
         this.authenticated = false;
         await AsyncStorage.removeItem('userToken');
-    }    
+    }
 
     async signIn(email, password) {
         return fetch(`${this.serverUrl}/auth/login`, {

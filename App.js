@@ -44,6 +44,8 @@ export default class App extends React.Component {
         this.state = {
             lastBeacon: null,
             hasActiveFlare: false,
+            devices: [],
+            deviceIDs: [],
         };
 
         const boundDetectedMethod = this.onBeaconDetected.bind(this);
@@ -58,8 +60,10 @@ export default class App extends React.Component {
         navigatorRef = this.navigatorObj;
         AsyncStorage.getItem('devices').then((devicesAsString) => {
             const devices = JSON.parse(devicesAsString);
+            const deviceIDs = devices.map(d => d.id);
             this.setState({
                 devices,
+                deviceIDs,
             });
         });
     }
@@ -72,14 +76,13 @@ export default class App extends React.Component {
     }
 
     onBeaconDetected(beacon) {
-        const myDeviceID = 176;
-
-        // For now, only act on beacons from my device. We want to propagate calls and flares
-        // for all devices in the future.
-        if (beacon.deviceID !== myDeviceID) {
-            console.log(`Ignoring beacon from device ID ${beacon.deviceID}.`);
+        // For now, only act on beacons from the user's devices.
+        // In the future, we want to propagate calls and flares for all devices.
+        if (this.state.deviceIDs.indexOf(beacon.deviceID) === -1) {
             return;
         }
+
+        console.log(`Processing beacon from device ID ${beacon.deviceID} with my devices ${JSON.stringify(this.state.devices)}.`);
 
         switch (beacon.type) {
         case BeaconTypes.Short.name:

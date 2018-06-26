@@ -29,7 +29,9 @@ class BleUtils {
             return deviceID;
         }
 
-        const bits = majorBits.substring(8) + minorBits.padStart(16, '0');
+        const numberOfBitsToPrepend = 16 - minorBits.length;
+        const paddedMinorBits = `${'0'.repeat(numberOfBitsToPrepend)}${minorBits}`;
+        const bits = majorBits.substring(8) + paddedMinorBits;
         const deviceID = parseInt(bits, 2);
         return deviceID;
     }
@@ -50,7 +52,9 @@ class BleUtils {
             accuracy,
         } = beacon;
 
-        const majorBits = major.toString(2).padStart(16, '0');
+        const majorBitsUnpadded = major.toString(2);
+        const numberOfBitsToPrepend = 16 - majorBitsUnpadded.length;
+        const majorBits = `${'0'.repeat(numberOfBitsToPrepend)}${majorBitsUnpadded}`;
         const minorBits = minor.toString(2);
         const { deviceVersion, beaconType } = BleUtils.getDeviceVersionAndBeaconType(majorBits);
         const deviceID = BleUtils.getDeviceID(majorBits, minorBits, deviceVersion);
