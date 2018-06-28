@@ -3,26 +3,26 @@ import CodeInput from 'react-native-confirmation-code-input';
 import Icon from 'react-native-vector-icons/Entypo';
 import { StyleSheet, Text, View, TouchableOpacity, Button, Image } from 'react-native';
 
+import Colors from './Colors';
 import { DeviceTypes } from './DeviceConstants';
 import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 12,
-        marginBottom: 64,
     },
     target: {
         width: 280,
         height: 280,
         maxHeight: 280,
         borderRadius: 280 / 2,
-        borderWidth: 4,
+        borderWidth: 1,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
     targetNoDevice: {
-        borderColor: '#000000',
+        borderColor: Colors.theme.orangeLight,
+        backgroundColor: Colors.theme.purpleTransparent,
     },
     targetHasDevice: {
         borderColor: '#E0E0E0',
@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
     },
     deviceName: {
         textAlign: 'center',
+        fontSize: 18,
+        color: Colors.white,
     },
     hasDevice: {
     },

@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
-import moment from 'moment';
+import Icon from 'react-native-vector-icons/Entypo';
 import BackgroundTimer from 'react-native-background-timer';
+import RadialGradient from 'react-native-radial-gradient';
+import moment from 'moment';
 
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
+import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
@@ -17,17 +20,23 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 0
+        padding: 0,
+        backgroundColor: Colors.theme.purple,
     },
     containerWithActiveFlare: {
         backgroundColor: Colors.theme.orange,
+    },
+    backgroundGradient: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        opacity: 0.7,
     },
     choosePrompt: {
         marginBottom: 12
     },
     logo: {
-        width: 200,
-        margin: 16,
+        width: 98,
         resizeMode: 'contain'
     },
     footer: {
@@ -35,12 +44,24 @@ const styles = StyleSheet.create({
     },
     centered: {
         textAlign: 'center',
+        color: Colors.white,
+    },
+    deviceSelector: {
+        marginTop: 90,
     },
 });
 
 export default class Home extends React.Component {
-    static navigationOptions = ({navigation, screenProps}) => ({
-        header: null
+    static navigationOptions = ({ navigation }) => ({
+        headerStyle: {
+            backgroundColor: Colors.theme.purple,
+            paddingLeft: 16,
+        },        
+        headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
+        headerTitle: <Image
+            source={require('../assets/FLARE-white.png')}
+            style={styles.logo}
+        />,
     });
 
     async checkAuth() {
@@ -84,14 +105,18 @@ export default class Home extends React.Component {
 
         return (
             <View style={containerStyles}>
-                <Image
-                    source={require('../assets/FLARE-black.png')}
-                    style={styles.logo}
+                <FlavorStripe />
+                <RadialGradient 
+                    style={styles.backgroundGradient}
+                    colors={[Colors.theme.orangeDark, Colors.theme.purple]}
+                    radius={300}
                 />
-                <DeviceSelector 
-                    addDevice={(deviceID) => this.props.screenProps.flareAPI.addDevice(deviceID)}
-                    devices={this.props.screenProps.devices}
-                />
+                <View style={styles.deviceSelector}>
+                    <DeviceSelector 
+                        addDevice={(deviceID) => this.props.screenProps.flareAPI.addDevice(deviceID)}
+                        devices={this.props.screenProps.devices}
+                    />
+                </View>
                 {screenProps.hasActiveFlare &&
                     <Button 
                         title={Strings.home.cancelActiveFlare}

@@ -3,6 +3,7 @@ package com.flare;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.surajit.rnrg.RNRadialGradientPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.reactnative.photoview.PhotoViewPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNRadialGradientPackage(),
             new BackgroundTimerPackage(),
             new LinearGradientPackage(),
             new PhotoViewPackage(),
