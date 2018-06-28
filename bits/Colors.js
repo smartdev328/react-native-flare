@@ -1,7 +1,11 @@
 export default {
     theme: {
-        orange: '#FC5A3C',
-        purple: '#39397B',
+        purple: '#5E005E',
+        pink: '#AB2F52',
+        orangeDark: '#E55D4A',
+        peach: '#E88554',
+        orangeLight: '#FFAF53',
     },
+    black: '#000000',
     white: '#FFFFFF',
 };

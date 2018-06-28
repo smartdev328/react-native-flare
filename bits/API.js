@@ -39,6 +39,7 @@ class API {
             .then((data) => {
                 if (data.status === this.requestStatus.success) {
                     AsyncStorage.setItem('userToken', data.auth_token);
+                    AsyncStorage.setItem('devices', JSON.stringify(data.devices));
                     this.authenticated = true;
                     return data;
                 }
@@ -97,7 +98,7 @@ class API {
 
     async checkin(beacon) {
         if (this.beaconCache.hasAlreadyHandled(beacon)) {
-            console.log('Ignoring call that we\'ve already handled.');
+            console.log('Ignoring checkin that we\'ve already handled.');
             return false;
         }
         this.beaconCache.markAsHandled(beacon);

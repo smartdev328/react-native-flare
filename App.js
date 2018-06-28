@@ -58,14 +58,7 @@ export default class App extends React.Component {
 
     componentDidMount() {
         navigatorRef = this.navigatorObj;
-        AsyncStorage.getItem('devices').then((devicesAsString) => {
-            const devices = JSON.parse(devicesAsString);
-            const deviceIDs = devices.map(d => d.id);
-            this.setState({
-                devices,
-                deviceIDs,
-            });
-        });
+        this.checkDevicesFromLocalStorage();
     }
 
     async onCancelFlare() {
@@ -124,11 +117,26 @@ export default class App extends React.Component {
         });
     }
 
+    async checkDevicesFromLocalStorage() {
+        AsyncStorage.getItem('devices').then((devicesAsString) => {
+            const devices = JSON.parse(devicesAsString);
+            if (typeof devices === 'undefined' || devices === null) {
+                return;
+            }
+            const deviceIDs = devices.map(d => d.id);
+            this.setState({
+                devices,
+                deviceIDs,
+            });
+        });
+    }
+
     async checkForActiveFlare() {
         const hasActiveFlare = await AsyncStorage.getItem('hasActiveFlare');
         this.setState({
             hasActiveFlare: hasActiveFlare === 'yes',
         });
+        this.checkDevicesFromLocalStorage();
     }
 
     render() {
