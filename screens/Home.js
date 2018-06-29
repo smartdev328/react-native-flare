@@ -1,14 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import BackgroundTimer from 'react-native-background-timer';
 import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
 
+import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
 import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
+import Spacing from '../bits/Spacing';
+import { TouchableOpacity } from '@shoutem/ui';
 
 const styles = StyleSheet.create({
     container: {
@@ -24,7 +27,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme.purple,
     },
     containerWithActiveFlare: {
-        backgroundColor: Colors.theme.orange,
+        backgroundColor: Colors.theme.pink,
     },
     backgroundGradient: {
         position: 'absolute',
@@ -49,20 +52,41 @@ const styles = StyleSheet.create({
     deviceSelector: {
         marginTop: 90,
     },
+    cancelButtonArea: {
+        width: '100%',
+        height: Spacing.huge,
+        marginTop: 90,
+        padding: Spacing.medium,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    cancelFlareButton: {
+        backgroundColor: Colors.theme.orangeLight,
+        color: Colors.white,
+        height: 48,
+        flex: 1,
+    },
+    cancelFlareButtonText: {
+        fontSize: 24,
+    }
 });
 
 export default class Home extends React.Component {
-    static navigationOptions = ({ navigation }) => ({
-        headerStyle: {
-            backgroundColor: Colors.theme.purple,
-            paddingLeft: 16,
-        },        
-        headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
-        headerTitle: <Image
-            source={require('../assets/FLARE-white.png')}
-            style={styles.logo}
-        />,
-    });
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        return {
+            headerStyle: {
+                backgroundColor: Colors.theme.purple,
+                paddingLeft: 16,
+            },        
+            headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
+            headerTitle: <Image
+                source={require('../assets/FLARE-white.png')}
+                style={styles.logo}
+            />,
+        }
+    };
 
     async checkAuth() {
         this.props.screenProps.flareAPI.ping()
@@ -106,22 +130,27 @@ export default class Home extends React.Component {
         return (
             <View style={containerStyles}>
                 <FlavorStripe />
-                <RadialGradient 
+                <RadialGradient
                     style={styles.backgroundGradient}
                     colors={[Colors.theme.orangeDark, Colors.theme.purple]}
                     radius={300}
                 />
-                <View style={styles.deviceSelector}>
-                    <DeviceSelector 
-                        addDevice={(deviceID) => this.props.screenProps.flareAPI.addDevice(deviceID)}
-                        devices={this.props.screenProps.devices}
-                    />
-                </View>
+                {!screenProps.hasActiveFlare &&
+                    <View style={styles.deviceSelector}>
+                        <DeviceSelector 
+                            addDevice={deviceID => this.props.screenProps.flareAPI.addDevice(deviceID)}
+                            devices={this.props.screenProps.devices}
+                        />
+                    </View>
+                }
                 {screenProps.hasActiveFlare &&
-                    <Button 
-                        title={Strings.home.cancelActiveFlare}
-                        onPress={() => this.handleCancelClick()}
-                    />
+                    <View style={styles.cancelButtonArea}>
+                        <Button
+                            fullWidth
+                            onPress={() => this.handleCancelClick()}
+                            title={Strings.home.cancelActiveFlare}
+                        />
+                    </View>
                 }
                 <View style={styles.footer}>
                     <Text style={styles.centered}>

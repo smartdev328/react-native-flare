@@ -91,10 +91,16 @@ export default class App extends React.Component {
                 .then((response) => {
                     console.log(`Started flare: ${response}`);
                     AsyncStorage.setItem('hasActiveFlare', 'yes');
+                    this.setState({
+                        hasActiveFlare: true,
+                    });
+                    navigatorRef.setState({
+                        hasActiveFlare: true,
+                    });
                 })
                 .catch((status) => {
                     if (status === 401 || status === 403) {
-                        App.signOut();
+                        // App.signOut();
                     }
                 });
             break;
@@ -113,7 +119,6 @@ export default class App extends React.Component {
 
         this.setState({
             lastBeacon: beacon,
-            hasActiveFlare: beacon.type === BeaconTypes.Long.name,
         });
     }
 

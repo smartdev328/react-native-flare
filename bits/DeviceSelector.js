@@ -115,7 +115,7 @@ export default class DeviceSelector extends React.Component {
                             onPressOut={() => this.onPressAddDevice()}
                         >
                             {!this.state.addingDevice &&
-                                <Icon name="plus" size={30} color="#000000" />
+                                <Icon name="plus" size={30} color={Colors.theme.orangeLight} />
                             }
                             {this.state.addingDevice &&
                                 <View style={styles.fullSize}>

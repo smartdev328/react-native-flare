@@ -8,7 +8,9 @@ import {
     Text,
     View,
 } from 'react-native';
+import RadialGradient from 'react-native-radial-gradient';
 
+import Colors from '../bits/Colors';
 import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
@@ -22,6 +24,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 0,        
+    },
+    backgroundGradient: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
     },
     separate: {
         marginTop: 50,
@@ -59,6 +66,11 @@ export default class AuthLoading extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <RadialGradient
+                    style={styles.backgroundGradient}
+                    colors={[Colors.theme.orangeDark, Colors.theme.purple]}
+                    radius={300}
+                />
                 <Image
                     source={require('../assets/FLARE-white.png')}
                     style={styles.logo}
