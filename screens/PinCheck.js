@@ -5,11 +5,13 @@ import {
     KeyboardAvoidingView,
     StyleSheet,
     Text,
-    View,
 } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
+import Icon from 'react-native-vector-icons/Entypo';
+import RadialGradient from 'react-native-radial-gradient';
 
 import Colors from '../bits/Colors';
+import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 
 
@@ -21,11 +23,16 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         flex: 1,
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         padding: 0,
-        backgroundColor: Colors.theme.orange,
+        backgroundColor: Colors.theme.purple,
+    },
+    backgroundGradient: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        opacity: 0.7,
     },
     logo: {
         width: 200,
@@ -37,6 +44,20 @@ const styles = StyleSheet.create({
 });
 
 export default class PinCheck extends React.Component {
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        return {
+            headerStyle: {
+                backgroundColor: Colors.theme.purple,
+                paddingLeft: 16,
+            },        
+            headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
+            headerTitle: <Image
+                source={require('../assets/FLARE-white.png')}
+                style={styles.logo}
+            />,
+        }
+    };
 
     constructor(props) {
         super(props);
@@ -66,9 +87,11 @@ export default class PinCheck extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container}>
-                <Image
-                    source={require('../assets/FLARE-white.png')}
-                    style={styles.logo}
+                <FlavorStripe />
+                <RadialGradient
+                    style={styles.backgroundGradient}
+                    colors={[Colors.theme.orangeDark, Colors.theme.purple]}
+                    radius={300}
                 />
                 <Text style={styles.prompt}>
                     {Strings.pin.prompt}
