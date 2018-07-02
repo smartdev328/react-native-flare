@@ -5,6 +5,7 @@ import {
     KeyboardAvoidingView,
     StyleSheet,
     Text,
+    View,
 } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -35,28 +36,14 @@ const styles = StyleSheet.create({
         opacity: 0.7,
     },
     logo: {
-        width: 200,
-        margin: 25,
-        marginBottom: 90,
-        padding: 8,
-        resizeMode: 'contain',
+        width: 98,
+        resizeMode: 'contain'
     },
 });
 
 export default class PinCheck extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        const { params = {} } = navigation.state;
-        return {
-            headerStyle: {
-                backgroundColor: Colors.theme.purple,
-                paddingLeft: 16,
-            },        
-            headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
-            headerTitle: <Image
-                source={require('../assets/FLARE-white.png')}
-                style={styles.logo}
-            />,
-        }
+    static navigationOptions = {
+        title: 'Questions',
     };
 
     constructor(props) {

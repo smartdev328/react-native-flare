@@ -2,6 +2,7 @@ import React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
 
 import { Button, Image, Text, TextInput, View } from '@shoutem/ui';
+import RadialGradient from 'react-native-radial-gradient';
 
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
@@ -9,14 +10,22 @@ import Strings from '../locales/en';
 
 const styles = {
     container: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
         flex: 1,
-        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: 16,
+        justifyContent: 'space-between',
+        padding: 0,
+        backgroundColor: Colors.theme.purple,
     },
-    separate: {
-        marginTop: 50,
+    backgroundGradient: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        opacity: 0.7,
     },
     choosePrompt: {
         marginBottom: 12,
@@ -38,6 +47,8 @@ const styles = {
     },
     inputs: {
         width: '100%',
+        paddingLeft: Spacing.medium,
+        paddingRight: Spacing.medium,
         alignItems: 'stretch',
         marginBottom: Spacing.huge,
     },
@@ -110,6 +121,11 @@ export default class SignIn extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
+                <RadialGradient
+                    style={styles.backgroundGradient}
+                    colors={[Colors.theme.orangeDark, Colors.theme.purple]}
+                    radius={300}
+                />
                 <Image
                     source={require('../assets/FLARE-white.png')}
                     style={styles.logo}

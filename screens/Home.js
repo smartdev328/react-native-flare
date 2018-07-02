@@ -11,7 +11,6 @@ import DeviceSelector from '../bits/DeviceSelector';
 import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
-import { TouchableOpacity } from '@shoutem/ui';
 
 const styles = StyleSheet.create({
     container: {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Image } from 'react-native';
 import { createStackNavigator, createSwitchNavigator, NavigationActions } from 'react-navigation';
-
+import Icon from 'react-native-vector-icons/Entypo';
 // import './bits/ReactotronConfig';
 
 import API from './bits/API';
@@ -11,6 +11,8 @@ import Home from './screens/Home';
 import PinCheck from './screens/PinCheck';
 import SignIn from './screens/SignIn';
 import { BeaconTypes } from './bits/BleConstants';
+
+import Colors from './bits/Colors';
 
 const AppStack = createStackNavigator({ Home: { screen: Home } });
 const AuthStack = createStackNavigator({ SignInScreen: SignIn });
@@ -23,6 +25,17 @@ const AuthenticatedAppStack = createSwitchNavigator(
     },
     {
         initialRouteName: 'AuthLoading',
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: Colors.theme.purple,
+                paddingLeft: 16,
+            },
+            headerLeft: <Icon name="menu" size={30} color={Colors.white} />,
+            headerTitle: <Image
+                source={require('./assets/FLARE-white.png')}
+                style={{ width: 98, resizeMode: 'contain' }}
+            />,
+        },
     },
 );
 
