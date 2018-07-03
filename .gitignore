@@ -7,7 +7,7 @@ android/app/build/
 android/app/build/
 android/app/build/
 android/.idea/
-android/app-release-key.keystore
+android/app/app-release-key.keystore
 
 # ios build
 ios/build/
