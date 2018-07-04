@@ -106,8 +106,7 @@ def getPassword(String currentUser, String keyChain) {
    stdout.toString().trim()
 }
 
-def releasekeypass = getPassword("mgaron","app-release-key")
-def releasekeyalias = getPassword("mgaron","app-key-alias")
+def releasekeypass = getPassword("mgaron","android_keystore")
 
 android {
     compileSdkVersion 23
@@ -137,7 +136,7 @@ android {
                 storeFile file(APP_RELEASE_STORE_FILE)
                 storePassword releasekeypass
                 keyAlias APP_RELEASE_KEY_ALIAS
-                keyPassword releasekeyalias
+                keyPassword releasekeypass
             }
         }
     }    
