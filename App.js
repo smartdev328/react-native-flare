@@ -2,7 +2,6 @@ import React from 'react';
 import { AsyncStorage, Image } from 'react-native';
 import { createStackNavigator, createSwitchNavigator, NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
-// import './bits/ReactotronConfig';
 
 import API from './bits/API';
 import AuthLoading from './screens/AuthLoading';

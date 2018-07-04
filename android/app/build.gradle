@@ -93,9 +93,25 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+def getPassword(String currentUser, String keyChain) {
+   def stdout = new ByteArrayOutputStream()
+   def stderr = new ByteArrayOutputStream()
+   exec {
+       commandLine 'security', '-q', 'find-generic-password', '-a', currentUser, '-s', keyChain, '-w'
+       standardOutput = stdout
+       errorOutput = stderr
+       ignoreExitValue true
+   }
+   //noinspection GroovyAssignabilityCheck
+   stdout.toString().trim()
+}
+
+def releasekeypass = getPassword("mgaron","app-release-key")
+def releasekeyalias = getPassword("mgaron","app-key-alias")
+
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.flare"
@@ -115,11 +131,25 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        release {
+            if (project.hasProperty('APP_RELEASE_STORE_FILE')) {
+                storeFile file(APP_RELEASE_STORE_FILE)
+                storePassword releasekeypass
+                keyAlias APP_RELEASE_KEY_ALIAS
+                keyPassword releasekeyalias
+            }
+        }
+    }    
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
+    }
+    lintOptions {
+        abortOnError false
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
