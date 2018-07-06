@@ -113,7 +113,7 @@ android {
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "com.flarejewelry"
+        applicationId "com.flarejewelry.app"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
@@ -152,15 +152,9 @@ android {
     }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            // For each separate APK per architecture, set a unique version code as described here:
-            // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
-            }
+        variant.outputs.all {
+            def applicationName = variant.applicationId
+            outputFileName = "${applicationName}_${variant.buildType.name}_${defaultConfig.versionName}.apk"
         }
     }
 }
