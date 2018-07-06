@@ -113,7 +113,7 @@ android {
     buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "com.flarejewelry"
+        applicationId "com.flarejewelry.app"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1

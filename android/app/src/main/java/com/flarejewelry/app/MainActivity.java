@@ -1,4 +1,4 @@
-package com.flare;
+package com.flarejewelry;
 
 import com.facebook.react.ReactActivity;
 
