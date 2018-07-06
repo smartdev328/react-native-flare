@@ -28,6 +28,7 @@ ios/app.ipa
 /node_modules
 
 # misc
+.vscode/
 .env.local
 .env.development.local
 .env.test.local
