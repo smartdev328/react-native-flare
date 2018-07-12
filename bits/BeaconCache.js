@@ -33,7 +33,7 @@ export default class BeaconCache {
         // We consider beacons to be the same if they have the same nonce and were received within
         // 30 seconds of each other.
         if (lastTimestampForNonce) {
-            handled = moment(lastTimestampForNonce).diff(timestamp) < 30000;
+            handled = moment(lastTimestampForNonce).diff(timestamp) < 20000;
         }
 
         console.debug(`Beacon was handled ${beacon}? ${handled}`);

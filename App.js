@@ -57,7 +57,6 @@ export default class App extends React.Component {
             lastBeacon: null,
             hasActiveFlare: false,
             devices: [],
-            deviceIDs: [],
         };
 
         const boundDetectedMethod = this.onBeaconDetected.bind(this);
@@ -81,13 +80,14 @@ export default class App extends React.Component {
     }
 
     onBeaconDetected(beacon) {
-        // For now, only act on beacons from the user's devices.
-        // In the future, we want to propagate calls and flares for all devices.
-        if (this.state.deviceIDs.indexOf(beacon.deviceID) === -1) {
-            return;
-        }
+        // // For now, only act on beacons from the user's devices.
+        // // In the future, we want to propagate calls and flares for all devices.
+        // if (this.state.deviceIDs.indexOf(beacon.deviceID) === -1) {
+        //     return;
+        // }
 
-        console.log(`Processing beacon from device ID ${beacon.deviceID} with my devices ${JSON.stringify(this.state.devices)}.`);
+        console.log(`Processing beacon from device ID ${beacon.deviceID} 
+            with my devices ${JSON.stringify(this.state.devices)}.`);
 
         switch (beacon.type) {
         case BeaconTypes.Short.name:
@@ -138,12 +138,11 @@ export default class App extends React.Component {
         AsyncStorage.getItem('devices').then((devicesAsString) => {
             const devices = JSON.parse(devicesAsString);
             if (typeof devices === 'undefined' || devices === null) {
+                console.debug('Retrieved invalid list of devices from storage.');
                 return;
             }
-            const deviceIDs = devices.map(d => d.id);
             this.setState({
                 devices,
-                deviceIDs,
             });
         });
     }

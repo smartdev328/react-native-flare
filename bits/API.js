@@ -3,6 +3,8 @@ import BeaconCache from './BeaconCache';
 import ProtectedAPICall from './ProtectedAPICall';
 import { FlareException } from './FlareException';
 
+import moment from 'moment';
+
 class API {
     constructor() {
         this.authenticated = false;
@@ -107,7 +109,7 @@ class API {
             method: 'POST',
             body: JSON.stringify({
                 device_id: beacon.deviceID,
-                timestamp: beacon.timestamp,
+                timestamp: moment(beacon.timestamp).toISOString(),
                 details: {
                     proximity: beacon.proximity,
                     distance: beacon.distance,

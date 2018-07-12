@@ -89,9 +89,6 @@ export default class Home extends React.Component {
 
     async checkAuth() {
         this.props.screenProps.flareAPI.ping()
-            .then(response => {
-                console.log(response);
-            })
             .catch((status, json) => {
             if (status === 401 || status === 403) {
                 this.props.navigation.navigate('SignIn');
