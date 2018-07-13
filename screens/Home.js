@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { Image, StyleSheet, Text, View  } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import BackgroundTimer from 'react-native-background-timer';
 import RadialGradient from 'react-native-radial-gradient';
@@ -9,8 +9,10 @@ import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
 import FlavorStripe from '../bits/FlavorStripe';
+import PermissionsManager from '../bits/PermissionsManager';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     },
     cancelFlareButtonText: {
         fontSize: 24,
-    }
+    },
 });
 
 export default class Home extends React.Component {
@@ -87,6 +89,10 @@ export default class Home extends React.Component {
         }
     };
 
+    async checkPermissions() {
+        PermissionsManager.checkLocationPermissions();
+    }
+
     async checkAuth() {
         this.props.screenProps.flareAPI.ping()
             .catch((status, json) => {
@@ -97,6 +103,7 @@ export default class Home extends React.Component {
     }
 
     componentDidMount() {
+        this.checkPermissions();
         this.checkAuth();
         BackgroundTimer.runBackgroundTimer(() => { 
             this.checkAuth();
@@ -136,7 +143,16 @@ export default class Home extends React.Component {
                         <DeviceSelector 
                             addDevice={deviceID => this.props.screenProps.flareAPI.addDevice(deviceID)}
                             devices={this.props.screenProps.devices}
-                        />
+                        >
+                           <Text style={styles.centered}>
+                                {lastBeaconTimeHeading}
+                            </Text>
+                            {hasTimestamp &&
+                                <Text style={[styles.centered, styles.dimmed]}>
+                                    {moment(screenProps.lastBeacon.timestamp).toLocaleString()}
+                                </Text>
+                            }
+                        </DeviceSelector>
                     </View>
                 }
                 {screenProps.hasActiveFlare &&
@@ -149,14 +165,6 @@ export default class Home extends React.Component {
                     </View>
                 }
                 <View style={styles.footer}>
-                    <Text style={styles.centered}>
-                        {lastBeaconTimeHeading}
-                    </Text>
-                    {hasTimestamp &&
-                        <Text style={styles.centered}>
-                            {moment(screenProps.lastBeacon.timestamp).toLocaleString()}
-                        </Text>
-                    }
                 </View>
             </View>
         );

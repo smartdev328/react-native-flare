@@ -114,7 +114,7 @@ android {
 
     defaultConfig {
         applicationId "com.flarejewelry.app"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -160,6 +160,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-contacts')
     compile project(':react-native-radial-gradient')
     compile project(':react-native-background-timer')
     compile project(':react-native-linear-gradient')

@@ -50,6 +50,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    children: {
+        position: 'absolute',
+        width: 200,
+        height: 200,
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.7,
+    },
 });
 
 export default class DeviceSelector extends React.Component {
@@ -144,6 +154,9 @@ export default class DeviceSelector extends React.Component {
                             <Text style={styles.deviceName}>
                                 {Strings.jewelry.cuffV1.name}
                             </Text>
+                            <View style={styles.children}>
+                                { this.props.children }
+                            </View>
                         </View>
                     }
                 </View>

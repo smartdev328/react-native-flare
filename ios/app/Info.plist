@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string/>
+	<string>Enable bluetooth so that your Flare jewelry works.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string/>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -46,6 +46,8 @@
 	<key>NSLocationUsageDescription</key>
 	<string/>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string/>
+	<key>NSContactsUsageDescription</key>
 	<string/>
 	<key>UIAppFonts</key>
 	<array>
