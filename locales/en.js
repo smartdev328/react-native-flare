@@ -30,6 +30,16 @@ const Strings = {
             name: 'Ruff Cuff',
         },
     },
+    permissions: {
+        coarseLocation: {
+            title: 'Flare wants your general location',
+            message: 'Please give Flare permission to use your location. We only share your location with your selected contacts when you need backup.',
+        },
+        fineLocation: {
+            title: 'Flare wants your precise location',
+            message: 'Please give Flare permission to use your location. We only share your location with your selected contacts when you need backup.',
+        },
+    },
 };
 
 export default Strings;
