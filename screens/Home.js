@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View  } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import BackgroundTimer from 'react-native-background-timer';
 import RadialGradient from 'react-native-radial-gradient';
@@ -44,6 +44,11 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     footer: {
+        width: '100%',
+        maxHeight: 2 * Spacing.huge,
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
         padding: 16,
     },
     centered: {
@@ -52,6 +57,7 @@ const styles = StyleSheet.create({
     },
     deviceSelector: {
         marginTop: 90,
+        flex: 3,
     },
     cancelButtonArea: {
         width: '100%',
@@ -95,6 +101,7 @@ export default class Home extends React.Component {
 
     async checkAuth() {
         this.props.screenProps.flareAPI.ping()
+            .then(response => console.debug(response))
             .catch((status, json) => {
             if (status === 401 || status === 403) {
                 this.props.navigation.navigate('SignIn');
@@ -115,18 +122,41 @@ export default class Home extends React.Component {
         BackgroundTimer.stopBackgroundTimer();
     }
 
-    handleCancelClick() {
-        this.props.navigation.navigate('PinCheck');
-    }
 
-    render() {
-        const { screenProps } = this.props;
+    constructor(props) {
+        super(props);
+        const { screenProps } = props;
         const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
         const lastBeaconTimeHeading = hasTimestamp ? 
             Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
 
+        const contactsLabel = 
+            screenProps.crews.length ? 
+                Strings.home.contactsButtonLabelEdit :
+                Strings.home.contactsButtonLabelAdd;
+
+        const { hasActiveFlare } = screenProps;
+
+        this.state = {
+            hasActiveFlare,
+            hasTimestamp,
+            lastBeaconTimeHeading,
+            contactsLabel,
+        };
+    }
+
+    handleCancelClick() {
+        this.props.navigation.navigate('PinCheck');
+    }
+
+    handleContactsClick() {
+        const nextScreen = this.props.screenProps.crews.length ? 'EditContacts' : 'AddContacts';
+        this.props.navigation.navigate(nextScreen);
+    }
+
+    render() {
         const containerStyles = [styles.container];
-        if (screenProps.hasActiveFlare) {
+        if (this.state.hasActiveFlare) {
             containerStyles.push(styles.containerWithActiveFlare);
         }
 
@@ -138,24 +168,24 @@ export default class Home extends React.Component {
                     colors={[Colors.theme.orangeDark, Colors.theme.purple]}
                     radius={300}
                 />
-                {!screenProps.hasActiveFlare &&
+                {!this.state.hasActiveFlare &&
                     <View style={styles.deviceSelector}>
                         <DeviceSelector 
                             addDevice={deviceID => this.props.screenProps.flareAPI.addDevice(deviceID)}
                             devices={this.props.screenProps.devices}
                         >
                            <Text style={styles.centered}>
-                                {lastBeaconTimeHeading}
+                                {this.state.lastBeaconTimeHeading}
                             </Text>
-                            {hasTimestamp &&
+                            {this.state.hasTimestamp &&
                                 <Text style={[styles.centered, styles.dimmed]}>
-                                    {moment(screenProps.lastBeacon.timestamp).toLocaleString()}
+                                    {moment(this.state.hasTimestamp).toLocaleString()}
                                 </Text>
                             }
                         </DeviceSelector>
                     </View>
                 }
-                {screenProps.hasActiveFlare &&
+                {this.state.hasActiveFlare &&
                     <View style={styles.cancelButtonArea}>
                         <Button
                             fullWidth
@@ -165,6 +195,12 @@ export default class Home extends React.Component {
                     </View>
                 }
                 <View style={styles.footer}>
+                    <Button
+                        whiteOutline
+                        fullWidth
+                        onPress={() => this.handleContactsClick()}
+                        title={this.state.contactsLabel}
+                    />
                 </View>
             </View>
         );

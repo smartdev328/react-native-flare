@@ -8,8 +8,8 @@ import moment from 'moment';
 class API {
     constructor() {
         this.authenticated = false;
-        this.serverUrl = 'https://app.flarejewelry.co/api';
-        // this.serverUrl = 'http://192.168.135.236/api';
+        // this.serverUrl = 'https://app.flarejewelry.co/api';
+        this.serverUrl = 'http://192.168.135.236/api';
         // this.serverUrl = 'http://192.168.86.20/api';
         this.requestStatus = {
             failure: 'failure',
@@ -39,6 +39,7 @@ class API {
         })
             .then(response => response.json())
             .then((data) => {
+                console.debug(`Signin blob ${JSON.stringify(data)}`);
                 if (data.status === this.requestStatus.success) {
                     AsyncStorage.setItem('userToken', data.auth_token);
                     AsyncStorage.setItem('devices', JSON.stringify(data.devices));

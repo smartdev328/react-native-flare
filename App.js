@@ -57,6 +57,7 @@ export default class App extends React.Component {
             lastBeacon: null,
             hasActiveFlare: false,
             devices: [],
+            crews: [],
         };
 
         const boundDetectedMethod = this.onBeaconDetected.bind(this);
@@ -70,6 +71,7 @@ export default class App extends React.Component {
     componentDidMount() {
         navigatorRef = this.navigatorObj;
         this.checkDevicesFromLocalStorage();
+        this.loadCrewsFromLocalStorage();
     }
 
     async onCancelFlare() {
@@ -147,6 +149,19 @@ export default class App extends React.Component {
         });
     }
 
+    async loadCrewsFromLocalStorage() {
+        AsyncStorage.getItem('crews').then((crewsAsString) => {
+            const crews = JSON.parse(crewsAsString);
+            if (typeof crews === 'undefined' || crews === null) {
+                console.debug('Retrieved invalid list of devices from storage.');
+                return;
+            }
+            this.setState({
+                crews,
+            });
+        });
+    }
+
     async checkForActiveFlare() {
         const hasActiveFlare = await AsyncStorage.getItem('hasActiveFlare');
         this.setState({
@@ -162,6 +177,7 @@ export default class App extends React.Component {
                 screenProps={{
                     lastBeacon: this.state.lastBeacon,
                     devices: this.state.devices,
+                    crews: this.state.crews,
                     flareAPI,
                     hasActiveFlare: this.state.hasActiveFlare,
                     onCancelFlare: () => this.onCancelFlare(),
