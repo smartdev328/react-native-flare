@@ -3,6 +3,7 @@ import { AsyncStorage, Image } from 'react-native';
 import { createStackNavigator, createSwitchNavigator, NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 
+import AddContacts from './screens/AddContacts';
 import API from './bits/API';
 import AuthLoading from './screens/AuthLoading';
 import BleManager from './bits/BleManager';
@@ -13,28 +14,30 @@ import { BeaconTypes } from './bits/BleConstants';
 
 import Colors from './bits/Colors';
 
-const AppStack = createStackNavigator({ Home: { screen: Home } });
+const AppStack = createSwitchNavigator(
+    {
+        Home: {
+            screen: Home,
+        },
+        PinCheck,
+        AddContacts,
+    },
+    {
+        navigationOptions: {
+            header: null,
+        },
+    },
+);
 const AuthStack = createStackNavigator({ SignInScreen: SignIn });
 const AuthenticatedAppStack = createSwitchNavigator(
     {
-        AuthLoading,
-        App: AppStack,
+        AuthLoading: { screen: AuthLoading },
         Auth: AuthStack,
-        PinCheck,
+        App: AppStack,
     },
     {
         initialRouteName: 'AuthLoading',
-        navigationOptions: {
-            headerStyle: {
-                backgroundColor: Colors.theme.purple,
-                paddingLeft: 16,
-            },
-            headerLeft: <Icon name="menu" size={30} color={Colors.white} />,
-            headerTitle: <Image
-                source={require('./assets/FLARE-white.png')}
-                style={{ width: 98, resizeMode: 'contain' }}
-            />,
-        },
+        header: null,
     },
 );
 
@@ -64,8 +67,6 @@ export default class App extends React.Component {
         BleManager.startListening({
             onBeaconDetected: beacon => boundDetectedMethod(beacon),
         });
-
-        navigatorRef = null;
     }
 
     componentDidMount() {
@@ -173,7 +174,7 @@ export default class App extends React.Component {
     render() {
         return (
             <AuthenticatedAppStack
-                ref={(nav) => { this.navigatorObj = nav; }}
+                // ref={(nav) => { this.navigatorObj = nav; }}
                 screenProps={{
                     lastBeacon: this.state.lastBeacon,
                     devices: this.state.devices,

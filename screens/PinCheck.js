@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
 export default class PinCheck extends React.Component {
     static navigationOptions = {
-        title: 'Questions',
+        title: Strings.pin.title,
     };
 
     constructor(props) {

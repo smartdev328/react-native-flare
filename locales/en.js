@@ -12,6 +12,7 @@ const Strings = {
     pin: {
         prompt: 'Enter your Flare PIN',
         failure: 'Invalid PIN',
+        title: 'Cancel Flare',
     },
     signin: {
         usernamePrompt: 'Email or phone',
@@ -44,6 +45,11 @@ const Strings = {
             message:
                 'Please give Flare permission to use your location. We only share ' +
                 'your location with your selected contacts when you need backup.',
+        },
+    },
+    contacts: {
+        add: {
+            title: 'Add Contacts',
         },
     },
 };

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
 import BackgroundTimer from 'react-native-background-timer';
+import Icon from 'react-native-vector-icons/Entypo';
+import { NavigationBar } from '@shoutem/ui';
 import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
 
@@ -16,11 +17,6 @@ import Spacing from '../bits/Spacing';
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -35,9 +31,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         opacity: 0.7,
-    },
-    choosePrompt: {
-        marginBottom: 12
     },
     logo: {
         width: 98,
@@ -68,60 +61,38 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
     },
-    cancelFlareButton: {
-        backgroundColor: Colors.theme.orangeLight,
-        color: Colors.white,
-        height: 48,
-        flex: 1,
-    },
-    cancelFlareButtonText: {
-        fontSize: 24,
+    navbar: {
+        opacity: 1,
+        backgroundColor: Colors.theme.purple,
     },
 });
 
 export default class Home extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        const { params = {} } = navigation.state;
-        return {
-            headerStyle: {
-                backgroundColor: Colors.theme.purple,
-                paddingLeft: 16,
-            },        
-            headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
-            headerTitle: <Image
-                source={require('../assets/FLARE-white.png')}
-                style={styles.logo}
-            />,
-        }
-    };
+    // static navigationOptions = {
+    //     // Title may be a simple string:
+    //     title: 'notification',
+    //     header: {
+    //         left: <Icon name="menu" size={30} color={Colors.white} />,
+    //         center: <Image
+    //             source={require('../assets/FLARE-white.png')}
+    //             style={styles.logo}
+    //         />
+    //     },
+    // };
 
-    async checkPermissions() {
-        PermissionsManager.checkLocationPermissions();
-    }
-
-    async checkAuth() {
-        this.props.screenProps.flareAPI.ping()
-            .then(response => console.debug(response))
-            .catch((status, json) => {
-            if (status === 401 || status === 403) {
-                this.props.navigation.navigate('SignIn');
-            }
-        });
-    }
-
-    componentDidMount() {
-        this.checkPermissions();
-        this.checkAuth();
-        BackgroundTimer.runBackgroundTimer(() => { 
-            this.checkAuth();
-        }, 300000);
-        this.props.screenProps.checkForActiveFlare();
-    }
-
-    componentWillUnmount() {
-        BackgroundTimer.stopBackgroundTimer();
-    }
-
+    // static navigationOptions = {
+    //     headerMode: 'screen',
+    //     headerStyle: {
+    //         backgroundColor: Colors.theme.purple,
+    //         paddingLeft: 16,
+    //         height: 48,
+    //     },
+    //     headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
+    //     headerTitle: <Image
+    //         source={require('../assets/FLARE-white.png')}
+    //         style={styles.logo}
+    //     />,
+    // };
 
     constructor(props) {
         super(props);
@@ -145,12 +116,40 @@ export default class Home extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.checkPermissions();
+        this.checkAuth();
+        BackgroundTimer.runBackgroundTimer(() => { 
+            this.checkAuth();
+        }, 300000);
+        this.props.screenProps.checkForActiveFlare();
+    }
+
+    componentWillUnmount() {
+        BackgroundTimer.stopBackgroundTimer();
+    }
+
+    async checkPermissions() {
+        PermissionsManager.checkLocationPermissions();
+    }
+
+    async checkAuth() {
+        this.props.screenProps.flareAPI.ping()
+            .then(response => console.debug(response))
+            .catch((status) => {
+                if (status === 401 || status === 403) {
+                    this.props.navigation.navigate('SignIn');
+                }
+            });
+    }
+
     handleCancelClick() {
         this.props.navigation.navigate('PinCheck');
     }
 
     handleContactsClick() {
         const nextScreen = this.props.screenProps.crews.length ? 'EditContacts' : 'AddContacts';
+        console.log(`Navigate to screen ${nextScreen}`);
         this.props.navigation.navigate(nextScreen);
     }
 
@@ -162,6 +161,13 @@ export default class Home extends React.Component {
 
         return (
             <View style={containerStyles}>
+                <NavigationBar
+                    centerComponent={<Image
+                        source={require('../assets/FLARE-white.png')}
+                        style={styles.logo}
+                    />}
+                    style={styles.navbar}
+                />
                 <FlavorStripe />
                 <RadialGradient
                     style={styles.backgroundGradient}
@@ -170,11 +176,11 @@ export default class Home extends React.Component {
                 />
                 {!this.state.hasActiveFlare &&
                     <View style={styles.deviceSelector}>
-                        <DeviceSelector 
+                        <DeviceSelector
                             addDevice={deviceID => this.props.screenProps.flareAPI.addDevice(deviceID)}
                             devices={this.props.screenProps.devices}
                         >
-                           <Text style={styles.centered}>
+                            <Text style={styles.centered}>
                                 {this.state.lastBeaconTimeHeading}
                             </Text>
                             {this.state.hasTimestamp &&

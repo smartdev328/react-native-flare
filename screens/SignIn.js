@@ -61,12 +61,6 @@ const styles = {
 };
 
 export default class SignIn extends React.Component {
-    static navigationOptions() {
-        return {
-            header: null,
-        };
-    }
-
     constructor(props) {
         super(props);
 

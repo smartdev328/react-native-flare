@@ -60,7 +60,6 @@ export default class AuthLoading extends React.Component {
             this.props.screenProps.flareAPI.authenticated = false;
             this.props.navigation.navigate('Auth');
         }
-        
     }
 
     render() {
