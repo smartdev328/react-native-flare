@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Image, Text, TextInput, View, KeyboardAvoidingView } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
+import { connect } from 'react-redux';
 
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -57,6 +58,8 @@ const styles = {
     input: {
         marginBottom: Spacing.tiny,
         backgroundColor: Colors.white,
+        height: Spacing.huge,
+        minHeight: Spacing.huge,
     },
     buttons: {
         marginBottom: Spacing.huge + Spacing.huge,
@@ -65,15 +68,7 @@ const styles = {
     },
 };
 
-export default class SignIn extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        const { params = {} } = navigation.state;
-        return {
-            headerMode: 'none',
-            header: null,
-        }
-    };
-
+export class SignIn extends Component {
     constructor(props) {
         super(props);
 
@@ -173,3 +168,5 @@ export default class SignIn extends React.Component {
         );
     }
 }
+
+export default connect()(SignIn);

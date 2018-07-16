@@ -1,16 +1,15 @@
+import moment from 'moment';
 import { AsyncStorage } from 'react-native';
+
 import BeaconCache from './BeaconCache';
 import ProtectedAPICall from './ProtectedAPICall';
-import { FlareException } from './FlareException';
-
-import moment from 'moment';
 
 class API {
     constructor() {
         this.authenticated = false;
         // this.serverUrl = 'https://app.flarejewelry.co/api';
-        // this.serverUrl = 'http://192.168.135.236/api';
-        this.serverUrl = 'http://192.168.86.20/api';
+        this.serverUrl = 'http://192.168.135.236/api';
+        // this.serverUrl = 'http://192.168.86.20/api';
         this.requestStatus = {
             failure: 'failure',
             requested: 'requested',

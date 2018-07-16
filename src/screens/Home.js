@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 0,
         backgroundColor: Colors.theme.purple,
     },
     containerWithActiveFlare: {
@@ -27,6 +26,7 @@ const styles = StyleSheet.create({
     },
     backgroundGradient: {
         position: 'absolute',
+        top: 66,
         width: '100%',
         height: '100%',
         opacity: 0.7,
@@ -67,17 +67,9 @@ const styles = StyleSheet.create({
 });
 
 export default class Home extends React.Component {
-    // static navigationOptions = {
-    //     // Title may be a simple string:
-    //     title: 'notification',
-    //     header: {
-    //         left: <Icon name="menu" size={30} color={Colors.white} />,
-    //         center: <Image
-    //             source={require('../assets/FLARE-white.png')}
-    //             style={styles.logo}
-    //         />
-    //     },
-    // };
+    static navigationOptions = {
+        title: 'Welcome',
+    };
 
     // static navigationOptions = {
     //     headerMode: 'screen',
