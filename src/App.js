@@ -22,11 +22,6 @@ const AppStack = createSwitchNavigator(
         PinCheck,
         AddContacts,
     },
-    {
-        navigationOptions: {
-            header: null,
-        },
-    },
 );
 const AuthStack = createStackNavigator({ SignInScreen: SignIn });
 const AuthenticatedAppStack = createSwitchNavigator(
@@ -37,7 +32,6 @@ const AuthenticatedAppStack = createSwitchNavigator(
     },
     {
         initialRouteName: 'AuthLoading',
-        header: null,
     },
 );
 

@@ -6,8 +6,6 @@ import com.facebook.react.ReactApplication;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.surajit.rnrg.RNRadialGradientPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
-import com.reactnative.photoview.PhotoViewPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
@@ -34,8 +32,6 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactNativeContacts(),
             new RNRadialGradientPackage(),
             new BackgroundTimerPackage(),
-            new LinearGradientPackage(),
-            new PhotoViewPackage(),
             new VectorIconsPackage(),
             new RNI18nPackage(),
             new BeaconsAndroidPackage()

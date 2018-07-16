@@ -1,9 +1,8 @@
 import React from 'react';
-import { KeyboardAvoidingView } from 'react-native';
-
-import { Button, Image, Text, TextInput, View } from '@shoutem/ui';
+import { Image, Text, TextInput, View, KeyboardAvoidingView } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
 
+import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
@@ -32,7 +31,9 @@ const styles = {
     },
     logo: {
         width: '70%',
+        flex: 4,
         margin: Spacing.large,
+        marginTop: Spacing.huge,
         resizeMode: 'contain',
     },
     invalid: {
@@ -47,6 +48,7 @@ const styles = {
     },
     inputs: {
         width: '100%',
+        flex: 3,
         paddingLeft: Spacing.medium,
         paddingRight: Spacing.medium,
         alignItems: 'stretch',
@@ -54,13 +56,24 @@ const styles = {
     },
     input: {
         marginBottom: Spacing.tiny,
+        backgroundColor: Colors.white,
     },
     buttons: {
         marginBottom: Spacing.huge + Spacing.huge,
+        padding: Spacing.medium,
+        flex: 1,
     },
 };
 
 export default class SignIn extends React.Component {
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        return {
+            headerMode: 'none',
+            header: null,
+        }
+    };
+
     constructor(props) {
         super(props);
 
@@ -149,9 +162,12 @@ export default class SignIn extends React.Component {
                     />
                 </View>
                 <View style={styles.buttons}>
-                    <Button styleName="secondary" onPress={() => this.startSignIn()}>
-                        <Text>{Strings.signin.signInLabel}</Text>
-                    </Button>
+                    <Button
+                        whiteOutline
+                        fullWidth
+                        onPress={() => this.startSignIn()}
+                        title={Strings.signin.signInLabel}
+                    />
                 </View>
             </KeyboardAvoidingView>
         );

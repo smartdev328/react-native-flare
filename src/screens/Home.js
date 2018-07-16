@@ -2,7 +2,6 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import Icon from 'react-native-vector-icons/Entypo';
-import { NavigationBar } from '@shoutem/ui';
 import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
 
@@ -161,13 +160,6 @@ export default class Home extends React.Component {
 
         return (
             <View style={containerStyles}>
-                <NavigationBar
-                    centerComponent={<Image
-                        source={require('../assets/FLARE-white.png')}
-                        style={styles.logo}
-                    />}
-                    style={styles.navbar}
-                />
                 <FlavorStripe />
                 <RadialGradient
                     style={styles.backgroundGradient}

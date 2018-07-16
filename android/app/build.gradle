@@ -160,11 +160,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-navigation')
     compile project(':react-native-contacts')
     compile project(':react-native-radial-gradient')
     compile project(':react-native-background-timer')
-    compile project(':react-native-linear-gradient')
-    compile project(':react-native-photo-view')
     compile project(':react-native-vector-icons')
     compile project(':react-native-i18n')
     compile project(':react-native-beacons-manager')

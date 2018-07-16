@@ -1,0 +1,1 @@
+Copyright (C) 2018 Flare Jewelry Inc. All rights reserved.
