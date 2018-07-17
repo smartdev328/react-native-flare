@@ -36,7 +36,9 @@ export default class App extends Component {
                 screen: {
                     screen: 'SignIn',
                     title: 'Welcome',
-                    navigatorStyle: {},
+                    navigatorStyle: {
+                        navBarHidden: true,
+                    },
                     navigatorButtons: {},
                 },
             });
