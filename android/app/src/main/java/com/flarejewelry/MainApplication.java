@@ -30,7 +30,13 @@ public class MainApplication extends NavigationApplication {
         // Add additional packages you require here
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
-                // eg. new VectorIconsPackage()
+            // eg. new VectorIconsPackage()
+            new ReactNativeContacts(),
+            new RNRadialGradientPackage(),
+            new BackgroundTimerPackage(),
+            new VectorIconsPackage(),
+            new RNI18nPackage(),
+            new BeaconsAndroidPackage()
         );
     }
 
