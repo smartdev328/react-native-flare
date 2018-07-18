@@ -4,23 +4,25 @@ import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import registerScreens from './screens/index';
 import * as actions from './actions/index';
-import configureStore from './store/index';
+import { persistStore } from 'redux-persist';
+import { store } from './store/index';
 
 import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
-
-Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
-
-const store = configureStore();
-registerScreens(store, Provider);
 
 console.disableYellowBox = true;
 
 export default class App extends Component {
     constructor(props) {
         super(props);
-        store.subscribe(this.onStoreUpdate.bind(this));
-        store.dispatch(actions.initializeApp());
+
+        Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
+
+        persistStore(store, null, () => {
+            registerScreens(store, Provider);
+            store.subscribe(this.onStoreUpdate.bind(this));
+            store.dispatch(actions.initializeApp());
+        });
     }
 
     onStoreUpdate() {
