@@ -3,6 +3,7 @@ package com.flarejewelry;
 import android.app.Application;
 
 // import com.facebook.react.ReactApplication;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.surajit.rnrg.RNRadialGradientPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
@@ -36,7 +37,9 @@ public class MainApplication extends NavigationApplication {
             new BackgroundTimerPackage(),
             new VectorIconsPackage(),
             new RNI18nPackage(),
-            new BeaconsAndroidPackage()
+            new BeaconsAndroidPackage(),
+            new ReactNativeConfigPackage()
+            
         );
     }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
-import Icon from 'react-native-vector-icons/Entypo';
 import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -26,14 +26,9 @@ const styles = StyleSheet.create({
     },
     backgroundGradient: {
         position: 'absolute',
-        top: 66,
         width: '100%',
         height: '100%',
         opacity: 0.7,
-    },
-    logo: {
-        width: 98,
-        resizeMode: 'contain'
     },
     footer: {
         width: '100%',
@@ -66,11 +61,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class Home extends React.Component {
-    static navigationOptions = {
-        title: 'Welcome',
-    };
-
+class Home extends React.Component {
     // static navigationOptions = {
     //     headerMode: 'screen',
     //     headerStyle: {
@@ -87,23 +78,23 @@ export default class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        const { screenProps } = props;
-        const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
-        const lastBeaconTimeHeading = hasTimestamp ? 
-            Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
+        // const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
+        // const lastBeaconTimeHeading = hasTimestamp ? 
+        //     Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
 
-        const contactsLabel = 
-            screenProps.crews.length ? 
-                Strings.home.contactsButtonLabelEdit :
-                Strings.home.contactsButtonLabelAdd;
+        // const contactsLabel = 
+        //     screenProps.crews.length ? 
+        //         Strings.home.contactsButtonLabelEdit :
+        //         Strings.home.contactsButtonLabelAdd;
 
-        const { hasActiveFlare } = screenProps;
+        // const { hasActiveFlare } = screenProps;
 
         this.state = {
-            hasActiveFlare,
-            hasTimestamp,
-            lastBeaconTimeHeading,
-            contactsLabel,
+            hasActiveFlare: false,
+            hasTimestamp: false,
+            lastBeaconTimeHeading: '',
+            contactsLabel: '',
+            devices: [],
         };
     }
 
@@ -113,7 +104,7 @@ export default class Home extends React.Component {
         BackgroundTimer.runBackgroundTimer(() => { 
             this.checkAuth();
         }, 300000);
-        this.props.screenProps.checkForActiveFlare();
+        // this.props.screenProps.checkForActiveFlare();
     }
 
     componentWillUnmount() {
@@ -125,13 +116,13 @@ export default class Home extends React.Component {
     }
 
     async checkAuth() {
-        this.props.screenProps.flareAPI.ping()
-            .then(response => console.debug(response))
-            .catch((status) => {
-                if (status === 401 || status === 403) {
-                    this.props.navigation.navigate('SignIn');
-                }
-            });
+        // this.props.screenProps.flareAPI.ping()
+        //     .then(response => console.debug(response))
+        //     .catch((status) => {
+        //         if (status === 401 || status === 403) {
+        //             this.props.navigation.navigate('SignIn');
+        //         }
+        //     });
     }
 
     handleCancelClick() {
@@ -161,8 +152,11 @@ export default class Home extends React.Component {
                 {!this.state.hasActiveFlare &&
                     <View style={styles.deviceSelector}>
                         <DeviceSelector
-                            addDevice={deviceID => this.props.screenProps.flareAPI.addDevice(deviceID)}
-                            devices={this.props.screenProps.devices}
+                            addDevice={(deviceID) => {
+                                console.log('Should add device here');
+                                // this.props.screenProps.flareAPI.addDevice(deviceID);
+                            }}
+                            devices={this.state.devices}
                         >
                             <Text style={styles.centered}>
                                 {this.state.lastBeaconTimeHeading}
@@ -196,3 +190,15 @@ export default class Home extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        hasActiveFlare: state.hasActiveFlare,
+        hasTimestamp: state.hasRecentBeacon,
+        lastBeaconTimeHeading: state.lastBeaconTimeHeading,
+        contactsLabel: state.contactsLabel,
+        devices: state.user.devices,
+    };
+}
+
+export default connect(mapStateToProps)(Home);

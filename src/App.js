@@ -1,16 +1,18 @@
 import { Component } from 'react';
-import thunk from 'redux-thunk';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
 import { Navigation } from 'react-native-navigation';
 import registerScreens from './screens/index';
-import * as reducers from './reducers/index';
 import * as actions from './actions/index';
+import './bits/ReactotronConfig';
+import configureStore from './store/index';
 
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const reducer = combineReducers(reducers);
-const store = createStoreWithMiddleware(reducer);
+import Colors from './bits/Colors';
+import FlareNavBar from './bits/FlareNavBar';
+
+Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
+
+const store = configureStore();
 registerScreens(store, Provider);
 
 export default class App extends Component {
@@ -22,7 +24,7 @@ export default class App extends Component {
 
     onStoreUpdate() {
         const { root } = store.getState().root;
-        if (this.currentRoot != root) {
+        if (this.currentRoot !== root) {
             this.currentRoot = root;
             this.startApp(root);
         }
@@ -31,11 +33,10 @@ export default class App extends Component {
     // eslint-disable-next-line class-methods-use-this
     startApp(root) {
         switch (root) {
-        case 'login':
+        case 'insecure':
             Navigation.startSingleScreenApp({
                 screen: {
                     screen: 'SignIn',
-                    title: 'Welcome',
                     navigatorStyle: {
                         navBarHidden: true,
                     },
@@ -43,14 +44,16 @@ export default class App extends Component {
                 },
             });
             break;
-        case 'after-login':
+        case 'secure':
             Navigation.startSingleScreenApp({
                 screen: {
                     screen: 'Home',
-                    title: 'Get Shit Done',
-                    navigatorStyle: {},
-                    navigatorButtons: {},
-                    overrideBackPress: false,
+                    navigatorStyle: {
+                        navBarCustomViewInitialProps: {},
+                        navBarBackgroundColor: Colors.theme.purple,
+                        navBarCustomView: 'com.flarejewelry.FlareNavBar',
+                        navBarComponentAlignment: 'fill',
+                    },
                 },
             });
             break;
@@ -93,7 +96,7 @@ export default class App extends Component {
     // }
 
     // onBeaconDetected(beacon) {
-    //     console.log(`Processing beacon from device ID ${beacon.deviceID} 
+    //     console.log(`Processing beacon from device ID ${beacon.deviceID}
     //         with my devices ${JSON.stringify(this.state.devices)}.`);
 
     //     switch (beacon.type) {

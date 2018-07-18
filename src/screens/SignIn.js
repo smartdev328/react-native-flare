@@ -3,6 +3,8 @@ import { Image, Text, TextInput, View, KeyboardAvoidingView } from 'react-native
 import RadialGradient from 'react-native-radial-gradient';
 import { connect } from 'react-redux';
 
+import { signIn, signOut, resetAuth } from '../actions/authActions';
+
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
@@ -71,14 +73,15 @@ const styles = {
 export class SignIn extends Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
             username: null,
             password: null,
             invalid: false,
         };
-
-        this.props.screenProps.flareAPI.resetAuthentication();
+        
+        const { dispatch } = props;
+        dispatch(resetAuth());
     }
 
     changeUserName(newValue) {
@@ -94,7 +97,7 @@ export class SignIn extends Component {
     }
 
     async startSignIn() {
-        const { flareAPI } = this.props.screenProps;
+        const { dispatch } = this.props;
         const { username, password } = this.state;
         if (username === null || username.length === 0 || password === null || password.length === 0) {
             this.setState({
@@ -107,17 +110,7 @@ export class SignIn extends Component {
             invalid: false,
         });
 
-        const response = await flareAPI.signIn(username, password);
-        if (response === false) {
-            this.setState({
-                invalid: true,
-            });
-        } else {
-            this.setState({
-                invalid: false,
-            });
-            this.props.navigation.navigate('App');
-        }
+        dispatch(signIn(username, password));
     }
 
     render() {
