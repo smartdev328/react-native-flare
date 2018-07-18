@@ -66,10 +66,6 @@ export default class App extends Component {
         }
     }
 
-    // static signOut() {
-    //     flareAPI.resetAuthentication();
-    // }
-
     // constructor(props) {
     //     super(props);
 
