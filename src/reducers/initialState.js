@@ -1,7 +1,10 @@
 import Immutable from 'seamless-immutable';
 
+// eslint-disable-next-line
 export const initialState = Immutable({
-    root: undefined, // 'insecure' / 'secure',
+    nav: {
+        root: undefined, // 'insecure' / 'secure',
+    },
     user: {
         token: null,
         profile: {},

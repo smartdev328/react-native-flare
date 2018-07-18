@@ -4,10 +4,11 @@ import * as types from './actionTypes';
 import { changeAppRoot } from './navActions';
 import { API_URL } from '../constants/index';
 
-console.debug(`Got api url ${API_URL}`);
-
 export function signIn(email, password) {
     return async function doSignIn(dispatch) {
+        dispatch({
+            type: types.AUTH_REQUEST,
+        });
         return axios.post(`${API_URL}/auth/login`, {
             email,
             password,

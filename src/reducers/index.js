@@ -1,7 +1,7 @@
-import { root } from './rootReducer';
+import { nav } from './navReducer';
 import { user } from './userReducer';
 
 export {
-    root,
+    nav,
     user,
 };

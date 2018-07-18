@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme.purple,
         margin: 0,
         padding: 0,
+        height: 44,
     },
     menuButton: {
         marginRight: 16,

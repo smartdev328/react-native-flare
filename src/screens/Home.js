@@ -62,82 +62,48 @@ const styles = StyleSheet.create({
 });
 
 class Home extends React.Component {
-    // static navigationOptions = {
-    //     headerMode: 'screen',
-    //     headerStyle: {
-    //         backgroundColor: Colors.theme.purple,
-    //         paddingLeft: 16,
-    //         height: 48,
-    //     },
-    //     headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
-    //     headerTitle: <Image
-    //         source={require('../assets/FLARE-white.png')}
-    //         style={styles.logo}
-    //     />,
-    // };
+    // componentDidMount() {
+    //     // this.checkPermissions();
+    //     // this.checkAuth();
+    //     // BackgroundTimer.runBackgroundTimer(() => { 
+    //     //     this.checkAuth();
+    //     // }, 300000);
+    //     // this.props.screenProps.checkForActiveFlare();
+    // }
 
-    constructor(props) {
-        super(props);
-        // const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
-        // const lastBeaconTimeHeading = hasTimestamp ? 
-        //     Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
+    // componentWillUnmount() {
+    //     // BackgroundTimer.stopBackgroundTimer();
+    // }
 
-        // const contactsLabel = 
-        //     screenProps.crews.length ? 
-        //         Strings.home.contactsButtonLabelEdit :
-        //         Strings.home.contactsButtonLabelAdd;
+    // async checkPermissions() {
+    //     PermissionsManager.checkLocationPermissions();
+    // }
 
-        // const { hasActiveFlare } = screenProps;
-
-        this.state = {
-            hasActiveFlare: false,
-            hasTimestamp: false,
-            lastBeaconTimeHeading: '',
-            contactsLabel: '',
-            devices: [],
-        };
-    }
-
-    componentDidMount() {
-        this.checkPermissions();
-        this.checkAuth();
-        BackgroundTimer.runBackgroundTimer(() => { 
-            this.checkAuth();
-        }, 300000);
-        // this.props.screenProps.checkForActiveFlare();
-    }
-
-    componentWillUnmount() {
-        BackgroundTimer.stopBackgroundTimer();
-    }
-
-    async checkPermissions() {
-        PermissionsManager.checkLocationPermissions();
-    }
-
-    async checkAuth() {
-        // this.props.screenProps.flareAPI.ping()
-        //     .then(response => console.debug(response))
-        //     .catch((status) => {
-        //         if (status === 401 || status === 403) {
-        //             this.props.navigation.navigate('SignIn');
-        //         }
-        //     });
-    }
+    // async checkAuth() {
+    //     // this.props.screenProps.flareAPI.ping()
+    //     //     .then(response => console.debug(response))
+    //     //     .catch((status) => {
+    //     //         if (status === 401 || status === 403) {
+    //     //             this.props.navigation.navigate('SignIn');
+    //     //         }
+    //     //     });
+    // }
 
     handleCancelClick() {
-        this.props.navigation.navigate('PinCheck');
+        // this.props.navigation.navigate('PinCheck');
+        console.debug('click cancel');
     }
 
     handleContactsClick() {
-        const nextScreen = this.props.screenProps.crews.length ? 'EditContacts' : 'AddContacts';
-        console.log(`Navigate to screen ${nextScreen}`);
-        this.props.navigation.navigate(nextScreen);
+        // const nextScreen = this.props.screenProps.crews.length ? 'EditContacts' : 'AddContacts';
+        // console.log(`Navigate to screen ${nextScreen}`);
+        // this.props.navigation.navigate(nextScreen);
+        console.debug('click contacts');
     }
 
     render() {
         const containerStyles = [styles.container];
-        if (this.state.hasActiveFlare) {
+        if (this.props.hasActiveFlare) {
             containerStyles.push(styles.containerWithActiveFlare);
         }
 
@@ -149,27 +115,28 @@ class Home extends React.Component {
                     colors={[Colors.theme.orangeDark, Colors.theme.purple]}
                     radius={300}
                 />
-                {!this.state.hasActiveFlare &&
+                {/* {!this.state.hasActiveFlare && */}
+                {true &&
                     <View style={styles.deviceSelector}>
                         <DeviceSelector
                             addDevice={(deviceID) => {
                                 console.log('Should add device here');
                                 // this.props.screenProps.flareAPI.addDevice(deviceID);
                             }}
-                            devices={this.state.devices}
+                            devices={this.props.devices}
                         >
                             <Text style={styles.centered}>
-                                {this.state.lastBeaconTimeHeading}
+                                {this.props.lastBeaconTimeHeading}
                             </Text>
-                            {this.state.hasTimestamp &&
+                            {this.props.hasTimestamp &&
                                 <Text style={[styles.centered, styles.dimmed]}>
-                                    {moment(this.state.hasTimestamp).toLocaleString()}
+                                    {moment(this.props.hasTimestamp).toLocaleString()}
                                 </Text>
                             }
                         </DeviceSelector>
                     </View>
                 }
-                {this.state.hasActiveFlare &&
+                {this.props.hasActiveFlare &&
                     <View style={styles.cancelButtonArea}>
                         <Button
                             fullWidth
@@ -183,7 +150,7 @@ class Home extends React.Component {
                         whiteOutline
                         fullWidth
                         onPress={() => this.handleContactsClick()}
-                        title={this.state.contactsLabel}
+                        title={this.props.contactsLabel}
                     />
                 </View>
             </View>
@@ -192,12 +159,26 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
+    const hasActiveFlare = false;
+    const hasTimestamp = false;
+    const lastBeaconTimeHeading = Strings.beacons.notYetReceived;
+    const contactsLabel = Strings.home.contactsButtonLabelAdd;
+
+    //     // const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
+    //     // const lastBeaconTimeHeading = hasTimestamp ? 
+    //     //     Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
+
+    //     // const contactsLabel = 
+    //     //     screenProps.crews.length ? 
+    //     //         Strings.home.contactsButtonLabelEdit :
+    //     //         Strings.home.contactsButtonLabelAdd;
+
     return {
-        hasActiveFlare: state.hasActiveFlare,
-        hasTimestamp: state.hasRecentBeacon,
-        lastBeaconTimeHeading: state.lastBeaconTimeHeading,
-        contactsLabel: state.contactsLabel,
         devices: state.user.devices,
+        lastBeaconTimeHeading,
+        hasTimestamp,
+        contactsLabel,
+        hasActiveFlare,
     };
 }
 

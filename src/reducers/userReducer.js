@@ -5,9 +5,14 @@ import { initialState } from './initialState';
 export function user(state = initialState.user, action = {}) {
     switch (action.type) {
     case types.AUTH_FAILURE:
+        return state.merge({
+            token: null,
+            authState: 'failed',
+        });    
     case types.AUTH_REQUEST:
         return state.merge({
             token: null,
+            authState: 'requested',
         });
     case types.AUTH_SUCCESS:
         return state.merge({

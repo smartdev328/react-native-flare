@@ -32,12 +32,12 @@ const styles = StyleSheet.create({
     targetHasDeviceContent: {
     },
     deviceImage: {
-        width: 200,
-        height: 200,
+        width: 220,
+        height: 220,
         resizeMode: 'contain',
     },
     deviceName: {
-        textAlign: 'center',
+        alignSelf: 'center',
         fontSize: 18,
         color: Colors.white,
     },

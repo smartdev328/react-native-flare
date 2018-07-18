@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, TextInput, View, KeyboardAvoidingView } from 'react-native';
+import { ActivityIndicator, Image, Text, TextInput, View, KeyboardAvoidingView } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
 import { connect } from 'react-redux';
 
@@ -63,6 +63,14 @@ const styles = {
         height: Spacing.huge,
         minHeight: Spacing.huge,
     },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'stretch',
+        padding: Spacing.small,
+        height: Spacing.huge,
+        minHeight: Spacing.huge,
+        maxHeight: Spacing.huge,
+    },
     buttons: {
         marginBottom: Spacing.huge + Spacing.huge,
         padding: Spacing.medium,
@@ -70,7 +78,7 @@ const styles = {
     },
 };
 
-export class SignIn extends Component {
+class SignIn extends Component {
     constructor(props) {
         super(props);
         
@@ -125,7 +133,7 @@ export class SignIn extends Component {
                     source={require('../assets/FLARE-white.png')}
                     style={styles.logo}
                 />
-                {this.state.invalid &&
+                {(this.state.invalid || this.props.authState === 'failed') &&
                     <View style={styles.invalid}>
                         <Text style={styles.invalidText}>
                             {Strings.signin.invalid}
@@ -149,6 +157,11 @@ export class SignIn extends Component {
                         onChangeText={v => this.changePassword(v)}
                     />
                 </View>
+                <View style={styles.loadingContainer}>
+                    {this.props.authState === 'requested' &&
+                        <ActivityIndicator size={Spacing.huge} color={Colors.white} />
+                    }
+                </View>
                 <View style={styles.buttons}>
                     <Button
                         whiteOutline
@@ -161,5 +174,15 @@ export class SignIn extends Component {
         );
     }
 }
+function mapStateToProps(state) {
+    return {
+        authState: state.user.authState,
+        // hasActiveFlare: state.hasActiveFlare,
+        // hasTimestamp: state.hasRecentBeacon,
+        // lastBeaconTimeHeading: state.lastBeaconTimeHeading,
+        // contactsLabel: state.contactsLabel,
+        devices: state.user.devices,
+    };
+}
 
-export default connect()(SignIn);
+export default connect(mapStateToProps)(SignIn);

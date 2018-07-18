@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import registerScreens from './screens/index';
 import * as actions from './actions/index';
-import './bits/ReactotronConfig';
 import configureStore from './store/index';
 
 import Colors from './bits/Colors';
@@ -25,7 +24,8 @@ export default class App extends Component {
     }
 
     onStoreUpdate() {
-        const { root } = store.getState().root;
+        const { root } = store.getState().nav;
+        console.debug(`Store update -- new root ${root}, current root ${this.currentRoot}`);
         if (this.currentRoot !== root) {
             this.currentRoot = root;
             this.startApp(root);
@@ -36,17 +36,18 @@ export default class App extends Component {
     startApp(root) {
         switch (root) {
         case 'insecure':
+            console.debug('Starting insecure root.');
             Navigation.startSingleScreenApp({
                 screen: {
                     screen: 'SignIn',
                     navigatorStyle: {
                         navBarHidden: true,
                     },
-                    navigatorButtons: {},
                 },
             });
             break;
         case 'secure':
+            console.debug('Starting secure root.');
             Navigation.startSingleScreenApp({
                 screen: {
                     screen: 'Home',
