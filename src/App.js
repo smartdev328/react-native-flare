@@ -15,6 +15,8 @@ Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
 const store = configureStore();
 registerScreens(store, Provider);
 
+console.disableYellowBox = true;
+
 export default class App extends Component {
     constructor(props) {
         super(props);
