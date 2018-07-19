@@ -12,13 +12,16 @@ import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
 
 console.disableYellowBox = true;
-const store = configureStore(initialState);
+let store = null;
 
 export default class App extends Component {
     constructor(props) {
         super(props);
 
+        this.currentRoot = 'uninitialized';
+
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
+        store = configureStore(initialState);
         persistStore(store, null, () => {
             registerScreens(store, Provider);
             store.subscribe(this.onStoreUpdate.bind(this));
@@ -38,17 +41,6 @@ export default class App extends Component {
     // eslint-disable-next-line class-methods-use-this
     startApp(root) {
         switch (root) {
-        case 'insecure':
-            console.debug('Starting insecure root.');
-            Navigation.startSingleScreenApp({
-                screen: {
-                    screen: 'SignIn',
-                    navigatorStyle: {
-                        navBarHidden: true,
-                    },
-                },
-            });
-            break;
         case 'secure':
             console.debug('Starting secure root.');
             Navigation.startSingleScreenApp({
@@ -64,7 +56,15 @@ export default class App extends Component {
             });
             break;
         default:
-            console.warn('Invalid root.');
+            console.debug('Starting insecure root.');
+            Navigation.startSingleScreenApp({
+                screen: {
+                    screen: 'SignIn',
+                    navigatorStyle: {
+                        navBarHidden: true,
+                    },
+                },
+            });
             break;
         }
     }
