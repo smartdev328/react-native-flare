@@ -25,7 +25,8 @@ export default class App extends Component {
         persistStore(store, null, () => {
             registerScreens(store, Provider);
             store.subscribe(this.onStoreUpdate.bind(this));
-            store.dispatch(actions.initializeApp());
+            const { root } = store.getState().nav;
+            store.dispatch(actions.initializeApp(root));
         });
     }
 

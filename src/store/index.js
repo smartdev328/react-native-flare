@@ -2,11 +2,11 @@
 /* eslint-disable no-undef */
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistCombineReducers } from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import * as reducers from '../reducers/index';
+import { seamlessImmutableReconciler, seamlessImmutableTransformCreator } from 'redux-persist-seamless-immutable';
 
 let middleware = [thunk];
 
@@ -16,10 +16,20 @@ if (__DEV__) {
     middleware = [...middleware];
 }
 
+const transformerConfig = {
+    whitelistPerReducer: {
+        nav: ['root'],
+        user: ['profile', 'crews', 'devices', 'authState', 'token'],
+    },
+};
+
 const persistConfig = {
     key: 'root',
     storage,
-    stateReconciler: autoMergeLevel2,
+    stateReconciler: seamlessImmutableReconciler,
+    transforms: [seamlessImmutableTransformCreator(transformerConfig)],
+    version: 1,
+    debug: !!__DEV__,
 };
 const combinedReducer = persistCombineReducers(persistConfig, reducers);
 
