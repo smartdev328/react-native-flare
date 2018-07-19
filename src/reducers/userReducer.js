@@ -8,7 +8,7 @@ export function user(state = initialState.user, action = {}) {
         return state.merge({
             token: null,
             authState: 'failed',
-        });    
+        });
     case types.AUTH_REQUEST:
         return state.merge({
             token: null,
@@ -20,6 +20,7 @@ export function user(state = initialState.user, action = {}) {
             profile: action.data.data.profile,
             crews: action.data.data.crews,
             devices: action.data.data.devices,
+            authState: 'succeeded',
         });
 
     default:
