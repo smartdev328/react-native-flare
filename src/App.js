@@ -2,15 +2,17 @@ import { Component } from 'react';
 import { Provider } from 'react-redux';
 
 import { Navigation } from 'react-native-navigation';
+import { persistStore } from 'redux-persist';
+import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
 import * as actions from './actions/index';
-import { persistStore } from 'redux-persist';
-import { store } from './store/index';
+import { configureStore } from './store/index';
 
 import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
 
 console.disableYellowBox = true;
+const store = configureStore(initialState);
 
 export default class App extends Component {
     constructor(props) {
