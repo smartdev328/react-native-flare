@@ -98,7 +98,19 @@ class Home extends React.Component {
         // const nextScreen = this.props.screenProps.crews.length ? 'EditContacts' : 'AddContacts';
         // console.log(`Navigate to screen ${nextScreen}`);
         // this.props.navigation.navigate(nextScreen);
-        console.debug('click contacts');
+        if (this.props.crews.length) {
+            console.debug('edit contacts');
+        } else {
+            this.props.navigator.push({
+                screen: 'AddContacts',
+                title: Strings.contacts.add.title,
+                navigatorStyle: {
+                    navBarBackgroundColor: Colors.theme.purple,
+                    navBarTextColor: Colors.white,
+                    navBarButtonColor: Colors.white,
+                },
+            });
+        }
     }
 
     render() {
@@ -162,19 +174,18 @@ function mapStateToProps(state) {
     const hasActiveFlare = false;
     const hasTimestamp = false;
     const lastBeaconTimeHeading = Strings.beacons.notYetReceived;
-    const contactsLabel = Strings.home.contactsButtonLabelAdd;
+    const contactsLabel =
+        state.user.crews.length ?
+            Strings.home.contactsButtonLabelEdit :
+            Strings.home.contactsButtonLabelAdd;
 
     //     // const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
     //     // const lastBeaconTimeHeading = hasTimestamp ? 
     //     //     Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
 
-    //     // const contactsLabel = 
-    //     //     screenProps.crews.length ? 
-    //     //         Strings.home.contactsButtonLabelEdit :
-    //     //         Strings.home.contactsButtonLabelAdd;
-
     return {
         devices: state.user.devices,
+        crews: state.user.crews,
         lastBeaconTimeHeading,
         hasTimestamp,
         contactsLabel,

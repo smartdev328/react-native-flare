@@ -1,64 +1,86 @@
 import React from 'react';
 import {
     ActivityIndicator,
-    Image,
     KeyboardAvoidingView,
     StyleSheet,
     Text,
+    TextInput,
     View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
+import { connect } from 'react-redux';
 
 import Colors from '../bits/Colors';
+import CrewList from '../bits/CrewList';
 import FlavorStripe from '../bits/FlavorStripe';
+import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 0,
         backgroundColor: Colors.white,
+        padding: Spacing.medium,
+    },
+    nameFieldContainer: {
+    },
+    nameField: {
+        borderWidth: 1,
+        borderColor: Colors.grey,
     },
 });
 
-export default class AddContacts extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        const { params = {} } = navigation.state;
-        return {
-            headerStyle: {
-                backgroundColor: Colors.theme.purple,
-            },        
-            headerLeft : <Icon name="menu" size={30} color={Colors.white} />,
-            headerTitle: <Image
-                source={require('../assets/FLARE-white.png')}
-                style={styles.logo}
-            />,
-        }
-    };
+class AddContacts extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: true,
-            contacts: [],
-        };
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         crew: {
+    //             name: null,
+    //             members: [],
+    //         },
+    //     };
+    // };
 
     render() {
+        const { crew } = this.props;
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <FlavorStripe />
-                {this.state.loading &&
-                    <ActivityIndicator />
+                <View style={styles.nameFieldContainer}>
+                    <TextInput
+                        autoCapitalize="words"
+                        placeholder={Strings.contacts.crewNamePlaceholder}
+                        style={styles.nameField}
+                        value={this.props.crew.name}
+                        // onChangeText={v => this.changeUserName(v)}
+                    />
+                </View>
+                <View>
+                    <Text>{Strings.contacts.choosePrompt}</Text>
+                </View>
+                {this.props.crew.members.length === 0 &&
+                    <View>
+                        <Text>{Strings.contacts.chooseInstruction}</Text>
+                    </View>                    
+                }
+                {this.props.crew.members.length > 0 &&
+                    <CrewList
+                        allowDelete
+                        members={this.props.crew.members}
+                    />
                 }
             </KeyboardAvoidingView>
         );
     }
 }
+
+function mapStateToProps(state) {
+    const crews = state.user.crews || [];
+    const crew = crews.length ? crews : { name: null, members: [] };
+    return {
+        crew,
+    };
+}
+
+export default connect(mapStateToProps)(AddContacts);

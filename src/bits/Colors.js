@@ -8,5 +8,6 @@ export default {
         orangeLight: '#FFAF53',
     },
     black: '#000000',
+    grey: '#979797',
     white: '#FFFFFF',
 };

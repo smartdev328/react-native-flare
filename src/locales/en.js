@@ -6,8 +6,8 @@ const Strings = {
         title: 'Welcome',
         chooseLanguage: 'Choose language',
         cancelActiveFlare: 'CANCEL FLARE',
-        contactsButtonLabelAdd: 'ADD CONTACTS',
-        contactsButtonLabelEdit: 'EDIT CONTACTS',
+        contactsButtonLabelAdd: 'CHOOSE YOUR CREW',
+        contactsButtonLabelEdit: 'EDIT YOUR CREW',
     },
     pin: {
         prompt: 'Enter your Flare PIN',
@@ -48,8 +48,11 @@ const Strings = {
         },
     },
     contacts: {
+        crewNamePlaceholder: 'Name your crew',
+        choosePrompt: 'Choose up to 5 contacts',
+        chooseInstruction: 'Scroll through the list below and press on the names you want to include in this crew.',
         add: {
-            title: 'Add Contacts',
+            title: 'Choose your Crew',
         },
     },
 };
