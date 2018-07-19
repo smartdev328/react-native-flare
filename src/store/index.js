@@ -17,7 +17,7 @@ if (__DEV__) {
 }
 
 const persistConfig = {
-    key: 'user',
+    key: 'root',
     storage,
     stateReconciler: autoMergeLevel2,
 };

@@ -19,7 +19,6 @@ export default class App extends Component {
         super(props);
 
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
-
         persistStore(store, null, () => {
             registerScreens(store, Provider);
             store.subscribe(this.onStoreUpdate.bind(this));
