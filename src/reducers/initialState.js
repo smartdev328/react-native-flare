@@ -10,6 +10,7 @@ export const initialState = Immutable({
         profile: {},
         crews: [],
         devices: [],
+        contacts: [],
     },
     beacons: {
         latest: null,

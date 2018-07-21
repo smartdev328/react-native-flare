@@ -10,6 +10,7 @@ import {
 import Icon from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
 
+import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
 import CrewList from '../bits/CrewList';
 import FlavorStripe from '../bits/FlavorStripe';
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
     },
 });
 
+// eslint-disable-next-line react/prefer-stateless-function
 class AddContacts extends React.Component {
 
     // constructor(props) {
@@ -43,7 +45,7 @@ class AddContacts extends React.Component {
     // };
 
     render() {
-        const { crew } = this.props;
+        const { contacts, crew } = this.props;
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <FlavorStripe />
@@ -62,14 +64,17 @@ class AddContacts extends React.Component {
                 {this.props.crew.members.length === 0 &&
                     <View>
                         <Text>{Strings.contacts.chooseInstruction}</Text>
-                    </View>                    
+                    </View>
                 }
                 {this.props.crew.members.length > 0 &&
                     <CrewList
                         allowDelete
-                        members={this.props.crew.members}
+                        crew={crew}
                     />
                 }
+                <ContactsList
+                    contacts={contacts}
+                />
             </KeyboardAvoidingView>
         );
     }
@@ -80,6 +85,7 @@ function mapStateToProps(state) {
     const crew = crews.length ? crews : { name: null, members: [] };
     return {
         crew,
+        contacts: state.user.contacts,
     };
 }
 

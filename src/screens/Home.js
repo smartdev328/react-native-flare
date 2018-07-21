@@ -4,12 +4,15 @@ import BackgroundTimer from 'react-native-background-timer';
 import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { PermissionsAndroid, Platform } from 'react-native';
+import { PERMISSIONS_SUCCESS } from '../actions/actionTypes';
+
+import { fetchContacts } from '../actions/index';
 
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
 import FlavorStripe from '../bits/FlavorStripe';
-import PermissionsManager from '../bits/PermissionsManager';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 
@@ -39,6 +42,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     centered: {
+        alignSelf: 'center',
         textAlign: 'center',
         color: Colors.white,
     },
@@ -75,10 +79,6 @@ class Home extends React.Component {
     //     // BackgroundTimer.stopBackgroundTimer();
     // }
 
-    // async checkPermissions() {
-    //     PermissionsManager.checkLocationPermissions();
-    // }
-
     // async checkAuth() {
     //     // this.props.screenProps.flareAPI.ping()
     //     //     .then(response => console.debug(response))
@@ -98,19 +98,43 @@ class Home extends React.Component {
         // const nextScreen = this.props.screenProps.crews.length ? 'EditContacts' : 'AddContacts';
         // console.log(`Navigate to screen ${nextScreen}`);
         // this.props.navigation.navigate(nextScreen);
-        if (this.props.crews.length) {
-            console.debug('edit contacts');
-        } else {
-            this.props.navigator.push({
-                screen: 'AddContacts',
-                title: Strings.contacts.add.title,
-                navigatorStyle: {
-                    navBarBackgroundColor: Colors.theme.purple,
-                    navBarTextColor: Colors.white,
-                    navBarButtonColor: Colors.white,
-                },
+        this.props.navigator.push({
+            screen: 'AddContacts',
+            title: Strings.contacts.add.title,
+            navigatorStyle: {
+                navBarBackgroundColor: Colors.theme.purple,
+                navBarTextColor: Colors.white,
+                navBarButtonColor: Colors.white,
+            },
+        });
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    async checkPermissions() {
+        /**
+         * THIS DIES ON SDK 23.
+         */
+        if (Platform.OS === 'android') {
+            const permissions = [
+                PermissionsAndroid.ACCESS_COARSE_LOCATION,
+                PermissionsAndroid.ACCESS_FINE_LOCATION,
+                PermissionsAndroid.READ_CONTACTS,
+            ];
+
+            const grantedPermissions = {};
+            await permissions.forEach((permission) => {
+                const granted = PermissionsAndroid.request(permission, 'Because fuck you');
+                grantedPermissions[permission] = granted;
+            });
+            this.props.dispatch({
+                type: PERMISSIONS_SUCCESS,
+                granted: grantedPermissions,
             });
         }
+    }
+
+    componentWillMount() {
+        this.props.dispatch(fetchContacts());
     }
 
     render() {
@@ -175,7 +199,7 @@ function mapStateToProps(state) {
     const hasTimestamp = false;
     const lastBeaconTimeHeading = Strings.beacons.notYetReceived;
     const contactsLabel =
-        state.user.crews.length ?
+        state.user.crews && state.user.crews.length ?
             Strings.home.contactsButtonLabelEdit :
             Strings.home.contactsButtonLabelAdd;
 

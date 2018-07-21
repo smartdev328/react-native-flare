@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import { Provider } from 'react-redux';
-
 import { Navigation } from 'react-native-navigation';
 import { persistStore } from 'redux-persist';
 import initialState from './reducers/initialState';
@@ -68,6 +67,8 @@ export default class App extends Component {
             });
             break;
         }
+
+
     }
 
     // constructor(props) {

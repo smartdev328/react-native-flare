@@ -46,6 +46,12 @@ const Strings = {
                 'Please give Flare permission to use your location. We only share ' +
                 'your location with your selected contacts when you need backup.',
         },
+        contacts: {
+            title: 'Flare wants to read your contacts',
+            message:
+                'Please give Flare permission to read your contacts. We display your ' +
+                'contacts so that you can choose your crew.',
+        },
     },
     contacts: {
         crewNamePlaceholder: 'Name your crew',
