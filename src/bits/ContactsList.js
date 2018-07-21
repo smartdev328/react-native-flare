@@ -15,7 +15,11 @@ const styles = StyleSheet.create({
     sectionHeader: {
         backgroundColor: Colors.theme.purple,
         color: Colors.white,
-        fontSize: 20,
+        fontSize: 16,
+        fontWeight: 'bold',
+        paddingTop: Spacing.tiny,
+        paddingBottom: Spacing.tiny,
+        paddingLeft: Spacing.medium,
     },
     listItem: {
         padding: Spacing.small,
@@ -26,16 +30,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     listItemDetails: {
-        flex: 4,
+        flex: 5,
         flexDirection: 'column',
         justifyContent: 'center',
     },
     displayName: {
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 14,
     },
     phone: {
-        fontSize: 14,
+        fontSize: 11,
     },
 });
 

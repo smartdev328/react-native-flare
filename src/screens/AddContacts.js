@@ -16,6 +16,7 @@ import CrewList from '../bits/CrewList';
 import FlavorStripe from '../bits/FlavorStripe';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
+import Type from '../bits/Type';
 
 const styles = StyleSheet.create({
     container: {
@@ -24,26 +25,27 @@ const styles = StyleSheet.create({
         padding: Spacing.medium,
     },
     nameFieldContainer: {
+        marginBottom: Spacing.small,
     },
     nameField: {
         borderWidth: 1,
         borderColor: Colors.grey,
+        paddingLeft: Spacing.small,
+    },
+    prompt: {
+        paddingTop: Spacing.small,
+        paddingBottom: Spacing.small,
+        fontWeight: 'bold',
+        fontSize: Type.size.medium,
+    },
+    instructions: {
+        paddingBottom: Spacing.large,
+        fontSize: Type.size.medium,
     },
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
 class AddContacts extends React.Component {
-
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         crew: {
-    //             name: null,
-    //             members: [],
-    //         },
-    //     };
-    // };
-
     render() {
         const { contacts, crew } = this.props;
         return (
@@ -55,15 +57,16 @@ class AddContacts extends React.Component {
                         placeholder={Strings.contacts.crewNamePlaceholder}
                         style={styles.nameField}
                         value={this.props.crew.name}
-                        // onChangeText={v => this.changeUserName(v)}
                     />
                 </View>
                 <View>
-                    <Text>{Strings.contacts.choosePrompt}</Text>
+                    <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
                 </View>
                 {this.props.crew.members.length === 0 &&
                     <View>
-                        <Text>{Strings.contacts.chooseInstruction}</Text>
+                        <Text style={styles.instructions}>
+                            {Strings.contacts.chooseInstruction}
+                        </Text>
                     </View>
                 }
                 {this.props.crew.members.length > 0 &&
