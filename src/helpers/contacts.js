@@ -12,12 +12,17 @@ export function filterContacts(rawContacts) {
             displayName,
         };
         const { phoneNumbers } = rawContacts[contactIndex];
+        const duplicateNumberCheck = {};
         for (let phoneIndex = 0; phoneIndex < phoneNumbers.length; phoneIndex += 1) {
-            const contact = Object.assign({}, contactInfo, {
-                label: phoneNumbers[phoneIndex].label,
-                number: phoneNumbers[phoneIndex].number,
-            });
-            contacts.push(contact);
+            const strippedNumber = phoneNumbers[phoneIndex].number.replace(/[^0-9]/g, '');
+            if (!Object.hasOwnProperty.call(duplicateNumberCheck, strippedNumber)) {
+                duplicateNumberCheck[strippedNumber] = null;
+                const contact = Object.assign({}, contactInfo, {
+                    label: phoneNumbers[phoneIndex].label,
+                    number: phoneNumbers[phoneIndex].number,
+                });
+                contacts.push(contact);
+            }
         }
     }
 
