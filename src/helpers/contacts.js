@@ -18,6 +18,7 @@ export function filterContacts(rawContacts) {
             if (!Object.hasOwnProperty.call(duplicateNumberCheck, strippedNumber)) {
                 duplicateNumberCheck[strippedNumber] = null;
                 const contact = Object.assign({}, contactInfo, {
+                    key: strippedNumber,
                     label: phoneNumbers[phoneIndex].label,
                     number: phoneNumbers[phoneIndex].number,
                 });
@@ -32,7 +33,10 @@ export function filterContacts(rawContacts) {
         if (!Object.prototype.hasOwnProperty.call(sections, firstLetter)) {
             sections[firstLetter] = [];
         }
-        sections[firstLetter].push(contact);
+        const contactWithSection = Object.assign({}, contact, {
+            section: firstLetter,
+        });
+        sections[firstLetter].push(contactWithSection);
     });
 
     const organizedContacts = [];

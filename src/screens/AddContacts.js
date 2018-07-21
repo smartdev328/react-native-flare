@@ -46,6 +46,10 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class AddContacts extends React.Component {
+    handleContactPress(contact) {
+        console.log(`Press on contact ${contact.displayName}.`);
+    }
+
     render() {
         const { contacts, crew } = this.props;
         return (
@@ -77,6 +81,7 @@ class AddContacts extends React.Component {
                 }
                 <ContactsList
                     contacts={contacts}
+                    onPressContact={contact => this.handleContactPress(contact)}
                 />
             </KeyboardAvoidingView>
         );

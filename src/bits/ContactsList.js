@@ -3,6 +3,7 @@ import {
     SectionList,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native';
 
@@ -43,39 +44,41 @@ const styles = StyleSheet.create({
     },
 });
 
-const ContactsListItem = function createContactsListItem(props, context) {
+const ContactsListItem = function createContactsListItem(props) {
     return (
-        <View style={styles.listItem}>
+        <TouchableOpacity
+            style={styles.listItem} 
+            onPress={() => props.onPress(props.contact)}
+        >
             <View style={styles.listItemSelection}>
                 <Text>.</Text>
             </View>
             <View style={styles.listItemDetails}>
                 <Text style={styles.displayName}>
-                    {props.displayName} – {props.label}
+                    {props.contact.displayName} – {props.contact.label}
                 </Text>
                 <Text style={styles.phone}>
-                    {props.phone}
+                    {props.contact.phone}
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
-const ContactsList = function createContactsList(props, context) {
+const ContactsList = function createContactsList(props) {
     return (
         <SectionList
-            renderItem={({ item, index, section }) => (
+            renderItem={({ item }) => (
                 <ContactsListItem
-                    displayName={item.displayName}
-                    label={item.label}
-                    phone={item.number}
+                    contact={item}
+                    onPress={props.onPressContact}
                 />
             )}
             renderSectionHeader={({ section: { title } }) => (
                 <Text style={styles.sectionHeader}>{title}</Text>
             )}
             sections={props.contacts}
-            keyExtractor={(item, index) => item + index}
+            keyExtractor={item => item.key}
         />
     );
 };
