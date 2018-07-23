@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
+import Immutable from 'seamless-immutable';
 
 import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
@@ -56,6 +57,18 @@ class AddContacts extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.crew !== this.props.crew) {
+            this.onPropsUpdate();
+        }
+    }
+
+    onPropsUpdate() {
+        this.setState({
+            crew: this.props.crew,
+        });
+    }
+
     handleContactPress(contact) {
         console.log(`Press on contact ${contact.displayName}.`);
         const { crew } = this.state;
@@ -63,19 +76,24 @@ class AddContacts extends React.Component {
         
         // toggle the member with the specified number
         const memberIndex = members.findIndex(e => e.key === contact.key);
+        let newMembers = null;
         if (memberIndex === -1) {
-            members.push(contact);
+            console.debug(`Adding contact ${contact}`);
+            newMembers = members.concat(contact);
         } else {
-            members.splice(memberIndex, 1);
+            console.debug(`Removing contact ${contact}`);
+            newMembers = members.filter((val, index) => index !== memberIndex);
         }
 
-        crew.members = members;
+        console.debug(`New crew is ${JSON.stringify(crew)}`);
+
+        crew.members = newMembers;
         this.setState({
             crew,
         });
 
         const crewId = (this.state.crew && this.state.crew.id) || 0;
-        this.props.dispatch(setCrewMembers(this.props.token, crewId, members));
+        this.props.dispatch(setCrewMembers(this.props.token, crewId, newMembers));
     }
 
 
@@ -95,14 +113,14 @@ class AddContacts extends React.Component {
                 <View>
                     <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
                 </View>
-                {this.props.crew.members.length === 0 &&
+                {this.props.crew && this.props.crew.members && this.props.crew.members.length === 0 &&
                     <View>
                         <Text style={styles.instructions}>
                             {Strings.contacts.chooseInstruction}
                         </Text>
                     </View>
                 }
-                {this.props.crew.members.length > 0 &&
+                {this.props.crew && this.props.crew.members && this.props.crew.members.length > 0 &&
                     <CrewList
                         allowDelete
                         crew={crew}
@@ -118,8 +136,9 @@ class AddContacts extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const crews = state.user.crews || [];
-    const crew = crews.length ? crews : { name: null, members: [] };
+    const { crews } = state.user;
+    const crew = crews.length ? crews[0] : { name: null, members: [] };
+    console.debug(`mapStateToProps has crew ${JSON.stringify(crew)}`);
     return {
         token: state.user.token,
         crew,
