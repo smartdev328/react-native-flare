@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 
 import Colors from '../bits/Colors';
 import Spacing from './Spacing';
@@ -51,14 +52,16 @@ const ContactsListItem = function createContactsListItem(props) {
             onPress={() => props.onPress(props.contact)}
         >
             <View style={styles.listItemSelection}>
-                <Text>.</Text>
+                {props.selected &&
+                    <Icon name="check" size={28} color={Colors.theme.purple} />
+                }
             </View>
             <View style={styles.listItemDetails}>
                 <Text style={styles.displayName}>
                     {props.contact.displayName} – {props.contact.label}
                 </Text>
                 <Text style={styles.phone}>
-                    {props.contact.phone}
+                    {props.contact.number}
                 </Text>
             </View>
         </TouchableOpacity>
@@ -72,6 +75,7 @@ const ContactsList = function createContactsList(props) {
                 <ContactsListItem
                     contact={item}
                     onPress={props.onPressContact}
+                    selected={Object.hasOwnProperty.call(props.contactsCrewLookup, item.key)}
                 />
             )}
             renderSectionHeader={({ section: { title } }) => (

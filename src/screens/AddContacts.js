@@ -1,15 +1,12 @@
 import React from 'react';
 import {
-    ActivityIndicator,
     KeyboardAvoidingView,
     StyleSheet,
     Text,
     TextInput,
     View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
-import Immutable from 'seamless-immutable';
 
 import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
@@ -70,22 +67,16 @@ class AddContacts extends React.Component {
     }
 
     handleContactPress(contact) {
-        console.log(`Press on contact ${contact.displayName}.`);
         const { crew } = this.state;
         const { members } = crew;
         
-        // toggle the member with the specified number
         const memberIndex = members.findIndex(e => e.key === contact.key);
         let newMembers = null;
         if (memberIndex === -1) {
-            console.debug(`Adding contact ${contact}`);
             newMembers = members.concat(contact);
         } else {
-            console.debug(`Removing contact ${contact}`);
             newMembers = members.filter((val, index) => index !== memberIndex);
         }
-
-        console.debug(`New crew is ${JSON.stringify(crew)}`);
 
         crew.members = newMembers;
         this.setState({
@@ -98,7 +89,7 @@ class AddContacts extends React.Component {
 
 
     render() {
-        const { contacts, crew } = this.props;
+        const { contacts, contactsCrewLookup, crew } = this.props;
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <FlavorStripe />
@@ -128,6 +119,7 @@ class AddContacts extends React.Component {
                 }
                 <ContactsList
                     contacts={contacts}
+                    contactsCrewLookup={contactsCrewLookup || {}}
                     onPressContact={contact => this.handleContactPress(contact)}
                 />
             </KeyboardAvoidingView>
@@ -143,6 +135,7 @@ function mapStateToProps(state) {
         token: state.user.token,
         crew,
         contacts: state.user.contacts,
+        contactsCrewLookup: state.user.contactsCrewLookup,
     };
 }
 

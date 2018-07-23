@@ -2,6 +2,16 @@ import * as types from '../actions/actionTypes';
 import { initialState } from './initialState';
 import { filterContacts } from '../helpers/contacts';
 
+function getContactsCrewLookup(crew) {
+    const memberKeys = crew.members.map(member => member.key);
+    const contactsCrewLookup = {};
+    memberKeys.forEach((key) => {
+        // @TODO: eventually the values in this object should be arrays of crew IDs.
+        contactsCrewLookup[key] = crew.id;
+    });
+    return contactsCrewLookup;
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function user(state = initialState.user, action = {}) {
     switch (action.type) {
@@ -18,14 +28,17 @@ export function user(state = initialState.user, action = {}) {
             token: null,
             authState: 'requested',
         });
-    case types.AUTH_SUCCESS:
+    case types.AUTH_SUCCESS: {
+        const firstCrew = action.crews && action.crews.length ? action.crews[0] : { id: 0, members: [] };
         return state.merge({
             token: action.data.data.auth_token,
             profile: action.data.data.profile,
             crews: action.data.data.crews,
             devices: action.data.data.devices,
             authState: 'succeeded',
+            contactsCrewLookup: getContactsCrewLookup(firstCrew),
         });
+    }
 
     /**
      * CONTACTS
@@ -59,11 +72,13 @@ export function user(state = initialState.user, action = {}) {
             crewUpdateState: 'failed',
         });
 
-    case types.CREW_SET_SUCCESS:
+    case types.CREW_SET_SUCCESS: {
         return state.merge({
             crewUpdateState: 'succeeded',
             crews: [action.crew],
+            contactsCrewLookup: getContactsCrewLookup(action.crew),
         });
+    }
 
     /**
      * PERMISSIONS
