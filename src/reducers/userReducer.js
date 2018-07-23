@@ -5,7 +5,6 @@ import { filterContacts } from '../helpers/contacts';
 // eslint-disable-next-line import/prefer-default-export
 export function user(state = initialState.user, action = {}) {
     switch (action.type) {
-
     /**
      * AUTHENTICATION
      */
@@ -47,6 +46,24 @@ export function user(state = initialState.user, action = {}) {
             contacts: filterContacts(action.contacts),
         });
 
+    /**
+     * CREWS
+     */
+    case types.CREW_SET_REQUEST:
+        return state.merge({
+            crewUpdateState: 'requested',
+        });
+
+    case types.CREW_SET_FAILURE:
+        return state.merge({
+            crewUpdateState: 'failed',
+        });
+
+    case types.CREW_SET_SUCCESS:
+        return state.merge({
+            crewUpdateState: 'succeeded',
+            crews: [action.crew],
+        });
 
     /**
      * PERMISSIONS

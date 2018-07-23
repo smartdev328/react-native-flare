@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+/* global __DEV__ */
 
 /**
  * Parses the JSON returned by a network request
@@ -16,8 +16,7 @@ function parseJSON(response) {
         })));
 }
 
-async function getAuthorizationHeader() {
-    const userToken = await AsyncStorage.getItem('userToken');
+async function getAuthorizationHeader(userToken) {
     const headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -29,25 +28,28 @@ async function getAuthorizationHeader() {
 /**
  * Requests a URL, returning a promise
  *
- * @param  {string} url       The URL we want to request
- * @param  {object} [options] The options we want to pass to "fetch"
+ * @param  {string} token       The current user's auth token
+ * @param  {string} serverUrl   The server we want to access
+ * @param  {string} route       The endpoint on the server we want to request
+ * @param  {object} [options]   The options we want to pass to "fetch"
  *
  * @return {Promise}           The request promise
  */
-export default async function request(endpoint, url, options) {
-
-    const headers = await getAuthorizationHeader();
+export default async function request(token, serverUrl, route, options) {
+    const headers = await getAuthorizationHeader(token);
     const optionsWithHeaders = Object.assign({}, options, { headers });
 
     return new Promise((resolve, reject) => {
-        fetch(endpoint + url, optionsWithHeaders)
+        fetch(serverUrl + route, optionsWithHeaders)
             .then(parseJSON)
             .then((response) => {
                 if (response.ok) {
                     return resolve(response.json);
                 }
                 // extract the error from the server's json
-                console.log(response);
+                if (__DEV__) {
+                    console.debug(`${route}: ${response}`);
+                }
                 return reject(response.status, response.json);
             })
             .catch((status, json) => reject(status, json));

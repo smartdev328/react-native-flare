@@ -54,7 +54,7 @@ const Strings = {
         },
     },
     contacts: {
-        crewNamePlaceholder: 'Name your crew',
+        crewNamePlaceholder: 'My Crew',
         choosePrompt: 'Choose up to 5 contacts',
         chooseInstruction: 'Scroll through the list below and press on the names you want to include in this crew.',
         add: {

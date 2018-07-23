@@ -18,6 +18,8 @@ import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
 
+import { setCrewMembers } from '../actions/userActions';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -46,9 +48,36 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class AddContacts extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            crew: props.crew,
+        };
+    }
+
     handleContactPress(contact) {
         console.log(`Press on contact ${contact.displayName}.`);
+        const { crew } = this.state;
+        const { members } = crew;
+        
+        // toggle the member with the specified number
+        const memberIndex = members.findIndex(e => e.key === contact.key);
+        if (memberIndex === -1) {
+            members.push(contact);
+        } else {
+            members.splice(memberIndex, 1);
+        }
+
+        crew.members = members;
+        this.setState({
+            crew,
+        });
+
+        const crewId = (this.state.crew && this.state.crew.id) || 0;
+        this.props.dispatch(setCrewMembers(this.props.token, crewId, members));
     }
+
 
     render() {
         const { contacts, crew } = this.props;
@@ -92,6 +121,7 @@ function mapStateToProps(state) {
     const crews = state.user.crews || [];
     const crew = crews.length ? crews : { name: null, members: [] };
     return {
+        token: state.user.token,
         crew,
         contacts: state.user.contacts,
     };

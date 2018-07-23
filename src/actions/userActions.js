@@ -1,6 +1,9 @@
-import { PermissionsAndroid, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import Contacts from 'react-native-contacts';
 import * as types from './actionTypes';
+
+import { API_URL } from '../constants/';
+import ProtectedAPICall from '../bits/ProtectedAPICall';
 
 // export async function checkAndroidPermissions() {
 //     return async function requestPermissions(dispatch) {
@@ -31,8 +34,36 @@ import * as types from './actionTypes';
 //     };
 // }
 
+export function setCrewMembers(token, crewId, members) {
+    return async function setCrew(dispatch) {
+        dispatch({
+            type: types.CREW_SET_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            `/crews/${crewId}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    members,
+                }),
+            },
+        ).then((response) => {
+            dispatch({
+                type: types.CREW_SET_SUCCESS,
+                crew: response.data.crew,
+            });
+        }).catch((status) => {
+            dispatch({
+                type: types.CREW_SET_FAILURE,
+                status,
+            });
+        });
+    };
+}
+
 export function checkContactsPermission() {
-    return async function checkPerms()   {
+    return async function checkPerms() {
         if (Platform.OS === 'ios') {
             Contacts.checkPermission((checkErr, permission) => {
                 if (permission !== 'authorized') {
@@ -52,10 +83,8 @@ export function fetchContacts() {
         });
         Contacts.getAll((err, contacts) => {
             if (err) {
-                console.warn('Fuckkkkkk');
                 dispatch({ type: types.CONTACTS_FAILURE });
             } else {
-                console.debug(`Got ${contacts.length} mf contacts`);
                 dispatch({
                     type: types.CONTACTS_SUCCESS,
                     contacts,
