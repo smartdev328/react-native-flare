@@ -7,10 +7,13 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import * as reducers from '../reducers/index';
 import { seamlessImmutableReconciler, seamlessImmutableTransformCreator } from 'redux-persist-seamless-immutable';
+import { REDUX_LOGGING } from '../constants/index';
 
 let middleware = [thunk];
 
-if (__DEV__) {
+console.log(`LOGGING IS ${REDUX_LOGGING}`);
+
+if (__DEV__ && REDUX_LOGGING === 'enabled') {
     middleware = [...middleware, logger];
 } else {
     middleware = [...middleware];

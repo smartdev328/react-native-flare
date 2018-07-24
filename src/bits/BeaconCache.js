@@ -36,7 +36,6 @@ export default class BeaconCache {
             handled = moment(lastTimestampForNonce).diff(timestamp) < 20000;
         }
 
-        console.debug(`Beacon was handled ${beacon}? ${handled}`);
         return handled;
     }
 
@@ -47,7 +46,6 @@ export default class BeaconCache {
             timestamp,
             nonce,
         } = beacon;
-        console.debug(`Marking as handled ${beacon}`);
 
         if (!this.beaconCache[type]) {
             this.beaconCache[type] = {};

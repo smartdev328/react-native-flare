@@ -123,7 +123,7 @@ class AddContacts extends React.Component {
 
 function mapStateToProps(state) {
     const { crews } = state.user;
-    const crew = crews.length ? crews[0] : { name: null, members: [] };
+    const crew = (crews && crews.length) ? crews[0] : { name: null, members: [] };
     console.debug(`mapStateToProps has crew ${JSON.stringify(crew)}`);
     return {
         token: state.user.token,

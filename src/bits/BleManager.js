@@ -1,16 +1,28 @@
 import { DeviceEventEmitter, Platform } from 'react-native';
+import { connect } from 'react-redux';
 import Beacons from 'react-native-beacons-manager';
-import { Regions } from './BleConstants';
+import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
+import { Regions } from './BleConstants';
+
+import { BEACON_RECEIVED } from '../actions/actionTypes';
 
 export default class BleManager {
     constructor() {
         this.beaconsDidRange = null;
         this.regionDidEnterEvent = null;
         this.regionDidExitEvent = null;
+        this.listening = false;
+        this.beaconCache = new BeaconCache();
     }
 
-    static startListening(options) {
+    isListening() {
+        return this.listening;
+    }
+
+    startListening(options) {
+        console.debug('Starting BLE listening.');
+        this.listening = true;
 
         if (Platform.OS === 'ios') {
             // IOS BLE SETUP
@@ -27,14 +39,23 @@ export default class BleManager {
             });
         }
 
-
         this.beaconsDidRange = DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
             data.beacons.forEach((beacon) => {
                 const parsedBeacon = BleUtils.parseBeacon(beacon);
-                // console.debug(`Beacon type ${parsedBeacon.type} from device ${parsedBeacon.deviceID} with nonce ${parsedBeacon.nonce}`);
 
                 if (options && options.onBeaconDetected) {
                     options.onBeaconDetected(parsedBeacon);
+                }
+
+                if (options && options.store) {
+                    if (!this.beaconCache.hasAlreadyHandled(beacon)) {
+                        this.beaconCache.markAsHandled(beacon);
+                        options.store.dispatch({
+                            type: BEACON_RECEIVED,
+                            parsedBeacon,
+                        });
+                        console.debug(`Beacon type ${parsedBeacon.type} from device ${parsedBeacon.deviceID} with nonce ${parsedBeacon.nonce}`);                        
+                    }
                 }
             });
         });

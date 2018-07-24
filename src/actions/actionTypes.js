@@ -17,3 +17,5 @@ export const PERMISSIONS_SUCCESS = 'flare.app.permissions.SUCCESS';
 export const CREW_SET_FAILURE = 'flare.app.crews.set.FAILURE';
 export const CREW_SET_REQUEST = 'flare.app.crews.set.REQUEST';
 export const CREW_SET_SUCCESS = 'flare.app.crews.set.SUCCESS';
+
+export const BEACON_RECEIVED = 'flare.app.beacon.RECEIVE';

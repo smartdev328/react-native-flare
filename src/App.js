@@ -7,6 +7,7 @@ import registerScreens from './screens/index';
 import * as actions from './actions/index';
 import { configureStore } from './store/index';
 
+import BleManager from './bits/BleManager';
 import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
 
@@ -18,9 +19,12 @@ export default class App extends Component {
         super(props);
 
         this.currentRoot = 'uninitialized';
-
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
+
+        this.bleManager = new BleManager();
+
         store = configureStore(initialState);
+        
         persistStore(store, null, () => {
             registerScreens(store, Provider);
             store.subscribe(this.onStoreUpdate.bind(this));
@@ -31,10 +35,15 @@ export default class App extends Component {
 
     onStoreUpdate() {
         const { root } = store.getState().nav;
-        console.debug(`Store update -- new root ${root}, current root ${this.currentRoot}`);
         if (this.currentRoot !== root) {
+            console.debug(`Store update -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
             this.startApp(root);
+        }
+        if (!this.bleManager.isListening()) {
+            this.bleManager.startListening({
+                store,
+            });
         }
     }
 
@@ -67,8 +76,6 @@ export default class App extends Component {
             });
             break;
         }
-
-
     }
 
     // constructor(props) {

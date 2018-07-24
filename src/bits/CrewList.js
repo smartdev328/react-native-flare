@@ -46,13 +46,13 @@ const CrewList = function createCrewList(props) {
             renderItem={({ item }) => (
                 <View style={styles.member}>
                     <Text style={styles.memberName}>
-                        {item.displayName}
+                        {item.displayName} – {item.label}
                     </Text>
                     <TouchableOpacity
                         style={styles.memberAction}
                         onPress={() => props.onPressContact(item)}
                     >
-                        <Icon name="x-circle" size={28} color={Colors.theme.purple} />
+                        <Icon name="x" size={28} color={Colors.theme.purple} />
                     </TouchableOpacity>
                 </View>
             )}
