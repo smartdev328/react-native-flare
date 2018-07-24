@@ -3,7 +3,6 @@ import {
     KeyboardAvoidingView,
     StyleSheet,
     Text,
-    TextInput,
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -48,9 +47,10 @@ const styles = StyleSheet.create({
 class AddContacts extends React.Component {
     constructor(props) {
         super(props);
+        this.crewListItemHeight = 140;
         this.state = {
             crew: props.crew,
-            crewListHeight: props.crew.members.length * Spacing.huge,
+            crewListHeight: props.crew.members.length * this.crewListItemHeight,
         };
     }
 
@@ -63,7 +63,7 @@ class AddContacts extends React.Component {
     onPropsUpdate() {
         this.setState({
             crew: this.props.crew,
-            crewListHeight: this.props.crew.members.length * Spacing.huge,
+            crewListHeight: this.props.crew.members.length * this.crewListItemHeight,
         });
     }
 

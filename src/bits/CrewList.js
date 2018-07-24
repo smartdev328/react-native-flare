@@ -21,7 +21,9 @@ const styles = StyleSheet.create({
         height: Spacing.huge,
         paddingLeft: Spacing.small,
         alignItems: 'center',
-        backgroundColor: Colors.greyLight,
+        borderColor: Colors.theme.purple,
+        borderWidth: 1,
+        marginBottom: Spacing.small,
     },
     memberName: {
         flex: 9,
