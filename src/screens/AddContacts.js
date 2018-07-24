@@ -46,11 +46,11 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class AddContacts extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
             crew: props.crew,
+            crewListHeight: props.crew.members.length * Spacing.huge,
         };
     }
 
@@ -63,6 +63,7 @@ class AddContacts extends React.Component {
     onPropsUpdate() {
         this.setState({
             crew: this.props.crew,
+            crewListHeight: this.props.crew.members.length * Spacing.huge,
         });
     }
 
@@ -93,14 +94,6 @@ class AddContacts extends React.Component {
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <FlavorStripe />
-                <View style={styles.nameFieldContainer}>
-                    <TextInput
-                        autoCapitalize="words"
-                        placeholder={Strings.contacts.crewNamePlaceholder}
-                        style={styles.nameField}
-                        value={this.props.crew.name}
-                    />
-                </View>
                 <View>
                     <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
                 </View>
@@ -113,8 +106,9 @@ class AddContacts extends React.Component {
                 }
                 {this.props.crew && this.props.crew.members && this.props.crew.members.length > 0 &&
                     <CrewList
-                        allowDelete
+                        style={{ height: this.state.crewListHeight }}
                         crew={crew}
+                        onPressContact={contact => this.handleContactPress(contact)}
                     />
                 }
                 <ContactsList

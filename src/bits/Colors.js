@@ -9,5 +9,6 @@ export default {
     },
     black: '#000000',
     grey: '#979797',
+    greyLight: '#E8E8E8',
     white: '#FFFFFF',
 };
