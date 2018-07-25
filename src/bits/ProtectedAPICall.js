@@ -48,7 +48,7 @@ export default async function request(token, serverUrl, route, options) {
                 }
                 // extract the error from the server's json
                 if (__DEV__) {
-                    console.debug(`${route}: ${response}`);
+                    console.debug(`${route}: ${JSON.stringify(response)}`);
                 }
                 return reject(response.status, response.json);
             })

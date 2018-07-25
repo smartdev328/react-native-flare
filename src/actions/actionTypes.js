@@ -18,4 +18,7 @@ export const CREW_SET_FAILURE = 'flare.app.crews.set.FAILURE';
 export const CREW_SET_REQUEST = 'flare.app.crews.set.REQUEST';
 export const CREW_SET_SUCCESS = 'flare.app.crews.set.SUCCESS';
 
-export const BEACON_RECEIVED = 'flare.app.beacon.RECEIVE';
+export const BEACON_SHORT_PRESS = 'flare.app.beacon.SHORT';
+export const BEACON_LONG_PRESS = 'flare.app.beacon.LONG';
+export const BEACON_CHECKIN = 'flare.app.beacon.CHECKIN';
+export const BEACON_HANDLING_FAILED = 'flare.app.beacon.FAILED';

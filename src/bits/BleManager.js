@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import Beacons from 'react-native-beacons-manager';
 import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
-import { Regions } from './BleConstants';
-
-import { BEACON_RECEIVED } from '../actions/actionTypes';
+import { BeaconTypes, Regions } from './BleConstants';
+import { call, flare, checkin } from '../actions/beaconActions';
 
 export default class BleManager {
     constructor() {
@@ -48,12 +47,25 @@ export default class BleManager {
                 }
 
                 if (options && options.store) {
-                    if (!this.beaconCache.hasAlreadyHandled(beacon)) {
-                        this.beaconCache.markAsHandled(beacon);
-                        options.store.dispatch({
-                            type: BEACON_RECEIVED,
-                            parsedBeacon,
-                        });
+                    if (!this.beaconCache.hasAlreadyHandled(parsedBeacon)) {
+                        this.beaconCache.markAsHandled(parsedBeacon);
+
+                        const { token } = options.store.getState().user;
+
+                        switch (parsedBeacon.type) {
+                        case BeaconTypes.Short:
+                            options.store.dispatch(call(token, parsedBeacon));
+                            break;
+
+                        case BeaconTypes.Long:
+                            options.store.dispatch(flare(token, parsedBeacon));
+                            break;
+
+                        case BeaconTypes.Checkin:
+                        default:
+                            options.store.dispatch(checkin(token, parsedBeacon));
+                            break;
+                        }
                         console.debug(`Beacon type ${parsedBeacon.type} from device ${parsedBeacon.deviceID} with nonce ${parsedBeacon.nonce}`);                        
                     }
                 }
