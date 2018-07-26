@@ -4,7 +4,7 @@ import moment from 'moment';
 import { API_URL } from '../constants/';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 
-export function call(token, beacon) {
+export function call(token, beacon, position) {
     return async function doCall(dispatch) {
         ProtectedAPICall(
             token,
@@ -15,24 +15,27 @@ export function call(token, beacon) {
                     deviceID: beacon.deviceID,
                     nonce: beacon.nonce,
                     timestamp: beacon.timestamp,
+                    position,
                 }),
             },
         ).then(() => {
             dispatch({
                 type: types.BEACON_SHORT_PRESS,
                 beacon,
+                position,
             });    
         }).catch((status) => {
             dispatch({
                 type: types.BEACON_HANDLING_FAILED,
                 beacon,
+                position,
                 status,
             });
         });
     };
 }
 
-export function flare(token, beacon) {
+export function flare(token, beacon, position) {
     return async function doFlare(dispatch) {
         ProtectedAPICall(
             token,
@@ -43,17 +46,20 @@ export function flare(token, beacon) {
                     deviceID: beacon.deviceID,
                     nonce: beacon.nonce,
                     timestamp: beacon.timestamp,
+                    position,
                 }),
             },
         ).then(() => {
             dispatch({
                 type: types.BEACON_LONG_PRESS,
                 beacon,
-            });    
+                position,
+            });
         }).catch((status) => {
             dispatch({
                 type: types.BEACON_HANDLING_FAILED,
                 beacon,
+                position,
                 status,
             });
         });
@@ -61,7 +67,7 @@ export function flare(token, beacon) {
 }
 
 
-export function checkin(token, beacon) {
+export function checkin(token, beacon, position) {
     return async function doCheckin(dispatch) {
         ProtectedAPICall(
             token,
@@ -71,6 +77,7 @@ export function checkin(token, beacon) {
                 body: JSON.stringify({
                     device_id: beacon.deviceID,
                     timestamp: moment(beacon.timestamp).toISOString(),
+                    position,
                     details: {
                         proximity: beacon.proximity,
                         distance: beacon.distance,

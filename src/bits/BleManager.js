@@ -1,5 +1,5 @@
+/* global navigator */
 import { DeviceEventEmitter, Platform } from 'react-native';
-import { connect } from 'react-redux';
 import Beacons from 'react-native-beacons-manager';
 import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
@@ -17,6 +17,41 @@ export default class BleManager {
 
     isListening() {
         return this.listening;
+    }
+
+    // eslint-disable-next-line
+    getCurrentPosition(options) {
+        return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+                position => resolve(position),
+                ({ code, message }) => reject(Object.assign(new Error(message), { name: 'PositionError', code })),
+                options,
+            );
+        });
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    handleBeacon(dispatch, token, beacon, position) {
+        switch (beacon.type) {
+        case BeaconTypes.Short:
+            dispatch(call(token, beacon, position));
+            break;
+
+        case BeaconTypes.Long:
+            dispatch(flare(token, beacon, position));
+            break;
+
+        case BeaconTypes.Checkin:
+        default:
+            dispatch(checkin(token, beacon, position));
+            break;
+        }
+        console.debug(`Beacon type ${beacon.type} from device ${beacon.deviceID} with nonce ${beacon.nonce}`);
+        if (position) {
+            console.debug(`@ ${position.coords.latitude}, ${position.coords.longitude}`);
+        } else {
+            console.debug('@ unknown location');
+        }
     }
 
     startListening(options) {
@@ -51,22 +86,15 @@ export default class BleManager {
                         this.beaconCache.markAsHandled(parsedBeacon);
 
                         const { token } = options.store.getState().user;
-
-                        switch (parsedBeacon.type) {
-                        case BeaconTypes.Short:
-                            options.store.dispatch(call(token, parsedBeacon));
-                            break;
-
-                        case BeaconTypes.Long:
-                            options.store.dispatch(flare(token, parsedBeacon));
-                            break;
-
-                        case BeaconTypes.Checkin:
-                        default:
-                            options.store.dispatch(checkin(token, parsedBeacon));
-                            break;
-                        }
-                        console.debug(`Beacon type ${parsedBeacon.type} from device ${parsedBeacon.deviceID} with nonce ${parsedBeacon.nonce}`);                        
+                        this.getCurrentPosition({
+                            enableHighAccuracy: true,
+                            timeout: 60000,
+                        }).then((position) => {
+                            this.handleBeacon(options.store.dispatch, token, parsedBeacon, position);
+                        }).catch((err) => {
+                            console.debug(`Failed to get location: ${err}. Reporting beacon without it.`);
+                            this.handleBeacon(options.store.dispatch, token, parsedBeacon);
+                        });
                     }
                 }
             });
