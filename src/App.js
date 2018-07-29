@@ -23,7 +23,7 @@ export default class App extends Component {
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
         this.bleManager = new BleManager();
         store = configureStore(initialState);
-        
+
         persistStore(store, null, () => {
             registerScreens(store, Provider);
             store.subscribe(this.onStoreUpdate.bind(this));

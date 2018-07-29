@@ -1,10 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import BackgroundTimer from 'react-native-background-timer';
+import { PermissionsAndroid, Platform, StyleSheet, Text, View } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { PermissionsAndroid, Platform } from 'react-native';
 import { PERMISSIONS_SUCCESS } from '../actions/actionTypes';
 
 import { fetchContacts, claimDevice } from '../actions/index';
