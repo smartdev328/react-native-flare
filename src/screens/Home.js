@@ -5,7 +5,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { PERMISSIONS_SUCCESS } from '../actions/actionTypes';
 
-import { fetchContacts, claimDevice } from '../actions/index';
+import { claimDevice, fetchAccountDetails, fetchContacts } from '../actions/index';
 
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -132,7 +132,13 @@ class Home extends React.Component {
     }
 
     componentWillMount() {
+        // Contacts are not stored on the server. It takes a while to fetch them locally, so we
+        // start that process now before users need to view them.
         this.props.dispatch(fetchContacts());
+
+        // Users may have modified their accounts on other devices or on the web. Keep this device
+        // in sync by fetching server-stored data.
+        this.props.dispatch(fetchAccountDetails(this.props.token));
     }
 
     render() {

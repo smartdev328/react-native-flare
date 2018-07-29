@@ -76,6 +76,29 @@ export function checkContactsPermission() {
     };
 }
 
+export function fetchAccountDetails(token) {
+    return function startFetchingAccountDetails(dispatch) {
+        dispatch({
+            type: types.ACCOUNT_DETAILS_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            '/auth/status',
+        ).then((response) => {
+            dispatch({
+                type: types.ACCOUNT_DETAILS_SUCCESS,
+                data: response.data,
+            });
+        }).catch((status) => {
+            dispatch({
+                type: types.ACCOUNT_DETAILS_FAILURE,
+                status,
+            });
+        });
+    };
+}
+
 export function fetchContacts() {
     return function startFetchingContacts(dispatch) {
         dispatch({

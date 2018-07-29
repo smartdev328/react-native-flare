@@ -3,6 +3,10 @@ export const AUTH_REQUEST = 'flare.app.auth.REQUEST';
 export const AUTH_RESET = 'flare.app.auth.RESET';
 export const AUTH_SUCCESS = 'flare.app.auth.SUCCESS';
 
+export const ACCOUNT_DETAILS_FAILURE = 'flare.app.account.details.FAILURE';
+export const ACCOUNT_DETAILS_REQUEST = 'flare.app.account.details.REQUEST';
+export const ACCOUNT_DETAILS_SUCCESS = 'flare.app.account.details.SUCCESS';
+
 export const BEACON_CHECKIN = 'flare.app.beacon.CHECKIN';
 export const BEACON_HANDLING_FAILED = 'flare.app.beacon.FAILED';
 export const BEACON_LONG_PRESS = 'flare.app.beacon.LONG';

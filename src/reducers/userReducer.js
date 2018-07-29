@@ -41,6 +41,18 @@ export function user(state = initialState.user, action = {}) {
     }
 
     /**
+     * ACCOUNT STATUS
+     * We check account status on app launch after users authenticate. The intent
+     * is to keep all devices in sync with each other.
+     */
+    case types.ACCOUNT_DETAILS_SUCCESS:
+        return state.merge({
+            profile: action.data.profile,
+            devices: action.data.devices,
+            crews: action.data.crews,
+        });
+
+    /**
      * CONTACTS
      */
     case types.CONTACTS_REQUEST:

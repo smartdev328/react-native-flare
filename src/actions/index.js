@@ -1,11 +1,12 @@
 import { changeAppRoot, initializeApp } from './navActions';
 import { claimDevice } from './deviceActions';
-import { fetchContacts } from './userActions';
+import { fetchAccountDetails, fetchContacts } from './userActions';
 import { login } from './authActions';
 
 export {
     changeAppRoot,
     claimDevice,
+    fetchAccountDetails,
     fetchContacts,
     initializeApp,
     login,
