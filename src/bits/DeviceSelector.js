@@ -1,7 +1,14 @@
 import React from 'react';
 import CodeInput from 'react-native-confirmation-code-input';
 import Icon from 'react-native-vector-icons/Entypo';
-import { StyleSheet, Text, View, TouchableOpacity, Button, Image } from 'react-native';
+import { 
+    ActivityIndicator,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 
 import Colors from './Colors';
 import { DeviceTypes } from './DeviceConstants';
@@ -71,18 +78,21 @@ export default class DeviceSelector extends React.Component {
 
         this.state = {
             currentDevice,
-            availableDevices,
             addingDevice: false,
-            errorAddingDevice: false,
         };
     }
 
     componentWillReceiveProps(nextProps) {
         const availableDevices = nextProps.devices || [];
         const currentDevice = availableDevices.length > 0 ? availableDevices[0] : null;
+        const addingDevice = 
+            nextProps.claimingDevice === false && 
+            nextProps.claimingDeviceFailure === false &&
+            nextProps.availableDevices.length > 0;
+
         this.setState({
-            availableDevices,
             currentDevice,
+            addingDevice,
         });
     }
 
@@ -91,23 +101,6 @@ export default class DeviceSelector extends React.Component {
             addingDevice: true,
         });
         console.log(`Current device: ${this.state.currentDevice}`);
-    }
-
-    async addDevice(deviceID) {
-        await this.props.addDevice(deviceID)
-            .then((response) => {
-                this.setState({
-                    addingDevice: false,
-                    availableDevices: response.devices,
-                    currentDevice: response.devices[0],
-                });
-            })
-            .catch(() => {
-                this.deviceInputField.clear();
-                this.setState({
-                    errorAddingDevice: true,
-                });
-            });
     }
 
     render() {
@@ -136,11 +129,17 @@ export default class DeviceSelector extends React.Component {
                                     <CodeInput
                                         ref={(c) => { this.deviceInputField = c; }}
                                         inputPosition="full-width"
-                                        containerStyle={{height: '100%'}}
+                                        containerStyle={{ height: '100%' }}
                                         secureTextEntry={false}
                                         codeLength={6}
-                                        onFulfill={deviceID => this.addDevice(deviceID)}
+                                        onFulfill={deviceID => this.props.addDevice(deviceID)}
                                     />
+                                    {this.props.claimingDevice &&
+                                        <ActivityIndicator size={40} color={Colors.white} />
+                                    }
+                                    {this.props.claimingDeviceFailure &&
+                                        <Text>{this.props.claimingDeviceFailure}</Text>
+                                    }
                                 </View>
                             }
                         </TouchableOpacity>

@@ -96,6 +96,28 @@ export function user(state = initialState.user, action = {}) {
             permissions: action.permissions,
         });
 
+    /**
+     * DEVICES
+     */
+    case types.DEVICE_CLAIM_REQUEST:
+        return state.merge({
+            claimingDevice: true,
+            claimingDeviceFailure: null,
+        });
+
+    case types.DEVICE_CLAIM_SUCCESS:
+        return state.merge({
+            claimingDevice: false,
+            claimingDeviceFailure: null,
+            devices: action.devices,
+        });
+
+    case types.DEVICE_CLAIM_FAILURE:
+        return state.merge({
+            claimingDevice: false,
+            claimingDeviceFailure: action.message,
+        });
+
     default:
         return state;
     }

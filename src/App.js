@@ -7,6 +7,7 @@ import registerScreens from './screens/index';
 import * as actions from './actions/index';
 import { configureStore } from './store/index';
 
+import { BLUETOOTH_LISTENING } from './constants';
 import BleManager from './bits/BleManager';
 import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
@@ -38,10 +39,12 @@ export default class App extends Component {
             this.currentRoot = root;
             this.startApp(root);
         }
-        if (!this.bleManager.isListening()) {
+        if (BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
             this.bleManager.startListening({
                 store,
             });
+        } else {
+            console.warn('Bluetooth is disabled in this environment.');
         }
     }
 

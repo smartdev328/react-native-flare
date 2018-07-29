@@ -13,7 +13,7 @@ let middleware = [thunk];
 
 console.log(`LOGGING IS ${REDUX_LOGGING}`);
 
-if (__DEV__ && REDUX_LOGGING === 'enabled') {
+if (__DEV__ && REDUX_LOGGING) {
     middleware = [...middleware, logger];
 } else {
     middleware = [...middleware];

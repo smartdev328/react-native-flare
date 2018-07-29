@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { PermissionsAndroid, Platform } from 'react-native';
 import { PERMISSIONS_SUCCESS } from '../actions/actionTypes';
 
-import { fetchContacts } from '../actions/index';
+import { fetchContacts, claimDevice } from '../actions/index';
 
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -155,11 +155,10 @@ class Home extends React.Component {
                 {true &&
                     <View style={styles.deviceSelector}>
                         <DeviceSelector
-                            addDevice={(deviceID) => {
-                                console.log('Should add device here');
-                                // this.props.screenProps.flareAPI.addDevice(deviceID);
-                            }}
+                            addDevice={deviceID => this.props.dispatch(claimDevice(this.props.token, deviceID))}
                             devices={this.props.devices}
+                            claimingDevice={this.props.claimingDevice}
+                            claimingDeviceFailure={this.props.claimingDeviceFailure}
                         >
                             <Text style={styles.centered}>
                                 {this.props.lastBeaconTimeHeading}
@@ -207,9 +206,13 @@ function mapStateToProps(state) {
     //     // const lastBeaconTimeHeading = hasTimestamp ? 
     //     //     Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
 
+    console.debug(`Claiming device: ${state.user.claimingDevice}`);
     return {
+        token: state.user.token,
         devices: state.user.devices,
         crews: state.user.crews,
+        claimingDevice: state.user.claimingDevice,
+        claimingDeviceFailure: state.user.claimingDeviceFailure,
         lastBeaconTimeHeading,
         hasTimestamp,
         contactsLabel,
