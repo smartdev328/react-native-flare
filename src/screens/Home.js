@@ -1,18 +1,18 @@
 import React from 'react';
-import { PermissionsAndroid, Platform, StyleSheet, Text, View } from 'react-native';
+import { AppState, StyleSheet, Text, View } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { PERMISSIONS_SUCCESS } from '../actions/actionTypes';
+import BackgroundTimer from 'react-native-background-timer';
 
 import { claimDevice, fetchAccountDetails, fetchContacts } from '../actions/index';
-
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
 import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
+import { checkPermissions } from '../actions/userActions';
 
 
 const styles = StyleSheet.create({
@@ -64,18 +64,46 @@ const styles = StyleSheet.create({
 });
 
 class Home extends React.Component {
-    // componentDidMount() {
-    //     // this.checkPermissions();
-    //     // this.checkAuth();
-    //     // BackgroundTimer.runBackgroundTimer(() => { 
-    //     //     this.checkAuth();
-    //     // }, 300000);
-    //     // this.props.screenProps.checkForActiveFlare();
-    // }
+    componentDidMount() {
+        this.props.dispatch(checkPermissions());
+        BackgroundTimer.runBackgroundTimer(() => {
+            if (this.props.user && this.props.user.permissions && this.props.user.permissions.contacts) {
+                this.props.dispatch(fetchAccountDetails(this.props.token));
+            }
+        }, 300000);
+        AppState.addEventListener('change', this.handleAppStateChange);
+    }
 
-    // componentWillUnmount() {
-    //     // BackgroundTimer.stopBackgroundTimer();
-    // }
+    componentWillUnmount() {
+        BackgroundTimer.stopBackgroundTimer();
+        AppState.removeEventListener('change', this.handleAppStateChange);
+    }
+
+    // eslint-disable-next-line
+    componentWillMount() {
+        // Contacts are not stored on the server. It takes a while to fetch them locally, so we
+        // start that process now before users need to view them.
+        if (this.props.user && this.props.user.permissions && this.props.user.permissions.contacts) {
+            this.props.dispatch(fetchContacts());
+        }
+
+        // Users may have modified their accounts on other devices or on the web. Keep this device
+        // in sync by fetching server-stored data.
+        this.props.dispatch(fetchAccountDetails(this.props.token));
+    }
+
+    handleAppStateChange = (nextAppState) => {
+        switch (nextAppState) {
+        case 'active':
+            this.props.dispatch(checkPermissions());
+            break;
+        case 'inactive':
+        case 'background':
+        default:
+            console.debug(`App went to state ${nextAppState}.`);
+            break;
+        }
+    }
 
     // async checkAuth() {
     //     // this.props.screenProps.flareAPI.ping()
@@ -105,40 +133,6 @@ class Home extends React.Component {
                 navBarButtonColor: Colors.white,
             },
         });
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    async checkPermissions() {
-        /**
-         * THIS DIES ON SDK 23.
-         */
-        if (Platform.OS === 'android') {
-            const permissions = [
-                PermissionsAndroid.ACCESS_COARSE_LOCATION,
-                PermissionsAndroid.ACCESS_FINE_LOCATION,
-                PermissionsAndroid.READ_CONTACTS,
-            ];
-
-            const grantedPermissions = {};
-            await permissions.forEach((permission) => {
-                const granted = PermissionsAndroid.request(permission, 'Because fuck you');
-                grantedPermissions[permission] = granted;
-            });
-            this.props.dispatch({
-                type: PERMISSIONS_SUCCESS,
-                granted: grantedPermissions,
-            });
-        }
-    }
-
-    componentWillMount() {
-        // Contacts are not stored on the server. It takes a while to fetch them locally, so we
-        // start that process now before users need to view them.
-        this.props.dispatch(fetchContacts());
-
-        // Users may have modified their accounts on other devices or on the web. Keep this device
-        // in sync by fetching server-stored data.
-        this.props.dispatch(fetchAccountDetails(this.props.token));
     }
 
     render() {
@@ -207,10 +201,8 @@ function mapStateToProps(state) {
             Strings.home.contactsButtonLabelAdd;
 
     //     // const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
-    //     // const lastBeaconTimeHeading = hasTimestamp ? 
+    //     // const lastBeaconTimeHeading = hasTimestamp ?
     //     //     Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
-
-    console.debug(`Claiming device: ${state.user.claimingDevice}`);
     return {
         token: state.user.token,
         devices: state.user.devices,

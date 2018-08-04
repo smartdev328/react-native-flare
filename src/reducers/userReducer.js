@@ -1,3 +1,4 @@
+import Immutable from 'seamless-immutable';
 import * as types from '../actions/actionTypes';
 import { initialState } from './initialState';
 import { filterContacts } from '../helpers/contacts';
@@ -97,16 +98,22 @@ export function user(state = initialState.user, action = {}) {
      */
     case types.PERMISSIONS_REQUEST:
         return state.merge({
-            permissions: null,
+            requestingPermissions: true,
         });
     case types.PERMISSIONS_FAILURE:
         return state.merge({
-            permissions: null,
+            requestingPermissions: false,
+            requestingPermissionsFailed: true,
         });
-    case types.PERMISSIONS_SUCCESS:
+    case types.PERMISSIONS_SUCCESS: {
+        const updatedPermissions = Immutable.setIn(state.permissions, [action.permission], action.granted);
+        console.debug(`XXXXX UPDATED PERMS ${JSON.stringify(updatedPermissions)}`);
         return state.merge({
-            permissions: action.permissions,
+            permissions: updatedPermissions,
+            requestingPermissions: false,
+            requestingPermissionsFailed: false,
         });
+    }
 
     /**
      * DEVICES

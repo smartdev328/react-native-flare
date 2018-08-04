@@ -1,16 +1,17 @@
 import { Component } from 'react';
+import { AppState } from 'react-native';
 import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { persistStore } from 'redux-persist';
-import initialState from './reducers/initialState';
-import registerScreens from './screens/index';
-import * as actions from './actions/index';
-import { configureStore } from './store/index';
 
 import { BLUETOOTH_LISTENING } from './constants';
+import { configureStore } from './store/index';
+import * as actions from './actions/index';
 import BleManager from './bits/BleManager';
 import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
+import initialState from './reducers/initialState';
+import registerScreens from './screens/index';
 
 console.disableYellowBox = true;
 let store = null;

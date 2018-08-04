@@ -12,6 +12,12 @@ export const initialState = Immutable({
         devices: [],
         contacts: [],
         contactsCrewLookup: {},
+        permissions: {
+            bluetooth: false,
+            contacts: false,
+            location: false,
+            notification: false,
+        },
     },
     beacons: {
         latest: null,

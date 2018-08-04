@@ -1,38 +1,48 @@
 import { Platform } from 'react-native';
 import Contacts from 'react-native-contacts';
-import * as types from './actionTypes';
+import Permissions from 'react-native-permissions';
 
+import * as types from './actionTypes';
 import { API_URL } from '../constants/';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 
-// export async function checkAndroidPermissions() {
-//     return async function requestPermissions(dispatch) {
-//         const permissions = [
-//             PermissionsAndroid.ACCESS_COARSE_LOCATION,
-//             PermissionsAndroid.ACCESS_FINE_LOCATION,
-//             PermissionsAndroid.READ_CONTACTS,
-//         ];
+export function checkPermissions() {
+    return async function doCheck(dispatch) {
+        const permissions = {
+            contacts: null,
+            location: {
+                type: 'always',
+            },
+        };
 
-//         dispatch({ type: types.PERMISSIONS_REQUEST });
+        if (Platform.OS === 'ios') {
+            permissions.bluetooth = null;
+            permissions.notification = {
+                type: [
+                    'alert',
+                    'badge',
+                ],
+            };
+        }
 
-//         try {
-//             PermissionsAndroid.requestMultiple(permissions).then((granted) => {
-//                 dispatch({
-//                     type: types.PERMISSIONS_SUCCESS,
-//                     granted,
-//                 });
-//                 this.nextAction();
-//             });
-//         } catch (err) {
-//             console.warn(err);
-//             dispatch({
-//                 type: types.PERMISSIONS_FAILURE,
-//                 err,
-//             });
-//         }
-
-//     };
-// }
+        Permissions
+            .checkMultiple(Object.keys(permissions))
+            .then((checkResponse) => {
+                const permissionsToRequest = Object.keys(checkResponse).filter(p => checkResponse[p] !== 'authorized');
+                permissionsToRequest.forEach((permission) => {
+                    const options = permissions[permission];
+                    console.debug(`Requesting permission ${permission} with options ${options}`);
+                    Permissions.request(permission, options).then((reqResponse) => {
+                        dispatch({
+                            type: types.PERMISSIONS_SUCCESS,
+                            permission,
+                            granted: reqResponse === 'authorized',
+                        });
+                    });
+                });
+            });
+    };
+}
 
 export function setCrewMembers(token, crewId, members) {
     return async function setCrew(dispatch) {
