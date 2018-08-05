@@ -44,7 +44,7 @@ export default class App extends Component {
             this.bleManager.startListening({
                 store,
             });
-        } else {
+        } else if (!BLUETOOTH_LISTENING) {
             console.warn('Bluetooth is disabled in this environment.');
         }
     }
