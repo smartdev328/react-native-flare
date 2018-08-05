@@ -12,7 +12,7 @@ export function call(token, beacon, position) {
             '/sos/call', {
                 method: 'POST',
                 body: JSON.stringify({
-                    deviceID: beacon.deviceID,
+                    device_id: beacon.deviceID,
                     nonce: beacon.nonce,
                     timestamp: beacon.timestamp,
                     position,
@@ -43,7 +43,7 @@ export function flare(token, beacon, position) {
             '/sos/flare', {
                 method: 'POST',
                 body: JSON.stringify({
-                    deviceID: beacon.deviceID,
+                    device_id: beacon.deviceID,
                     nonce: beacon.nonce,
                     timestamp: beacon.timestamp,
                     position,
