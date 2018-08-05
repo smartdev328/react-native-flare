@@ -149,8 +149,7 @@ class Home extends React.Component {
                     colors={[Colors.theme.orangeDark, Colors.theme.purple]}
                     radius={300}
                 />
-                {/* {!this.state.hasActiveFlare && */}
-                {true &&
+                {!this.props.hasActiveFlare &&
                     <View style={styles.deviceSelector}>
                         <DeviceSelector
                             addDevice={deviceID => this.props.dispatch(claimDevice(this.props.token, deviceID))}
@@ -179,12 +178,14 @@ class Home extends React.Component {
                     </View>
                 }
                 <View style={styles.footer}>
-                    <Button
-                        whiteOutline
-                        fullWidth
-                        onPress={() => this.handleContactsClick()}
-                        title={this.props.contactsLabel}
-                    />
+                    {!this.props.hasActiveFlare &&
+                        <Button
+                            whiteOutline
+                            fullWidth
+                            onPress={() => this.handleContactsClick()}
+                            title={this.props.contactsLabel}
+                        />
+                    }
                 </View>
             </View>
         );
@@ -192,7 +193,6 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const hasActiveFlare = false;
     const hasTimestamp = false;
     const lastBeaconTimeHeading = Strings.beacons.notYetReceived;
     const contactsLabel =
@@ -212,7 +212,7 @@ function mapStateToProps(state) {
         lastBeaconTimeHeading,
         hasTimestamp,
         contactsLabel,
-        hasActiveFlare,
+        hasActiveFlare: state.user.hasActiveFlare,
     };
 }
 

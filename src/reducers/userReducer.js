@@ -54,6 +54,14 @@ export function user(state = initialState.user, action = {}) {
         });
 
     /**
+     * BEACONS
+     */
+    case types.BEACON_LONG_PRESS:
+        return state.merge({
+            hasActiveFlare: true,
+        });
+
+    /**
      * CONTACTS
      */
     case types.CONTACTS_REQUEST:

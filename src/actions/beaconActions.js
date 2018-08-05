@@ -23,7 +23,7 @@ export function call(token, beacon, position) {
                 type: types.BEACON_SHORT_PRESS,
                 beacon,
                 position,
-            });    
+            });
         }).catch((status) => {
             dispatch({
                 type: types.BEACON_HANDLING_FAILED,
@@ -90,7 +90,7 @@ export function checkin(token, beacon, position) {
             },
         ).then(() => {
             dispatch({
-                type: types.BEACON_LONG_PRESS,
+                type: types.BEACON_CHECKIN,
                 beacon,
             });
         }).catch((status) => {

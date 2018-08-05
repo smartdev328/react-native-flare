@@ -32,17 +32,21 @@ export default class BleManager {
 
     // eslint-disable-next-line class-methods-use-this
     handleBeacon(dispatch, token, beacon, position) {
+        console.debug(`Switching beacon type ${beacon.type}`);
         switch (beacon.type) {
-        case BeaconTypes.Short:
+        case BeaconTypes.Short.name:
+            console.debug('Call');
             dispatch(call(token, beacon, position));
             break;
 
-        case BeaconTypes.Long:
+        case BeaconTypes.Long.name:
+            console.debug('Long');
             dispatch(flare(token, beacon, position));
             break;
 
-        case BeaconTypes.Checkin:
+        case BeaconTypes.Checkin.name:
         default:
+            console.debug('Checkin');
             dispatch(checkin(token, beacon, position));
             break;
         }
