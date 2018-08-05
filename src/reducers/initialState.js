@@ -6,18 +6,19 @@ export const initialState = Immutable({
         root: 'insecure', // 'insecure' / 'secure',
     },
     user: {
-        token: null,
-        profile: {},
-        crews: [],
-        devices: [],
         contacts: [],
         contactsCrewLookup: {},
+        crews: [],
+        devices: [],
+        hasActiveFlare: false,
         permissions: {
             bluetooth: false,
             contacts: false,
             location: false,
             notification: false,
         },
+        profile: {},
+        token: null,
     },
     beacons: {
         latest: null,
