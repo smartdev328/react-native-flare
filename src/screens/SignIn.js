@@ -81,13 +81,13 @@ const styles = {
 class SignIn extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             username: null,
             password: null,
             invalid: false,
         };
-        
+
         const { dispatch } = props;
         dispatch(resetAuth());
     }
