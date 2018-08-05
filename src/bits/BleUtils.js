@@ -1,3 +1,4 @@
+/* global __DEV__ */
 import { BeaconTypes } from './BleConstants';
 
 /**
@@ -60,7 +61,7 @@ class BleUtils {
         const deviceID = BleUtils.getDeviceID(majorBits, minorBits, deviceVersion);
         const nonce = deviceVersion === 1 ? BleUtils.getNonceFromMinorBits(minorBits) : null;
 
-        return {
+        const parsedBeacon = {
             uuid,
             nonce,
             type: beaconType,
@@ -71,6 +72,12 @@ class BleUtils {
             accuracy,
             timestamp: Date.now(),
         };
+
+        if (__DEV__) {
+            console.debug(`Beacon: ${JSON.stringify(parsedBeacon)}`);
+        }
+
+        return parsedBeacon;
     }
 }
 
