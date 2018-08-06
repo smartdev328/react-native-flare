@@ -73,10 +73,6 @@ class BleUtils {
             timestamp: Date.now(),
         };
 
-        if (__DEV__) {
-            console.debug(`Beacon: ${JSON.stringify(parsedBeacon)}`);
-        }
-
         return parsedBeacon;
     }
 }

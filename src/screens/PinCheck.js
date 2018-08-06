@@ -43,9 +43,7 @@ const styles = StyleSheet.create({
 
 class PinCheck extends React.Component {
     componentDidUpdate(prevProps) {
-        console.debug('XXXXXXXX >>>> XXX Herrrrre');
-        if (prevProps.cancelActiveFlareState !== 'success' && this.props.cancelActiveFlareState === 'success') {
-            console.debug(`Canceling flare ${this.props.cancelingActiveFlare} / ${this.props.cancelActiveFlareState}`);
+        if (prevProps.hasActiveFlare && !this.props.hasActiveFlare) {
             this.props.navigator.pop(this.props.componentId);
         }
     }
@@ -84,7 +82,7 @@ function mapStateToProps(state) {
     return {
         token: state.user.token,
         cancelingActiveFlare: state.user.cancelingActiveFlare,
-        cancelActiveFlareState: state.user.cancelActiveFlareState,
+        hasActiveFlare: state.user.hasActiveFlare,
     };
 }
 

@@ -6,7 +6,7 @@ export function beacon(state = initialState.beacons, action = {}) {
     switch (action.type) {
     case types.BEACON_RECEIVED:
         return state.merge({
-            latest: action.beacon,
+            latest: action.data.beacon,
         });
 
     default:

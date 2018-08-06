@@ -64,6 +64,19 @@ const styles = StyleSheet.create({
 });
 
 class Home extends React.Component {
+    // eslint-disable-next-line
+    componentWillMount() {
+        // Contacts are not stored on the server. It takes a while to fetch them locally, so we
+        // start that process now before users need to view them.
+        if (this.props.user && this.props.user.permissions && this.props.user.permissions.contacts) {
+            this.props.dispatch(fetchContacts());
+        }
+
+        // Users may have modified their accounts on other devices or on the web. Keep this device
+        // in sync by fetching server-stored data.
+        this.props.dispatch(fetchAccountDetails(this.props.token));
+    }
+
     componentDidMount() {
         this.props.dispatch(checkPermissions());
         BackgroundTimer.runBackgroundTimer(() => {
@@ -79,19 +92,6 @@ class Home extends React.Component {
         AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
-    // eslint-disable-next-line
-    componentWillMount() {
-        // Contacts are not stored on the server. It takes a while to fetch them locally, so we
-        // start that process now before users need to view them.
-        if (this.props.user && this.props.user.permissions && this.props.user.permissions.contacts) {
-            this.props.dispatch(fetchContacts());
-        }
-
-        // Users may have modified their accounts on other devices or on the web. Keep this device
-        // in sync by fetching server-stored data.
-        this.props.dispatch(fetchAccountDetails(this.props.token));
-    }
-
     handleAppStateChange = (nextAppState) => {
         switch (nextAppState) {
         case 'active':
@@ -105,7 +105,7 @@ class Home extends React.Component {
         }
     }
 
-    handleCancelClick() {
+    showPinCheckScreen() {
         this.props.navigator.push({
             screen: 'PinCheck',
             title: Strings.pin.title,
@@ -166,7 +166,7 @@ class Home extends React.Component {
                     <View style={styles.cancelButtonArea}>
                         <Button
                             fullWidth
-                            onPress={() => this.handleCancelClick()}
+                            onPress={() => this.showPinCheckScreen()}
                             title={Strings.home.cancelActiveFlare}
                         />
                     </View>

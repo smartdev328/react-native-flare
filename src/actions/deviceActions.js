@@ -15,13 +15,11 @@ export function claimDevice(token, deviceID) {
                 method: 'POST',
             },
         ).then((response) => {
-            console.debug(`Claim device response ${JSON.stringify(response)}`);
             dispatch({
                 type: types.DEVICE_CLAIM_SUCCESS,
                 devices: response.devices,
             });
         }).catch((status) => {
-            console.debug(`Claim device error ${JSON.stringify(status)}`);
             dispatch({
                 type: types.DEVICE_CLAIM_FAILURE,
                 status,

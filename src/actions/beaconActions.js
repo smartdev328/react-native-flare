@@ -37,6 +37,12 @@ export function call(token, beacon, position) {
 
 export function flare(token, beacon, position) {
     return async function doFlare(dispatch) {
+        dispatch({
+            type: types.BEACON_LONG_PRESS,
+        });
+        dispatch({
+            type: types.ACTIVATE_FLARE_REQUEST,
+        });
         ProtectedAPICall(
             token,
             API_URL,
@@ -50,19 +56,22 @@ export function flare(token, beacon, position) {
                 }),
             },
         ).then((response) => {
-            console.debug(`Flare response ${JSON.stringify(response)}`);
             dispatch({
-                type: types.BEACON_LONG_PRESS,
-                beacon,
-                position,
-                crewEvents: response.crew_events,
+                type: types.ACTIVATE_FLARE_SUCCESS,
+                data: {
+                    beacon,
+                    position,
+                    crewEvents: response.crew_events,
+                },
             });
         }).catch((status) => {
             dispatch({
-                type: types.BEACON_HANDLING_FAILED,
-                beacon,
-                position,
-                status,
+                type: types.ACTIVATE_FLARE_FAILURE,
+                data: {
+                    beacon,
+                    position,
+                    status,
+                },
             });
         });
     };
@@ -85,7 +94,9 @@ export function cancelActiveFlare(token, pin) {
         ).then((response) => {
             dispatch({
                 type: types.CANCEL_ACTIVE_FLARE_SUCCESS,
-                crewEvents: response.crew_events,
+                data: {
+                    crewEvents: response.crew_events,
+                },
             });
         }).catch((status) => {
             dispatch({

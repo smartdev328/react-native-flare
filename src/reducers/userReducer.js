@@ -58,19 +58,36 @@ export function user(state = initialState.user, action = {}) {
     /**
      * BEACONS
      */
-    case types.BEACON_LONG_PRESS:
+    case types.ACTIVATE_FLARE_REQUEST:
+        return state.merge({
+            activatingFlareState: 'request',
+        });
+
+    case types.ACTIVATE_FLARE_SUCCESS:
+        return state.merge({
+            activatingFlareState: 'success',
+            crewEvents: action.data.crewEvents,
+            hasActiveFlare: action.data.crewEvents && action.data.crewEvents.length > 0,
+        });
+
+    case types.ACTIVATE_FLARE_FAILURE:
+        return state.merge({
+            activatingFlareState: 'failure',
+        });
+
+
+    case types.CANCEL_ACTIVE_FLARE_REQUEST:
+        return state.merge({
+            cancelingActiveFlare: true,
+            cancelActiveFlareState: 'request',
+        });
+
     case types.CANCEL_ACTIVE_FLARE_SUCCESS:
         return state.merge({
             crewEvents: action.data.crewEvents,
             hasActiveFlare: action.data.crewEvents && action.data.crewEvents.length > 0,
             cancelingActiveFlare: false,
             cancelActiveFlareState: 'success',
-        });
-
-    case types.CANCEL_ACTIVE_FLARE_REQUEST:
-        return state.merge({
-            cancelingActiveFlare: true,
-            cancelActiveFlareState: 'request',
         });
 
     case types.CANCEL_ACTIVE_FLARE_FAILURE:
@@ -133,7 +150,6 @@ export function user(state = initialState.user, action = {}) {
         });
     case types.PERMISSIONS_SUCCESS: {
         const updatedPermissions = Immutable.setIn(state.permissions, [action.permission], action.granted);
-        console.debug(`XXXXX UPDATED PERMS ${JSON.stringify(updatedPermissions)}`);
         return state.merge({
             permissions: updatedPermissions,
             requestingPermissions: false,

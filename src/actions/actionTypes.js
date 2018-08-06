@@ -12,6 +12,10 @@ export const BEACON_HANDLING_FAILED = 'flare.app.beacon.FAILED';
 export const BEACON_LONG_PRESS = 'flare.app.beacon.LONG';
 export const BEACON_SHORT_PRESS = 'flare.app.beacon.SHORT';
 
+export const ACTIVATE_FLARE_FAILURE = 'flare.app.activate.FAILURE';
+export const ACTIVATE_FLARE_REQUEST = 'flare.app.activate.REQUEST';
+export const ACTIVATE_FLARE_SUCCESS = 'flare.app.activate.SUCCESS';
+
 export const CANCEL_ACTIVE_FLARE_FAILURE = 'flare.app.CANCEL_ACTIVE_FLARE_FAILURE';
 export const CANCEL_ACTIVE_FLARE_REQUEST = 'flare.app.CANCEL_ACTIVE_FLARE_REQUEST';
 export const CANCEL_ACTIVE_FLARE_SUCCESS = 'flare.app.CANCEL_ACTIVE_FLARE_SUCCESS';

@@ -70,7 +70,7 @@ class AddContacts extends React.Component {
     handleContactPress(contact) {
         const { crew } = this.state;
         const { members } = crew;
-        
+
         const memberIndex = members.findIndex(e => e.key === contact.key);
         let newMembers = null;
         if (memberIndex === -1) {
@@ -124,7 +124,6 @@ class AddContacts extends React.Component {
 function mapStateToProps(state) {
     const { crews } = state.user;
     const crew = (crews && crews.length) ? crews[0] : { name: null, members: [] };
-    console.debug(`mapStateToProps has crew ${JSON.stringify(crew)}`);
     return {
         token: state.user.token,
         crew,
