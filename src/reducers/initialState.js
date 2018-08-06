@@ -8,6 +8,7 @@ export const initialState = Immutable({
     user: {
         contacts: [],
         contactsCrewLookup: {},
+        crewEvents: [],
         crews: [],
         devices: [],
         hasActiveFlare: false,

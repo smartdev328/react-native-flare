@@ -105,25 +105,19 @@ class Home extends React.Component {
         }
     }
 
-    // async checkAuth() {
-    //     // this.props.screenProps.flareAPI.ping()
-    //     //     .then(response => console.debug(response))
-    //     //     .catch((status) => {
-    //     //         if (status === 401 || status === 403) {
-    //     //             this.props.navigation.navigate('SignIn');
-    //     //         }
-    //     //     });
-    // }
-
     handleCancelClick() {
-        // this.props.navigation.navigate('PinCheck');
-        console.debug('click cancel');
+        this.props.navigator.push({
+            screen: 'PinCheck',
+            title: Strings.pin.title,
+            navigatorStyle: {
+                navBarBackgroundColor: Colors.theme.purple,
+                navBarTextColor: Colors.white,
+                navBarButtonColor: Colors.white,
+            },
+        });
     }
 
     handleContactsClick() {
-        // const nextScreen = this.props.screenProps.crews.length ? 'EditContacts' : 'AddContacts';
-        // console.log(`Navigate to screen ${nextScreen}`);
-        // this.props.navigation.navigate(nextScreen);
         this.props.navigator.push({
             screen: 'AddContacts',
             title: Strings.contacts.add.title,

@@ -1,20 +1,20 @@
 import React from 'react';
 import {
     ActivityIndicator,
-    Image,
     KeyboardAvoidingView,
     StyleSheet,
     Text,
     View,
 } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Entypo';
 import RadialGradient from 'react-native-radial-gradient';
 
 import Colors from '../bits/Colors';
 import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
-
+import { cancelActiveFlare } from '../actions/beaconActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -37,38 +37,21 @@ const styles = StyleSheet.create({
     },
     logo: {
         width: 98,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
 });
 
-export default class PinCheck extends React.Component {
-    static navigationOptions = {
-        title: Strings.pin.title,
-    };
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            checking: false,
-        };
+class PinCheck extends React.Component {
+    componentDidUpdate(prevProps) {
+        console.debug('XXXXXXXX >>>> XXX Herrrrre');
+        if (prevProps.cancelActiveFlareState !== 'success' && this.props.cancelActiveFlareState === 'success') {
+            console.debug(`Canceling flare ${this.props.cancelingActiveFlare} / ${this.props.cancelActiveFlareState}`);
+            this.props.navigator.pop(this.props.componentId);
+        }
     }
 
     async checkCode(code) {
-        const { flareAPI } = this.props.screenProps;
-        this.setState({
-            checking: true,
-        });
-        flareAPI.cancelActiveFlare(code)
-            .then(() => {
-                this.setState({
-                    checking: false,
-                });
-                this.props.screenProps.onCancelFlare();
-                this.props.navigation.navigate('Home');
-            })
-            .catch((status, json) => {
-                console.log(`Failed to cancel Flare: ${status} ${json}`);
-            });
+        this.props.dispatch(cancelActiveFlare(this.props.token, code));
     }
 
     render() {
@@ -89,7 +72,7 @@ export default class PinCheck extends React.Component {
                     onFulfill={code => this.checkCode(code)}
                     keyboardType="numeric"
                 />
-                {this.state.checking &&
+                {this.props.cancelingActiveFlare && this.props.cancelActiveFlareState === 'request' &&
                     <ActivityIndicator />
                 }
             </KeyboardAvoidingView>
@@ -97,3 +80,12 @@ export default class PinCheck extends React.Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        token: state.user.token,
+        cancelingActiveFlare: state.user.cancelingActiveFlare,
+        cancelActiveFlareState: state.user.cancelActiveFlareState,
+    };
+}
+
+export default connect(mapStateToProps)(PinCheck);

@@ -14,7 +14,7 @@ export function call(token, beacon, position) {
                 body: JSON.stringify({
                     device_id: beacon.deviceID,
                     nonce: beacon.nonce,
-                    timestamp: beacon.timestamp,
+                    timestamp: moment(beacon.timestamp).toISOString(),
                     position,
                 }),
             },
@@ -45,15 +45,17 @@ export function flare(token, beacon, position) {
                 body: JSON.stringify({
                     device_id: beacon.deviceID,
                     nonce: beacon.nonce,
-                    timestamp: beacon.timestamp,
+                    timestamp: moment(beacon.timestamp).toISOString(),
                     position,
                 }),
             },
-        ).then(() => {
+        ).then((response) => {
+            console.debug(`Flare response ${JSON.stringify(response)}`);
             dispatch({
                 type: types.BEACON_LONG_PRESS,
                 beacon,
                 position,
+                crewEvents: response.crew_events,
             });
         }).catch((status) => {
             dispatch({
@@ -66,6 +68,33 @@ export function flare(token, beacon, position) {
     };
 }
 
+export function cancelActiveFlare(token, pin) {
+    return async function doCancelFlare(dispatch) {
+        dispatch({
+            type: types.CANCEL_ACTIVE_FLARE_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            '/sos/flare/cancel', {
+                method: 'POST',
+                body: JSON.stringify({
+                    pin,
+                }),
+            },
+        ).then((response) => {
+            dispatch({
+                type: types.CANCEL_ACTIVE_FLARE_SUCCESS,
+                crewEvents: response.crew_events,
+            });
+        }).catch((status) => {
+            dispatch({
+                type: types.CANCEL_ACTIVE_FLARE_FAILURE,
+                status,
+            });
+        });
+    };
+}
 
 export function checkin(token, beacon, position) {
     return async function doCheckin(dispatch) {

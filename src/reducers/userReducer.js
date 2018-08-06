@@ -48,17 +48,35 @@ export function user(state = initialState.user, action = {}) {
      */
     case types.ACCOUNT_DETAILS_SUCCESS:
         return state.merge({
-            profile: action.data.profile,
-            devices: action.data.devices,
+            crewEvents: action.data.crew_events,
             crews: action.data.crews,
+            devices: action.data.devices,
+            hasActiveFlare: action.data.crew_events && action.data.crew_events.length > 0,
+            profile: action.data.profile,
         });
 
     /**
      * BEACONS
      */
     case types.BEACON_LONG_PRESS:
+    case types.CANCEL_ACTIVE_FLARE_SUCCESS:
         return state.merge({
-            hasActiveFlare: true,
+            crewEvents: action.data.crewEvents,
+            hasActiveFlare: action.data.crewEvents && action.data.crewEvents.length > 0,
+            cancelingActiveFlare: false,
+            cancelActiveFlareState: 'success',
+        });
+
+    case types.CANCEL_ACTIVE_FLARE_REQUEST:
+        return state.merge({
+            cancelingActiveFlare: true,
+            cancelActiveFlareState: 'request',
+        });
+
+    case types.CANCEL_ACTIVE_FLARE_FAILURE:
+        return state.merge({
+            cancelingActiveFlare: false,
+            cancelActiveFlareState: 'failure',
         });
 
     /**
