@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>app</string>
+	<string>Flare Jewelry 2</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -39,16 +39,16 @@
 	</dict>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Enable bluetooth so that your Flare jewelry works.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string/>
-	<key>NSLocationUsageDescription</key>
-	<string/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
 	<key>NSContactsUsageDescription</key>
-	<string/>
+	<string>We access your contacts so that you can choose who we contact when something comes up</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We use your location to keep your crew informed when something comes up</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We use your location to keep your crew informed when something comes up</string>
+	<key>NSLocationUsageDescription</key>
+	<string>We use your location to keep your crew informed when something comes up</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We use your location to keep your crew informed when something comes up</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
