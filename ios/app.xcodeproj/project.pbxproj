@@ -951,7 +951,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = M8SR977JX7;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1645,9 +1645,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = M8SR977JX7;
@@ -1673,8 +1673,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.flarejewelry.app;
 				PRODUCT_NAME = app;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "71959e2f-756b-41cc-b43b-9dba7382195e";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.flarejewelry.app";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1686,7 +1686,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M8SR977JX7;
 				HEADER_SEARCH_PATHS = (
@@ -1711,7 +1711,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.flarejewelry.app;
 				PRODUCT_NAME = app;
-				PROVISIONING_PROFILE = "014ecd1c-0278-4408-b930-352560a61cfc";
+				PROVISIONING_PROFILE = "678c71d3-c914-4e48-b782-3fa7816fa605";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.flarejewelry.app";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

@@ -23,6 +23,7 @@ ios/app.xcodeproj/xcuserdata/
 ios/app.xcodeproj/project.xcworkspace/xcuserdata/
 ios/app.app.dSYM.zip
 ios/app.ipa
+ios/fastlane/report.xml
 
 # dependencies
 /node_modules

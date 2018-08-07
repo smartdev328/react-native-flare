@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>5</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -39,6 +39,8 @@
 	</dict>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Enable bluetooth so that your Flare jewelry works.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>We do not want access to your calendars.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>We access your contacts so that you can choose who we contact when something comes up</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -49,6 +51,10 @@
 	<string>We use your location to keep your crew informed when something comes up</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to keep your crew informed when something comes up</string>
+	<key>NSMotionUsageDescription</key>
+	<string>We do not want access to your movement data.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>We do not want access to speech recognition.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -104,5 +110,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>We do not want access to your music.</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 </dict>
 </plist>
