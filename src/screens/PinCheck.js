@@ -4,15 +4,12 @@ import {
     KeyboardAvoidingView,
     StyleSheet,
     Text,
-    View,
 } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/Entypo';
 import RadialGradient from 'react-native-radial-gradient';
 
 import Colors from '../bits/Colors';
-import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 import { cancelActiveFlare } from '../actions/beaconActions';
 
@@ -27,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 0,
-        backgroundColor: Colors.theme.purple,
+        backgroundColor: Colors.theme.blueDark,
     },
     backgroundGradient: {
         position: 'absolute',
@@ -55,10 +52,9 @@ class PinCheck extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container}>
-                <FlavorStripe />
                 <RadialGradient
                     style={styles.backgroundGradient}
-                    colors={[Colors.theme.orangeDark, Colors.theme.purple]}
+                    colors={[Colors.theme.blue, Colors.theme.blueDark]}
                     radius={300}
                 />
                 <Text style={styles.prompt}>

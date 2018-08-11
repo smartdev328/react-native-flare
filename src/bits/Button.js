@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         color: Colors.black,
     },
     schemeDefaultBackground: {
-        backgroundColor: Colors.theme.orangeLight,
+        backgroundColor: Colors.theme.red,
     },
     schemeDefaultForeground: {
         color: Colors.white,

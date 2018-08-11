@@ -9,6 +9,9 @@ const Strings = {
         contactsButtonLabelAdd: 'CHOOSE YOUR CREW',
         contactsButtonLabelEdit: 'EDIT YOUR CREW',
     },
+    leftDrawer: {
+        signOut: 'Sign Out',
+    },
     pin: {
         prompt: 'Enter your Flare PIN',
         failure: 'Invalid PIN',

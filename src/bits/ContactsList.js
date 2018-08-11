@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     container: {
     },
     sectionHeader: {
-        backgroundColor: Colors.theme.purple,
+        backgroundColor: Colors.theme.blueDark,
         color: Colors.white,
         fontSize: 16,
         fontWeight: 'bold',
@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
 const ContactsListItem = function createContactsListItem(props) {
     return (
         <TouchableOpacity
-            style={styles.listItem} 
+            style={styles.listItem}
             onPress={() => props.onPress(props.contact)}
         >
             <View style={styles.listItemSelection}>
                 {props.selected &&
-                    <Icon name="check" size={28} color={Colors.theme.purple} />
+                    <Icon name="check" size={28} color={Colors.theme.blueDark} />
                 }
             </View>
             <View style={styles.listItemDetails}>

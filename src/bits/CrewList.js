@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         height: Spacing.huge,
         paddingLeft: Spacing.small,
         alignItems: 'center',
-        borderColor: Colors.theme.purple,
+        borderColor: Colors.theme.blueDark,
         borderWidth: 1,
         marginBottom: Spacing.small,
     },
@@ -52,7 +52,7 @@ const CrewList = function createCrewList(props) {
                         style={styles.memberAction}
                         onPress={() => props.onPressContact(item)}
                     >
-                        <Icon name="x" size={28} color={Colors.theme.purple} />
+                        <Icon name="x" size={28} color={Colors.theme.blueDark} />
                     </TouchableOpacity>
                 </View>
             )}

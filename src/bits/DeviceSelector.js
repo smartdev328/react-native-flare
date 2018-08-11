@@ -1,7 +1,7 @@
 import React from 'react';
 import CodeInput from 'react-native-confirmation-code-input';
 import Icon from 'react-native-vector-icons/Entypo';
-import { 
+import {
     ActivityIndicator,
     Image,
     StyleSheet,
@@ -22,14 +22,14 @@ const styles = StyleSheet.create({
         height: 280,
         maxHeight: 280,
         borderRadius: 280 / 2,
-        borderWidth: 1,
+        borderWidth: 3,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
     targetNoDevice: {
-        borderColor: Colors.theme.orangeLight,
-        backgroundColor: Colors.theme.purpleTransparent,
+        borderColor: Colors.theme.cream,
+        backgroundColor: Colors.theme.blueDark,
     },
     targetHasDevice: {
         borderColor: '#E0E0E0',
@@ -85,8 +85,8 @@ export default class DeviceSelector extends React.Component {
     componentWillReceiveProps(nextProps) {
         const availableDevices = nextProps.devices || [];
         const currentDevice = availableDevices.length > 0 ? availableDevices[0] : null;
-        const addingDevice = 
-            nextProps.claimingDevice === false && 
+        const addingDevice =
+            nextProps.claimingDevice === false &&
             nextProps.claimingDeviceFailure === false &&
             nextProps.availableDevices.length > 0;
 
@@ -118,7 +118,7 @@ export default class DeviceSelector extends React.Component {
                             onPressOut={() => this.onPressAddDevice()}
                         >
                             {!this.state.addingDevice &&
-                                <Icon name="plus" size={30} color={Colors.theme.orangeLight} />
+                                <Icon name="plus" size={30} color={Colors.theme.cream} />
                             }
                             {this.state.addingDevice &&
                                 <View style={styles.fullSize}>

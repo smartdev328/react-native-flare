@@ -57,13 +57,15 @@ export default class App extends Component {
             Navigation.startSingleScreenApp({
                 screen: {
                     screen: 'Home',
-                    navigatorStyle: {
-                        navBarCustomViewInitialProps: {},
-                        navBarBackgroundColor: Colors.theme.purple,
-                        navBarCustomView: 'com.flarejewelry.FlareNavBar',
-                        navBarComponentAlignment: 'fill',
-                    },
                 },
+                drawer: {
+                    left: {
+                        screen: 'LeftDrawer',
+                        disableOpenGesture: true,
+                        fixedWidth: 500,
+                    }
+                },
+                animationType: 'fade',
             });
             break;
         default:
@@ -75,6 +77,7 @@ export default class App extends Component {
                         navBarHidden: true,
                     },
                 },
+                animationType: 'fade',
             });
             break;
         }

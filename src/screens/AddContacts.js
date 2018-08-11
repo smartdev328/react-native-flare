@@ -93,7 +93,6 @@ class AddContacts extends React.Component {
         const { contacts, contactsCrewLookup, crew } = this.props;
         return (
             <KeyboardAvoidingView style={styles.container}>
-                <FlavorStripe />
                 <View>
                     <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
                 </View>

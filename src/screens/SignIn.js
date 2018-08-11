@@ -21,7 +21,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 0,
-        backgroundColor: Colors.theme.purple,
+        backgroundColor: Colors.theme.blueDark,
     },
     backgroundGradient: {
         position: 'absolute',
@@ -44,7 +44,7 @@ const styles = {
         paddingBottom: Spacing.small,
         paddingLeft: Spacing.large,
         paddingRight: Spacing.large,
-        backgroundColor: Colors.theme.purple,
+        backgroundColor: Colors.theme.blueDark,
     },
     invalidText: {
         color: Colors.white,
@@ -126,7 +126,7 @@ class SignIn extends Component {
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <RadialGradient
                     style={styles.backgroundGradient}
-                    colors={[Colors.theme.orangeDark, Colors.theme.purple]}
+                    colors={[Colors.theme.blue, Colors.theme.blueDark]}
                     radius={300}
                 />
                 <Image

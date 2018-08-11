@@ -14,24 +14,24 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: '100%',
         height: stripeHeight,
-        backgroundColor: Colors.theme.orangeLight,
+        backgroundColor: Colors.theme.cream,
     },
     second: {
         position: 'absolute',
         left: '10%',
         width: '30%',
         height: stripeHeight,
-        backgroundColor: Colors.theme.orangeDark,
+        backgroundColor: Colors.theme.red,
     },
     first: {
         position: 'absolute',
         width: '10%',
         height: stripeHeight,
-        backgroundColor: Colors.theme.pink,
+        backgroundColor: Colors.theme.blue,
     }
 });
 
-function FlavorStripe(props, context) {
+function FlavorStripe() {
     return (
         <View style={styles.container}>
             <View style={styles.third} />

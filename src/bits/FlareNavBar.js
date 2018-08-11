@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     Image,
     StyleSheet,
@@ -6,15 +6,15 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import Colors from './Colors';
 import Icon from 'react-native-vector-icons/Entypo';
+import Colors from './Colors';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.theme.purple,
+        backgroundColor: Colors.theme.blueDark,
         margin: 0,
         padding: 0,
         height: 44,
@@ -28,25 +28,23 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class FlareNavBar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.menuButton}>
-                    <Text>
-                        <Icon name="menu" size={30} color={Colors.white} />,
-                    </Text>
-                </TouchableOpacity>
-                <Image
-                    source={require('../assets/FLARE-white.png')}
-                    style={styles.logo}
-                />
-            </View>
-        );
-    }
+function FlareNavBar(props) {
+    return (
+        <View style={styles.container}>
+            <TouchableOpacity
+                style={styles.menuButton}
+                onPress={() => props.navigator.toggleDrawer({ side: 'left' })}
+            >
+                <Text>
+                    <Icon name="menu" size={36} color={Colors.white} />,
+                </Text>
+            </TouchableOpacity>
+            <Image
+                source={require('../assets/FLARE-white.png')}
+                style={styles.logo}
+            />
+        </View>
+    );
 }
+
+export default FlareNavBar;

@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: Colors.theme.purple,
+        backgroundColor: Colors.theme.blueDark,
     },
     containerWithActiveFlare: {
-        backgroundColor: Colors.theme.pink,
+        backgroundColor: Colors.theme.red,
     },
     backgroundGradient: {
         position: 'absolute',
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     navbar: {
         opacity: 1,
-        backgroundColor: Colors.theme.purple,
+        backgroundColor: Colors.theme.blueDark,
     },
 });
 
@@ -75,6 +75,13 @@ class Home extends React.Component {
         // Users may have modified their accounts on other devices or on the web. Keep this device
         // in sync by fetching server-stored data.
         this.props.dispatch(fetchAccountDetails(this.props.token));
+
+        this.props.navigator.setStyle({
+            navBarCustomView: 'com.flarejewelry.FlareNavBar',
+            navBarCustomViewInitialProps: {navigator: this.props.navigator},
+            navBarBackgroundColor: Colors.theme.blueDark,
+            navBarComponentAlignment: 'fill',
+        });
     }
 
     componentDidMount() {
@@ -110,7 +117,7 @@ class Home extends React.Component {
             screen: 'PinCheck',
             title: Strings.pin.title,
             navigatorStyle: {
-                navBarBackgroundColor: Colors.theme.purple,
+                navBarBackgroundColor: Colors.theme.blueDark,
                 navBarTextColor: Colors.white,
                 navBarButtonColor: Colors.white,
             },
@@ -122,7 +129,7 @@ class Home extends React.Component {
             screen: 'AddContacts',
             title: Strings.contacts.add.title,
             navigatorStyle: {
-                navBarBackgroundColor: Colors.theme.purple,
+                navBarBackgroundColor: Colors.theme.blueDark,
                 navBarTextColor: Colors.white,
                 navBarButtonColor: Colors.white,
             },
@@ -137,10 +144,9 @@ class Home extends React.Component {
 
         return (
             <View style={containerStyles}>
-                <FlavorStripe />
                 <RadialGradient
                     style={styles.backgroundGradient}
-                    colors={[Colors.theme.orangeDark, Colors.theme.purple]}
+                    colors={[Colors.theme.blue, Colors.theme.blueDark]}
                     radius={300}
                 />
                 {!this.props.hasActiveFlare &&

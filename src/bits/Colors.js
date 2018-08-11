@@ -1,14 +1,15 @@
 export default {
     theme: {
-        purple: '#5E005E',
-        purpleTransparent: 'rgba(94, 0, 94, 0.5)',
-        pink: '#AB2F52',
-        orangeDark: '#E55D4A',
-        peach: '#E88554',
-        orangeLight: '#FFAF53',
+        blue: '#2EBDFF',
+        blueDark: '#228CBD',
+        cream: '#FFFAEB',
+        green: '#1CBF61',
+        purple: '#33244A',
+        purpleTransparent: 'rgba(51, 36, 74, 0.5)',
+        red: '#E85447',
     },
     black: '#000000',
     grey: '#979797',
-    greyLight: '#E8E8E8',
+    greyLight: '#DBEDF5',
     white: '#FFFFFF',
 };

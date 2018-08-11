@@ -77,6 +77,8 @@ export default class BleManager {
             data.beacons.forEach((beacon) => {
                 const parsedBeacon = BleUtils.parseBeacon(beacon);
 
+                console.debug(`Beacon ${JSON.stringify(parsedBeacon)}`);
+
                 if (options && options.onBeaconDetected) {
                     options.onBeaconDetected(parsedBeacon);
                 }
