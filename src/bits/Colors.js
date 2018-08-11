@@ -11,5 +11,6 @@ export default {
     black: '#000000',
     grey: '#979797',
     greyLight: '#DBEDF5',
+    transparent: 'rgba(0, 0, 0, 0.0)',
     white: '#FFFFFF',
 };

@@ -59,7 +59,11 @@ const styles = {
     },
     input: {
         marginBottom: Spacing.tiny,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        borderBottomWidth: 2,
+        borderBottomColor: Colors.theme.cream,
+        fontSize: 20,
+        color: Colors.theme.cream,
         height: Spacing.huge,
         minHeight: Spacing.huge,
     },
