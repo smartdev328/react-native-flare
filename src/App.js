@@ -63,9 +63,12 @@ export default class App extends Component {
                         screen: 'LeftDrawer',
                         disableOpenGesture: true,
                         fixedWidth: 500,
-                    }
+                    },
                 },
                 animationType: 'fade',
+                appStyle: {
+                    orientation: 'portrait',
+                },
             });
             break;
         default:
@@ -78,6 +81,9 @@ export default class App extends Component {
                     },
                 },
                 animationType: 'fade',
+                appStyle: {
+                    orientation: 'portrait',
+                },
             });
             break;
         }
