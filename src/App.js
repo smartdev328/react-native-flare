@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { persistStore } from 'redux-persist';
+import SplashScreen from 'react-native-splash-screen';
 
 import { BLUETOOTH_LISTENING } from './constants';
 import { configureStore } from './store/index';
@@ -30,6 +31,10 @@ export default class App extends Component {
             const { root } = store.getState().nav;
             store.dispatch(actions.initializeApp(root));
         });
+    }
+
+    componentDidMount() {
+        SplashScreen.hide();
     }
 
     onStoreUpdate() {
