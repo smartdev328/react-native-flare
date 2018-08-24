@@ -25,15 +25,21 @@ export default class BeaconCache {
         } = beacon;
 
         let handled = false;
+        const safeNonce = typeof nonce !== 'undefined' ? nonce : 'x';
         const lastTimestampForNonce = this.beaconCache[type] &&
             this.beaconCache[type][deviceID] &&
-            this.beaconCache[type][deviceID][nonce];
+            this.beaconCache[type][deviceID][safeNonce];
 
         // Putting nonce under the deviceID lets us compare timestamps across hour/day boundaries.
         // We consider beacons to be the same if they have the same nonce and were received within
-        // 30 seconds of each other.
+        // 10 seconds of each other.
         if (lastTimestampForNonce) {
-            handled = moment(lastTimestampForNonce).diff(timestamp) < 20000;
+            handled = Math.abs(moment(lastTimestampForNonce).diff(timestamp)) < 10000;
+            if (deviceID === 7) {
+                console.debug(`XXXX>>> Handled: ${handled} for type ${type} device ${deviceID} nonce ${safeNonce}. Old time ${lastTimestampForNonce} new time ${timestamp}`);
+            }
+        } else if (deviceID === 7) {
+            console.debug(`XXXX>>> Not handled; no timestamp to compare ${type} ${safeNonce}`);
         }
 
         return handled;
@@ -55,11 +61,12 @@ export default class BeaconCache {
             this.beaconCache[type][deviceID] = {};
         }
 
-        if (!this.beaconCache[type][deviceID][nonce]) {
-            this.beaconCache[type][deviceID][nonce] = null;
+        const safeNonce = typeof nonce !== 'undefined' ? nonce : 'x';
+        if (!this.beaconCache[type][deviceID][safeNonce]) {
+            this.beaconCache[type][deviceID][safeNonce] = null;
         }
 
-        this.beaconCache[type][deviceID][nonce] = timestamp;
+        this.beaconCache[type][deviceID][safeNonce] = timestamp;
     }
 
     prune() {
