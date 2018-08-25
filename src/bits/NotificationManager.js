@@ -14,7 +14,6 @@ export default class NotificationManager {
     }
 
     onNotification(notification) {
-        console.debug(`Notification ${JSON.stringify(notification)}`);
         if (Platform.OS === 'ios') {
             notification.finish(PushNotificationIOS.FetchResult.NoData);
         }
