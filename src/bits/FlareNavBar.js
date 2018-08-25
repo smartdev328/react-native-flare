@@ -40,7 +40,7 @@ function FlareNavBar(props) {
                 </Text>
             </TouchableOpacity>
             <Image
-                source={require('../assets/FLARE-white.png')}
+                source={require('../assets/flare_white.png')}
                 style={styles.logo}
             />
         </View>

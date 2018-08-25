@@ -28,8 +28,8 @@ export default class NotificationManager {
         PushNotification.setApplicationIconBadgeNumber(0);
 
         PushNotification.localNotification({
-            title: Strings.notifications.title,
-            message,
+            title: message,
+            message: Strings.notifications.title,
             playSound,
             smallIcon,
             largeIcon,

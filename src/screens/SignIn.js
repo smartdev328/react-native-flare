@@ -134,7 +134,7 @@ class SignIn extends Component {
                     radius={300}
                 />
                 <Image
-                    source={require('../assets/FLARE-white.png')}
+                    source={require('../assets/flare_white.png')}
                     style={styles.logo}
                 />
                 {(this.state.invalid || this.props.authState === 'failed') &&
