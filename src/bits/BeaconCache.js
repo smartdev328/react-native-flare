@@ -35,11 +35,6 @@ export default class BeaconCache {
         // 10 seconds of each other.
         if (lastTimestampForNonce) {
             handled = Math.abs(moment(lastTimestampForNonce).diff(timestamp)) < 10000;
-            if (deviceID === 7) {
-                console.debug(`XXXX>>> Handled: ${handled} for type ${type} device ${deviceID} nonce ${safeNonce}. Old time ${lastTimestampForNonce} new time ${timestamp}`);
-            }
-        } else if (deviceID === 7) {
-            console.debug(`XXXX>>> Not handled; no timestamp to compare ${type} ${safeNonce}`);
         }
 
         return handled;
@@ -79,7 +74,5 @@ export default class BeaconCache {
                 this.beaconCache[beaconType][deviceID] = pruned;
             });
         });
-
     }
-
 }

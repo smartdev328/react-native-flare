@@ -13,7 +13,7 @@ import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 import { checkPermissions } from '../actions/userActions';
-
+import NotificationManager from '../bits/NotificationManager';
 
 const styles = StyleSheet.create({
     container: {
@@ -97,6 +97,15 @@ class Home extends React.Component {
     componentWillUnmount() {
         BackgroundTimer.stopBackgroundTimer();
         AppState.removeEventListener('change', this.handleAppStateChange);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.activatingFlareState !== this.props.activatingFlareState &&
+            this.props.activatingFlareState === 'request') {
+            this.props.notificationManager.localNotify({
+                message: Strings.notifications.events.flare.defaultMessage,
+            });
+        }
     }
 
     handleAppStateChange = (nextAppState) => {
@@ -213,6 +222,7 @@ function mapStateToProps(state) {
         hasTimestamp,
         contactsLabel,
         hasActiveFlare: state.user.hasActiveFlare,
+        activatingFlareState: state.user.activatingFlareState,
     };
 }
 

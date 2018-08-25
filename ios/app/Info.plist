@@ -111,6 +111,6 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>We do not want access to your music.</string>
 	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string/>
 </dict>
 </plist>

@@ -3,6 +3,8 @@ package com.flarejewelry;
 import android.app.Application;
 
 // import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.surajit.rnrg.RNRadialGradientPackage;
@@ -16,20 +18,11 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.reactnativenavigation.NavigationApplication;
 
-// Import dependencies related to checking permissions
-// import com.facebook.react.modules.core.PermissionAwareActivity;
-// import com.facebook.react.modules.core.PermissionListener;
-// import android.annotation.TargetApi;
-// import android.support.annotation.Nullable;
-// import android.os.Build;
-
-
 import java.util.Arrays;
 import java.util.List;
 
 // public class MainApplication extends NavigationApplication implements PermissionAwareActivity {
     public class MainApplication extends NavigationApplication {
-    // @Nullable private PermissionListener mPermissionListener;
 
     @Override
     public boolean isDebug() {
@@ -48,8 +41,8 @@ import java.util.List;
             new VectorIconsPackage(),
             new RNI18nPackage(),
             new BeaconsAndroidPackage(),
-            new ReactNativeConfigPackage()
-            
+            new ReactNativeConfigPackage(),
+            new ReactNativePushNotificationPackage()
         );
     }
 
@@ -68,21 +61,4 @@ import java.util.List;
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
     }
-
-    // @TargetApi(Build.VERSION_CODES.M)
-    // public void requestPermissions(String[] permissions, int requestCode, PermissionListener listener) {
-    //     mPermissionListener = listener;
-    //     requestPermissions(permissions, requestCode, mPermissionListener);
-    // }
-
-    // public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    //     if (mPermissionListener != null && mPermissionListener.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
-    //         mPermissionListener = null;
-    //     }
-    // }
-
-    // @Override
-    // public boolean shouldShowRequestPermissionRationale(String permission) {
-    //     return false;
-    // }
 }

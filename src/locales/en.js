@@ -64,6 +64,14 @@ const Strings = {
             title: 'Choose your Crew',
         },
     },
+    notifications: {
+        title: 'w/ ❤️ from Flare',
+        events: {
+            flare: {
+                defaultMessage: 'Get that thing done',
+            }
+        }
+    },
 };
 
 export default Strings;

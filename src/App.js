@@ -11,6 +11,7 @@ import BleManager from './bits/BleManager';
 import FlareNavBar from './bits/FlareNavBar';
 import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
+import NotificationManager from './bits/NotificationManager';
 
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
@@ -23,6 +24,7 @@ export default class App extends Component {
         this.currentRoot = 'uninitialized';
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
         this.bleManager = new BleManager();
+        this.notificationManager = new NotificationManager();
         store = configureStore(initialState);
 
         persistStore(store, null, () => {
@@ -75,6 +77,9 @@ export default class App extends Component {
                 animationType: 'fade',
                 appStyle: {
                     orientation: 'portrait',
+                },
+                passProps: {
+                    notificationManager: this.notificationManager,
                 },
             });
             break;
