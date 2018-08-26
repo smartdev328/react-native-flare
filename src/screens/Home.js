@@ -13,7 +13,6 @@ import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 import { checkPermissions } from '../actions/userActions';
-import NotificationManager from '../bits/NotificationManager';
 
 const styles = StyleSheet.create({
     container: {
@@ -66,12 +65,6 @@ const styles = StyleSheet.create({
 class Home extends React.Component {
     // eslint-disable-next-line
     componentWillMount() {
-        // Contacts are not stored on the server. It takes a while to fetch them locally, so we
-        // start that process now before users need to view them.
-        if (this.props.user && this.props.user.permissions && this.props.user.permissions.contacts) {
-            this.props.dispatch(fetchContacts());
-        }
-
         // Users may have modified their accounts on other devices or on the web. Keep this device
         // in sync by fetching server-stored data.
         this.props.dispatch(fetchAccountDetails(this.props.token));
@@ -85,7 +78,18 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
+        // Check permissions just in case they've changed
         this.props.dispatch(checkPermissions());
+
+        // Contacts are not stored on the server. It takes a while to fetch them locally, so we
+        // start that process now before users need to view them.
+        if (this.props.permissions.contacts) {
+            console.log('gonna fetch contacts 1');
+            this.props.dispatch(fetchContacts());
+        }
+
+        // Periodically fetch account status to ensure auth and to observe account changes from
+        // other devices.
         BackgroundTimer.runBackgroundTimer(() => {
             if (this.props.user && this.props.user.permissions && this.props.user.permissions.contacts) {
                 this.props.dispatch(fetchAccountDetails(this.props.token));
@@ -106,9 +110,15 @@ class Home extends React.Component {
                 message: Strings.notifications.events.flare.defaultMessage,
             });
         }
+
+        if (prevProps.permissions.contacts === false && this.props.permissions.contacts) {
+            console.log('gonna fetch contacts 2');
+            this.props.dispatch(fetchContacts());
+        }
     }
 
     handleAppStateChange = (nextAppState) => {
+        console.debug(`App went to state ${nextAppState}.`);
         switch (nextAppState) {
         case 'active':
             this.props.dispatch(checkPermissions());
@@ -116,7 +126,6 @@ class Home extends React.Component {
         case 'inactive':
         case 'background':
         default:
-            console.debug(`App went to state ${nextAppState}.`);
             break;
         }
     }
@@ -223,6 +232,7 @@ function mapStateToProps(state) {
         contactsLabel,
         hasActiveFlare: state.user.hasActiveFlare,
         activatingFlareState: state.user.activatingFlareState,
+        permissions: state.user.permissions,
     };
 }
 

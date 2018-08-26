@@ -28,16 +28,27 @@ export function checkPermissions() {
         Permissions
             .checkMultiple(Object.keys(permissions))
             .then((checkResponse) => {
+                // Request permission for each service that is not authorized.
                 const permissionsToRequest = Object.keys(checkResponse).filter(p => checkResponse[p] !== 'authorized');
                 permissionsToRequest.forEach((permission) => {
                     const options = permissions[permission];
-                    console.debug(`Requesting permission ${permission} with options ${options}`);
                     Permissions.request(permission, options).then((reqResponse) => {
                         dispatch({
                             type: types.PERMISSIONS_SUCCESS,
                             permission,
                             granted: reqResponse === 'authorized',
                         });
+                    });
+                });
+
+                // Ensure that the redux store knows about services that are already authorized.
+                const permissionsAlreadyGranted =
+                    Object.keys(checkResponse).filter(p => checkResponse[p] === 'authorized');
+                permissionsAlreadyGranted.forEach((permission) => {
+                    dispatch({
+                        type: types.PERMISSIONS_SUCCESS,
+                        permission,
+                        granted: true,
                     });
                 });
             });

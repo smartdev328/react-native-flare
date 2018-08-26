@@ -15,7 +15,7 @@ import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
 
-import { setCrewMembers } from '../actions/userActions';
+import { setCrewMembers, fetchContacts } from '../actions/userActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -52,6 +52,10 @@ class AddContacts extends React.Component {
             crew: props.crew,
             crewListHeight: props.crew.members.length * this.crewListItemHeight,
         };
+    }
+
+    componentWillMount() {
+        this.props.dispatch(fetchContacts());
     }
 
     componentDidUpdate(prevProps) {

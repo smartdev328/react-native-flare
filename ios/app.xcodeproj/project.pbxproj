@@ -50,7 +50,6 @@
 		BAB0C323DD4F45E3AC92D31A /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF80EF08BE94A4AAB8B53DD /* libRNBackgroundTimer.a */; };
 		BBE3D88D261A42CE967C4C94 /* libRCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6052B5C56BF478482F82488 /* libRCTContacts.a */; };
 		BEA1C8BF20FE35F5000F066F /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA1C8BE20FE35CA000F066F /* libReactNativeNavigation.a */; };
-		BEA926D61C9649F1AE4EAF37 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6D537638AC14A78AB9675A7 /* libReactNativePermissions.a */; };
 		CF18EBA274434A29BEFE0C40 /* libSRSRadialGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51448DA97E3944A988E88BA7 /* libSRSRadialGradient.a */; };
 		E7A25C40BCAE4BB08068BC25 /* libRNiBeacon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4388B9A712A40F9BB1A0969 /* libRNiBeacon.a */; };
 		E7B785195207485C83314128 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AE0029D750C4749A47AACE7 /* FontAwesome.ttf */; };
@@ -59,6 +58,7 @@
 		F06B70609B4B4651853E2012 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 061186FE4D3E41FAA7A0FF6E /* Zocial.ttf */; };
 		FDF7A73EFC064AE0AC8BC842 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 481C9AAC0FC9406784D22ACE /* libRNI18n.a */; };
 		7B0D6E7FA1DC44AF90DF15C8 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 831A2C9C3F4F4C139ED39D79 /* libSplashScreen.a */; };
+		3CC878C321D24BFEB7D6675D /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D532A7DA95B9412DBD32BB75 /* libReactNativePermissions.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -363,13 +363,6 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
-		BE49D6492118C981009976D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 065AB60551D542EE938431A3 /* ReactNativePermissions.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9D23B34F1C767B80008B4819;
-			remoteInfo = ReactNativePermissions;
-		};
 		BE8F580120F7D36B00D59C32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1DEEA41565BA4E6498ECD926 /* RCTContacts.xcodeproj */;
@@ -425,7 +418,6 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* appTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = appTests.m; sourceTree = "<group>"; };
 		061186FE4D3E41FAA7A0FF6E /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
-		065AB60551D542EE938431A3 /* ReactNativePermissions.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativePermissions.xcodeproj; path = "../node_modules/react-native-permissions/ios/ReactNativePermissions.xcodeproj"; sourceTree = "<group>"; };
 		09EEC3E83A86452BA16A8878 /* RNiBeacon.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNiBeacon.xcodeproj; path = "../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon.xcodeproj"; sourceTree = "<group>"; };
 		0A2FC39804C746DB9B5E9323 /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
@@ -467,11 +459,12 @@
 		CCD6C153581E4DEFBCE9230B /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		DAAE14CB89644222A912DB05 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		E554C7C49C8144E69D69644C /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		E6D537638AC14A78AB9675A7 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativePermissions.a; sourceTree = "<group>"; };
 		EDF80EF08BE94A4AAB8B53DD /* libRNBackgroundTimer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundTimer.a; sourceTree = "<group>"; };
 		FE3C4692F6AE456E9B7F1051 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		EDB3C72237534B21B03D90CE /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; name = "SplashScreen.xcodeproj"; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		831A2C9C3F4F4C139ED39D79 /* libSplashScreen.a */ = {isa = PBXFileReference; name = "libSplashScreen.a"; path = "libSplashScreen.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		91F2385F00994DD39EB07E61 /* ReactNativePermissions.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativePermissions.xcodeproj"; path = "../node_modules/react-native-permissions/ios/ReactNativePermissions.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		D532A7DA95B9412DBD32BB75 /* libReactNativePermissions.a */ = {isa = PBXFileReference; name = "libReactNativePermissions.a"; path = "libReactNativePermissions.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -508,8 +501,8 @@
 				CF18EBA274434A29BEFE0C40 /* libSRSRadialGradient.a in Frameworks */,
 				BBE3D88D261A42CE967C4C94 /* libRCTContacts.a in Frameworks */,
 				F01C5B25EF59422AA7315E67 /* libReactNativeConfig.a in Frameworks */,
-				BEA926D61C9649F1AE4EAF37 /* libReactNativePermissions.a in Frameworks */,
 				7B0D6E7FA1DC44AF90DF15C8 /* libSplashScreen.a in Frameworks */,
+				3CC878C321D24BFEB7D6675D /* libReactNativePermissions.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,8 +716,8 @@
 				B2A3ACE52CFD4C11B03D0625 /* SRSRadialGradient.xcodeproj */,
 				1DEEA41565BA4E6498ECD926 /* RCTContacts.xcodeproj */,
 				3E38AFC3BC0847E3AE0255BD /* ReactNativeConfig.xcodeproj */,
-				065AB60551D542EE938431A3 /* ReactNativePermissions.xcodeproj */,
 				EDB3C72237534B21B03D90CE /* SplashScreen.xcodeproj */,
+				91F2385F00994DD39EB07E61 /* ReactNativePermissions.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -811,14 +804,6 @@
 			children = (
 				BE34183D20BF4D3C00D25DF4 /* libRNI18n.a */,
 				BE34183F20BF4D3C00D25DF4 /* libRNI18n-tvOS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		BE49D61E2118C981009976D5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BE49D64A2118C981009976D5 /* libReactNativePermissions.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1050,10 +1035,6 @@
 				{
 					ProductGroup = BEA1C8BA20FE35CA000F066F /* Products */;
 					ProjectRef = BEA1C8B920FE35CA000F066F /* ReactNativeNavigation.xcodeproj */;
-				},
-				{
-					ProductGroup = BE49D61E2118C981009976D5 /* Products */;
-					ProjectRef = 065AB60551D542EE938431A3 /* ReactNativePermissions.xcodeproj */;
 				},
 				{
 					ProductGroup = BECCF29F20C87B23000F317E /* Products */;
@@ -1374,13 +1355,6 @@
 			remoteRef = BE34184720BF4D3C00D25DF4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BE49D64A2118C981009976D5 /* libReactNativePermissions.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libReactNativePermissions.a;
-			remoteRef = BE49D6492118C981009976D5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		BE8F580220F7D36B00D59C32 /* libRCTContacts.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1587,16 +1561,14 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = appTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1627,16 +1599,14 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = appTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1670,8 +1640,8 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1709,8 +1679,8 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1751,15 +1721,13 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "app-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1797,15 +1765,13 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "app-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1842,15 +1808,13 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "app-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1887,15 +1851,13 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/react-native-contacts/ios/RCTContacts",
 					"$(SRCROOT)/../node_modules/react-native-config/ios/ReactNativeConfig",
-					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "app-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (

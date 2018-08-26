@@ -21,8 +21,7 @@ import com.reactnativenavigation.NavigationApplication;
 import java.util.Arrays;
 import java.util.List;
 
-// public class MainApplication extends NavigationApplication implements PermissionAwareActivity {
-    public class MainApplication extends NavigationApplication {
+public class MainApplication extends NavigationApplication {
 
     @Override
     public boolean isDebug() {
