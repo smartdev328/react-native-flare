@@ -8,6 +8,7 @@ import BleUtils from './BleUtils';
 import { BeaconTypes, Regions } from './BleConstants';
 import { call, flare, checkin } from '../actions/beaconActions';
 import { setBluetoothState } from '../actions/hardwareActions';
+import { BLUETOOTH_BEACON_LOGGING } from '../constants';
 
 export default class BleManager {
     constructor(options) {
@@ -33,7 +34,6 @@ export default class BleManager {
 
     onBluetoothStateChange(change) {
         const { connectionState } = change.type;
-        console.debug(`Bluetooth state: ${connectionState}`);
         if (this.dispatch) {
             this.dispatch(setBluetoothState(connectionState));
         }
@@ -70,11 +70,14 @@ export default class BleManager {
             dispatch(checkin(token, beacon, position));
             break;
         }
-        console.debug(`Beacon type ${beacon.type} from device ${beacon.deviceID} with nonce ${beacon.nonce}`);
-        if (position) {
-            console.debug(`@ ${position.coords.latitude}, ${position.coords.longitude}`);
-        } else {
-            console.debug('@ unknown location');
+
+        if (BLUETOOTH_BEACON_LOGGING === 'enabled' || BLUETOOTH_BEACON_LOGGING === 'verbose') {
+            console.debug(`Beacon type ${beacon.type} from device ${beacon.deviceID} with nonce ${beacon.nonce}`);
+            if (position) {
+                console.debug(`@ ${position.coords.latitude}, ${position.coords.longitude}`);
+            } else {
+                console.debug('@ unknown location');
+            }
         }
     }
 
@@ -101,7 +104,10 @@ export default class BleManager {
             data.beacons.forEach((beacon) => {
                 const parsedBeacon = BleUtils.parseBeacon(beacon);
 
-                console.debug(`Beacon ${JSON.stringify(parsedBeacon)}`);
+
+                if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
+                    console.debug(`Beacon ${JSON.stringify(parsedBeacon)}`);
+                }
 
                 if (options && options.onBeaconDetected) {
                     options.onBeaconDetected(parsedBeacon);
