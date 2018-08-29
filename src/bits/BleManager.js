@@ -1,19 +1,43 @@
 /* global navigator */
 import { DeviceEventEmitter, Platform } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
+import RNBluetoothInfo from 'react-native-bluetooth-info';
+
 import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
 import { BeaconTypes, Regions } from './BleConstants';
 import { call, flare, checkin } from '../actions/beaconActions';
+import { setBluetoothState } from '../actions/hardwareActions';
 
 export default class BleManager {
-    constructor() {
+    constructor(options) {
         this.beaconsDidRange = null;
         this.regionDidEnterEvent = null;
         this.regionDidExitEvent = null;
         this.listening = false;
         this.beaconCache = new BeaconCache();
+        RNBluetoothInfo.addEventListener('change', (change) => {
+            this.onBluetoothStateChange(change);
+        });
+        RNBluetoothInfo.getCurrentState().then((change) => {
+            this.onBluetoothStateChange(change);
+        });
+        this.dispatch = options && options.dispatch;
     }
+
+    shutdown() {
+        RNBluetoothInfo.removeEventListener('change', (change) => {
+            this.onBluetoothStateChange(change);
+        });
+    }
+
+    onBluetoothStateChange(change) {
+        const { connectionState } = change.type;
+        console.debug(`Bluetooth state: ${connectionState}`);
+        if (this.dispatch) {
+            this.dispatch(setBluetoothState(connectionState));
+        }
+    };
 
     isListening() {
         return this.listening;

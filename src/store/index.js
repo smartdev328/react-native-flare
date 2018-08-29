@@ -11,7 +11,7 @@ import { REDUX_LOGGING } from '../constants/index';
 
 let middleware = [thunk];
 
-console.log(`LOGGING IS ${REDUX_LOGGING}`);
+console.log(`REDUX LOGGING IS ${REDUX_LOGGING}`);
 
 if (__DEV__ && REDUX_LOGGING) {
     middleware = [...middleware, logger];

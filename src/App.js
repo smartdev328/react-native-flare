@@ -23,9 +23,11 @@ export default class App extends Component {
 
         this.currentRoot = 'uninitialized';
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
-        this.bleManager = new BleManager();
-        this.notificationManager = new NotificationManager();
         store = configureStore(initialState);
+        this.notificationManager = new NotificationManager();
+        this.bleManager = new BleManager({
+            dispatch: store.dispatch,
+        });
 
         persistStore(store, null, () => {
             registerScreens(store, Provider);

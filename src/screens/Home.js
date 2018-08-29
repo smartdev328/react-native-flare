@@ -60,6 +60,18 @@ const styles = StyleSheet.create({
         opacity: 1,
         backgroundColor: Colors.theme.blueDark,
     },
+    bluetoothDisabledWarning: {
+        padding: Spacing.medium,
+    },
+    bluetoothDisabledWarningTitle: {
+        color: Colors.theme.cream,
+        fontSize: 22,
+        fontWeight: '700',
+    },
+    bluetoothDisabledWarningBody: {
+        color: Colors.theme.cream,
+        fontSize: 16,
+    }
 });
 
 class Home extends React.Component {
@@ -167,6 +179,16 @@ class Home extends React.Component {
                     colors={[Colors.theme.blue, Colors.theme.blueDark]}
                     radius={300}
                 />
+                {this.props.hardware && this.props.hardware.bluetooth !== 'on' &&
+                    <View style={styles.bluetoothDisabledWarning}>
+                        <Text style={styles.bluetoothDisabledWarningTitle}>
+                            {Strings.home.bluetoothDisabledWarning.title}
+                        </Text>
+                        <Text style={styles.bluetoothDisabledWarningBody}>
+                            {Strings.home.bluetoothDisabledWarning.body}
+                        </Text>
+                    </View>
+                }
                 {!this.props.hasActiveFlare &&
                     <View style={styles.deviceSelector}>
                         <DeviceSelector
@@ -233,6 +255,7 @@ function mapStateToProps(state) {
         hasActiveFlare: state.user.hasActiveFlare,
         activatingFlareState: state.user.activatingFlareState,
         permissions: state.user.permissions,
+        hardware: state.hardware,
     };
 }
 

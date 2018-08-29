@@ -8,6 +8,10 @@ const Strings = {
         cancelActiveFlare: 'CANCEL FLARE',
         contactsButtonLabelAdd: 'CHOOSE YOUR CREW',
         contactsButtonLabelEdit: 'EDIT YOUR CREW',
+        bluetoothDisabledWarning: {
+            title: 'OMG Bluetooth is off!!',
+            body: 'Please enable Bluetooth on this device so that Flare can work.',
+        },
     },
     leftDrawer: {
         signOut: 'Sign Out',
@@ -69,8 +73,8 @@ const Strings = {
         events: {
             flare: {
                 defaultMessage: 'Get that thing done',
-            }
-        }
+            },
+        },
     },
 };
 
