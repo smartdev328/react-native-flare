@@ -26,7 +26,7 @@ export default class NotificationManager {
         const { smallIcon = 'notification', largeIcon = 'notsorry' } = options;
 
         PushNotification.setApplicationIconBadgeNumber(0);
-
+        PushNotification.cancelAllLocalNotifications();
         PushNotification.localNotification({
             title: message,
             message: Strings.notifications.title,
