@@ -3,13 +3,13 @@ export function filterContacts(rawContacts) {
     const contacts = [];
     for (let contactIndex = 0; contactIndex < rawContacts.length; contactIndex += 1) {
         const { givenName, middleName, familyName } = rawContacts[contactIndex];
-        const displayName =
+        const name =
             [givenName, middleName, familyName]
                 .join(' ')
                 .replace(/\s\s+/g, ' ');
 
         const contactInfo = {
-            displayName,
+            name,
         };
         const { phoneNumbers } = rawContacts[contactIndex];
         const duplicateNumberCheck = {};
@@ -20,7 +20,7 @@ export function filterContacts(rawContacts) {
                 const contact = Object.assign({}, contactInfo, {
                     key: strippedNumber,
                     label: phoneNumbers[phoneIndex].label,
-                    number: phoneNumbers[phoneIndex].number,
+                    phone: phoneNumbers[phoneIndex].number,
                 });
                 contacts.push(contact);
             }
@@ -28,8 +28,8 @@ export function filterContacts(rawContacts) {
     }
 
     const sections = {};
-    contacts.forEach((contact) => {       
-        const firstLetter = contact.displayName.length > 0 ? contact.displayName[0] : '?';
+    contacts.forEach((contact) => {
+        const firstLetter = contact.name.length > 0 ? contact.name[0] : '?';
         if (!Object.prototype.hasOwnProperty.call(sections, firstLetter)) {
             sections[firstLetter] = [];
         }

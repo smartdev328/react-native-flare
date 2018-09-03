@@ -58,10 +58,10 @@ const ContactsListItem = function createContactsListItem(props) {
             </View>
             <View style={styles.listItemDetails}>
                 <Text style={styles.displayName}>
-                    {props.contact.displayName} – {props.contact.label}
+                    {props.contact.name} – {props.contact.label}
                 </Text>
                 <Text style={styles.phone}>
-                    {props.contact.number}
+                    {props.contact.phone}
                 </Text>
             </View>
         </TouchableOpacity>

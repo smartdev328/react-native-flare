@@ -46,7 +46,7 @@ const CrewList = function createCrewList(props) {
             renderItem={({ item }) => (
                 <View style={styles.member}>
                     <Text style={styles.memberName}>
-                        {item.displayName} – {item.label}
+                        {item.name} – {item.label}
                     </Text>
                     <TouchableOpacity
                         style={styles.memberAction}

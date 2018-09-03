@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
 import CrewList from '../bits/CrewList';
-import FlavorStripe from '../bits/FlavorStripe';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
