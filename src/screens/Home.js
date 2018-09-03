@@ -5,14 +5,16 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
 
-import { claimDevice, fetchAccountDetails, fetchContacts } from '../actions/index';
+import { claimDevice, syncAccountDetails, fetchContacts } from '../actions/index';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
 import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
+
 import { checkPermissions } from '../actions/userActions';
+import Location from '../helpers/location';
 
 const styles = StyleSheet.create({
     container: {
@@ -75,11 +77,20 @@ const styles = StyleSheet.create({
 });
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+
+        // Fetch account details and submit app status periodically
+        this.accountSyncTimeInMs = 600000; // 60 s/min * 10 min * 1000 ms/s = 600000
+    }
+
     // eslint-disable-next-line
     componentWillMount() {
         // Users may have modified their accounts on other devices or on the web. Keep this device
         // in sync by fetching server-stored data.
-        this.props.dispatch(fetchAccountDetails(this.props.token));
+        this.props.dispatch(syncAccountDetails({
+            token: this.props.token,
+        }));
 
         this.props.navigator.setStyle({
             navBarCustomView: 'com.flarejewelry.FlareNavBar',
@@ -96,17 +107,31 @@ class Home extends React.Component {
         // Contacts are not stored on the server. It takes a while to fetch them locally, so we
         // start that process now before users need to view them.
         if (this.props.permissions.contacts) {
-            console.log('gonna fetch contacts 1');
             this.props.dispatch(fetchContacts());
         }
 
         // Periodically fetch account status to ensure auth and to observe account changes from
         // other devices.
         BackgroundTimer.runBackgroundTimer(() => {
-            if (this.props.user && this.props.user.permissions && this.props.user.permissions.contacts) {
-                this.props.dispatch(fetchAccountDetails(this.props.token));
-            }
-        }, 300000);
+            Location.getCurrentPosition({
+                enableHighAccuracy: true,
+                timeout: 60000,
+            }).then((position) => {
+                this.props.dispatch(syncAccountDetails({
+                    token: this.props.token,
+                    status: {
+                        timestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+                        latitude: position.latitude,
+                        longitude: position.longitude,
+                        details: {
+                            permissions: this.props.permissions,
+                            hardware: this.props.hardware,
+                            position,
+                        },
+                    },
+                }));
+            });
+        }, this.accountSyncTimeInMs);
         AppState.addEventListener('change', this.handleAppStateChange);
     }
 
@@ -124,7 +149,6 @@ class Home extends React.Component {
         }
 
         if (prevProps.permissions.contacts === false && this.props.permissions.contacts) {
-            console.log('gonna fetch contacts 2');
             this.props.dispatch(fetchContacts());
         }
     }

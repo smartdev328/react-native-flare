@@ -97,24 +97,37 @@ export function checkContactsPermission() {
     };
 }
 
-export function fetchAccountDetails(token) {
-    return function startFetchingAccountDetails(dispatch) {
+export function syncAccountDetails(args) {
+    return function startSyncingAccountDetails(dispatch) {
         dispatch({
             type: types.ACCOUNT_DETAILS_REQUEST,
         });
+
+        const status = { args };
+        let requestOptions = null;
+        if (status) {
+            requestOptions = {
+                method: 'POST',
+                body: JSON.stringify({
+                    status: args.status,
+                }),
+            };
+        }
+
         ProtectedAPICall(
-            token,
+            args.token,
             API_URL,
             '/auth/status',
+            requestOptions,
         ).then((response) => {
             dispatch({
                 type: types.ACCOUNT_DETAILS_SUCCESS,
                 data: response.data,
             });
-        }).catch((status) => {
+        }).catch((error) => {
             dispatch({
                 type: types.ACCOUNT_DETAILS_FAILURE,
-                status,
+                status: error,
             });
         });
     };
