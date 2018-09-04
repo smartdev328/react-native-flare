@@ -1,5 +1,5 @@
-import { Platform } from 'react-native';
-import PushNotification, { PushNotificationIOS } from 'react-native-push-notification';
+import { Platform, PushNotificationIOS } from 'react-native';
+import PushNotification from 'react-native-push-notification';
 
 import Colors from './Colors';
 import Strings from '../locales/en';

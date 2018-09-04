@@ -163,7 +163,7 @@ class SignIn extends Component {
                 </View>
                 <View style={styles.loadingContainer}>
                     {this.props.authState === 'requested' &&
-                        <ActivityIndicator size={Spacing.huge} color={Colors.white} />
+                        <ActivityIndicator color={Colors.white} />
                     }
                 </View>
                 <View style={styles.buttons}>

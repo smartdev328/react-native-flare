@@ -26,6 +26,6 @@ export const initialState = Immutable({
         recent: [],
     },
     hardware: {
-        bluetooth: 'off',
+        bluetooth: 'on',
     },
 });
