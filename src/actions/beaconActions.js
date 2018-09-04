@@ -4,7 +4,7 @@ import moment from 'moment';
 import { API_URL } from '../constants/';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 
-export function call(token, beacon, position) {
+export function call(token, beacon, position, forCurrentUser) {
     return async function doCall(dispatch) {
         ProtectedAPICall(
             token,
@@ -19,30 +19,36 @@ export function call(token, beacon, position) {
                 }),
             },
         ).then(() => {
-            dispatch({
-                type: types.BEACON_SHORT_PRESS,
-                beacon,
-                position,
-            });
+            if (forCurrentUser) {
+                dispatch({
+                    type: types.BEACON_SHORT_PRESS,
+                    beacon,
+                    position,
+                });
+            }
         }).catch((status) => {
-            dispatch({
-                type: types.BEACON_HANDLING_FAILED,
-                beacon,
-                position,
-                status,
-            });
+            if (forCurrentUser) {
+                dispatch({
+                    type: types.BEACON_HANDLING_FAILED,
+                    beacon,
+                    position,
+                    status,
+                });
+            }
         });
     };
 }
 
-export function flare(token, beacon, position) {
+export function flare(token, beacon, position, forCurrentUser) {
     return async function doFlare(dispatch) {
-        dispatch({
-            type: types.BEACON_LONG_PRESS,
-        });
-        dispatch({
-            type: types.ACTIVATE_FLARE_REQUEST,
-        });
+        if (forCurrentUser) {
+            dispatch({
+                type: types.BEACON_LONG_PRESS,
+            });
+            dispatch({
+                type: types.ACTIVATE_FLARE_REQUEST,
+            });
+        }
         ProtectedAPICall(
             token,
             API_URL,
@@ -56,23 +62,27 @@ export function flare(token, beacon, position) {
                 }),
             },
         ).then((response) => {
-            dispatch({
-                type: types.ACTIVATE_FLARE_SUCCESS,
-                data: {
-                    beacon,
-                    position,
-                    crewEvents: response.crew_events,
-                },
-            });
+            if (forCurrentUser) {
+                dispatch({
+                    type: types.ACTIVATE_FLARE_SUCCESS,
+                    data: {
+                        beacon,
+                        position,
+                        crewEvents: response.crew_events,
+                    },
+                });
+            }
         }).catch((status) => {
-            dispatch({
-                type: types.ACTIVATE_FLARE_FAILURE,
-                data: {
-                    beacon,
-                    position,
-                    status,
-                },
-            });
+            if (forCurrentUser) {
+                dispatch({
+                    type: types.ACTIVATE_FLARE_FAILURE,
+                    data: {
+                        beacon,
+                        position,
+                        status,
+                    },
+                });
+            }
         });
     };
 }
@@ -107,7 +117,7 @@ export function cancelActiveFlare(token, pin) {
     };
 }
 
-export function checkin(token, beacon, position) {
+export function checkin(token, beacon, position, forCurrentUser) {
     return async function doCheckin(dispatch) {
         ProtectedAPICall(
             token,
@@ -129,16 +139,20 @@ export function checkin(token, beacon, position) {
                 }),
             },
         ).then(() => {
-            dispatch({
-                type: types.BEACON_CHECKIN,
-                beacon,
-            });
+            if (forCurrentUser) {
+                dispatch({
+                    type: types.BEACON_CHECKIN,
+                    beacon,
+                });
+            }
         }).catch((status) => {
-            dispatch({
-                type: types.BEACON_HANDLING_FAILED,
-                beacon,
-                status,
-            });
+            if (forCurrentUser) {
+                dispatch({
+                    type: types.BEACON_HANDLING_FAILED,
+                    beacon,
+                    status,
+                });
+            }
         });
     };
 }

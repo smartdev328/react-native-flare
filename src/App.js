@@ -26,7 +26,7 @@ export default class App extends Component {
         store = configureStore(initialState);
         this.notificationManager = new NotificationManager();
         this.bleManager = new BleManager({
-            dispatch: store.dispatch,
+            store,
         });
 
         persistStore(store, null, () => {

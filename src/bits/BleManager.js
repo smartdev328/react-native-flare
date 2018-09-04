@@ -23,7 +23,8 @@ export default class BleManager {
         RNBluetoothInfo.getCurrentState().then((change) => {
             this.onBluetoothStateChange(change);
         });
-        this.dispatch = options && options.dispatch;
+        this.store = options && options.store;
+        this.dispatch = this.store && this.store.dispatch;
     }
 
     shutdown() {
@@ -37,7 +38,7 @@ export default class BleManager {
         if (this.dispatch) {
             this.dispatch(setBluetoothState(connectionState));
         }
-    };
+    }
 
     isListening() {
         return this.listening;
@@ -56,18 +57,22 @@ export default class BleManager {
 
     // eslint-disable-next-line class-methods-use-this
     handleBeacon(dispatch, token, beacon, position) {
+        const userDevices = this.store.getState().user.devices;
+        const deviceIDs = userDevices.map(d => d.id);
+        const forCurrentUser = deviceIDs.indexOf(beacon.deviceID) !== -1;
+
         switch (beacon.type) {
         case BeaconTypes.Short.name:
-            dispatch(call(token, beacon, position));
+            dispatch(call(token, beacon, position, forCurrentUser));
             break;
 
         case BeaconTypes.Long.name:
-            dispatch(flare(token, beacon, position));
+            dispatch(flare(token, beacon, position, forCurrentUser));
             break;
 
         case BeaconTypes.Checkin.name:
         default:
-            dispatch(checkin(token, beacon, position));
+            dispatch(checkin(token, beacon, position, forCurrentUser));
             break;
         }
 
