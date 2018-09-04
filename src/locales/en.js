@@ -12,6 +12,10 @@ const Strings = {
             title: 'OMG Bluetooth is off!!',
             body: 'Please enable Bluetooth on this device so that Flare can work.',
         },
+        lastBeacon: {
+            present: 'Last beacon received',
+            absent: 'No beacons received',
+        },
     },
     leftDrawer: {
         signOut: 'Sign Out',
@@ -37,7 +41,10 @@ const Strings = {
     },
     jewelry: {
         cuffV1: {
-            name: 'Ruff Cuff',
+            name: 'Cuff v1',
+        },
+        cuffV2: {
+            name: 'Cuff v2',
         },
     },
     permissions: {

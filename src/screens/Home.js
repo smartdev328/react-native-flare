@@ -221,14 +221,16 @@ class Home extends React.Component {
                             claimingDevice={this.props.claimingDevice}
                             claimingDeviceFailure={this.props.claimingDeviceFailure}
                         >
-                            <Text style={styles.centered}>
-                                {this.props.lastBeaconTimeHeading}
-                            </Text>
-                            {this.props.hasTimestamp &&
-                                <Text style={[styles.centered, styles.dimmed]}>
-                                    {moment(this.props.hasTimestamp).toLocaleString()}
+                            <View>
+                                <Text style={styles.centered}>
+                                    {this.props.lastBeaconTimeHeading}
                                 </Text>
-                            }
+                                {this.props.latestBeacon &&
+                                    <Text style={[styles.centered, styles.dimmed]}>
+                                        {moment(this.props.latestBeacon.timestamp).toLocaleString()}
+                                    </Text>
+                                }
+                            </View>
                         </DeviceSelector>
                     </View>
                 }
@@ -257,24 +259,19 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const hasTimestamp = false;
-    const lastBeaconTimeHeading = Strings.beacons.notYetReceived;
     const contactsLabel =
         state.user.crews && state.user.crews.length ?
             Strings.home.contactsButtonLabelEdit :
             Strings.home.contactsButtonLabelAdd;
 
-    //     // const hasTimestamp = screenProps && screenProps.lastBeacon && screenProps.lastBeacon.timestamp;
-    //     // const lastBeaconTimeHeading = hasTimestamp ?
-    //     //     Strings.beacons.lastReceived : Strings.beacons.notYetReceived;
     return {
         token: state.user.token,
         devices: state.user.devices,
         crews: state.user.crews,
         claimingDevice: state.user.claimingDevice,
         claimingDeviceFailure: state.user.claimingDeviceFailure,
-        lastBeaconTimeHeading,
-        hasTimestamp,
+        latestBeacon: state.beacons.latest,
+        lastBeaconTimeHeading: state.beacons.latest ? Strings.home.lastBeacon.present : Strings.home.lastBeacon.absent,
         contactsLabel,
         hasActiveFlare: state.user.hasActiveFlare,
         activatingFlareState: state.user.activatingFlareState,

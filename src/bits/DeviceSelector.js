@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     },
     children: {
         position: 'absolute',
-        width: 200,
-        height: 200,
+        width: 220,
+        height: 220,
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',

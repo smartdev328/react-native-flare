@@ -10,6 +10,7 @@ export const ACCOUNT_DETAILS_SUCCESS = 'flare.app.account.details.SUCCESS';
 export const BEACON_CHECKIN = 'flare.app.beacon.CHECKIN';
 export const BEACON_HANDLING_FAILED = 'flare.app.beacon.FAILED';
 export const BEACON_LONG_PRESS = 'flare.app.beacon.LONG';
+export const BEACON_RECEIVED = 'flare.app.beacon.RECEIVED';
 export const BEACON_SHORT_PRESS = 'flare.app.beacon.SHORT';
 
 export const ACTIVATE_FLARE_FAILURE = 'flare.app.activate.FAILURE';

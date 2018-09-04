@@ -7,6 +7,7 @@ import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
 import { BeaconTypes, Regions } from './BleConstants';
 import { call, flare, checkin } from '../actions/beaconActions';
+import * as actionTypes from '../actions/actionTypes';
 import { setBluetoothState } from '../actions/hardwareActions';
 import { BLUETOOTH_BEACON_LOGGING } from '../constants';
 
@@ -74,6 +75,13 @@ export default class BleManager {
         default:
             dispatch(checkin(token, beacon, position, forCurrentUser));
             break;
+        }
+
+        if (forCurrentUser) {
+            dispatch({
+                type: actionTypes.BEACON_RECEIVED,
+                beacon,
+            });
         }
 
         if (BLUETOOTH_BEACON_LOGGING === 'enabled' || BLUETOOTH_BEACON_LOGGING === 'verbose') {
