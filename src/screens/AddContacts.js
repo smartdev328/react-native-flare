@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    ActivityIndicator,
     KeyboardAvoidingView,
     StyleSheet,
     Text,
@@ -91,7 +92,6 @@ class AddContacts extends React.Component {
         this.props.dispatch(setCrewMembers(this.props.token, crewId, newMembers));
     }
 
-
     render() {
         const { contacts, contactsCrewLookup, crew } = this.props;
         return (
@@ -118,6 +118,12 @@ class AddContacts extends React.Component {
                     contactsCrewLookup={contactsCrewLookup || {}}
                     onPressContact={contact => this.handleContactPress(contact)}
                 />
+
+                <View>
+                    {this.props.loading &&
+                        <ActivityIndicator />
+                    }
+                </View>
             </KeyboardAvoidingView>
         );
     }
@@ -131,6 +137,7 @@ function mapStateToProps(state) {
         crew,
         contacts: state.user.contacts,
         contactsCrewLookup: state.user.contactsCrewLookup,
+        loading: state.user.crewUpdateState === 'requested',
     };
 }
 
