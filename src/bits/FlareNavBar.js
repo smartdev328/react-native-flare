@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         height: 44,
     },
     menuButton: {
-        marginRight: 16,
+        marginRight: 14,
     },
     logo: {
         width: 98,
@@ -36,7 +36,7 @@ function FlareNavBar(props) {
                 onPress={() => props.navigator.toggleDrawer({ side: 'left' })}
             >
                 <Text>
-                    <Icon name="menu" size={36} color={Colors.white} />,
+                    <Icon name="menu" size={36} color={Colors.white} />
                 </Text>
             </TouchableOpacity>
             <Image
