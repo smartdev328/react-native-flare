@@ -45,27 +45,47 @@ const styles = StyleSheet.create({
     },
 });
 
-const ContactsListItem = function createContactsListItem(props) {
-    return (
-        <TouchableOpacity
-            style={styles.listItem}
-            onPress={() => props.onPress(props.contact)}
-        >
-            <View style={styles.listItemSelection}>
-                {props.selected &&
-                    <Icon name="check" size={28} color={Colors.theme.blueDark} />
-                }
-            </View>
-            <View style={styles.listItemDetails}>
-                <Text style={styles.displayName}>
-                    {props.contact.name} – {props.contact.label}
-                </Text>
-                <Text style={styles.phone}>
-                    {props.contact.phone}
-                </Text>
-            </View>
-        </TouchableOpacity>
-    );
+class ContactsListItem extends React.Component {
+    constructor(props) {
+        super(props);
+        this.contact = this.props.contact;
+        this.onPressExternal = this.props.onPress;
+        this.onPress = this.onPressContact.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return this.props.contact.name !== nextProps.contact.name ||
+        this.props.contact.phone !== nextProps.contact.phone ||
+        this.props.contact.label !== nextProps.contact.label;
+    }
+
+    onPressContact() {
+        console.log(`Clicked on contact ${JSON.stringify(this.contact)}`);
+        this.onPressExternal(this.contact);
+    }
+
+    render() {
+        return (
+            <TouchableOpacity
+                style={styles.listItem}
+                onPress={this.onPress}
+            >
+                <View style={styles.listItemSelection}>
+                    {this.props.selected &&
+                        <Icon name="check" size={28} color={Colors.theme.blueDark} />
+                    }
+                </View>
+                <View style={styles.listItemDetails}>
+                    <Text style={styles.displayName}>
+                        {this.props.contact.name} – {this.props.contact.label}
+                    </Text>
+                    <Text style={styles.phone}>
+                        {this.props.contact.phone}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
 };
 
 const ContactsList = function createContactsList(props) {
@@ -82,7 +102,7 @@ const ContactsList = function createContactsList(props) {
                 <Text style={styles.sectionHeader}>{title}</Text>
             )}
             sections={props.contacts}
-            keyExtractor={item => item.key}
+            keyExtractor={item => `${item.recordID}${item.name}${item.label}`}
         />
     );
 };
