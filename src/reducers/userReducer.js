@@ -109,11 +109,14 @@ export function user(state = initialState.user, action = {}) {
             contactsState: 'failed',
         });
 
-    case types.CONTACTS_SUCCESS:
+    case types.CONTACTS_SUCCESS: {
+        const filteredContacts = filterContacts(action.contacts);
         return state.merge({
             contactsState: 'succeeded',
-            contacts: filterContacts(action.contacts),
+            contacts: filteredContacts.contacts,
+            contactsCount: filteredContacts.count,
         });
+    }
 
     /**
      * CREWS

@@ -93,7 +93,7 @@ class AddContacts extends React.Component {
     }
 
     render() {
-        const { contacts, contactsCrewLookup, crew } = this.props;
+        const { contacts, contactsCount, contactsCrewLookup, crew } = this.props;
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <View>
@@ -115,6 +115,7 @@ class AddContacts extends React.Component {
                 }
                 <ContactsList
                     contacts={contacts}
+                    contactsCount={contactsCount}
                     contactsCrewLookup={contactsCrewLookup || {}}
                     onPressContact={contact => this.handleContactPress(contact)}
                 />
@@ -136,6 +137,7 @@ function mapStateToProps(state) {
         token: state.user.token,
         crew,
         contacts: state.user.contacts,
+        contactsCount: state.user.contactsCount,
         contactsCrewLookup: state.user.contactsCrewLookup,
         loading: state.user.crewUpdateState === 'requested',
     };

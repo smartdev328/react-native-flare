@@ -21,8 +21,9 @@ export function filterContacts(rawContacts) {
             const strippedNumber = phoneNumbers[phoneIndex].number.replace(/[^0-9]/g, '');
             if (!Object.hasOwnProperty.call(duplicateNumberCheck, strippedNumber)) {
                 duplicateNumberCheck[strippedNumber] = null;
+                const key = `${name}${strippedNumber}${phoneNumbers[phoneIndex].label}`.replace(' ', '');
                 const contact = Object.assign({}, contactInfo, {
-                    key: strippedNumber,
+                    key,
                     label: phoneNumbers[phoneIndex].label,
                     phone: phoneNumbers[phoneIndex].number,
                 });
@@ -45,6 +46,7 @@ export function filterContacts(rawContacts) {
 
     const organizedContacts = [];
     const sortedKeys = Object.keys(sections).sort();
+    let totalContactsCount = 0;
     sortedKeys.forEach((sectionKey) => {
         sections[sectionKey].sort((a, b) => {
             if (a.name < b.name) {
@@ -58,7 +60,11 @@ export function filterContacts(rawContacts) {
             title: sectionKey.toLocaleUpperCase(),
             data: sections[sectionKey],
         });
+        totalContactsCount += sections[sectionKey].length;
     });
 
-    return organizedContacts;
+    return {
+        contacts: organizedContacts,
+        count: totalContactsCount,
+    };
 }

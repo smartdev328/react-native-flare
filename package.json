@@ -32,7 +32,7 @@
     "moment": "^2.22.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
-    "react-native": "~0.56.0",
+    "react-native": "^0.56.0",
     "react-native-background-timer": "^2.0.1",
     "react-native-beacons-manager": "^1.0.7",
     "react-native-bluetooth-info": "^1.0.3",
