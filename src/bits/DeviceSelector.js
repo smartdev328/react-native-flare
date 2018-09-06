@@ -135,7 +135,7 @@ export default class DeviceSelector extends React.Component {
                                         onFulfill={deviceID => this.props.addDevice(deviceID)}
                                     />
                                     {this.props.claimingDevice &&
-                                        <ActivityIndicator size={40} color={Colors.white} />
+                                        <ActivityIndicator color={Colors.white} />
                                     }
                                     {this.props.claimingDeviceFailure &&
                                         <Text>{this.props.claimingDeviceFailure}</Text>
