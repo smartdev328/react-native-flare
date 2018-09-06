@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         padding: Spacing.small,
         flex: 1,
         flexDirection: 'row',
+        height: 50,
     },
     listItemSelection: {
         flex: 1,
@@ -104,9 +105,9 @@ const ContactsList = function createContactsList(props) {
                 <Text style={styles.sectionHeader}>{title}</Text>
             )}
             sections={props.contacts}
-            keyExtractor={item => item.key}
+            keyExtractor={(item, index) => `${index}_${item.key}`}
             getItemLayout={(data, index) => (
-                { length: props.contactsCount * 64, offset: 64 * index, index }
+                { length: 50, offset: 50 * index, index }
             )}
         />
     );
