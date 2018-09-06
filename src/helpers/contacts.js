@@ -3,10 +3,14 @@ export function filterContacts(rawContacts) {
     const contacts = [];
     for (let contactIndex = 0; contactIndex < rawContacts.length; contactIndex += 1) {
         const { givenName, middleName, familyName } = rawContacts[contactIndex];
-        const name =
+        let name =
             [givenName, middleName, familyName]
                 .join(' ')
                 .replace(/\s\s+/g, ' ');
+
+        if (name.trim().length === 0 && rawContacts[contactIndex].company.length) {
+            name = rawContacts[contactIndex].company;
+        }
 
         const contactInfo = {
             name,
@@ -42,6 +46,14 @@ export function filterContacts(rawContacts) {
     const organizedContacts = [];
     const sortedKeys = Object.keys(sections).sort();
     sortedKeys.forEach((sectionKey) => {
+        sections[sectionKey].sort((a, b) => {
+            if (a.name < b.name) {
+                return -1;
+            } else if (a.name > b.name) {
+                return 1;
+            }
+            return 0;
+        });
         organizedContacts.push({
             title: sectionKey.toLocaleUpperCase(),
             data: sections[sectionKey],
