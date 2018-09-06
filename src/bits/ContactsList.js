@@ -13,9 +13,8 @@ import Spacing from './Spacing';
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        borderWidth: 2,
-        borderColor: Colors.theme.purple,
+        flex: 3,
+        justifyContent: 'flex-start',
     },
     sectionHeader: {
         backgroundColor: Colors.theme.blueDark,
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class ContactsListItem extends React.Component {
+class ContactsListItem extends React.PureComponent {
     constructor(props) {
         super(props);
         this.contact = this.props.contact;
@@ -56,11 +55,11 @@ class ContactsListItem extends React.Component {
         this.onPress = this.onPressContact.bind(this);
     }
 
-    shouldComponentUpdate(nextProps) {
-        return this.props.contact.name !== nextProps.contact.name ||
-        this.props.contact.phone !== nextProps.contact.phone ||
-        this.props.contact.label !== nextProps.contact.label;
-    }
+    // shouldComponentUpdate(nextProps) {
+    //     return this.props.contact.name !== nextProps.contact.name ||
+    //     this.props.contact.phone !== nextProps.contact.phone ||
+    //     this.props.contact.label !== nextProps.contact.label;
+    // }
 
     onPressContact() {
         console.log(`Clicked on contact ${JSON.stringify(this.contact)}`);
@@ -93,34 +92,23 @@ class ContactsListItem extends React.Component {
 
 const ContactsList = function createContactsList(props) {
     return (
-        <View style={styles.container}>
-            <TouchableOpacity
-                onPressOut={() => this.contactsList.scrollToLocation({
-                    sectionIndex: 4,
-                    itemIndex: 0,
-                })}
-            >
-                <Text>M</Text>
-            </TouchableOpacity>
-            <SectionList
-                ref={(L) => { this.contactsList = L; }}
-                renderItem={({ item }) => (
-                    <ContactsListItem
-                        contact={item}
-                        onPress={props.onPressContact}
-                        selected={Object.hasOwnProperty.call(props.contactsCrewLookup, item.key)}
-                    />
-                )}
-                renderSectionHeader={({ section: { title } }) => (
-                    <Text style={styles.sectionHeader}>{title}</Text>
-                )}
-                sections={props.contacts}
-                keyExtractor={item => item.key}
-                getItemLayout={(data, index) => (
-                    { length: props.contactsCount * 64, offset: 64 * index, index }
-                )}
-            />
-        </View>
+        <SectionList
+            renderItem={({ item }) => (
+                <ContactsListItem
+                    contact={item}
+                    onPress={props.onPressContact}
+                    selected={Object.hasOwnProperty.call(props.contactsCrewLookup, item.key)}
+                />
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+                <Text style={styles.sectionHeader}>{title}</Text>
+            )}
+            sections={props.contacts}
+            keyExtractor={item => item.key}
+            getItemLayout={(data, index) => (
+                { length: props.contactsCount * 64, offset: 64 * index, index }
+            )}
+        />
     );
 };
 
