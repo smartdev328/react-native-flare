@@ -150,3 +150,28 @@ export function fetchContacts() {
         });
     };
 }
+
+export function getCrewEventTimeline(token, eventID) {
+    return function getTimeline(dispatch) {
+        dispatch({
+            type: types.GET_FLARE_TIMELINE_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            `/sos/flare/${eventID}`, {
+                method: 'GET',
+            },
+        ).then((response) => {
+            dispatch({
+                type: types.GET_FLARE_TIMELINE_SUCCESS,
+                data: response.data,
+            });
+        }).catch((error) => {
+            dispatch({
+                type: types.GET_FLARE_TIMELINE_FAILURE,
+                error,
+            });
+        });
+    };
+}

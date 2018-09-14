@@ -17,6 +17,15 @@ const Strings = {
             absent: 'No beacons received',
         },
     },
+    crewEventTimeline: {
+        headings: {
+            notify: '💌 We told your crew.',
+            cancel: '🚫 You canceled the Flare.',
+            create: '📣 You started the Flare.',
+            join: 'is available.',
+            unknown: '🤮 Something got mixed up on our end.',
+        },
+    },
     leftDrawer: {
         signOut: 'Sign Out',
     },

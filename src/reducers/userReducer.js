@@ -182,6 +182,25 @@ export function user(state = initialState.user, action = {}) {
             claimingDeviceFailure: action.message,
         });
 
+    /**
+     * GET CREW EVENT TIMELINE
+     */
+    case types.GET_FLARE_TIMELINE_REQUEST:
+        return state.merge({
+            crewEventTimelineState: 'requested',
+        });
+
+    case types.GET_FLARE_TIMELINE_SUCCESS:
+        return state.merge({
+            crewEventTimelineState: 'succeeded',
+            crewEventTimeline: action.data.actions,
+        });
+
+    case types.GET_FLARE_TIMELINE_FAILURE:
+        return state.merge({
+            crewEventTimelineState: 'failed',
+        });
+
     default:
         return state;
     }

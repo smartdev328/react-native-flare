@@ -42,3 +42,7 @@ export const PERMISSIONS_SUCCESS = 'flare.app.permissions.SUCCESS';
 export const ROOT_CHANGED = 'flare.app.ROOT_CHANGED';
 
 export const BLUETOOTH_STATE_CHANGED = 'flare.app.hardware.BLUETOOTH';
+
+export const GET_FLARE_TIMELINE_FAILURE = 'flare.app.GET_FLARE_TIMELINE_FAILURE';
+export const GET_FLARE_TIMELINE_REQUEST = 'flare.app.GET_FLARE_TIMELINE_REQUEST';
+export const GET_FLARE_TIMELINE_SUCCESS = 'flare.app.GET_FLARE_TIMELINE_SUCCESS';

@@ -5,16 +5,17 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
 
+import { ACCOUNT_SYNC_INTERVAL } from '../constants';
 import { claimDevice, syncAccountDetails, fetchContacts } from '../actions/index';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
-import FlavorStripe from '../bits/FlavorStripe';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 
-import { checkPermissions } from '../actions/userActions';
+import { checkPermissions, getCrewEventTimeline } from '../actions/userActions';
 import Location from '../helpers/location';
+import CrewEventTimeline from '../bits/CrewEventTimeline';
 
 const styles = StyleSheet.create({
     container: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme.blueDark,
     },
     containerWithActiveFlare: {
-        backgroundColor: Colors.theme.red,
+        backgroundColor: Colors.theme.cream,
     },
     backgroundGradient: {
         position: 'absolute',
@@ -81,7 +82,8 @@ class Home extends React.Component {
         super(props);
 
         // Fetch account details and submit app status periodically
-        this.accountSyncTimeInMs = 600000; // 60 s/min * 10 min * 1000 ms/s = 600000
+        this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL; // 60 s/min * 10 min * 1000 ms/s = 600000
+        this.eventTimelineRefreshTimer = null;
     }
 
     // eslint-disable-next-line
@@ -98,6 +100,11 @@ class Home extends React.Component {
             navBarBackgroundColor: Colors.theme.blueDark,
             navBarComponentAlignment: 'fill',
         });
+
+        if (this.eventTimelineRefreshTimer) {
+            clearInterval(this.eventTimelineRefreshTimer);
+            this.eventTimelineRefreshTimer = null;
+        }
     }
 
     componentDidMount() {
@@ -133,6 +140,12 @@ class Home extends React.Component {
             });
         }, this.accountSyncTimeInMs);
         AppState.addEventListener('change', this.handleAppStateChange);
+
+        // If the current user has an active flare, fetch the crew timeline
+        // and show it
+        if (this.props.hasActiveFlare) {
+            this.startTimelineRefreshInterval();
+        }
     }
 
     componentWillUnmount() {
@@ -148,8 +161,27 @@ class Home extends React.Component {
             });
         }
 
+        if (this.props.hasActiveFlare) {
+            this.startTimelineRefreshInterval();
+        }
+
         if (prevProps.permissions.contacts === false && this.props.permissions.contacts) {
             this.props.dispatch(fetchContacts());
+        }
+    }
+
+    startTimelineRefreshInterval() {
+        if (this.eventTimelineRefreshTimer !== null) {
+            return;
+        }
+        // kick off the first request
+        this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
+
+        // schedule subsequent requests
+        if (this.props.crewEvents && this.props.crewEvents.length > 0) {
+            this.eventTimelineRefreshTimer = setInterval(() => {
+                this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
+            }, 10000);
         }
     }
 
@@ -190,6 +222,10 @@ class Home extends React.Component {
         });
     }
 
+    onRefreshTimeline() {
+        this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
+    }
+
     render() {
         const containerStyles = [styles.container];
         if (this.props.hasActiveFlare) {
@@ -198,12 +234,14 @@ class Home extends React.Component {
 
         return (
             <View style={containerStyles}>
-                <RadialGradient
-                    style={styles.backgroundGradient}
-                    colors={[Colors.theme.blue, Colors.theme.blueDark]}
-                    radius={300}
-                />
-                {this.props.hardware && this.props.hardware.bluetooth !== 'on' &&
+                {!this.props.hasActiveFlare &&
+                    <RadialGradient
+                        style={styles.backgroundGradient}
+                        colors={[Colors.theme.blue, Colors.theme.blueDark]}
+                        radius={300}
+                    />
+                }
+                {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare &&
                     <View style={styles.bluetoothDisabledWarning}>
                         <Text style={styles.bluetoothDisabledWarningTitle}>
                             {Strings.home.bluetoothDisabledWarning.title}
@@ -235,12 +273,18 @@ class Home extends React.Component {
                     </View>
                 }
                 {this.props.hasActiveFlare &&
-                    <View style={styles.cancelButtonArea}>
-                        <Button
-                            fullWidth
-                            onPress={() => this.showPinCheckScreen()}
-                            title={Strings.home.cancelActiveFlare}
+                    <View>
+                        <CrewEventTimeline
+                            timeline={this.props.crewEventTimeline}
+                            onRefresh={() => this.onRefreshTimeline()}
                         />
+                        <View style={styles.cancelButtonArea}>
+                            <Button
+                                fullWidth
+                                onPress={() => this.showPinCheckScreen()}
+                                title={Strings.home.cancelActiveFlare}
+                            />
+                        </View>
                     </View>
                 }
                 <View style={styles.footer}>
@@ -265,18 +309,21 @@ function mapStateToProps(state) {
             Strings.home.contactsButtonLabelAdd;
 
     return {
-        token: state.user.token,
-        devices: state.user.devices,
-        crews: state.user.crews,
+        activatingFlareState: state.user.activatingFlareState,
         claimingDevice: state.user.claimingDevice,
         claimingDeviceFailure: state.user.claimingDeviceFailure,
-        latestBeacon: state.beacons.latest,
-        lastBeaconTimeHeading: state.beacons.latest ? Strings.home.lastBeacon.present : Strings.home.lastBeacon.absent,
         contactsLabel,
-        hasActiveFlare: state.user.hasActiveFlare,
-        activatingFlareState: state.user.activatingFlareState,
-        permissions: state.user.permissions,
+        crewEvents: state.user.crewEvents,
+        crewEventTimeline: state.user.crewEventTimeline,
+        crewEventTimelineState: state.user.crewEventTimelineState,
+        crews: state.user.crews,
+        devices: state.user.devices,
         hardware: state.hardware,
+        hasActiveFlare: state.user.hasActiveFlare,
+        lastBeaconTimeHeading: state.beacons.latest ? Strings.home.lastBeacon.present : Strings.home.lastBeacon.absent,
+        latestBeacon: state.beacons.latest,
+        permissions: state.user.permissions,
+        token: state.user.token,
     };
 }
 
