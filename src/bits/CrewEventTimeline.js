@@ -16,8 +16,6 @@ const styles = StyleSheet.create({
     commonEvent: {
         marginTop: Spacing.small,
         marginBottom: Spacing.small,
-        marginLeft: Spacing.medium,
-        marginRight: Spacing.medium,
         padding: Spacing.small,
         borderRadius: 12,
     },
@@ -30,20 +28,20 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         fontSize: 14,
-        backgroundColor: Colors.backgrounds.blueTransparent,
+        backgroundColor: Colors.backgrounds.blue,
     },
     timestamp: {
         fontSize: 10,
-        color: Colors.grey,
+        color: Colors.theme.blueDark,
     },
     messageFrom: {
         fontSize: 10,
-        color: Colors.theme.purple,
+        color: Colors.theme.blueDark,
     },
     messageBody: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: Colors.theme.purple,
+        color: Colors.theme.blueDark,
     },
 });
 

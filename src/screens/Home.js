@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: Colors.theme.blueDark,
+        padding: Spacing.smallish,
     },
     containerWithActiveFlare: {
         backgroundColor: Colors.theme.cream,
@@ -52,11 +53,7 @@ const styles = StyleSheet.create({
     },
     cancelButtonArea: {
         width: '100%',
-        height: Spacing.huge,
-        marginTop: 90,
-        padding: Spacing.medium,
-        flex: 1,
-        flexDirection: 'row',
+        marginBottom: Spacing.small,
         justifyContent: 'center',
     },
     navbar: {
@@ -74,7 +71,14 @@ const styles = StyleSheet.create({
     bluetoothDisabledWarningBody: {
         color: Colors.theme.cream,
         fontSize: 16,
-    }
+    },
+    timelineHeader: {
+        paddingTop: Spacing.small,
+        paddingBottom: Spacing.medium,
+        fontSize: 22,
+        fontWeight: '700',
+        color: Colors.theme.purple,
+    },
 });
 
 class Home extends React.Component {
@@ -96,8 +100,10 @@ class Home extends React.Component {
 
         this.props.navigator.setStyle({
             navBarCustomView: 'com.flarejewelry.FlareNavBar',
-            navBarCustomViewInitialProps: {navigator: this.props.navigator},
-            navBarBackgroundColor: Colors.theme.blueDark,
+            navBarCustomViewInitialProps: {
+                navigator: this.props.navigator,
+                hasActiveFlare: this.props.hasActiveFlare,
+            },
             navBarComponentAlignment: 'fill',
         });
 
@@ -146,6 +152,12 @@ class Home extends React.Component {
         if (this.props.hasActiveFlare) {
             this.startTimelineRefreshInterval();
         }
+
+        this.props.navigator.setStyle({
+            navBarCustomViewInitialProps: {
+                hasActiveFlare: this.props.hasActiveFlare,
+            },
+        });
     }
 
     componentWillUnmount() {
@@ -164,6 +176,10 @@ class Home extends React.Component {
         if (this.props.hasActiveFlare) {
             this.startTimelineRefreshInterval();
         }
+
+        this.props.navigator.setStyle({
+            hasActiveFlare: this.props.hasActiveFlare,
+        });
 
         if (prevProps.permissions.contacts === false && this.props.permissions.contacts) {
             this.props.dispatch(fetchContacts());
@@ -202,11 +218,6 @@ class Home extends React.Component {
         this.props.navigator.push({
             screen: 'PinCheck',
             title: Strings.pin.title,
-            navigatorStyle: {
-                navBarBackgroundColor: Colors.theme.blueDark,
-                navBarTextColor: Colors.white,
-                navBarButtonColor: Colors.white,
-            },
         });
     }
 
@@ -215,9 +226,9 @@ class Home extends React.Component {
             screen: 'AddContacts',
             title: Strings.contacts.add.title,
             navigatorStyle: {
-                navBarBackgroundColor: Colors.theme.blueDark,
-                navBarTextColor: Colors.white,
-                navBarButtonColor: Colors.white,
+                navBarBackgroundColor: Colors.white,
+                navBarTextColor: Colors.theme.purple,
+                navBarButtonColor: Colors.theme.purple,
             },
         });
     }
@@ -234,13 +245,6 @@ class Home extends React.Component {
 
         return (
             <View style={containerStyles}>
-                {!this.props.hasActiveFlare &&
-                    <RadialGradient
-                        style={styles.backgroundGradient}
-                        colors={[Colors.theme.blue, Colors.theme.blueDark]}
-                        radius={300}
-                    />
-                }
                 {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare &&
                     <View style={styles.bluetoothDisabledWarning}>
                         <Text style={styles.bluetoothDisabledWarningTitle}>
@@ -274,6 +278,9 @@ class Home extends React.Component {
                 }
                 {this.props.hasActiveFlare &&
                     <View>
+                        <Text style={styles.timelineHeader}>
+                            {Strings.crewEventTimeline.title}
+                        </Text>
                         <CrewEventTimeline
                             timeline={this.props.crewEventTimeline}
                             onRefresh={() => this.onRefreshTimeline()}

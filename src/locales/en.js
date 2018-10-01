@@ -18,6 +18,7 @@ const Strings = {
         },
     },
     crewEventTimeline: {
+        title: 'You held down the button so we reached out to your crew.',
         headings: {
             notify: '💌 We told your crew.',
             cancel: '🚫 You canceled the Flare.',

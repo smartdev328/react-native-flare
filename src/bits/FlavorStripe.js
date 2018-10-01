@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         left: '10%',
         width: '30%',
         height: stripeHeight,
-        backgroundColor: Colors.theme.red,
+        backgroundColor: Colors.theme.pink,
     },
     first: {
         position: 'absolute',

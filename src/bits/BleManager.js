@@ -85,7 +85,7 @@ export default class BleManager {
         }
 
         if (BLUETOOTH_BEACON_LOGGING === 'enabled' || BLUETOOTH_BEACON_LOGGING === 'verbose') {
-            console.debug(`Beacon type ${beacon.type} from device ${beacon.deviceID} with nonce ${beacon.nonce}`);
+            console.debug(`Beacon type ${beacon.type} from device ${beacon.deviceID} with rssi ${beacon.rssi}`);
             if (position) {
                 console.debug(`@ ${position.coords.latitude}, ${position.coords.longitude}`);
             } else {

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        backgroundColor: Colors.greyLight,
+        backgroundColor: Colors.backgrounds.pink,
         padding: Spacing.medium,
     },
 });

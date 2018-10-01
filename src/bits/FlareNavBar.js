@@ -14,37 +14,55 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.theme.blueDark,
         margin: 0,
         padding: 0,
         height: 44,
     },
     menuButton: {
-        marginRight: 14,
+        marginLeft: 0,
+        marginRight: 10,
     },
     logo: {
         width: 98,
         resizeMode: 'contain',
+        marginBottom: 3,
     },
 });
 
-function FlareNavBar(props) {
-    return (
-        <View style={styles.container}>
-            <TouchableOpacity
-                style={styles.menuButton}
-                onPress={() => props.navigator.toggleDrawer({ side: 'left' })}
-            >
-                <Text>
-                    <Icon name="menu" size={36} color={Colors.white} />
-                </Text>
-            </TouchableOpacity>
-            <Image
-                source={require('../assets/flare_white.png')}
-                style={styles.logo}
-            />
-        </View>
-    );
+class FlareNavBar extends React.PureComponent {
+    componentDidUpdate() {
+        console.log(`Comp changed. Props now ${JSON.stringify(this.props)}`);
+    }
+
+    render() {
+        const dynamicContainerStyle = styles.container;
+        let iconColor = null;
+        let image = null;
+        if (this.props.hasActiveFlare) {
+            dynamicContainerStyle.backgroundColor = Colors.theme.purple;
+            iconColor = Colors.white;
+            image = require('../assets/flare_white.png');
+        } else {
+            iconColor = Colors.theme.purple;
+            image = require('../assets/flare_dark.png');
+        }
+        return (
+            <View style={dynamicContainerStyle}>
+                <TouchableOpacity
+                    style={styles.menuButton}
+                    onPress={() => this.props.navigator.toggleDrawer({ side: 'left' })}
+                >
+                    <Text>
+                        <Icon name="menu" size={26} color={iconColor} />
+                    </Text>
+                </TouchableOpacity>
+                <Image
+                    source={image}
+                    style={styles.logo}
+                />
+            </View>
+        );
+    }
 }
 
 export default FlareNavBar;

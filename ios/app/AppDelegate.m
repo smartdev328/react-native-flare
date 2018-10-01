@@ -26,7 +26,7 @@
 #endif
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  self.window.backgroundColor = UIColorFromRGB(0x228CBD);
+  self.window.backgroundColor = UIColorFromRGB(0xF0F7FF);
   [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
   return YES;
 }

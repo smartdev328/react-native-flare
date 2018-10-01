@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 0,
-        backgroundColor: Colors.theme.blueDark,
+        backgroundColor: Colors.backgrounds.pink,
     },
     backgroundGradient: {
         position: 'absolute',
@@ -52,11 +52,6 @@ class PinCheck extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container}>
-                <RadialGradient
-                    style={styles.backgroundGradient}
-                    colors={[Colors.theme.blue, Colors.theme.blueDark]}
-                    radius={300}
-                />
                 <Text style={styles.prompt}>
                     {Strings.pin.prompt}
                 </Text>
