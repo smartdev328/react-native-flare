@@ -1,6 +1,5 @@
 import React from 'react';
 import { AppState, Image, StyleSheet, Text, View } from 'react-native';
-import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
@@ -39,7 +38,6 @@ const styles = StyleSheet.create({
     centered: {
         alignSelf: 'center',
         textAlign: 'center',
-        color: Colors.white,
     },
     deviceSelector: {
         marginTop: 90,
@@ -77,27 +75,39 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         width: '100%',
-        height: 300,
+        height: '40%',
     },
     backgroundSplatBottom: {
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        height: 256,
+        height: '40%',
     },
     backgroundStar: {
         position: 'absolute',
-        top: 90,
+        top: '9%',
         left: Spacing.huge,
         width: 48,
         height: 48,
     },
     backgroundFlower: {
         position: 'absolute',
-        top: 80,
-        right: Spacing.small,
+        top: '11%',
+        right: '5%',
         width: 96,
         height: 96,
+    },
+    backgroundDiamond: {
+        position: 'absolute',
+        bottom: '20%',
+        right: '38%',
+        width: 16,
+        height: 16,
+    },
+
+    networkIcon: {
+        width: 48,
+        height: 48,
     }
 });
 
@@ -268,10 +278,12 @@ class Home extends React.Component {
                 <Image
                     source={require('../assets/bg-splat-green.png')}
                     style={styles.backgroundSplatTop}
+                    resizeMode="stretch"
                 />
                 <Image
                     source={require('../assets/bg-splat-pink.png')}
                     style={styles.backgroundSplatBottom}
+                    resizeMode="stretch"
                 />
                 <Image
                     source={require('../assets/home-star.png')}
@@ -280,6 +292,10 @@ class Home extends React.Component {
                 <Image
                     source={require('../assets/home-flower-purple.png')}
                     style={styles.backgroundFlower}
+                />
+                <Image
+                    source={require('../assets/home-diamond.png')}
+                    style={styles.backgroundDiamond}
                 />
                 {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare &&
                     <View style={styles.bluetoothDisabledWarning}>
@@ -299,14 +315,26 @@ class Home extends React.Component {
                             claimingDevice={this.props.claimingDevice}
                             claimingDeviceFailure={this.props.claimingDeviceFailure}
                         >
-                            <View>
-                                <Text style={styles.centered}>
-                                    {this.props.lastBeaconTimeHeading}
-                                </Text>
-                                {this.props.latestBeacon &&
-                                    <Text style={[styles.centered, styles.dimmed]}>
-                                        {moment(this.props.latestBeacon.timestamp).toLocaleString()}
+                            <View style={styles.centered}>
+                                {!this.props.latestBeacon &&
+                                    <Text>
+                                        {Strings.home.lastBeacon.absent}
                                     </Text>
+                                }
+                                {this.props.latestBeacon &&
+                                    <View style={styles.centered}>
+                                        <Image
+                                            source={require('../assets/home-network-icon.png')}
+                                            style={[styles.networkIcon, styles.centered]}
+                                            resizeMode="contain"
+                                        />
+                                        <Text>
+                                            {Strings.home.lastBeacon.present}
+                                        </Text>
+                                        <Text style={[styles.centered, styles.dimmed]}>
+                                            {moment(this.props.latestBeacon.timestamp).format('MMM D @ h:mma')}
+                                        </Text>
+                                    </View>
                                 }
                             </View>
                         </DeviceSelector>
@@ -363,7 +391,6 @@ function mapStateToProps(state) {
         devices: state.user.devices,
         hardware: state.hardware,
         hasActiveFlare: state.user.hasActiveFlare,
-        lastBeaconTimeHeading: state.beacons.latest ? Strings.home.lastBeacon.present : Strings.home.lastBeacon.absent,
         latestBeacon: state.beacons.latest,
         permissions: state.user.permissions,
         token: state.user.token,

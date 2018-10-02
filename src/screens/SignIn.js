@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, Image, Text, TextInput, View, KeyboardAvoidingView } from 'react-native';
-import RadialGradient from 'react-native-radial-gradient';
 import { connect } from 'react-redux';
 
-import { signIn, signOut, resetAuth } from '../actions/authActions';
+import { signIn, resetAuth } from '../actions/authActions';
 
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -76,9 +75,8 @@ const styles = {
         maxHeight: Spacing.huge,
     },
     buttons: {
-        marginBottom: Spacing.huge + Spacing.huge,
         padding: Spacing.medium,
-        flex: 1,
+        flex: 2,
     },
 };
 
@@ -128,11 +126,6 @@ class SignIn extends Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
-                <RadialGradient
-                    style={styles.backgroundGradient}
-                    colors={[Colors.theme.blue, Colors.theme.blueDark]}
-                    radius={300}
-                />
                 <Image
                     source={require('../assets/flare_white.png')}
                     style={styles.logo}
@@ -168,8 +161,8 @@ class SignIn extends Component {
                 </View>
                 <View style={styles.buttons}>
                     <Button
-                        whiteOutline
-                        fullWidth
+                        rounded
+                        primary
                         onPress={() => this.startSignIn()}
                         title={Strings.signin.signInLabel}
                     />
@@ -181,10 +174,6 @@ class SignIn extends Component {
 function mapStateToProps(state) {
     return {
         authState: state.user.authState,
-        // hasActiveFlare: state.hasActiveFlare,
-        // hasTimestamp: state.hasRecentBeacon,
-        // lastBeaconTimeHeading: state.lastBeaconTimeHeading,
-        // contactsLabel: state.contactsLabel,
         devices: state.user.devices,
     };
 }

@@ -38,7 +38,7 @@ const Strings = {
     signin: {
         usernamePrompt: 'Email or phone',
         passwordPrompt: 'Password',
-        signInLabel: 'SIGN IN',
+        signInLabel: 'Sign In',
         invalid: 'Please enter a valid username and password.',
     },
     beacons: {

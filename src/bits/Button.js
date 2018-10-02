@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
     },
     rounded: {
         borderRadius: 32,
+        height: 64,
+        maxHeight: 64,
     },
 });
 

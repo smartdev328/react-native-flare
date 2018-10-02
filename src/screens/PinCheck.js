@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
 import { connect } from 'react-redux';
-import RadialGradient from 'react-native-radial-gradient';
 
 import Colors from '../bits/Colors';
 import Strings from '../locales/en';
