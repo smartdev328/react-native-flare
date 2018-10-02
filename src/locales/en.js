@@ -7,7 +7,7 @@ const Strings = {
         chooseLanguage: 'Choose language',
         cancelActiveFlare: 'CANCEL FLARE',
         contactsButtonLabelAdd: 'CHOOSE YOUR CREW',
-        contactsButtonLabelEdit: 'EDIT YOUR CREW',
+        contactsButtonLabelEdit: 'Edit Your Crew',
         bluetoothDisabledWarning: {
             title: 'OMG Bluetooth is off!!',
             body: 'Please enable Bluetooth on this device so that Flare can work.',

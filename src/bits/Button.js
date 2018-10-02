@@ -10,8 +10,6 @@ const styles = StyleSheet.create({
         padding: Spacing.medium,
         borderRadius: 2,
         height: Spacing.huge,
-        maxHeight: Spacing.huge,
-        minHeight: Spacing.huge,
         alignSelf: 'center',
     },
     text: {
@@ -25,50 +23,34 @@ const styles = StyleSheet.create({
         height: Spacing.huge,
         flex: 1,
         flexDirection: 'row',
+        maxHeight: Spacing.huge,
+        minHeight: Spacing.huge,
     },
-    schemeWhiteBackground: {
-        backgroundColor: Colors.white,
-    },
-    schemeWhiteForeground: {
-        color: Colors.black,
-    },
-    schemeDefaultBackground: {
+    primaryBackground: {
         backgroundColor: Colors.theme.pink,
+        padding: Spacing.large,
     },
-    schemeDefaultForeground: {
+    primaryForeground: {
         color: Colors.white,
+        fontWeight: 'bold',
     },
-    schemeWhiteOutlineBackground: {
-        backgroundColor: 'rgba(0, 0, 0, 0)',
-        borderColor: Colors.white,
-        borderWidth: 1,
-    },
-    schemeWhiteOutlineForeground: {
-        color: Colors.white,
+    rounded: {
+        borderRadius: 32,
     },
 });
 
 function Button(props) {
-    let colorSchemeBg = styles.schemeDefaultBackground;
-    let colorSchemeFg = styles.schemeDefaultForeground;
-    if (props.white) {
-        colorSchemeBg = styles.schemeWhiteBackground;
-        colorSchemeFg = styles.schemeWhiteForeground;
-    } else if (props.whiteOutline) {
-        colorSchemeBg = styles.schemeWhiteOutlineBackground;
-        colorSchemeFg = styles.schemeWhiteOutlineForeground;
-    }
-
     return (
         <TouchableOpacity
             onPress={e => props.onPress(e)}
             style={[
                 styles.container,
-                props.fullWidth ? styles.fullWidth : null,
-                colorSchemeBg,
+                props.rounded && styles.rounded,
+                props.fullWidth && styles.fullWidth,
+                props.primary && styles.primaryBackground,
             ]}
         >
-            <Text style={[styles.text, colorSchemeFg]}>
+            <Text style={[styles.text, props.primary && styles.primaryForeground]}>
                 {props.title}
             </Text>
         </TouchableOpacity>

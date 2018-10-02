@@ -8,19 +8,21 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import Colors from './Colors';
+import Spacing from './Spacing';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
         margin: 0,
         padding: 0,
         height: 44,
     },
     menuButton: {
-        marginLeft: 0,
-        marginRight: 10,
+        position: 'absolute',
+        left: Spacing.small,
     },
     logo: {
         width: 98,
@@ -30,10 +32,6 @@ const styles = StyleSheet.create({
 });
 
 class FlareNavBar extends React.PureComponent {
-    componentDidUpdate() {
-        console.log(`Comp changed. Props now ${JSON.stringify(this.props)}`);
-    }
-
     render() {
         const dynamicContainerStyle = styles.container;
         let iconColor = null;
@@ -43,7 +41,7 @@ class FlareNavBar extends React.PureComponent {
             iconColor = Colors.white;
             image = require('../assets/flare_white.png');
         } else {
-            iconColor = Colors.theme.purple;
+            iconColor = Colors.grey;
             image = require('../assets/flare_dark.png');
         }
         return (

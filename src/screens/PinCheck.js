@@ -60,6 +60,7 @@ class PinCheck extends React.Component {
                     secureTextEntry
                     onFulfill={code => this.checkCode(code)}
                     keyboardType="numeric"
+                    activeColor="#000000"
                 />
                 {this.props.cancelingActiveFlare && this.props.cancelActiveFlareState === 'request' &&
                     <ActivityIndicator />

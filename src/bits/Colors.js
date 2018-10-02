@@ -1,19 +1,19 @@
 export default {
     theme: {
-        blue: '#30C4FF',
-        blueDark: '#4D45BF',
-        cream: '#FFFAFC',
+        blue: '#4D45BF',
+        blueLight: '#30C4FF',
         green: '#57DE9C',
         purple: '#33244A',
-        purpleTransparent: 'rgba(51, 36, 74, 0.5)',
         pink: '#ff50b5',
+        pinkLight: '#FFD7D2',
     },
     backgrounds: {
-        blue: '#F0F7FF',
-        blueTransparent: 'rgba(240, 247, 255, 0.6)',
-        pink: '#FFFAFC',
-        grey: '#CAD0D7',
-        greyTransparent: 'rgba(202, 208, 215, 0.2)',
+        blue: 'rgba(48, 196, 255, 0.12)',
+        blueLight: 'rgba(48, 196, 255, 0.05)',
+        pink: 'rgba(255, 79, 181, 0.12)',
+        pinkLight: 'rgba(255, 79, 181, 0.05)',
+        green: 'rgba(87, 222, 156, 0.12)',
+        greenLight: 'rgba(87, 222, 156, 0.05)',
     },
     accents: {
         yellow: '#FFD626',

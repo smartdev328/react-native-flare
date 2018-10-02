@@ -1,18 +1,18 @@
 import Strings from '../locales/en';
 
-const imageCuffV1 = require('../assets/cuff_v1.png');
+const imageCuffV2 = require('../assets/cuff-v2.png');
 
 export const DeviceImages = {
-    cuffV1: imageCuffV1,
+    cuffV2: imageCuffV2,
 };
 
 export const DeviceTypes = [
     {
         name: Strings.jewelry.cuffV1.name,
-        image: DeviceImages.cuffV1,
+        image: DeviceImages.cuffV2,
     },
     {
         name: Strings.jewelry.cuffV2.name,
-        image: DeviceImages.cuffV1,
+        image: DeviceImages.cuffV2,
     },
 ];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppState, StyleSheet, Text, View } from 'react-native';
+import { AppState, Image, StyleSheet, Text, View } from 'react-native';
 import RadialGradient from 'react-native-radial-gradient';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -23,16 +23,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: Colors.theme.blueDark,
-        padding: Spacing.smallish,
+        paddingBottom: Spacing.small,
     },
     containerWithActiveFlare: {
         backgroundColor: Colors.theme.cream,
-    },
-    backgroundGradient: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        opacity: 0.7,
     },
     footer: {
         width: '100%',
@@ -79,6 +73,32 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: Colors.theme.purple,
     },
+    backgroundSplatTop: {
+        position: 'absolute',
+        top: 0,
+        width: '100%',
+        height: 300,
+    },
+    backgroundSplatBottom: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        height: 256,
+    },
+    backgroundStar: {
+        position: 'absolute',
+        top: 90,
+        left: Spacing.huge,
+        width: 48,
+        height: 48,
+    },
+    backgroundFlower: {
+        position: 'absolute',
+        top: 80,
+        right: Spacing.small,
+        width: 96,
+        height: 96,
+    }
 });
 
 class Home extends React.Component {
@@ -245,6 +265,22 @@ class Home extends React.Component {
 
         return (
             <View style={containerStyles}>
+                <Image
+                    source={require('../assets/bg-splat-green.png')}
+                    style={styles.backgroundSplatTop}
+                />
+                <Image
+                    source={require('../assets/bg-splat-pink.png')}
+                    style={styles.backgroundSplatBottom}
+                />
+                <Image
+                    source={require('../assets/home-star.png')}
+                    style={styles.backgroundStar}
+                />
+                <Image
+                    source={require('../assets/home-flower-purple.png')}
+                    style={styles.backgroundFlower}
+                />
                 {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare &&
                     <View style={styles.bluetoothDisabledWarning}>
                         <Text style={styles.bluetoothDisabledWarningTitle}>
@@ -297,8 +333,8 @@ class Home extends React.Component {
                 <View style={styles.footer}>
                     {!this.props.hasActiveFlare &&
                         <Button
-                            whiteOutline
-                            fullWidth
+                            rounded
+                            primary
                             onPress={() => this.handleContactsClick()}
                             title={this.props.contactsLabel}
                         />

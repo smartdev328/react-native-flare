@@ -21,8 +21,6 @@ const styles = StyleSheet.create({
         width: 280,
         height: 280,
         maxHeight: 280,
-        borderRadius: 280 / 2,
-        borderWidth: 3,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
@@ -33,10 +31,6 @@ const styles = StyleSheet.create({
     },
     targetHasDevice: {
         borderColor: '#E0E0E0',
-    },
-    targetNoDeviceContent: {
-    },
-    targetHasDeviceContent: {
     },
     deviceImage: {
         width: 220,
@@ -145,7 +139,7 @@ export default class DeviceSelector extends React.Component {
                         </TouchableOpacity>
                     }
                     {this.state.currentDevice && !this.state.addingDevice &&
-                        <View style={styles.targetHasDeviceContent}>
+                        <View>
                             <Image
                                 source={DeviceTypes[this.state.currentDevice.type - 1].image}
                                 style={styles.deviceImage}
