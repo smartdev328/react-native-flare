@@ -20,7 +20,6 @@ import { setCrewMembers, fetchContacts } from '../actions/userActions';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.white,
         padding: Spacing.medium,
     },
     nameFieldContainer: {

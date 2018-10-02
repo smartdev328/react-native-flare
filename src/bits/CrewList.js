@@ -20,8 +20,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: Spacing.huge,
         paddingLeft: Spacing.small,
+        justifyContent: 'space-between',
         alignItems: 'center',
-        borderColor: Colors.theme.blueDark,
+        borderColor: Colors.theme.blue,
         borderWidth: 1,
         marginBottom: Spacing.small,
     },
@@ -31,6 +32,8 @@ const styles = StyleSheet.create({
     },
     memberAction: {
         flex: 1,
+        alignItems: 'flex-end',
+        paddingRight: Spacing.small,
     },
 });
 
@@ -52,7 +55,7 @@ const CrewList = function createCrewList(props) {
                         style={styles.memberAction}
                         onPress={() => props.onPressContact(item)}
                     >
-                        <Icon name="x" size={28} color={Colors.theme.blueDark} />
+                        <Icon name="x" size={28} color={Colors.theme.blue} />
                     </TouchableOpacity>
                 </View>
             )}

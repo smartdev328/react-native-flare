@@ -12,13 +12,9 @@ import Colors from '../bits/Colors';
 import Spacing from './Spacing';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 3,
-        justifyContent: 'flex-start',
-    },
     sectionHeader: {
-        backgroundColor: Colors.theme.blueDark,
-        color: Colors.white,
+        backgroundColor: Colors.backgrounds.blue,
+        color: Colors.theme.blue,
         fontSize: 16,
         fontWeight: 'bold',
         paddingTop: Spacing.tiny,
@@ -56,14 +52,7 @@ class ContactsListItem extends React.PureComponent {
         this.onPress = this.onPressContact.bind(this);
     }
 
-    // shouldComponentUpdate(nextProps) {
-    //     return this.props.contact.name !== nextProps.contact.name ||
-    //     this.props.contact.phone !== nextProps.contact.phone ||
-    //     this.props.contact.label !== nextProps.contact.label;
-    // }
-
     onPressContact() {
-        console.log(`Clicked on contact ${JSON.stringify(this.contact)}`);
         this.onPressExternal(this.contact);
     }
 
