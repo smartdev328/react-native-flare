@@ -9,22 +9,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: Spacing.medium,
         borderRadius: 2,
-        height: Spacing.huge,
         alignSelf: 'center',
+        height: 60,
+        minHeight: 60,
+        maxHeight: 60,
     },
     text: {
-        fontWeight: '700',
-        width: '100%',
-        textAlign: 'center',
-        alignSelf: 'stretch',
+        fontWeight: '900',
+        lineHeight: 60,
+        height: 60,
+        minHeight: 60,
+        maxHeight: 60,
     },
     fullWidth: {
         width: '100%',
-        height: Spacing.huge,
         flex: 1,
         flexDirection: 'row',
-        maxHeight: Spacing.huge,
-        minHeight: Spacing.huge,
     },
     primaryBackground: {
         backgroundColor: Colors.theme.pink,
@@ -32,12 +32,9 @@ const styles = StyleSheet.create({
     },
     primaryForeground: {
         color: Colors.white,
-        fontWeight: 'bold',
     },
     rounded: {
         borderRadius: 32,
-        height: 64,
-        maxHeight: 64,
     },
 });
 

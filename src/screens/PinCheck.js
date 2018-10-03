@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 0,
         backgroundColor: Colors.backgrounds.pink,
+        color: Colors.theme.pink,
     },
     backgroundGradient: {
         position: 'absolute',

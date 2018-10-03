@@ -5,8 +5,8 @@ const Strings = {
     home: {
         title: 'Welcome',
         chooseLanguage: 'Choose language',
-        cancelActiveFlare: 'CANCEL FLARE',
-        contactsButtonLabelAdd: 'CHOOSE YOUR CREW',
+        cancelActiveFlare: 'Cancel Flare',
+        contactsButtonLabelAdd: 'Choose Your Crew',
         contactsButtonLabelEdit: 'Edit Your Crew',
         bluetoothDisabledWarning: {
             title: 'OMG Bluetooth is off!!',

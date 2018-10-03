@@ -20,7 +20,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 0,
-        backgroundColor: Colors.theme.blueDark,
+        backgroundColor: Colors.backgrounds.blueLight,
     },
     backgroundGradient: {
         position: 'absolute',
@@ -127,7 +127,7 @@ class SignIn extends Component {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Image
-                    source={require('../assets/flare_white.png')}
+                    source={require('../assets/flare_dark.png')}
                     style={styles.logo}
                 />
                 {(this.state.invalid || this.props.authState === 'failed') &&

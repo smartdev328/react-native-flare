@@ -25,15 +25,21 @@ const styles = StyleSheet.create({
         paddingBottom: Spacing.small,
     },
     containerWithActiveFlare: {
-        backgroundColor: Colors.theme.cream,
+        backgroundColor: Colors.backgrounds.pink,
+    },
+    idleBackground: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
     },
     footer: {
-        width: '100%',
-        maxHeight: 2 * Spacing.huge,
         flex: 1,
         flexDirection: 'column',
+        alignItems: 'center',
         justifyContent: 'center',
-        padding: 16,
+        paddingBottom: 16,
     },
     centered: {
         alignSelf: 'center',
@@ -42,11 +48,6 @@ const styles = StyleSheet.create({
     deviceSelector: {
         marginTop: 90,
         flex: 3,
-    },
-    cancelButtonArea: {
-        width: '100%',
-        marginBottom: Spacing.small,
-        justifyContent: 'center',
     },
     navbar: {
         opacity: 1,
@@ -70,6 +71,9 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: '700',
         color: Colors.theme.purple,
+    },
+    crewTimelineContainer: {
+        padding: Spacing.medium,
     },
     backgroundSplatTop: {
         position: 'absolute',
@@ -104,7 +108,6 @@ const styles = StyleSheet.create({
         width: 16,
         height: 16,
     },
-
     networkIcon: {
         width: 48,
         height: 48,
@@ -225,9 +228,12 @@ class Home extends React.Component {
 
         // schedule subsequent requests
         if (this.props.crewEvents && this.props.crewEvents.length > 0) {
-            this.eventTimelineRefreshTimer = setInterval(() => {
-                this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
-            }, 10000);
+            const event = this.props.crewEvents[0];
+            if (event) {
+                this.eventTimelineRefreshTimer = setInterval(() => {
+                    this.props.dispatch(getCrewEventTimeline(this.props.token, event.id));
+                }, 10000);
+            }
         }
     }
 
@@ -268,35 +274,34 @@ class Home extends React.Component {
     }
 
     render() {
-        const containerStyles = [styles.container];
-        if (this.props.hasActiveFlare) {
-            containerStyles.push(styles.containerWithActiveFlare);
-        }
-
         return (
-            <View style={containerStyles}>
-                <Image
-                    source={require('../assets/bg-splat-green.png')}
-                    style={styles.backgroundSplatTop}
-                    resizeMode="stretch"
-                />
+            <View style={[styles.container, this.props.hasActiveFlare && styles.containerWithActiveFlare]}>
                 <Image
                     source={require('../assets/bg-splat-pink.png')}
                     style={styles.backgroundSplatBottom}
                     resizeMode="stretch"
                 />
-                <Image
-                    source={require('../assets/home-star.png')}
-                    style={styles.backgroundStar}
-                />
-                <Image
-                    source={require('../assets/home-flower-purple.png')}
-                    style={styles.backgroundFlower}
-                />
-                <Image
-                    source={require('../assets/home-diamond.png')}
-                    style={styles.backgroundDiamond}
-                />
+                {!this.props.hasActiveFlare &&
+                    <View style={styles.idleBackground}>
+                        <Image
+                            source={require('../assets/bg-splat-green.png')}
+                            style={styles.backgroundSplatTop}
+                            resizeMode="stretch"
+                        />
+                        <Image
+                            source={require('../assets/home-star.png')}
+                            style={styles.backgroundStar}
+                        />
+                        <Image
+                            source={require('../assets/home-flower-purple.png')}
+                            style={styles.backgroundFlower}
+                        />
+                        <Image
+                            source={require('../assets/home-diamond.png')}
+                            style={styles.backgroundDiamond}
+                        />
+                    </View>
+                }
                 {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare &&
                     <View style={styles.bluetoothDisabledWarning}>
                         <Text style={styles.bluetoothDisabledWarningTitle}>
@@ -341,7 +346,7 @@ class Home extends React.Component {
                     </View>
                 }
                 {this.props.hasActiveFlare &&
-                    <View>
+                    <View style={styles.crewTimelineContainer}>
                         <Text style={styles.timelineHeader}>
                             {Strings.crewEventTimeline.title}
                         </Text>
@@ -349,13 +354,12 @@ class Home extends React.Component {
                             timeline={this.props.crewEventTimeline}
                             onRefresh={() => this.onRefreshTimeline()}
                         />
-                        <View style={styles.cancelButtonArea}>
-                            <Button
-                                fullWidth
-                                onPress={() => this.showPinCheckScreen()}
-                                title={Strings.home.cancelActiveFlare}
-                            />
-                        </View>
+                        <Button
+                            rounded
+                            primary
+                            onPress={() => this.showPinCheckScreen()}
+                            title={Strings.home.cancelActiveFlare}
+                        />
                     </View>
                 }
                 <View style={styles.footer}>

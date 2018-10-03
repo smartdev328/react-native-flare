@@ -78,7 +78,7 @@ export default class App extends Component {
                 },
                 animationType: 'fade',
                 appStyle: {
-                    orientation: 'portrait',
+                    orientation: 'auto',
                 },
                 passProps: {
                     notificationManager: this.notificationManager,
@@ -97,7 +97,7 @@ export default class App extends Component {
                 },
                 animationType: 'fade',
                 appStyle: {
-                    orientation: 'portrait',
+                    orientation: 'auto',
                 },
             });
             break;
