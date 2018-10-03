@@ -22,26 +22,26 @@ const styles = StyleSheet.create({
     status: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: Colors.backgrounds.greyTransparent,
     },
     message: {
         flex: 1,
         flexDirection: 'column',
         fontSize: 14,
-        backgroundColor: Colors.backgrounds.blue,
+        borderWidth: 1,
+        borderColor: Colors.backgrounds.pink,
     },
     timestamp: {
         fontSize: 10,
-        color: Colors.theme.blueDark,
+        color: Colors.theme.pink,
     },
     messageFrom: {
-        fontSize: 10,
-        color: Colors.theme.blueDark,
+        fontSize: 8,
+        color: Colors.theme.pink,
     },
     messageBody: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: Colors.theme.blueDark,
+        color: Colors.black,
     },
 });
 
