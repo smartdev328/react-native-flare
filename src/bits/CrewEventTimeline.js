@@ -115,6 +115,17 @@ export default class CrewEventTimeline extends React.PureComponent {
                 keyExtractor={event => `${event.timestamp}-${event.id}`}
                 refreshing={false}
                 onRefresh={() => this.props.onRefresh()}
+                ref={(ref) => { this.flatList = ref; }}
+                onContentSizeChange={() => {
+                    if (this.props.timeline && this.props.timeline.length > 0) {
+                        this.flatList.scrollToEnd({ animated: true });
+                    }
+                }}
+                onLayout={() => {
+                    if (this.props.timeline && this.props.timeline.length > 0) {
+                        this.flatList.scrollToEnd({ animated: true });
+                    }
+                }}
             />
         );
     }
