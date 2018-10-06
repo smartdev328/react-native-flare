@@ -82,6 +82,11 @@ export function flare(token, beacon, position, forCurrentUser) {
                         status,
                     },
                 });
+                dispatch({
+                    type: types.BEACON_HANDLING_FAILED,
+                    beacon,
+                    status,
+                });
             }
         });
     };

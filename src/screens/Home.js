@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
         height: 16,
     },
     networkIcon: {
+        alignSelf: 'center',
         width: 48,
         height: 48,
     }
@@ -203,6 +204,13 @@ class Home extends React.Component {
             this.props.activatingFlareState === 'request') {
             this.props.notificationManager.localNotify({
                 message: Strings.notifications.events.flare.defaultMessage,
+            });
+        }
+
+        if (this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare &&
+            prevProps.hardware && prevProps.hardware.bluetooth === 'on') {
+            this.props.notificationManager.localNotify({
+                message: Strings.notifications.bluetoothDisabled,
             });
         }
 
@@ -330,7 +338,7 @@ class Home extends React.Component {
                                     <View style={styles.centered}>
                                         <Image
                                             source={require('../assets/home-network-icon.png')}
-                                            style={[styles.networkIcon, styles.centered]}
+                                            style={[styles.networkIcon]}
                                             resizeMode="contain"
                                         />
                                         <Text>

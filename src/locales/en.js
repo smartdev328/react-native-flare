@@ -80,18 +80,19 @@ const Strings = {
     contacts: {
         crewNamePlaceholder: 'My Crew',
         choosePrompt: 'Choose up to 5 contacts',
-        chooseInstruction: 'Scroll through the list below and press on the names you want to include in this crew.',
+        chooseInstruction: 'Click on the name of a contact to add them to your Crew',
         add: {
             title: 'Choose your Crew',
         },
     },
     notifications: {
-        title: 'w/ ❤️ from Flare',
+        bluetoothDisabled: 'Please turn on bluetooth so that Flare can work! 💔',
         events: {
             flare: {
                 defaultMessage: 'Get that thing done',
             },
         },
+        title: 'w/ ❤️ from Flare',
     },
 };
 

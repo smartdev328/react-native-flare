@@ -8,12 +8,13 @@
  * @return {object}          The parsed JSON, status from the response
  */
 function parseJSON(response) {
-    return new Promise(resolve => response.json()
+    return new Promise((resolve, reject) => response.json()
         .then(json => resolve({
             status: response.status,
             ok: response.ok,
             json,
-        })));
+        }))
+        .catch(error => reject(new Error(error))));
 }
 
 async function getAuthorizationHeader(userToken) {

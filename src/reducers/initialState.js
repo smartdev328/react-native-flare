@@ -24,6 +24,7 @@ export const initialState = Immutable({
     beacons: {
         latest: null,
         recent: [],
+        problems: [],
     },
     hardware: {
         bluetooth: 'on',
