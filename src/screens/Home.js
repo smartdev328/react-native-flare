@@ -13,6 +13,7 @@ import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 
 import { checkPermissions, getCrewEventTimeline } from '../actions/userActions';
+import { processQueuedBeacons } from '../actions/beaconActions';
 import Location from '../helpers/location';
 import CrewEventTimeline from '../bits/CrewEventTimeline';
 
@@ -120,7 +121,7 @@ class Home extends React.Component {
         super(props);
 
         // Fetch account details and submit app status periodically
-        this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL; // 60 s/min * 10 min * 1000 ms/s = 600000
+        this.accountSyncTimeInMs = __DEV__ ? 5000 : ACCOUNT_SYNC_INTERVAL; // 60 s/min * 10 min * 1000 ms/s = 600000
         this.eventTimelineRefreshTimer = null;
     }
 
@@ -160,9 +161,10 @@ class Home extends React.Component {
         // Periodically fetch account status to ensure auth and to observe account changes from
         // other devices.
         BackgroundTimer.runBackgroundTimer(() => {
+            // Fetch user location, then sync account details.
             Location.getCurrentPosition({
                 enableHighAccuracy: true,
-                timeout: 60000,
+                timeout: ACCOUNT_SYNC_INTERVAL,
             }).then((position) => {
                 this.props.dispatch(syncAccountDetails({
                     token: this.props.token,
@@ -178,6 +180,16 @@ class Home extends React.Component {
                     },
                 }));
             });
+
+            // Process any beacon events that we tried (and failed) to submit earlier.
+            if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
+                this.props.dispatch(processQueuedBeacons(
+                    this.props.handleBeacon,
+                    this.props.token,
+                    this.props.problemBeacons,
+                ));
+            }
+
         }, this.accountSyncTimeInMs);
         AppState.addEventListener('change', this.handleAppStateChange);
 
@@ -405,6 +417,7 @@ function mapStateToProps(state) {
         hasActiveFlare: state.user.hasActiveFlare,
         latestBeacon: state.beacons.latest,
         permissions: state.user.permissions,
+        problemBeacons: state.beacons.problems,
         token: state.user.token,
     };
 }

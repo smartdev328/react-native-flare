@@ -1,8 +1,6 @@
 import * as types from '../actions/actionTypes';
 import { initialState } from './initialState';
 
-// import Immutable from 'seamless-immutable';
-
 // eslint-disable-next-line import/prefer-default-export
 export function beacons(state = initialState.beacons, action = {}) {
     switch (action.type) {
@@ -10,11 +8,41 @@ export function beacons(state = initialState.beacons, action = {}) {
         return state.merge({
             latest: action.beacon,
         });
+
     case types.BEACON_HANDLING_FAILED: {
-        const problems = state.problems.concat(action.beacon);
-        console.log(`Problem list now ${JSON.stringify(problems)}`);
+        const problems = state.problems.concat({
+            beacon: action.beacon,
+            position: action.position,
+        });
         return state.merge({
             problems,
+        });
+    }
+
+    /**
+     * Remove all "problem" beacons with the given UUID, timestamp and retry counter values.
+     */
+    case types.CLEAR_PROBLEM_BEACONS: {
+        // Create a copy of the problems queue that does not include the beacons
+        // specified in the redux action.
+        const updatedProblems = state.problems.filter((problem) => {
+            // For each item in the problem beacon queue...
+            const { uuid, timestamp, retry } = problem.beacon;
+
+            // ...loop through all the beacons listed in the redux action.
+            // Find the first beacon to clear that matches the problem beacon.
+            const matches = action.beaconsToClear.find(toClear =>
+                toClear.uuid === uuid &&
+                toClear.timestamp === timestamp &&
+                (typeof retry === 'undefined' || toClear.retry <= retry));
+
+            // Only keep the beacon in the problem queue if we did NOT find it
+            // in the redux action list.
+            return typeof matches === 'undefined';
+        });
+
+        return state.merge({
+            problems: updatedProblems,
         });
     }
 

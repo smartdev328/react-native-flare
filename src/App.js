@@ -59,6 +59,10 @@ export default class App extends Component {
         }
     }
 
+    handleBeacon(dispatch, token, beacon, position) {
+        this.bleManager.handleBeacon(dispatch, token, beacon, position);
+    }
+
     // eslint-disable-next-line class-methods-use-this
     startApp(root) {
         switch (root) {
@@ -82,6 +86,8 @@ export default class App extends Component {
                 },
                 passProps: {
                     notificationManager: this.notificationManager,
+                    handleBeacon: (dispatch, token, beacon, position) =>
+                        this.handleBeacon(dispatch, token, beacon, position),
                 },
             });
             break;
