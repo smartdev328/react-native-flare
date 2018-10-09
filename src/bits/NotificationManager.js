@@ -9,7 +9,7 @@ export default class NotificationManager {
         PushNotification.configure({
             onNotification: notification => this.onNotification(notification),
             requestPermissons: true,
-            popInitialNotification: false,
+            popInitialNotification: true,
         });
     }
 
@@ -33,7 +33,6 @@ export default class NotificationManager {
             playSound,
             smallIcon,
             largeIcon,
-            color: Colors.theme.green,
         });
     }
 }
