@@ -10,7 +10,7 @@ export default class BeaconCache {
         };
 
         this.durationInMinutes = 30;
-        this.pruneFrequencyInMilliseconds = 300000; // 5000ms/min * 60 s/min;
+        this.pruneFrequencyInMilliseconds = 30000; // 30 seconds
         this.backgroundTimer = BackgroundTimer.setInterval(() => {
             this.prune();
         }, this.pruneFrequencyInMilliseconds);
@@ -25,7 +25,7 @@ export default class BeaconCache {
         } = beacon;
 
         let handled = false;
-        const safeNonce = typeof nonce !== 'undefined' ? nonce : 'x';
+        const safeNonce = nonce || 'x';
         const lastTimestampForNonce = this.beaconCache[type] &&
             this.beaconCache[type][deviceID] &&
             this.beaconCache[type][deviceID][safeNonce];
@@ -56,7 +56,7 @@ export default class BeaconCache {
             this.beaconCache[type][deviceID] = {};
         }
 
-        const safeNonce = typeof nonce !== 'undefined' ? nonce : 'x';
+        const safeNonce = nonce || 'x';
         if (!this.beaconCache[type][deviceID][safeNonce]) {
             this.beaconCache[type][deviceID][safeNonce] = null;
         }
