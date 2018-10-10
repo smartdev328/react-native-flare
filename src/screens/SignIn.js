@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Image, Text, TextInput, View, KeyboardAvoidingView } from 'react-native';
+import {
+    ActivityIndicator,
+    Image,
+    KeyboardAvoidingView,
+    Linking,
+    Text,
+    TextInput,
+    View,
+} from 'react-native';
 import { connect } from 'react-redux';
 
 import { signIn, resetAuth } from '../actions/authActions';
@@ -152,6 +160,12 @@ class SignIn extends Component {
                         style={styles.input}
                         value={this.state.password}
                         onChangeText={v => this.changePassword(v)}
+                    />
+                    <Button
+                        fullWidth
+                        simple
+                        title={Strings.signin.forgotPassword}
+                        onPress={() => Linking.openURL('https://app.flarejewelry.co/reset')}
                     />
                 </View>
                 <View style={styles.loadingContainer}>

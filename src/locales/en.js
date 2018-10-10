@@ -36,7 +36,8 @@ const Strings = {
         title: 'Cancel Flare',
     },
     signin: {
-        usernamePrompt: 'Email or phone',
+        forgotPassword: 'Forgot Password',
+        usernamePrompt: 'Email',
         passwordPrompt: 'Password',
         signInLabel: 'Sign In',
         invalid: 'Please enter a valid username and password.',

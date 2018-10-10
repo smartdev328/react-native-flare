@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     rounded: {
         borderRadius: 32,
     },
+    simple: {
+    },
+    simpleForeground: {
+        color: Colors.theme.purple,
+    },
 });
 
 function Button(props) {
@@ -47,9 +52,16 @@ function Button(props) {
                 props.rounded && styles.rounded,
                 props.fullWidth && styles.fullWidth,
                 props.primary && styles.primaryBackground,
+                props.simple && styles.simple,
             ]}
         >
-            <Text style={[styles.text, props.primary && styles.primaryForeground]}>
+            <Text
+                style={[
+                    styles.text,
+                    props.primary && styles.primaryForeground,
+                    props.simple && styles.simpleForeground,
+                ]}
+            >
                 {props.title}
             </Text>
         </TouchableOpacity>
