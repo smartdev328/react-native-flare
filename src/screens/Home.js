@@ -219,8 +219,12 @@ class Home extends React.Component {
             });
         }
 
-        if (this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare &&
-            prevProps.hardware && prevProps.hardware.bluetooth === 'on') {
+        /**
+         * If device bluetooth state has changed and it's no longer on, show a local notification.
+         */
+        if (this.props.hardware && this.props.hardware.bluetooth !== 'on' &&
+            this.props.hardware.bluetooth !== prevProps.hardware.bluetooth &&
+            !this.props.hasActiveFlare) {
             this.props.notificationManager.localNotify({
                 message: Strings.notifications.bluetoothDisabled,
             });
