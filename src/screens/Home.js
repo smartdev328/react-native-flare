@@ -47,8 +47,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     deviceSelector: {
-        marginTop: 90,
-        flex: 3,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        flex: 9,
     },
     navbar: {
         opacity: 1,
