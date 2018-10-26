@@ -8,12 +8,12 @@ export default {
         pinkLight: '#FFD7D2',
     },
     backgrounds: {
-        blue: 'rgba(48, 196, 255, 0.12)',
-        blueLight: 'rgba(48, 196, 255, 0.05)',
-        pink: 'rgba(255, 79, 181, 0.12)',
-        pinkLight: 'rgba(255, 79, 181, 0.05)',
-        green: 'rgba(87, 222, 156, 0.12)',
-        greenLight: 'rgba(87, 222, 156, 0.05)',
+        blue: '#e6f0fb',
+        blueLight: '#f4fcff',
+        pink: '#ffe2f2',
+        pinkLight: '#fff6fb',
+        green: '#ebfbf3',
+        greenLight: '#ecfafa',
     },
     accents: {
         yellow: '#FFD626',
