@@ -4,6 +4,9 @@ export const { API_URL, BLUETOOTH_BEACON_LOGGING } = Config;
 export const REDUX_LOGGING = Config.REDUX_LOGGING === 'enabled';
 export const BLUETOOTH_LISTENING = Config.BLUETOOTH_LISTENING === 'enabled';
 export const ACCOUNT_SYNC_INTERVAL = parseInt(Config.ACCOUNT_SYNC_INTERVAL, 10);
+export const ACCOUNT_SYNC_INTERVAL_FLARE = parseInt(Config.ACCOUNT_SYNC_INTERVAL_FLARE, 10);
+export const ACCOUNT_SYNC_INTERVAL_DEV = parseInt(Config.ACCOUNT_SYNC_INTERVAL_DEV, 10);
+export const FLARE_TIMELINE_REFRESH_INTERVAL = parseInt(Config.FLARE_TIMELINE_REFRESH_INTERVAL, 10);
 
 export const summary = {
     api: API_URL,

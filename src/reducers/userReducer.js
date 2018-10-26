@@ -66,8 +66,7 @@ export function user(state = initialState.user, action = {}) {
     case types.ACTIVATE_FLARE_SUCCESS:
         return state.merge({
             activatingFlareState: 'success',
-            crewEvents: action.data.crewEvents,
-            hasActiveFlare: action.data.crewEvents && action.data.crewEvents.length > 0,
+            hasActiveFlare: true,
         });
 
     case types.ACTIVATE_FLARE_FAILURE:

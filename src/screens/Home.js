@@ -4,7 +4,13 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
 
-import { ACCOUNT_SYNC_INTERVAL } from '../constants';
+import {
+    ACCOUNT_SYNC_INTERVAL,
+    ACCOUNT_SYNC_INTERVAL_FLARE,
+    ACCOUNT_SYNC_INTERVAL_DEV,
+    FLARE_TIMELINE_REFRESH_INTERVAL,
+} from '../constants';
+
 import { claimDevice, syncAccountDetails, fetchContacts } from '../actions/index';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -121,19 +127,60 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
 
-        // Fetch account details and submit app status periodically
-        this.accountSyncTimeInMs = __DEV__ ? 5000 : ACCOUNT_SYNC_INTERVAL; // 60 s/min * 10 min * 1000 ms/s = 600000
         this.eventTimelineRefreshTimer = null;
+        this.setSyncTiming();
+    }
+
+    /**
+     * Fetch account details and submit app status periodically. The frequency at which we sync varies with app state.
+     * If a flare is active, sync frequently. If we're in dev, sync a little more than normal. Otherwise use the default
+     * timing. All times are set in the environment configuration.
+     */
+    setSyncTiming() {
+        if (this.props.hasActiveFlare) {
+            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_FLARE;
+        } else if (__DEV__) {
+            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_DEV;
+        } else {
+            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL;
+        }
+    }
+
+    /**
+     * Submit user location and fetch any account updates.
+     */
+    syncAccount() {
+        Location.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: ACCOUNT_SYNC_INTERVAL,
+        }).then((position) => {
+            this.props.dispatch(syncAccountDetails({
+                token: this.props.token,
+                status: {
+                    timestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+                    latitude: position.latitude,
+                    longitude: position.longitude,
+                    details: {
+                        permissions: this.props.permissions,
+                        hardware: this.props.hardware,
+                        position,
+                    },
+                },
+            }));
+        });
+
+        // Process any beacon events that we tried (and failed) to submit earlier.
+        if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
+            this.props.dispatch(processQueuedBeacons(
+                this.props.handleBeacon,
+                this.props.token,
+                this.props.problemBeacons,
+            ));
+        }
     }
 
     // eslint-disable-next-line
     componentWillMount() {
-        // Users may have modified their accounts on other devices or on the web. Keep this device
-        // in sync by fetching server-stored data.
-        this.props.dispatch(syncAccountDetails({
-            token: this.props.token,
-        }));
-
         this.props.navigator.setStyle({
             navBarCustomView: 'com.flarejewelry.FlareNavBar',
             navBarCustomViewInitialProps: {
@@ -142,11 +189,6 @@ class Home extends React.Component {
             },
             navBarComponentAlignment: 'fill',
         });
-
-        if (this.eventTimelineRefreshTimer) {
-            clearInterval(this.eventTimelineRefreshTimer);
-            this.eventTimelineRefreshTimer = null;
-        }
     }
 
     componentDidMount() {
@@ -159,39 +201,19 @@ class Home extends React.Component {
             this.props.dispatch(fetchContacts());
         }
 
-        // Periodically fetch account status to ensure auth and to observe account changes from
-        // other devices.
-        BackgroundTimer.runBackgroundTimer(() => {
-            // Fetch user location, then sync account details.
-            Location.getCurrentPosition({
-                enableHighAccuracy: true,
-                timeout: ACCOUNT_SYNC_INTERVAL,
-            }).then((position) => {
-                this.props.dispatch(syncAccountDetails({
-                    token: this.props.token,
-                    status: {
-                        timestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
-                        latitude: position.latitude,
-                        longitude: position.longitude,
-                        details: {
-                            permissions: this.props.permissions,
-                            hardware: this.props.hardware,
-                            position,
-                        },
-                    },
-                }));
-            });
+        // Users may have modified their accounts on other devices or on the web. Keep this device
+        // in sync by fetching server-stored data.
+        this.props.dispatch(syncAccountDetails({
+            token: this.props.token,
+        }));
 
-            // Process any beacon events that we tried (and failed) to submit earlier.
-            if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
-                this.props.dispatch(processQueuedBeacons(
-                    this.props.handleBeacon,
-                    this.props.token,
-                    this.props.problemBeacons,
-                ));
-            }
-
-        }, this.accountSyncTimeInMs);
+        // Periodically fetch account status to ensure auth and to observe account changes from other devices.
+        if (this.eventTimelineRefreshTimer) {
+            clearInterval(this.eventTimelineRefreshTimer);
+            this.eventTimelineRefreshTimer = null;
+        }
+        BackgroundTimer.stopBackgroundTimer();
+        BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
         AppState.addEventListener('change', this.handleAppStateChange);
 
         // If the current user has an active flare, fetch the crew timeline
@@ -208,18 +230,15 @@ class Home extends React.Component {
     }
 
     componentWillUnmount() {
+        if (this.eventTimelineRefreshTimer) {
+            clearInterval(this.eventTimelineRefreshTimer);
+            this.eventTimelineRefreshTimer = null;
+        }
         BackgroundTimer.stopBackgroundTimer();
         AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.activatingFlareState !== this.props.activatingFlareState &&
-            this.props.activatingFlareState === 'request') {
-            this.props.notificationManager.localNotify({
-                message: Strings.notifications.events.flare.defaultMessage,
-            });
-        }
-
         /**
          * If device bluetooth state has changed and it's no longer on, show a local notification.
          */
@@ -231,14 +250,38 @@ class Home extends React.Component {
             });
         }
 
-        if (this.props.hasActiveFlare) {
-            this.startTimelineRefreshInterval();
+        /**
+         * Show a local notification when we're first requesting a flare
+         */
+        if (prevProps.activatingFlareState !== this.props.activatingFlareState &&
+            this.props.activatingFlareState === 'request') {
+            this.props.notificationManager.localNotify({
+                message: Strings.notifications.events.flare.defaultMessage,
+            });
+        }
+
+        /**
+         * Handle transitions in flare state: reset intervals for fetching data
+         */
+        if (this.props.hasActiveFlare !== prevProps.hasActiveFlare) {
+            this.setSyncTiming();
+            BackgroundTimer.stopBackgroundTimer();
+            BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
+            if (this.props.hasActiveFlare) {
+                this.startTimelineRefreshInterval();
+            } else if (this.eventTimelineRefreshTimer) {
+                clearInterval(this.eventTimelineRefreshTimer);
+                this.eventTimelineRefreshTimer = null;
+            }
         }
 
         this.props.navigator.setStyle({
             hasActiveFlare: this.props.hasActiveFlare,
         });
 
+        /**
+         * Fetch contacts if the permission changes from denied to anything else
+         */
         if (prevProps.permissions.contacts === false && this.props.permissions.contacts) {
             this.props.dispatch(fetchContacts());
         }
@@ -248,18 +291,15 @@ class Home extends React.Component {
         if (this.eventTimelineRefreshTimer !== null) {
             return;
         }
-        // kick off the first request
-        this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
 
-        // schedule subsequent requests
-        if (this.props.crewEvents && this.props.crewEvents.length > 0) {
-            const event = this.props.crewEvents[0];
-            if (event) {
-                this.eventTimelineRefreshTimer = setInterval(() => {
+        this.eventTimelineRefreshTimer = setInterval(() => {
+            if (this.props.crewEvents && this.props.crewEvents.length > 0) {
+                const event = this.props.crewEvents[0];
+                if (event) {
                     this.props.dispatch(getCrewEventTimeline(this.props.token, event.id));
-                }, 10000);
+                }
             }
-        }
+        }, FLARE_TIMELINE_REFRESH_INTERVAL);
     }
 
     handleAppStateChange = (nextAppState) => {
