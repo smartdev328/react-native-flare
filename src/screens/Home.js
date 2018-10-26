@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: 48,
         height: 48,
-    }
+    },
 });
 
 class Home extends React.Component {
@@ -129,54 +129,6 @@ class Home extends React.Component {
 
         this.eventTimelineRefreshTimer = null;
         this.setSyncTiming();
-    }
-
-    /**
-     * Fetch account details and submit app status periodically. The frequency at which we sync varies with app state.
-     * If a flare is active, sync frequently. If we're in dev, sync a little more than normal. Otherwise use the default
-     * timing. All times are set in the environment configuration.
-     */
-    setSyncTiming() {
-        if (this.props.hasActiveFlare) {
-            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_FLARE;
-        } else if (__DEV__) {
-            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_DEV;
-        } else {
-            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL;
-        }
-    }
-
-    /**
-     * Submit user location and fetch any account updates.
-     */
-    syncAccount() {
-        Location.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: ACCOUNT_SYNC_INTERVAL,
-        }).then((position) => {
-            this.props.dispatch(syncAccountDetails({
-                token: this.props.token,
-                status: {
-                    timestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
-                    latitude: position.latitude,
-                    longitude: position.longitude,
-                    details: {
-                        permissions: this.props.permissions,
-                        hardware: this.props.hardware,
-                        position,
-                    },
-                },
-            }));
-        });
-
-        // Process any beacon events that we tried (and failed) to submit earlier.
-        if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
-            this.props.dispatch(processQueuedBeacons(
-                this.props.handleBeacon,
-                this.props.token,
-                this.props.problemBeacons,
-            ));
-        }
     }
 
     // eslint-disable-next-line
@@ -285,6 +237,54 @@ class Home extends React.Component {
         }
         BackgroundTimer.stopBackgroundTimer();
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
+    }
+
+    /**
+     * Fetch account details and submit app status periodically. The frequency at which we sync varies with app state.
+     * If a flare is active, sync frequently. If we're in dev, sync a little more than normal. Otherwise use the default
+     * timing. All times are set in the environment configuration.
+     */
+    setSyncTiming() {
+        if (this.props.hasActiveFlare) {
+            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_FLARE;
+        } else if (__DEV__) {
+            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_DEV;
+        } else {
+            this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL;
+        }
+    }
+
+    /**
+     * Submit user location and fetch any account updates.
+     */
+    syncAccount() {
+        Location.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: ACCOUNT_SYNC_INTERVAL,
+        }).then((position) => {
+            this.props.dispatch(syncAccountDetails({
+                token: this.props.token,
+                status: {
+                    timestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+                    latitude: position.latitude,
+                    longitude: position.longitude,
+                    details: {
+                        permissions: this.props.permissions,
+                        hardware: this.props.hardware,
+                        position,
+                    },
+                },
+            }));
+        });
+
+        // Process any beacon events that we tried (and failed) to submit earlier.
+        if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
+            this.props.dispatch(processQueuedBeacons(
+                this.props.handleBeacon,
+                this.props.token,
+                this.props.problemBeacons,
+            ));
+        }
     }
 
     startTimelineRefreshInterval() {
