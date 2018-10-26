@@ -214,7 +214,7 @@ class Home extends React.Component {
         }
         BackgroundTimer.stopBackgroundTimer();
         BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
-        AppState.addEventListener('change', this.handleAppStateChange);
+        AppState.addEventListener('change', newState => this.handleAppStateChange(newState));
 
         // If the current user has an active flare, fetch the crew timeline
         // and show it
@@ -227,15 +227,6 @@ class Home extends React.Component {
                 hasActiveFlare: this.props.hasActiveFlare,
             },
         });
-    }
-
-    componentWillUnmount() {
-        if (this.eventTimelineRefreshTimer) {
-            clearInterval(this.eventTimelineRefreshTimer);
-            this.eventTimelineRefreshTimer = null;
-        }
-        BackgroundTimer.stopBackgroundTimer();
-        AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
     componentDidUpdate(prevProps) {
@@ -287,6 +278,15 @@ class Home extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        if (this.eventTimelineRefreshTimer) {
+            clearInterval(this.eventTimelineRefreshTimer);
+            this.eventTimelineRefreshTimer = null;
+        }
+        BackgroundTimer.stopBackgroundTimer();
+        AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
+    }
+
     startTimelineRefreshInterval() {
         if (this.eventTimelineRefreshTimer !== null) {
             return;
@@ -302,7 +302,7 @@ class Home extends React.Component {
         }, FLARE_TIMELINE_REFRESH_INTERVAL);
     }
 
-    handleAppStateChange = (nextAppState) => {
+    handleAppStateChange(nextAppState) {
         console.debug(`App went to state ${nextAppState}.`);
         switch (nextAppState) {
         case 'active':
