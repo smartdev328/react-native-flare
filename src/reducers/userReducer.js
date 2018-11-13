@@ -30,7 +30,13 @@ export function user(state = initialState.user, action = {}) {
             authState: 'requested',
         });
     case types.AUTH_SUCCESS: {
-        const firstCrew = action.crews && action.crews.length ? action.crews[0] : { id: 0, members: [] };
+        const firstCrew =
+            action.data &&
+            action.data.data &&
+            action.data.data.crews &&
+            action.data.data.crews.length ?
+                action.data.data.crews[0] : { id: 0, members: [] };
+
         return state.merge({
             token: action.data.data.auth_token,
             profile: action.data.data.profile,
