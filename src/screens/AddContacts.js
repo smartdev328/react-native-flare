@@ -50,7 +50,6 @@ class AddContacts extends React.Component {
             crew: props.crew,
             crewListHeight: props.crew.members.length * this.crewListItemHeight,
         };
-        console.debug(`Crew list height ${this.state.crewListHeight}`);
     }
 
     componentWillMount() {
@@ -68,7 +67,6 @@ class AddContacts extends React.Component {
             crew: this.props.crew,
             crewListHeight: this.props.crew.members.length * this.crewListItemHeight,
         });
-        console.debug(`Crew list height ${this.state.crewListHeight}`);
     }
 
     handleContactPress(contact) {
