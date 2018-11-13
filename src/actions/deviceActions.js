@@ -17,7 +17,7 @@ export function claimDevice(token, deviceID) {
         ).then((response) => {
             dispatch({
                 type: types.DEVICE_CLAIM_SUCCESS,
-                devices: response.devices,
+                devices: response.data.devices,
             });
         }).catch((status) => {
             dispatch({

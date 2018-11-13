@@ -12,12 +12,12 @@ export function call(token, beacon, position, forCurrentUser) {
             API_URL,
             '/sos/call', {
                 method: 'POST',
-                body: JSON.stringify({
+                data: {
                     device_id: beacon.deviceID,
                     nonce: beacon.nonce,
                     timestamp: moment(beacon.timestamp).toISOString(),
                     position,
-                }),
+                },
             },
         ).then(() => {
             if (forCurrentUser) {
@@ -55,12 +55,12 @@ export function flare(token, beacon, position, forCurrentUser) {
             API_URL,
             '/sos/flare', {
                 method: 'POST',
-                body: JSON.stringify({
+                data: {
                     device_id: beacon.deviceID,
                     nonce: beacon.nonce,
                     timestamp: moment(beacon.timestamp).toISOString(),
                     position,
-                }),
+                },
             },
         ).then((response) => {
             if (forCurrentUser) {
@@ -69,7 +69,7 @@ export function flare(token, beacon, position, forCurrentUser) {
                     data: {
                         beacon,
                         position,
-                        crewEvents: response.crew_events,
+                        crewEvents: response.data.crew_events,
                     },
                 });
             }
@@ -104,15 +104,15 @@ export function cancelActiveFlare(token, pin) {
             API_URL,
             '/sos/flare/cancel', {
                 method: 'POST',
-                body: JSON.stringify({
+                data: {
                     pin,
-                }),
+                },
             },
         ).then((response) => {
             dispatch({
                 type: types.CANCEL_ACTIVE_FLARE_SUCCESS,
                 data: {
-                    crewEvents: response.crew_events,
+                    crewEvents: response.data.crew_events,
                 },
             });
         }).catch((status) => {
@@ -131,7 +131,7 @@ export function checkin(token, beacon, position, forCurrentUser) {
             API_URL,
             '/sos/checkin', {
                 method: 'POST',
-                body: JSON.stringify({
+                data: {
                     device_id: beacon.deviceID,
                     timestamp: moment(beacon.timestamp).toISOString(),
                     position,
@@ -143,7 +143,7 @@ export function checkin(token, beacon, position, forCurrentUser) {
                         minor: beacon.minor,
                         uuid: beacon.uuid,
                     },
-                }),
+                },
             },
         ).then(() => {
             if (forCurrentUser) {

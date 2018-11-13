@@ -1,21 +1,6 @@
 /* global __DEV__ */
-
-/**
- * Parses the JSON returned by a network request
- *
- * @param  {object} response A response from a network request
- *
- * @return {object}          The parsed JSON, status from the response
- */
-function parseJSON(response) {
-    return new Promise((resolve, reject) => response.json()
-        .then(json => resolve({
-            status: response.status,
-            ok: response.ok,
-            json,
-        }))
-        .catch(error => reject(new Error(error))));
-}
+import axios from 'axios';
+import { signOut } from '../actions/authActions';
 
 async function getAuthorizationHeader(userToken) {
     const headers = {
@@ -38,21 +23,26 @@ async function getAuthorizationHeader(userToken) {
  */
 export default async function request(token, serverUrl, route, options) {
     const headers = await getAuthorizationHeader(token);
-    const optionsWithHeaders = Object.assign({}, options, { headers });
-
-    return new Promise((resolve, reject) => {
-        fetch(serverUrl + route, optionsWithHeaders)
-            .then(parseJSON)
-            .then((response) => {
-                if (response.ok) {
-                    return resolve(response.json);
-                }
-                // extract the error from the server's json
-                if (__DEV__) {
-                    console.debug(`${route}: ${JSON.stringify(response)}`);
-                }
-                return reject(response.status, response.json);
-            })
-            .catch((status, json) => reject(status, json));
+    const optionsWithHeaders = Object.assign({}, options, {
+        headers,
+        url: `${serverUrl}${route}`,
     });
+
+    if (__DEV__) {
+        // eslint-disable-next-line
+        console.debug(JSON.stringify(optionsWithHeaders));
+    }
+
+    axios.interceptors.request.use(
+        config => config,
+        (error) => {
+            console.debug(`Error response ${error}`);
+            if (error.response.status === 403) {
+                return signOut();
+            }
+            return Promise.reject(error);
+        },
+    );
+
+    return axios(optionsWithHeaders);
 }

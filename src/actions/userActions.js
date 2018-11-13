@@ -65,14 +65,14 @@ export function setCrewMembers(token, crewId, members) {
             API_URL,
             `/crews/${crewId}`, {
                 method: 'POST',
-                body: JSON.stringify({
+                data: {
                     members,
-                }),
+                },
             },
         ).then((response) => {
             dispatch({
                 type: types.CREW_SET_SUCCESS,
-                crew: response.data.crew,
+                crew: response.data.data.crew,
             });
         }).catch((status) => {
             dispatch({
@@ -108,9 +108,9 @@ export function syncAccountDetails(args) {
         if (status) {
             requestOptions = {
                 method: 'POST',
-                body: JSON.stringify({
+                data: {
                     status: args.status,
-                }),
+                },
             };
         }
 
@@ -122,7 +122,7 @@ export function syncAccountDetails(args) {
         ).then((response) => {
             dispatch({
                 type: types.ACCOUNT_DETAILS_SUCCESS,
-                data: response.data,
+                data: response.data.data,
             });
         }).catch((error) => {
             dispatch({
@@ -165,7 +165,7 @@ export function getCrewEventTimeline(token, eventID) {
         ).then((response) => {
             dispatch({
                 type: types.GET_FLARE_TIMELINE_SUCCESS,
-                data: response.data,
+                data: response.data.data,
             });
         }).catch((error) => {
             dispatch({
