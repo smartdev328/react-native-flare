@@ -1,3 +1,5 @@
+/* global __DEV__ */
+/* eslint global-require: "off" */
 import React from 'react';
 import { AppState, Image, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
@@ -9,6 +11,7 @@ import {
     ACCOUNT_SYNC_INTERVAL_FLARE,
     ACCOUNT_SYNC_INTERVAL_DEV,
     FLARE_TIMELINE_REFRESH_INTERVAL,
+    SHOW_ALL_BEACONS_IN_HOME_SCREEN,
 } from '../constants';
 
 import { claimDevice, syncAccountDetails, fetchContacts } from '../actions/index';
@@ -19,9 +22,10 @@ import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 
 import { checkPermissions, getCrewEventTimeline } from '../actions/userActions';
-import { processQueuedBeacons } from '../actions/beaconActions';
+import { flare, processQueuedBeacons } from '../actions/beaconActions';
 import Location from '../helpers/location';
 import CrewEventTimeline from '../bits/CrewEventTimeline';
+import { BeaconTypes } from '../bits/BleConstants';
 
 const styles = StyleSheet.create({
     container: {
@@ -239,6 +243,10 @@ class Home extends React.Component {
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
+    onRefreshTimeline() {
+        this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
+    }
+
     /**
      * Fetch account details and submit app status periodically. The frequency at which we sync varies with app state.
      * If a flare is active, sync frequently. If we're in dev, sync a little more than normal. Otherwise use the default
@@ -303,6 +311,7 @@ class Home extends React.Component {
     }
 
     handleAppStateChange(nextAppState) {
+        // eslint-disable-next-line
         console.debug(`App went to state ${nextAppState}.`);
         switch (nextAppState) {
         case 'active':
@@ -334,8 +343,26 @@ class Home extends React.Component {
         });
     }
 
-    onRefreshTimeline() {
-        this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
+    sendTestFlare() {
+        if (!__DEV__) {
+            return;
+        }
+        const testBeacon = {
+            uuid: 'flare-dev-test',
+            nonce: null,
+            type: BeaconTypes.Long,
+            deviceID: this.props.devices[0].id,
+            rssi: 0,
+            proximity: 'far',
+            accuracy: 0,
+            timestamp: Date.now(),
+        };
+        this.props.dispatch(flare(
+            this.props.token,
+            testBeacon,
+            null,
+            /* forCurrentUser= */ true,
+        ));
     }
 
     render() {
@@ -403,6 +430,9 @@ class Home extends React.Component {
                                         </Text>
                                         <Text style={[styles.centered, styles.dimmed]}>
                                             {moment(this.props.latestBeacon.timestamp).format('MMM D @ h:mma')}
+                                            {SHOW_ALL_BEACONS_IN_HOME_SCREEN &&
+                                                ` – ${this.props.latestBeacon.deviceID}`
+                                            }
                                         </Text>
                                     </View>
                                 }
@@ -434,6 +464,14 @@ class Home extends React.Component {
                             primary
                             onPress={() => this.handleContactsClick()}
                             title={this.props.contactsLabel}
+                        />
+                    }
+                    {__DEV__ && !this.props.hasActiveFlare &&
+                        <Button
+                            rounded
+                            primary
+                            onPress={() => this.sendTestFlare()}
+                            title={Strings.dev.sendTestFlare}
                         />
                     }
                 </View>

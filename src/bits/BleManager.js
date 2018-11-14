@@ -9,7 +9,7 @@ import { BeaconTypes, Regions } from './BleConstants';
 import { call, flare, checkin } from '../actions/beaconActions';
 import * as actionTypes from '../actions/actionTypes';
 import { setBluetoothState } from '../actions/hardwareActions';
-import { BLUETOOTH_BEACON_LOGGING } from '../constants';
+import { BLUETOOTH_BEACON_LOGGING, SHOW_ALL_BEACONS_IN_HOME_SCREEN } from '../constants';
 
 export default class BleManager {
     constructor(options) {
@@ -58,9 +58,9 @@ export default class BleManager {
 
     // eslint-disable-next-line class-methods-use-this
     handleBeacon(dispatch, token, beacon, position) {
-        const userDevices = this.store.getState().user.devices;
+        const userDevices = this.store.getState().user.devices || [];
         const deviceIDs = userDevices.map(d => d.id);
-        const forCurrentUser = deviceIDs.indexOf(beacon.deviceID) !== -1;
+        const forCurrentUser = userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
 
         switch (beacon.type) {
         case BeaconTypes.Short.name:
@@ -77,7 +77,7 @@ export default class BleManager {
             break;
         }
 
-        if (forCurrentUser) {
+        if (forCurrentUser || SHOW_ALL_BEACONS_IN_HOME_SCREEN) {
             dispatch({
                 type: actionTypes.BEACON_RECEIVED,
                 beacon,
