@@ -2,6 +2,9 @@ const Strings = {
     auth: {
         loading: 'Loading af',
     },
+    dev: {
+        sendTestFlare: 'Send test flare',
+    },
     home: {
         title: 'Welcome',
         chooseLanguage: 'Choose language',
@@ -20,7 +23,7 @@ const Strings = {
     crewEventTimeline: {
         title: 'You held down the button so we reached out to your crew.',
         headings: {
-            notify: '💌 We told your crew.',
+            notify: '💌 We reached out to',
             cancel: '🚫 You canceled the Flare.',
             create: '📣 You started the Flare.',
             join: 'is available.',
