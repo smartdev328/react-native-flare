@@ -1,7 +1,5 @@
 import { Platform, PushNotificationIOS } from 'react-native';
 import PushNotification from 'react-native-push-notification';
-
-import Colors from './Colors';
 import Strings from '../locales/en';
 
 export default class NotificationManager {
@@ -34,5 +32,9 @@ export default class NotificationManager {
             smallIcon,
             largeIcon,
         });
+    }
+
+    clear() {
+        PushNotification.cancelAllLocalNotifications();
     }
 }

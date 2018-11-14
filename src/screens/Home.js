@@ -219,6 +219,7 @@ class Home extends React.Component {
             } else if (this.eventTimelineRefreshTimer) {
                 clearInterval(this.eventTimelineRefreshTimer);
                 this.eventTimelineRefreshTimer = null;
+                this.props.notificationManager.clear();
             }
         }
 
