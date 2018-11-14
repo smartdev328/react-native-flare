@@ -28,7 +28,7 @@ export default async function request(token, serverUrl, route, options) {
         url: `${serverUrl}${route}`,
     });
 
-    if (__DEV__) {
+    if (__DEV__ && false) {
         // eslint-disable-next-line
         console.debug(JSON.stringify(optionsWithHeaders));
     }
