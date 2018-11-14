@@ -51,7 +51,7 @@ const styles = {
         paddingBottom: Spacing.small,
         paddingLeft: Spacing.large,
         paddingRight: Spacing.large,
-        backgroundColor: Colors.theme.blueDark,
+        backgroundColor: Colors.theme.blue,
     },
     invalidText: {
         color: Colors.white,
