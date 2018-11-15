@@ -458,6 +458,12 @@
     pirates "^3.0.1"
     source-map-support "^0.4.2"
 
+"@babel/runtime@^7.1.2":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.1.5.tgz#4170907641cf1f61508f563ece3725150cc6fe39"
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
 "@babel/template@7.0.0-beta.47":
   version "7.0.0-beta.47"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.0.0-beta.47.tgz#0473970a7c0bee7a1a18c1ca999d3ba5e5bad83d"
@@ -1961,9 +1967,9 @@ eslint-module-utils@^2.2.0:
     debug "^2.6.8"
     pkg-dir "^1.0.0"
 
-eslint-plugin-import@^2.11.0:
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.13.0.tgz#df24f241175e312d91662dc91ca84064caec14ed"
+eslint-plugin-import@^2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.14.0.tgz#6b17626d2e3e6ad52cfce8807a845d15e22111a8"
   dependencies:
     contains-path "^0.1.0"
     debug "^2.6.8"
@@ -1976,9 +1982,9 @@ eslint-plugin-import@^2.11.0:
     read-pkg-up "^2.0.0"
     resolve "^1.6.0"
 
-eslint-plugin-jsx-a11y@^6.0.3:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.1.1.tgz#7bf56dbe7d47d811d14dbb3ddff644aa656ce8e1"
+eslint-plugin-jsx-a11y@^6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.1.2.tgz#69bca4890b36dcf0fe16dd2129d2d88b98f33f88"
   dependencies:
     aria-query "^3.0.0"
     array-includes "^3.0.3"
@@ -1989,10 +1995,11 @@ eslint-plugin-jsx-a11y@^6.0.3:
     has "^1.0.3"
     jsx-ast-utils "^2.0.1"
 
-eslint-plugin-react@^7.8.2:
-  version "7.10.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.10.0.tgz#af5c1fef31c4704db02098f9be18202993828b50"
+eslint-plugin-react@^7.11.1:
+  version "7.11.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.11.1.tgz#c01a7af6f17519457d6116aa94fc6d2ccad5443c"
   dependencies:
+    array-includes "^3.0.3"
     doctrine "^2.1.0"
     has "^1.0.3"
     jsx-ast-utils "^2.0.1"
@@ -2620,9 +2627,11 @@ has@^1.0.1, has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hoist-non-react-statics@^2.5.0:
-  version "2.5.5"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
+hoist-non-react-statics@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.1.0.tgz#42414ccdfff019cd2168168be998c7b3bd5245c0"
+  dependencies:
+    react-is "^16.3.2"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -2662,13 +2671,13 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-i18n-js@^3.0.11:
+i18n-js@3.0.11:
   version "3.0.11"
   resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.0.11.tgz#f9e96bdb641c5b9d6be12759d7c422089987ef02"
 
-i18next@^11.3.2:
-  version "11.3.6"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-11.3.6.tgz#a8e5aff413f5440b3526ebb38e1b7dc605f50faf"
+i18next@^11.10.2:
+  version "11.10.2"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-11.10.2.tgz#e5f10346f6320ecf15595419926c25255381a56c"
 
 iconv-lite@0.4.19:
   version "0.4.19"
@@ -2739,7 +2748,7 @@ inquirer@^3.0.6:
     strip-ansi "^4.0.0"
     through "^2.3.6"
 
-invariant@^2.0.0, invariant@^2.2.0, invariant@^2.2.2:
+invariant@^2.2.0, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   dependencies:
@@ -3551,10 +3560,6 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
-lodash-es@^4.17.5:
-  version "4.17.10"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.10.tgz#62cd7104cdf5dd87f235a837f0ede0e8e5117e05"
-
 lodash.pad@^4.1.0:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/lodash.pad/-/lodash.pad-4.5.1.tgz#4330949a833a7c8da22cc20f6a26c4d59debba70"
@@ -3583,7 +3588,7 @@ longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   dependencies:
@@ -3652,9 +3657,30 @@ metro-babel-register@0.38.3, metro-babel-register@^0.38.1:
     core-js "^2.2.2"
     escape-string-regexp "^1.0.5"
 
+metro-babel-register@0.38.4:
+  version "0.38.4"
+  resolved "https://registry.yarnpkg.com/metro-babel-register/-/metro-babel-register-0.38.4.tgz#712a79138cadbd37c9487e5cb822b3842d81ccee"
+  dependencies:
+    "@babel/plugin-proposal-class-properties" "7.0.0-beta.47"
+    "@babel/plugin-proposal-object-rest-spread" "7.0.0-beta.47"
+    "@babel/plugin-proposal-optional-chaining" "7.0.0-beta.47"
+    "@babel/plugin-transform-async-to-generator" "7.0.0-beta.47"
+    "@babel/plugin-transform-flow-strip-types" "7.0.0-beta.47"
+    "@babel/plugin-transform-modules-commonjs" "7.0.0-beta.47"
+    "@babel/register" "7.0.0-beta.47"
+    core-js "^2.2.2"
+    escape-string-regexp "^1.0.5"
+
 metro-babel7-plugin-react-transform@0.38.3:
   version "0.38.3"
   resolved "https://registry.yarnpkg.com/metro-babel7-plugin-react-transform/-/metro-babel7-plugin-react-transform-0.38.3.tgz#c07742f31139415683a9ee95332f20967641b12f"
+  dependencies:
+    "@babel/helper-module-imports" "7.0.0-beta.47"
+    lodash "^4.17.5"
+
+metro-babel7-plugin-react-transform@0.38.4:
+  version "0.38.4"
+  resolved "https://registry.yarnpkg.com/metro-babel7-plugin-react-transform/-/metro-babel7-plugin-react-transform-0.38.4.tgz#56c4364388457c7e56055d557c2a1716e2c04a55"
   dependencies:
     "@babel/helper-module-imports" "7.0.0-beta.47"
     lodash "^4.17.5"
@@ -3675,13 +3701,31 @@ metro-cache@0.38.3:
     mkdirp "^0.5.1"
     rimraf "^2.5.4"
 
-metro-core@0.38.3, metro-core@^0.38.1, metro-core@^0.38.3:
+metro-cache@0.38.4:
+  version "0.38.4"
+  resolved "https://registry.yarnpkg.com/metro-cache/-/metro-cache-0.38.4.tgz#8025d55134c7ad711894d1d839c43f2e2b680851"
+  dependencies:
+    jest-serializer "23.0.1"
+    metro-core "0.38.4"
+    mkdirp "^0.5.1"
+    rimraf "^2.5.4"
+
+metro-core@0.38.3, metro-core@^0.38.1:
   version "0.38.3"
   resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.38.3.tgz#9690835b21cb9c4c623c72bd0a4634babb912d22"
   dependencies:
     jest-haste-map "23.1.0"
     lodash.throttle "^4.1.1"
     metro-resolver "0.38.3"
+    wordwrap "^1.0.0"
+
+metro-core@0.38.4, metro-core@^0.38.4:
+  version "0.38.4"
+  resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.38.4.tgz#975c8dda01aa923691f5ddb41672904d744a821d"
+  dependencies:
+    jest-haste-map "23.1.0"
+    lodash.throttle "^4.1.1"
+    metro-resolver "0.38.4"
     wordwrap "^1.0.0"
 
 metro-memory-fs@^0.38.1:
@@ -3694,9 +3738,21 @@ metro-minify-uglify@0.38.3:
   dependencies:
     uglify-es "^3.1.9"
 
+metro-minify-uglify@0.38.4:
+  version "0.38.4"
+  resolved "https://registry.yarnpkg.com/metro-minify-uglify/-/metro-minify-uglify-0.38.4.tgz#5e162a48414f0d84461f674022b425e2a6b751ac"
+  dependencies:
+    uglify-es "^3.1.9"
+
 metro-resolver@0.38.3:
   version "0.38.3"
   resolved "https://registry.yarnpkg.com/metro-resolver/-/metro-resolver-0.38.3.tgz#8f82dcbd6862759b352f14c976e23e768cc6ccfc"
+  dependencies:
+    absolute-path "^0.0.0"
+
+metro-resolver@0.38.4:
+  version "0.38.4"
+  resolved "https://registry.yarnpkg.com/metro-resolver/-/metro-resolver-0.38.4.tgz#2dc0cc9520a1f03e94f6cfb94b062ccfb21eefa1"
   dependencies:
     absolute-path "^0.0.0"
 
@@ -3706,7 +3762,13 @@ metro-source-map@0.38.3:
   dependencies:
     source-map "^0.5.6"
 
-metro@^0.38.1, metro@^0.38.3:
+metro-source-map@0.38.4:
+  version "0.38.4"
+  resolved "https://registry.yarnpkg.com/metro-source-map/-/metro-source-map-0.38.4.tgz#560230c9841dfdcd40d03452dafc7a808314246b"
+  dependencies:
+    source-map "^0.5.6"
+
+metro@^0.38.1:
   version "0.38.3"
   resolved "https://registry.yarnpkg.com/metro/-/metro-0.38.3.tgz#a03ac6c720c8e3c7441a32cd43fbf5aca8cfad25"
   dependencies:
@@ -3779,6 +3841,95 @@ metro@^0.38.1, metro@^0.38.3:
     metro-minify-uglify "0.38.3"
     metro-resolver "0.38.3"
     metro-source-map "0.38.3"
+    mime-types "2.1.11"
+    mkdirp "^0.5.1"
+    node-fetch "^1.3.3"
+    react-transform-hmr "^1.0.4"
+    resolve "^1.5.0"
+    rimraf "^2.5.4"
+    serialize-error "^2.1.0"
+    source-map "^0.5.6"
+    temp "0.8.3"
+    throat "^4.1.0"
+    wordwrap "^1.0.0"
+    write-file-atomic "^1.2.0"
+    ws "^1.1.0"
+    xpipe "^1.0.5"
+    yargs "^9.0.0"
+
+metro@^0.38.4:
+  version "0.38.4"
+  resolved "https://registry.yarnpkg.com/metro/-/metro-0.38.4.tgz#86046cac6600ce619f442041363a051c4f7cdac7"
+  dependencies:
+    "@babel/core" "7.0.0-beta.47"
+    "@babel/generator" "7.0.0-beta.47"
+    "@babel/helper-remap-async-to-generator" "7.0.0-beta.47"
+    "@babel/plugin-external-helpers" "7.0.0-beta.47"
+    "@babel/plugin-proposal-class-properties" "7.0.0-beta.47"
+    "@babel/plugin-proposal-object-rest-spread" "7.0.0-beta.47"
+    "@babel/plugin-syntax-dynamic-import" "7.0.0-beta.47"
+    "@babel/plugin-syntax-nullish-coalescing-operator" "7.0.0-beta.47"
+    "@babel/plugin-transform-arrow-functions" "7.0.0-beta.47"
+    "@babel/plugin-transform-async-to-generator" "7.0.0-beta.47"
+    "@babel/plugin-transform-block-scoping" "7.0.0-beta.47"
+    "@babel/plugin-transform-classes" "7.0.0-beta.47"
+    "@babel/plugin-transform-computed-properties" "7.0.0-beta.47"
+    "@babel/plugin-transform-destructuring" "7.0.0-beta.47"
+    "@babel/plugin-transform-exponentiation-operator" "7.0.0-beta.47"
+    "@babel/plugin-transform-flow-strip-types" "7.0.0-beta.47"
+    "@babel/plugin-transform-for-of" "7.0.0-beta.47"
+    "@babel/plugin-transform-function-name" "7.0.0-beta.47"
+    "@babel/plugin-transform-literals" "7.0.0-beta.47"
+    "@babel/plugin-transform-modules-commonjs" "7.0.0-beta.47"
+    "@babel/plugin-transform-object-assign" "7.0.0-beta.47"
+    "@babel/plugin-transform-parameters" "7.0.0-beta.47"
+    "@babel/plugin-transform-react-display-name" "7.0.0-beta.47"
+    "@babel/plugin-transform-react-jsx" "7.0.0-beta.47"
+    "@babel/plugin-transform-react-jsx-source" "7.0.0-beta.47"
+    "@babel/plugin-transform-regenerator" "7.0.0-beta.47"
+    "@babel/plugin-transform-shorthand-properties" "7.0.0-beta.47"
+    "@babel/plugin-transform-spread" "7.0.0-beta.47"
+    "@babel/plugin-transform-template-literals" "7.0.0-beta.47"
+    "@babel/plugin-transform-unicode-regex" "7.0.0-beta.47"
+    "@babel/register" "7.0.0-beta.47"
+    "@babel/template" "7.0.0-beta.47"
+    "@babel/traverse" "7.0.0-beta.47"
+    "@babel/types" "7.0.0-beta.47"
+    absolute-path "^0.0.0"
+    async "^2.4.0"
+    babel-core "^6.24.1"
+    babel-plugin-external-helpers "^6.22.0"
+    babel-plugin-transform-flow-strip-types "^6.21.0"
+    babel-preset-es2015-node "^6.1.1"
+    babel-preset-fbjs "^2.1.4"
+    babel-preset-react-native "^5.0.0"
+    babel-register "^6.24.1"
+    babylon "7.0.0-beta.47"
+    chalk "^1.1.1"
+    concat-stream "^1.6.0"
+    connect "^3.6.5"
+    debug "^2.2.0"
+    denodeify "^1.2.1"
+    eventemitter3 "^3.0.0"
+    fbjs "^0.8.14"
+    fs-extra "^1.0.0"
+    graceful-fs "^4.1.3"
+    image-size "^0.6.0"
+    jest-docblock "23.0.1"
+    jest-haste-map "23.1.0"
+    jest-worker "23.0.1"
+    json-stable-stringify "^1.0.1"
+    json5 "^0.4.0"
+    left-pad "^1.1.3"
+    lodash.throttle "^4.1.1"
+    merge-stream "^1.0.1"
+    metro-babel-register "0.38.4"
+    metro-babel7-plugin-react-transform "0.38.4"
+    metro-cache "0.38.4"
+    metro-core "0.38.4"
+    metro-minify-uglify "0.38.4"
+    metro-resolver "0.38.4"
+    metro-source-map "0.38.4"
     mime-types "2.1.11"
     mkdirp "^0.5.1"
     node-fetch "^1.3.3"
@@ -4411,7 +4562,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -4478,9 +4629,17 @@ react-is@^16.3.1:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.4.1.tgz#d624c4650d2c65dbd52c72622bbf389435d9776e"
 
-react-native-background-timer@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-background-timer/-/react-native-background-timer-2.0.1.tgz#ef714a4bfd28fc47cbbd335631b581cf915604a2"
+react-is@^16.3.2, react-is@^16.6.0:
+  version "16.6.3"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.6.3.tgz#d2d7462fcfcbe6ec0da56ad69047e47e56e7eac0"
+
+react-lifecycles-compat@^3.0.0:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-native-background-timer@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-background-timer/-/react-native-background-timer-2.1.0.tgz#4647a660b142a52a5ed6ac8fd384743bc683c96f"
 
 react-native-beacons-manager@^1.0.7:
   version "1.0.7"
@@ -4501,19 +4660,19 @@ react-native-confirmation-code-input@^1.0.4:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-contacts@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-2.2.2.tgz#8bfec0a82bce3c24847ed69419ebc0ba8d7defee"
+react-native-contacts@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-2.2.4.tgz#6038aefdae6725073536e40bd350bcf255e48062"
 
-react-native-i18n@^2.0.12:
-  version "2.0.14"
-  resolved "https://registry.yarnpkg.com/react-native-i18n/-/react-native-i18n-2.0.14.tgz#21503bd6cb21988d67aa6cfa39f495dede740325"
+react-native-i18n@^2.0.15:
+  version "2.0.15"
+  resolved "https://registry.yarnpkg.com/react-native-i18n/-/react-native-i18n-2.0.15.tgz#09b5a9836116fa7dbd0054c46e2d1014c1ef3c65"
   dependencies:
-    i18n-js "^3.0.11"
+    i18n-js "3.0.11"
 
-react-native-navigation@^1.1.476:
-  version "1.1.476"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.476.tgz#0cbd66bc1a1d5e95d202cf2a2c753ed407037a08"
+react-native-navigation@^1.1.493:
+  version "1.1.493"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.493.tgz#01d57dd9822ac603cd04d4529abacf193bbbcdac"
   dependencies:
     lodash "4.x.x"
 
@@ -4521,13 +4680,9 @@ react-native-permissions@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"
 
-react-native-push-notification@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.1.tgz#99ce426e78e95788c298f73750cc4e68db04d7ab"
-
-react-native-radial-gradient@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-radial-gradient/-/react-native-radial-gradient-1.0.4.tgz#973fcff008e1f7891bb436e94a9bd6669883fb5b"
+react-native-push-notification@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.2.tgz#a6129fb2897773a19c7b42bba1b51a9a4aac7df3"
 
 react-native-splash-screen@^3.1.1:
   version "3.1.1"
@@ -4541,9 +4696,9 @@ react-native-vector-icons@^4.6.0:
     prop-types "^15.5.10"
     yargs "^8.0.2"
 
-react-native@^0.56.0:
-  version "0.56.0"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.56.0.tgz#66686f781ec39a44376aadd4bbc55c8573ab61e5"
+react-native@^0.56.1:
+  version "0.56.1"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.56.1.tgz#8d60e2a989b0a620486a68f5f7e1b451557a0e54"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
@@ -4604,16 +4759,17 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-react-redux@^5.0.7:
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.7.tgz#0dc1076d9afb4670f993ffaef44b8f8c1155a4c8"
+react-redux@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.1.1.tgz#88e368682c7fa80e34e055cd7ac56f5936b0f52f"
   dependencies:
-    hoist-non-react-statics "^2.5.0"
-    invariant "^2.0.0"
-    lodash "^4.17.5"
-    lodash-es "^4.17.5"
+    "@babel/runtime" "^7.1.2"
+    hoist-non-react-statics "^3.1.0"
+    invariant "^2.2.4"
     loose-envify "^1.1.0"
-    prop-types "^15.6.0"
+    prop-types "^15.6.1"
+    react-is "^16.6.0"
+    react-lifecycles-compat "^3.0.0"
 
 react-test-renderer@16.3.1:
   version "16.3.1"
@@ -4635,14 +4791,14 @@ react-transform-hmr@^1.0.4:
     global "^4.3.0"
     react-proxy "^1.1.7"
 
-react@^16.4.1:
-  version "16.4.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
+react@^16.6.3:
+  version "16.6.3"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.6.3.tgz#25d77c91911d6bbdd23db41e70fb094cc1e0871c"
   dependencies:
-    fbjs "^0.8.16"
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    prop-types "^15.6.0"
+    prop-types "^15.6.2"
+    scheduler "^0.11.2"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -4710,11 +4866,11 @@ redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
 
-redux@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.0.tgz#aa698a92b729315d22b34a0553d7e6533555cc03"
+redux@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
   dependencies:
-    loose-envify "^1.1.0"
+    loose-envify "^1.4.0"
     symbol-observable "^1.2.0"
 
 regenerate-unicode-properties@^7.0.0:
@@ -4730,6 +4886,10 @@ regenerate@^1.2.1, regenerate@^1.4.0:
 regenerator-runtime@^0.11.0:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
+
+regenerator-runtime@^0.12.0:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
 
 regenerator-transform@^0.12.3:
   version "0.12.4"
@@ -4981,9 +5141,16 @@ sax@~1.1.1:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.1.6.tgz#5d616be8a5e607d54e114afae55b7eaf2fcc3240"
 
-seamless-immutable@^7.1.3:
-  version "7.1.3"
-  resolved "https://registry.yarnpkg.com/seamless-immutable/-/seamless-immutable-7.1.3.tgz#d32a8a202a331dffa69e4069a367a2159252490e"
+scheduler@^0.11.2:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.11.2.tgz#a8db5399d06eba5abac51b705b7151d2319d33d3"
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+seamless-immutable@^7.1.4:
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/seamless-immutable/-/seamless-immutable-7.1.4.tgz#6e9536def083ddc4dea0207d722e0e80d0f372f8"
 
 "semver@2 || 3 || 4 || 5", semver@5.x, semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1:
   version "5.5.0"
