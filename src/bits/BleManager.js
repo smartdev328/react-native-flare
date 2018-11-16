@@ -1,5 +1,5 @@
 /* global navigator */
-import { DeviceEventEmitter, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
 import RNBluetoothInfo from 'react-native-bluetooth-info';
 
@@ -101,6 +101,7 @@ export default class BleManager {
         if (Platform.OS === 'ios') {
             // IOS BLE SETUP
             Beacons.requestAlwaysAuthorization();
+            Beacons.shouldDropEmptyRanges(true);
             Regions.forEach((region) => {
                 Beacons.startMonitoringForRegion(region);
             });
@@ -113,7 +114,7 @@ export default class BleManager {
             });
         }
 
-        this.beaconsDidRange = DeviceEventEmitter.addListener('beaconsDidRange', (data) => {
+        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange', (data) => {
             data.beacons.forEach((beacon) => {
                 const parsedBeacon = BleUtils.parseBeacon(beacon);
 
@@ -145,18 +146,23 @@ export default class BleManager {
             });
         });
 
-        this.regionDidEnterEvent = DeviceEventEmitter.addListener(
+        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
             'regionDidEnter',
             (region) => {
                 Beacons.startRangingBeaconsInRegion(region);
             },
         );
 
-        this.regionDidExitEvent = DeviceEventEmitter.addListener(
+        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
             'regionDidExit',
             (region) => {
                 Beacons.stopRangingBeaconsInRegion(region);
             },
+        );
+
+        this.authStateDidChangeEvent = Beacons.BeaconsEventEmitter.addListener(
+            'authorizationStatusDidChange',
+            info => console.log(`auth status changed: ${info}`),
         );
     }
 }

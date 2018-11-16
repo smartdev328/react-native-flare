@@ -3,17 +3,17 @@ package com.flarejewelry;
 import android.app.Application;
 
 // import com.facebook.react.ReactApplication;
+import com.reactlibrary.RNBluetoothInfoPackage;
+import com.ocetnik.timer.BackgroundTimerPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.ocetnik.timer.BackgroundTimerPackage;
-import com.reactlibrary.RNBluetoothInfoPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.surajit.rnrg.RNRadialGradientPackage;
@@ -38,8 +38,6 @@ public class MainApplication extends NavigationApplication {
             new BackgroundTimerPackage(),
             new ReactNativeConfigPackage(),
             new ReactNativeContacts(),
-            new ReactNativePushNotificationPackage(),
-            new RNBluetoothInfoPackage(),
             new RNI18nPackage(),
             new RNRadialGradientPackage(),
             new VectorIconsPackage()

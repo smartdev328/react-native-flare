@@ -34,7 +34,7 @@
     "react": "^16.6.1",
     "react-native": "^0.57.4",
     "react-native-background-timer": "^2.1.0",
-    "react-native-beacons-manager": "^1.0.7",
+    "react-native-beacons-manager": "https://github.com/MacKentoch/react-native-beacons-manager.git",
     "react-native-bluetooth-info": "^1.0.3",
     "react-native-config": "^0.11.5",
     "react-native-confirmation-code-input": "^1.0.4",
