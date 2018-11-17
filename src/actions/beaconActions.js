@@ -62,14 +62,14 @@ export function flare(token, beacon, position, forCurrentUser) {
                     position,
                 },
             },
-        ).then((response) => {
+        ).then(() => {
             if (forCurrentUser) {
                 dispatch({
                     type: types.ACTIVATE_FLARE_SUCCESS,
                     data: {
                         beacon,
                         position,
-                        crewEvents: response.data.crew_events,
+                        crewEvents: [],
                     },
                 });
             }
@@ -108,11 +108,11 @@ export function cancelActiveFlare(token, pin) {
                     pin,
                 },
             },
-        ).then((response) => {
+        ).then(() => {
             dispatch({
                 type: types.CANCEL_ACTIVE_FLARE_SUCCESS,
                 data: {
-                    crewEvents: response.data.crew_events,
+                    crewEvents: [],
                 },
             });
         }).catch((status) => {
