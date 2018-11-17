@@ -296,19 +296,21 @@ class Home extends React.Component {
         }
     }
 
+    refreshTimeline() {
+        if (this.props.crewEvents && this.props.crewEvents.length > 0) {
+            const event = this.props.crewEvents[0];
+            if (event) {
+                this.props.dispatch(getCrewEventTimeline(this.props.token, event.id));
+            }
+        }
+    }
+
     startTimelineRefreshInterval() {
         if (this.eventTimelineRefreshTimer !== null) {
             return;
         }
-
-        this.eventTimelineRefreshTimer = setInterval(() => {
-            if (this.props.crewEvents && this.props.crewEvents.length > 0) {
-                const event = this.props.crewEvents[0];
-                if (event) {
-                    this.props.dispatch(getCrewEventTimeline(this.props.token, event.id));
-                }
-            }
-        }, FLARE_TIMELINE_REFRESH_INTERVAL);
+        this.refreshTimeline();
+        this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
     }
 
     handleAppStateChange(nextAppState) {
