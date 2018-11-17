@@ -75,7 +75,10 @@ const CrewStatus = props => (
         <View>
             {props.type !== CrewActionTypes.Join &&
                 <Text style={styles.statusHeading}>
-                    {Strings.crewEventTimeline.headings[CrewActionConstantToStringToken[props.type]]} {props.event.name}.
+                    {Strings.crewEventTimeline.headings[CrewActionConstantToStringToken[props.type]]}
+                    {props.event.name && ' '}
+                    {props.event.name}
+                    {props.event.name && '.'}
                 </Text>
             }
             {props.type === CrewActionTypes.Join &&

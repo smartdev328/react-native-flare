@@ -27,7 +27,7 @@ const Strings = {
             cancel: '🚫 You canceled the Flare.',
             create: '📣 You started the Flare.',
             join: 'is available.',
-            unknown: '🤮 Something got mixed up on our end.',
+            unknown: '🤮 Something got mixed up on our end',
         },
     },
     leftDrawer: {
