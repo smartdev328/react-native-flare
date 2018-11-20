@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { persistStore } from 'redux-persist';
 import SplashScreen from 'react-native-splash-screen';
+import axios from 'axios';
 
 import { BLUETOOTH_LISTENING } from './constants';
 import { configureStore } from './store/index';
@@ -29,6 +30,18 @@ export default class App extends Component {
             store,
         });
 
+        axios.interceptors.response.use(
+            response => response,
+            (error) => {
+                console.debug(`Error response ${error}`);
+                if (error.response.status === 403) {
+                    this.bleManager.shutdown();
+                    store.dispatch(actions.signOut());
+                }
+                return Promise.reject(error);
+            },
+        );
+
         persistStore(store, null, () => {
             registerScreens(store, Provider);
             store.subscribe(this.onStoreUpdate.bind(this));
@@ -47,15 +60,14 @@ export default class App extends Component {
             // eslint-disable-next-line no-console
             console.debug(`Store update -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
+
+            if (root === 'secure' && BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
+                this.bleManager.startListening({
+                    store,
+                });
+            }
+
             this.startApp(root);
-        }
-        if (BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
-            this.bleManager.startListening({
-                store,
-            });
-        } else if (!BLUETOOTH_LISTENING) {
-            // eslint-disable-next-line no-console
-            console.warn('Bluetooth is disabled in this environment.');
         }
     }
 

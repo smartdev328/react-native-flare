@@ -1,7 +1,7 @@
 import { changeAppRoot, initializeApp } from './navActions';
 import { claimDevice } from './deviceActions';
 import { syncAccountDetails, fetchContacts } from './userActions';
-import { login } from './authActions';
+import { signIn, signOut } from './authActions';
 import { setBluetoothState } from './hardwareActions';
 
 export {
@@ -9,7 +9,8 @@ export {
     claimDevice,
     fetchContacts,
     initializeApp,
-    login,
+    signIn,
+    signOut,
     setBluetoothState,
     syncAccountDetails,
 };

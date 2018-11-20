@@ -1,6 +1,5 @@
 /* global __DEV__ */
 import axios from 'axios';
-import { signOut } from '../actions/authActions';
 
 async function getAuthorizationHeader(userToken) {
     const headers = {
@@ -32,17 +31,6 @@ export default async function request(token, serverUrl, route, options) {
         // eslint-disable-next-line
         console.debug(JSON.stringify(optionsWithHeaders));
     }
-
-    axios.interceptors.request.use(
-        config => config,
-        (error) => {
-            console.debug(`Error response ${error}`);
-            if (error.response.status === 403) {
-                return signOut();
-            }
-            return Promise.reject(error);
-        },
-    );
 
     return axios(optionsWithHeaders);
 }

@@ -168,6 +168,7 @@ class Home extends React.Component {
             clearInterval(this.eventTimelineRefreshTimer);
             this.eventTimelineRefreshTimer = null;
         }
+        BackgroundTimer.stop();
         BackgroundTimer.stopBackgroundTimer();
         BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
         AppState.addEventListener('change', newState => this.handleAppStateChange(newState));
@@ -212,6 +213,7 @@ class Home extends React.Component {
          */
         if (this.props.hasActiveFlare !== prevProps.hasActiveFlare) {
             this.setSyncTiming();
+            BackgroundTimer.stop();
             BackgroundTimer.stopBackgroundTimer();
             BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
             if (this.props.hasActiveFlare) {
@@ -236,11 +238,13 @@ class Home extends React.Component {
     }
 
     componentWillUnmount() {
+        console.log('Unmounting home');
+        BackgroundTimer.stop();
+        BackgroundTimer.stopBackgroundTimer();
         if (this.eventTimelineRefreshTimer) {
             clearInterval(this.eventTimelineRefreshTimer);
             this.eventTimelineRefreshTimer = null;
         }
-        BackgroundTimer.stopBackgroundTimer();
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
