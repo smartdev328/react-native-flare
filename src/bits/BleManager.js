@@ -29,9 +29,35 @@ export default class BleManager {
     }
 
     shutdown() {
-        RNBluetoothInfo.removeEventListener('change', (change) => {
-            this.onBluetoothStateChange(change);
-        });
+        RNBluetoothInfo.removeEventListener(
+            'change',
+            (change) => {
+                this.onBluetoothStateChange(change);
+            },
+        );
+
+        Beacons.BeaconsEventEmitter.removeListener(
+            'beaconsDidRange',
+            (data) => {
+                this.processBeaconInRange(data);
+            },
+        );
+
+        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.removeListener(
+            'regionDidEnter',
+            (region) => {
+                Beacons.startRangingBeaconsInRegion(region);
+            },
+        );
+
+        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.removeListener(
+            'regionDidExit',
+            (region) => {
+                Beacons.stopRangingBeaconsInRegion(region);
+            },
+        );
+
+        this.listening = false;
     }
 
     onBluetoothStateChange(change) {
@@ -94,7 +120,39 @@ export default class BleManager {
         }
     }
 
-    startListening(options) {
+    processBeaconInRange(data) {
+        data.beacons.forEach((beacon) => {
+            const parsedBeacon = BleUtils.parseBeacon(beacon);
+
+
+            if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
+                console.debug(`Beacon ${JSON.stringify(parsedBeacon)}`);
+            }
+
+            if (options && options.onBeaconDetected) {
+                options.onBeaconDetected(parsedBeacon);
+            }
+
+            if (options && options.store) {
+                if (!this.beaconCache.hasAlreadyHandled(parsedBeacon)) {
+                    this.beaconCache.markAsHandled(parsedBeacon);
+
+                    const { token } = options.store.getState().user;
+                    this.getCurrentPosition({
+                        enableHighAccuracy: true,
+                        timeout: 60000,
+                    }).then((position) => {
+                        this.handleBeacon(options.store.dispatch, token, parsedBeacon, position);
+                    }).catch((err) => {
+                        console.debug(`Failed to get location: ${err}. Reporting beacon without it.`);
+                        this.handleBeacon(options.store.dispatch, token, parsedBeacon);
+                    });
+                }
+            }
+        });
+    }
+
+    startListening() {
         console.debug('Starting BLE listening.');
         this.listening = true;
 
@@ -114,37 +172,12 @@ export default class BleManager {
             });
         }
 
-        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange', (data) => {
-            data.beacons.forEach((beacon) => {
-                const parsedBeacon = BleUtils.parseBeacon(beacon);
-
-
-                if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
-                    console.debug(`Beacon ${JSON.stringify(parsedBeacon)}`);
-                }
-
-                if (options && options.onBeaconDetected) {
-                    options.onBeaconDetected(parsedBeacon);
-                }
-
-                if (options && options.store) {
-                    if (!this.beaconCache.hasAlreadyHandled(parsedBeacon)) {
-                        this.beaconCache.markAsHandled(parsedBeacon);
-
-                        const { token } = options.store.getState().user;
-                        this.getCurrentPosition({
-                            enableHighAccuracy: true,
-                            timeout: 60000,
-                        }).then((position) => {
-                            this.handleBeacon(options.store.dispatch, token, parsedBeacon, position);
-                        }).catch((err) => {
-                            console.debug(`Failed to get location: ${err}. Reporting beacon without it.`);
-                            this.handleBeacon(options.store.dispatch, token, parsedBeacon);
-                        });
-                    }
-                }
-            });
-        });
+        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener(
+            'beaconsDidRange',
+            (data) => {
+                this.processBeaconInRange(data);
+            },
+        );
 
         this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
             'regionDidEnter',
@@ -158,11 +191,6 @@ export default class BleManager {
             (region) => {
                 Beacons.stopRangingBeaconsInRegion(region);
             },
-        );
-
-        this.authStateDidChangeEvent = Beacons.BeaconsEventEmitter.addListener(
-            'authorizationStatusDidChange',
-            info => console.log(`auth status changed: ${info}`),
         );
     }
 }
