@@ -119,6 +119,9 @@ export default class App extends Component {
                 appStyle: {
                     orientation: 'auto',
                 },
+                passProps: {
+                    notificationManager: this.notificationManager,
+                },
             });
             break;
         }

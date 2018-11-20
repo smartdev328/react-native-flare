@@ -44,6 +44,7 @@ const Strings = {
         passwordPrompt: 'Password',
         signInLabel: 'Sign In',
         invalid: 'Please enter a valid username and password.',
+        warning: 'You need to sign in so Flare can work! 🔥',
     },
     beacons: {
         lastReceived: 'Latest beacon',

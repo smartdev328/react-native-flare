@@ -8,12 +8,13 @@ import {
     TextInput,
     View,
 } from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
 
 import { signIn, resetAuth } from '../actions/authActions';
-
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
+import NotificationManager from '../bits/NotificationManager';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 
@@ -96,10 +97,25 @@ class SignIn extends Component {
             username: null,
             password: null,
             invalid: false,
+            showWarning: false,
         };
+
+        // We use this flag to break out of our warning loop when the app navigator
+        // is moving away from this screen. Otherwise we don't succeed in stopping the
+        // background timer and users see a warning.
+        this.shuttingDown = false;
 
         const { dispatch } = props;
         dispatch(resetAuth());
+    }
+
+    componentDidMount() {
+        BackgroundTimer.runBackgroundTimer(() => this.showWarning(), /* 15 mins = */ 900000);
+    }
+
+    componentWillUnmount() {
+        this.shuttingDown = true;
+        BackgroundTimer.stopBackgroundTimer();
     }
 
     changeUserName(newValue) {
@@ -111,6 +127,19 @@ class SignIn extends Component {
     changePassword(newValue) {
         this.setState({
             password: newValue,
+        });
+    }
+
+    showWarning() {
+        if (this.shuttingDown) {
+            return;
+        }
+        this.setState({
+            showWarning: true,
+        });
+        this.props.notificationManager.clear();
+        this.props.notificationManager.localNotify({
+            message: Strings.signin.warning,
         });
     }
 
@@ -138,6 +167,11 @@ class SignIn extends Component {
                     source={require('../assets/flare_dark.png')}
                     style={styles.logo}
                 />
+                {this.state.showWarning &&
+                    <View style={styles.warning}>
+                        <Text>{Strings.signin.warning}</Text>
+                    </View>
+                }
                 {(this.state.invalid || this.props.authState === 'failed') &&
                     <View style={styles.invalid}>
                         <Text style={styles.invalidText}>
