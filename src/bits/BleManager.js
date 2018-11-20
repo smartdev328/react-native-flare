@@ -17,7 +17,7 @@ export default class BleManager {
         this.regionDidEnterEvent = null;
         this.regionDidExitEvent = null;
         this.listening = false;
-        this.beaconCache = new BeaconCache();
+        this.beaconCache = null;
         RNBluetoothInfo.addEventListener('change', (change) => {
             this.onBluetoothStateChange(change);
         });
@@ -29,6 +29,9 @@ export default class BleManager {
     }
 
     shutdown() {
+        Regions.forEach(region => Beacons.stopMonitoringForRegion(region));
+        Beacons.stopUpdatingLocation();
+
         RNBluetoothInfo.removeEventListener(
             'change',
             (change) => {
@@ -57,6 +60,9 @@ export default class BleManager {
             },
         );
 
+        this.beaconCache.shutdown();
+        delete this.beaconCache;
+        this.beaconCache = null;
         this.listening = false;
     }
 
@@ -120,7 +126,7 @@ export default class BleManager {
         }
     }
 
-    processBeaconInRange(data) {
+    processBeaconInRange(data, options) {
         data.beacons.forEach((beacon) => {
             const parsedBeacon = BleUtils.parseBeacon(beacon);
 
@@ -152,8 +158,9 @@ export default class BleManager {
         });
     }
 
-    startListening() {
+    startListening(options) {
         console.debug('Starting BLE listening.');
+        this.beaconCache = new BeaconCache();
         this.listening = true;
 
         if (Platform.OS === 'ios') {
@@ -175,7 +182,7 @@ export default class BleManager {
         this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener(
             'beaconsDidRange',
             (data) => {
-                this.processBeaconInRange(data);
+                this.processBeaconInRange(data, options);
             },
         );
 

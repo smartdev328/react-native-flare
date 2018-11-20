@@ -1,4 +1,3 @@
-import BackgroundTimer from 'react-native-background-timer';
 import moment from 'moment';
 
 export default class BeaconCache {
@@ -11,9 +10,13 @@ export default class BeaconCache {
 
         this.durationInMinutes = 30;
         this.pruneFrequencyInMilliseconds = 30000; // 30 seconds
-        this.backgroundTimer = BackgroundTimer.setInterval(() => {
+        this.backgroundTimer = setInterval(() => {
             this.prune();
         }, this.pruneFrequencyInMilliseconds);
+    }
+
+    shutdown() {
+        clearInterval(this.backgroundTimer);
     }
 
     hasAlreadyHandled(beacon) {

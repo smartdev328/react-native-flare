@@ -4,6 +4,7 @@ import { Navigation } from 'react-native-navigation';
 import { persistStore } from 'redux-persist';
 import SplashScreen from 'react-native-splash-screen';
 import axios from 'axios';
+import BackgroundTimer from 'react-native-background-timer';
 
 import { BLUETOOTH_LISTENING } from './constants';
 import { configureStore } from './store/index';
@@ -33,8 +34,7 @@ export default class App extends Component {
         axios.interceptors.response.use(
             response => response,
             (error) => {
-                console.debug(`Error response ${error}`);
-                if (error.response.status === 403) {
+                if (error.response.status === 401 || error.response.status === 403) {
                     this.bleManager.shutdown();
                     store.dispatch(actions.signOut());
                 }
@@ -58,13 +58,15 @@ export default class App extends Component {
         const { root } = store.getState().nav;
         if (this.currentRoot !== root) {
             // eslint-disable-next-line no-console
-            console.debug(`Store update -- new root ${root}, current root ${this.currentRoot}`);
+            console.debug(`NAVIGATION -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
 
             if (root === 'secure' && BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
                 this.bleManager.startListening({
                     store,
                 });
+            } else {
+                BackgroundTimer.stopBackgroundTimer();
             }
 
             this.startApp(root);

@@ -132,6 +132,7 @@ class Home extends React.Component {
         super(props);
 
         this.eventTimelineRefreshTimer = null;
+        this.shuttingDown = false;
         this.setSyncTiming();
     }
 
@@ -168,7 +169,6 @@ class Home extends React.Component {
             clearInterval(this.eventTimelineRefreshTimer);
             this.eventTimelineRefreshTimer = null;
         }
-        BackgroundTimer.stop();
         BackgroundTimer.stopBackgroundTimer();
         BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
         AppState.addEventListener('change', newState => this.handleAppStateChange(newState));
@@ -239,12 +239,10 @@ class Home extends React.Component {
 
     componentWillUnmount() {
         console.log('Unmounting home');
-        BackgroundTimer.stop();
+        this.shuttingDown = true;
         BackgroundTimer.stopBackgroundTimer();
-        if (this.eventTimelineRefreshTimer) {
-            clearInterval(this.eventTimelineRefreshTimer);
-            this.eventTimelineRefreshTimer = null;
-        }
+        clearInterval(this.eventTimelineRefreshTimer);
+        this.eventTimelineRefreshTimer = null;
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
@@ -271,6 +269,13 @@ class Home extends React.Component {
      * Submit user location and fetch any account updates.
      */
     syncAccount() {
+        // Don't kick off a new async request if we're shutting down. This prevents an infinite loop of syncing
+        // status -> auth fail -> sign out.
+        if (this.shuttingDown) {
+            return;
+        }
+
+        // Transmit the current state and retrieve any updates from the server.
         Location.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,

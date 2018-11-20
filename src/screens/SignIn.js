@@ -9,7 +9,6 @@ import {
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import BackgroundTimer from 'react-native-background-timer';
 
 import { signIn, resetAuth } from '../actions/authActions';
 
