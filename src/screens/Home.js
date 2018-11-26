@@ -184,6 +184,8 @@ class Home extends React.Component {
                 hasActiveFlare: this.props.hasActiveFlare,
             },
         });
+
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 
     componentDidUpdate(prevProps) {
@@ -244,6 +246,19 @@ class Home extends React.Component {
         clearInterval(this.eventTimelineRefreshTimer);
         this.eventTimelineRefreshTimer = null;
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
+    }
+
+    onNavigatorEvent(event) {
+        if (event.type !== 'DeepLink') {
+            return;
+        }
+
+        if (event.link === 'Settings') {
+            this.props.navigator.push({
+                screen: 'Settings',
+                title: Strings.settings.title,
+            });
+        }
     }
 
     onRefreshTimeline() {

@@ -42,6 +42,12 @@ class LeftDrawer extends React.Component {
         this.props.dispatch(signOut());
     }
 
+    handleSettings() {
+        this.props.navigator.handleDeepLink({
+            link: 'Settings',
+        });
+    }
+
     render() {
         return (
             <View style={styles.container}>

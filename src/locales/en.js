@@ -100,6 +100,9 @@ const Strings = {
         },
         title: 'w/ ❤️ from Flare',
     },
+    settings: {
+        title: 'Settings',
+    },
 };
 
 export default Strings;

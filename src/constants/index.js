@@ -10,12 +10,10 @@ export const ACCOUNT_SYNC_INTERVAL_FLARE = parseInt(Config.ACCOUNT_SYNC_INTERVAL
 export const ACCOUNT_SYNC_INTERVAL_DEV = parseInt(Config.ACCOUNT_SYNC_INTERVAL_DEV, 10);
 export const FLARE_TIMELINE_REFRESH_INTERVAL = parseInt(Config.FLARE_TIMELINE_REFRESH_INTERVAL, 10);
 
-export const summary = {
-    api: API_URL,
-    logging: {
-        redux: REDUX_LOGGING,
-        ble: BLUETOOTH_BEACON_LOGGING,
-    },
-    bluetooth: BLUETOOTH_LISTENING,
-    accountSyncInterval: ACCOUNT_SYNC_INTERVAL,
-};
+export const summary = [
+    { key: 'API', value: API_URL },
+    { key: 'Logging / Redux', value: REDUX_LOGGING.toString() },
+    { key: 'Logging / BLE', value: BLUETOOTH_BEACON_LOGGING.toString() },
+    { key: 'Bluetooth', value: BLUETOOTH_LISTENING.toString() },
+    { key: 'Account Sync', value: ACCOUNT_SYNC_INTERVAL },
+];
