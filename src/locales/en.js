@@ -31,6 +31,7 @@ const Strings = {
         },
     },
     leftDrawer: {
+        settings: 'Settings',
         signOut: 'Sign Out',
     },
     pin: {
