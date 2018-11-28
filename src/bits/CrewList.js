@@ -44,7 +44,6 @@ const CrewList = function createCrewList(props) {
             showsVerticalScrollIndicator={false}
             overScrollMode="always"
             scrollEnabled={false}
-            constainerStyle={styles.container}
             data={(props.crew && props.crew.members) || []}
             renderItem={({ item }) => (
                 <View style={styles.member}>

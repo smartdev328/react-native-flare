@@ -158,7 +158,6 @@
     <orderEntry type="module" module-name="react-native-i18n" />
     <orderEntry type="module" module-name="react-native-contacts" />
     <orderEntry type="module" module-name="react-native-background-timer" />
-    <orderEntry type="module" module-name="react-native-radial-gradient" />
     <orderEntry type="module" module-name="react-native-config" />
     <orderEntry type="module" module-name="react-native-push-notification" />
     <orderEntry type="module" module-name="react-native-vector-icons" />

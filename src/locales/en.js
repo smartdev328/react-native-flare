@@ -101,6 +101,21 @@ const Strings = {
         title: 'w/ ❤️ from Flare',
     },
     settings: {
+        config: {
+            title: 'Configuration',
+        },
+        notifications: {
+            title: 'Notifications',
+            promptSelectionTitle: 'Custom popup message',
+            promptSelectionBody:
+                'When you hold the button to start a flare event, we pop up a notification on your phone. ' +
+                'It tells you that our app knows you pressed the button, and it can serve as a convenient ' +
+                'distraction while your crew gets ready to help you.',
+            customOption: 'Custom',
+            customPromptPlaceholder: 'Your custom popup text',
+            defaultMessage: 'Reminder: 9am appt tomorrow',
+            defaultOption: 'Default',
+        },
         title: 'Settings',
     },
 };

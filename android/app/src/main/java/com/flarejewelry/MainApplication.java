@@ -16,7 +16,6 @@ import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactnativenavigation.NavigationApplication;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
-import com.surajit.rnrg.RNRadialGradientPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import java.util.Arrays;
@@ -39,7 +38,6 @@ public class MainApplication extends NavigationApplication {
             new ReactNativeConfigPackage(),
             new ReactNativeContacts(),
             new RNI18nPackage(),
-            new RNRadialGradientPackage(),
             new VectorIconsPackage()
         );
     }

@@ -1,4 +1,5 @@
 import Immutable from 'seamless-immutable';
+import Strings from '../locales/en';
 
 // eslint-disable-next-line
 export const initialState = Immutable({
@@ -20,6 +21,10 @@ export const initialState = Immutable({
         },
         profile: {},
         token: null,
+        settings: {
+            promptType: Strings.settings.notifications.defaultOption,
+            promptMessage: Strings.settings.notifications.defaultMessage,
+        },
     },
     beacons: {
         latest: null,
