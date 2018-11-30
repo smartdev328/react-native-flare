@@ -22,7 +22,7 @@ if (__DEV__ && REDUX_LOGGING) {
 const transformerConfig = {
     whitelistPerReducer: {
         nav: ['root'],
-        user: ['profile', 'crews', 'devices', 'authState', 'token'],
+        user: ['profile', 'crews', 'devices', 'authState', 'token', 'settings', 'beacons'],
     },
 };
 

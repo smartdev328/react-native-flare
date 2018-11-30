@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
         minHeight: 60,
         maxHeight: 60,
     },
+    left: {
+        alignSelf: 'flex-start',
+    },
     text: {
         fontWeight: '900',
         lineHeight: 60,
@@ -44,6 +47,7 @@ function Button(props) {
                 props.rounded && styles.rounded,
                 props.fullWidth && styles.fullWidth,
                 props.primary && styles.primaryBackground,
+                props.left && styles.left,
             ]}
         >
             <Text

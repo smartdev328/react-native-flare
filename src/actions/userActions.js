@@ -175,3 +175,32 @@ export function getCrewEventTimeline(token, eventID) {
         });
     };
 }
+
+export function setNotificationMessage(token, message, custom) {
+    return function setMessage(dispatch) {
+        dispatch({
+            type: types.SETTINGS_SET_POPUP_MESSAGE_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            '/users/notification', {
+                method: 'POST',
+                data: {
+                    message,
+                },
+            },
+        ).then((response) => {
+            dispatch({
+                type: types.SETTINGS_SET_POPUP_MESSAGE_SUCCESS,
+                data: response.data.data,
+                custom,
+            });
+        }).catch((error) => {
+            dispatch({
+                type: types.SETTINGS_SET_POPUP_MESSAGE_FAILURE,
+                error,
+            });
+        });
+    };
+}

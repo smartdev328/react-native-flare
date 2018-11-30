@@ -115,6 +115,7 @@ const Strings = {
             customPromptPlaceholder: 'Your custom popup text',
             defaultMessage: 'Reminder: 9am appt tomorrow',
             defaultOption: 'Default',
+            saveButtonLabel: 'Save popup',
         },
         title: 'Settings',
     },

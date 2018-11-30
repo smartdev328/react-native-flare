@@ -210,6 +210,33 @@ export function user(state = initialState.user, action = {}) {
             crewEventTimelineState: 'failed',
         });
 
+
+    /**
+     * SET NOTIFICATION MESSAGE
+     */
+    case types.SETTINGS_SET_POPUP_MESSAGE_REQUEST: {
+        Immutable.setIn(state.settings, ['saving'], true);
+        return state;
+    }
+
+    case types.SETTINGS_SET_POPUP_MESSAGE_SUCCESS: {
+        const updated = state.settings.merge({
+            saving: false,
+            promptMessage: action.data.notification.message,
+            promptType: action.custom,
+        });
+        return state.merge({
+            settings: updated,
+        });
+    }
+
+    case types.SETTINGS_SET_POPUP_MESSAGE_FAILURE: {
+        const updatedSettings = Immutable.setIn(state.settings, ['saving'], false);
+        return state.merge({
+            settings: updatedSettings,
+        });
+    }
+
     default:
         return state;
     }

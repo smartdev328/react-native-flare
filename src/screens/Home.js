@@ -206,7 +206,7 @@ class Home extends React.Component {
         if (prevProps.activatingFlareState !== this.props.activatingFlareState &&
             this.props.activatingFlareState === 'request') {
             this.props.notificationManager.localNotify({
-                message: Strings.notifications.events.flare.defaultMessage,
+                message: this.props.crewEventNotificationMessage,
             });
         }
 
@@ -518,6 +518,7 @@ function mapStateToProps(state) {
         claimingDevice: state.user.claimingDevice,
         claimingDeviceFailure: state.user.claimingDeviceFailure,
         contactsLabel,
+        crewEventNotificationMessage: state.user.settings.promptMessage,
         crewEvents: state.user.crewEvents,
         crewEventTimeline: state.user.crewEventTimeline,
         crewEventTimelineState: state.user.crewEventTimelineState,

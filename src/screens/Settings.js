@@ -11,6 +11,8 @@ import {
 import { connect } from 'react-redux';
 
 import { summary as configSummary } from '../constants';
+import { setNotificationMessage } from '../actions/userActions';
+import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import EnvironmentListing from '../bits/EnvironmentListing';
 import Strings from '../locales/en';
@@ -68,6 +70,11 @@ const styles = StyleSheet.create({
         borderColor: Colors.grey,
         borderWidth: 2,
     },
+    saveSpinner: {
+        position: 'absolute',
+        top: Spacing.tiny,
+        right: Spacing.small,
+    },
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -76,15 +83,22 @@ class Settings extends React.Component {
         super(props);
         this.state = {
             promptType: props.promptType,
-            promptValue: props.promptValue,
+            promptMessage: props.promptMessage,
             dirty: false,
         };
     }
 
     changePrompt(newPrompt) {
-        this.setState({
-            promptValue: newPrompt,
-        });
+        const update = {
+            promptMessage: newPrompt,
+            dirty: true,
+        };
+
+        if (newPrompt !== Strings.settings.notifications.defaultMessage) {
+            update.promptType = Strings.settings.notifications.customOption;
+        }
+
+        this.setState(update);
     }
 
     enableCustomPrompt(enable) {
@@ -92,14 +106,33 @@ class Settings extends React.Component {
             promptType: enable ?
                 Strings.settings.notifications.customOption :
                 Strings.settings.notifications.defaultOption,
-            dirty: true,
         });
+
+        // change the prompt and mark as dirty if user disabled custom prompt
+        if (!enable) {
+            this.changePrompt(Strings.settings.notifications.defaultMessage);
+        }
+    }
+
+    saveCustomPrompt() {
+        this.setState({
+            dirty: false,
+        });
+
+        this.props.dispatch(setNotificationMessage(
+            this.props.token,
+            this.state.promptMessage,
+            this.state.promptType,
+        ));
     }
 
     render() {
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <View style={styles.section}>
+                    {this.props.saving &&
+                        <ActivityIndicator style={styles.saveSpinner} />
+                    }
                     <Text style={styles.sectionTitle}>
                         {Strings.settings.notifications.title}
                     </Text>
@@ -117,14 +150,21 @@ class Settings extends React.Component {
                         <Text style={styles.configItemBody}>
                             {Strings.settings.notifications.promptSelectionBody}
                         </Text>
-                        {this.state.promptType === Strings.settings.notifications.customOption &&
-                            <View style={styles.customInputArea}>
-                                <TextInput
-                                    placeholder={Strings.settings.notifications.customPromptPlaceholder}
-                                    value={this.state.promptValue}
-                                    onChangeText={v => this.changePrompt(v)}
-                                />
-                            </View>
+                        <View style={styles.customInputArea}>
+                            <TextInput
+                                placeholder={Strings.settings.notifications.customPromptPlaceholder}
+                                value={this.state.promptMessage}
+                                onChangeText={v => this.changePrompt(v)}
+                            />
+                        </View>
+                        {this.state.dirty &&
+                            <Button
+                                rounded
+                                primary
+                                left
+                                onPress={() => this.saveCustomPrompt()}
+                                title={Strings.settings.notifications.saveButtonLabel}
+                            />
                         }
                     </View>
                 </View>
@@ -143,6 +183,8 @@ function mapStateToProps(state) {
     return {
         promptType: state.user.settings.promptType,
         promptMessage: state.user.settings.promptMessage,
+        saving: state.user.settings.saving,
+        token: state.user.token,
     };
 }
 
