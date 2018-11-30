@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { signIn, resetAuth } from '../actions/authActions';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
-import NotificationManager from '../bits/NotificationManager';
+
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 
