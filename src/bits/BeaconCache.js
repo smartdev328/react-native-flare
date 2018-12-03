@@ -1,4 +1,9 @@
 import moment from 'moment';
+import {
+    BEACON_CACHE_PRUNE_INTERVAL_IN_MS,
+    BEACON_CACHE_MAX_AGE_IN_MINS,
+    UNIQUE_BEACON_TIMING_IN_MS,
+} from '../constants';
 
 export default class BeaconCache {
     constructor() {
@@ -8,8 +13,8 @@ export default class BeaconCache {
             Checkin: {},
         };
 
-        this.durationInMinutes = 30;
-        this.pruneFrequencyInMilliseconds = 30000; // 30 seconds
+        this.durationInMinutes = BEACON_CACHE_MAX_AGE_IN_MINS;
+        this.pruneFrequencyInMilliseconds = BEACON_CACHE_PRUNE_INTERVAL_IN_MS;
         this.backgroundTimer = setInterval(() => {
             this.prune();
         }, this.pruneFrequencyInMilliseconds);
@@ -19,25 +24,34 @@ export default class BeaconCache {
         clearInterval(this.backgroundTimer);
     }
 
+    static getRoundedTimestamp(timestamp) {
+        const accuracy = 10000;
+        const rounded = accuracy * Math.round(timestamp / accuracy);
+        const roundedTimestamp = new Date(rounded);
+        return roundedTimestamp;
+    }
+
     hasAlreadyHandled(beacon) {
         const {
             type,
             deviceID,
             timestamp,
-            nonce,
+            uuid,
         } = beacon;
 
         let handled = false;
-        const safeNonce = nonce || 'x';
-        const lastTimestampForNonce = this.beaconCache[type] &&
+        const lastTimestampForUUID = this.beaconCache[type] &&
             this.beaconCache[type][deviceID] &&
-            this.beaconCache[type][deviceID][safeNonce];
+            this.beaconCache[type][deviceID][uuid];
+
+        const roundedTimestamp = BeaconCache.getRoundedTimestamp(timestamp);
 
         // Putting nonce under the deviceID lets us compare timestamps across hour/day boundaries.
         // We consider beacons to be the same if they have the same nonce and were received within
-        // 10 seconds of each other.
-        if (lastTimestampForNonce) {
-            handled = Math.abs(moment(lastTimestampForNonce).diff(timestamp)) < 10000;
+        // UNIQUE_BEACON_TIMING_IN_MS milliseconds of each other.
+        if (lastTimestampForUUID) {
+            const diff = Math.abs(moment(lastTimestampForUUID).diff(roundedTimestamp));
+            handled = diff < UNIQUE_BEACON_TIMING_IN_MS;
         }
 
         return handled;
@@ -48,7 +62,7 @@ export default class BeaconCache {
             type,
             deviceID,
             timestamp,
-            nonce,
+            uuid,
         } = beacon;
 
         if (!this.beaconCache[type]) {
@@ -59,16 +73,16 @@ export default class BeaconCache {
             this.beaconCache[type][deviceID] = {};
         }
 
-        const safeNonce = nonce || 'x';
-        if (!this.beaconCache[type][deviceID][safeNonce]) {
-            this.beaconCache[type][deviceID][safeNonce] = null;
+        if (!this.beaconCache[type][deviceID][uuid]) {
+            this.beaconCache[type][deviceID][uuid] = null;
         }
 
-        this.beaconCache[type][deviceID][safeNonce] = timestamp;
+        const roundedTimestamp = BeaconCache.getRoundedTimestamp(timestamp);
+        this.beaconCache[type][deviceID][uuid] = roundedTimestamp;
     }
 
     prune() {
-        const maxAge = moment().subtract(this.durationInMinutes + 5, 'minutes').unix();
+        const maxAge = moment().subtract(this.durationInMinutes, 'minutes').unix();
         Object.keys(this.beaconCache).forEach((beaconType) => {
             Object.keys(this.beaconCache[beaconType]).forEach((deviceID) => {
                 const pruned =
