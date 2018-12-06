@@ -92,11 +92,10 @@ export function user(state = initialState.user, action = {}) {
     case types.CANCEL_ACTIVE_FLARE_SUCCESS:
         return state.merge({
             crewEvents: action.data.crewEvents,
-            hasActiveFlare: action.data.crewEvents && action.data.crewEvents.length > 0,
+            hasActiveFlare: false,
             cancelingActiveFlare: false,
             cancelActiveFlareState: 'success',
             crewEventTimeline: [],
-
         });
 
     case types.CANCEL_ACTIVE_FLARE_FAILURE:
