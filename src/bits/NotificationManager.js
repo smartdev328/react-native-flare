@@ -27,7 +27,6 @@ export default class NotificationManager {
         PushNotification.cancelAllLocalNotifications();
         PushNotification.localNotification({
             title: message,
-            message: Strings.notifications.title,
             playSound,
             smallIcon,
             largeIcon,

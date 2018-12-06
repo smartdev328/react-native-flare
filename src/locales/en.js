@@ -98,7 +98,6 @@ const Strings = {
                 defaultMessage: 'Get that thing done',
             },
         },
-        title: 'w/ ❤️ from Flare',
     },
     settings: {
         config: {
@@ -108,9 +107,9 @@ const Strings = {
             title: 'Notifications',
             promptSelectionTitle: 'Custom popup message',
             promptSelectionBody:
-                'When you hold the button to start a flare event, we pop up a notification on your phone. ' +
-                'It tells you that our app knows you pressed the button, and it can serve as a convenient ' +
-                'distraction while your crew gets ready to help you.',
+                "When you press and hold the button on your bracelet to send out a flare, we'll send you a push " +
+                "notification. It's your secret message! That's how you'll know that your flare was sent out " +
+                'successfully. Customize the message below.',
             customOption: 'Custom',
             customPromptPlaceholder: 'Your custom popup text',
             defaultMessage: 'Reminder: 9am appt tomorrow',
