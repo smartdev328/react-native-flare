@@ -14,7 +14,7 @@ export default class BeaconCache {
             Checkin: {},
         };
 
-        this.durationInMinutes = BEACON_CACHE_MAX_AGE_IN_MINS;
+        this.maxAgeInMinutes = BEACON_CACHE_MAX_AGE_IN_MINS;
         this.pruneFrequencyInMilliseconds = BEACON_CACHE_PRUNE_INTERVAL_IN_MS;
         this.backgroundTimer = setInterval(() => {
             this.prune();
@@ -26,7 +26,7 @@ export default class BeaconCache {
     }
 
     static getRoundedTimestamp(timestamp) {
-        const accuracy = 10000;
+        const accuracy = 30000;
         const rounded = accuracy * Math.round(timestamp / accuracy);
         const roundedTimestamp = new Date(rounded);
         return roundedTimestamp;
@@ -88,13 +88,19 @@ export default class BeaconCache {
     }
 
     prune() {
-        const maxAge = moment().subtract(this.durationInMinutes, 'minutes').unix();
+        const maxAge = moment().subtract(this.maxAgeInMinutes, 'minutes').toDate();
+        const maxAgeTime = maxAge.getTime();
         Object.keys(this.beaconCache).forEach((beaconType) => {
             Object.keys(this.beaconCache[beaconType]).forEach((deviceID) => {
-                const pruned =
-                    Object.keys(this.beaconCache[beaconType][deviceID])
-                        .filter(key => key > maxAge);
-                this.beaconCache[beaconType][deviceID] = pruned;
+                const toKeep = {};
+                Object.keys(this.beaconCache[beaconType][deviceID]).forEach((uuid) => {
+                    const beaconDate = this.beaconCache[beaconType][deviceID][uuid];
+                    const timestamp = beaconDate.getTime();
+                    if (maxAgeTime < timestamp) {
+                        toKeep[uuid] = beaconDate;
+                    }
+                });
+                this.beaconCache[beaconType][deviceID] = toKeep;
             });
         });
     }
