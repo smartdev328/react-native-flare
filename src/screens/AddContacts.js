@@ -91,7 +91,12 @@ class AddContacts extends React.Component {
     }
 
     render() {
-        const { contacts, contactsCount, contactsCrewLookup, crew } = this.props;
+        const {
+            contacts,
+            contactsCount,
+            contactsCrewLookup,
+            crew,
+        } = this.props;
         return (
             <View style={styles.container}>
                 <View>
