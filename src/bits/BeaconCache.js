@@ -90,18 +90,40 @@ export default class BeaconCache {
     prune() {
         const maxAge = moment().subtract(this.maxAgeInMinutes, 'minutes').toDate();
         const maxAgeTime = maxAge.getTime();
+        console.debug('<< Pruning cache >>');
+        const totals = {
+            types: 0,
+            devices: 0,
+            uuids: 0,
+            kept: 0,
+        };
         Object.keys(this.beaconCache).forEach((beaconType) => {
+            if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
+                totals.types += 1;
+            }
             Object.keys(this.beaconCache[beaconType]).forEach((deviceID) => {
+                if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
+                    totals.types += 1;
+                }
                 const toKeep = {};
                 Object.keys(this.beaconCache[beaconType][deviceID]).forEach((uuid) => {
+                    if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
+                        totals.uuids += 1;
+                    }
                     const beaconDate = this.beaconCache[beaconType][deviceID][uuid];
                     const timestamp = beaconDate.getTime();
                     if (maxAgeTime < timestamp) {
                         toKeep[uuid] = beaconDate;
+                        if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
+                            totals.kept += 1;
+                        }
                     }
                 });
                 this.beaconCache[beaconType][deviceID] = toKeep;
             });
         });
+        if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
+            console.debug(`Pruning stats: ${JSON.stringify(totals)}`);
+        }
     }
 }
