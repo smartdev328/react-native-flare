@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { signIn, resetAuth } from '../actions/authActions';
 import Button from '../bits/Button';
@@ -116,6 +117,14 @@ class SignIn extends Component {
     componentWillUnmount() {
         this.shuttingDown = true;
         BackgroundTimer.stopBackgroundTimer();
+    }
+
+    goToPushedView = () => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.SignIn',
+            },
+        });
     }
 
     changeUserName(newValue) {

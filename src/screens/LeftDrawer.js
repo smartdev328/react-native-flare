@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
@@ -45,6 +46,14 @@ class LeftDrawer extends React.Component {
     handleSettings() {
         this.props.navigator.handleDeepLink({
             link: 'Settings',
+        });
+    }
+
+    goToPushedView = () => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.LeftDrawer',
+            },
         });
     }
 

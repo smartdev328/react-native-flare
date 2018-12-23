@@ -5,6 +5,8 @@ import { AppState, Image, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
+import { Navigation } from 'react-native-navigation';
+
 
 import {
     ACCOUNT_SYNC_INTERVAL,
@@ -134,18 +136,11 @@ class Home extends React.Component {
         this.eventTimelineRefreshTimer = null;
         this.shuttingDown = false;
         this.setSyncTiming();
-    }
+        Navigation.events().bindComponent(this);
 
-    // eslint-disable-next-line
-    componentWillMount() {
-        this.props.navigator.setStyle({
-            navBarCustomView: 'com.flarejewelry.FlareNavBar',
-            navBarCustomViewInitialProps: {
-                navigator: this.props.navigator,
-                hasActiveFlare: this.props.hasActiveFlare,
-            },
-            navBarComponentAlignment: 'fill',
-        });
+        this.state = {
+            showSideMenu: false,
+        };
     }
 
     componentDidMount() {
@@ -178,14 +173,6 @@ class Home extends React.Component {
         if (this.props.hasActiveFlare) {
             this.startTimelineRefreshInterval();
         }
-
-        this.props.navigator.setStyle({
-            navBarCustomViewInitialProps: {
-                hasActiveFlare: this.props.hasActiveFlare,
-            },
-        });
-
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 
     componentDidUpdate(prevProps) {
@@ -227,10 +214,6 @@ class Home extends React.Component {
             }
         }
 
-        this.props.navigator.setStyle({
-            hasActiveFlare: this.props.hasActiveFlare,
-        });
-
         /**
          * Fetch contacts if the permission changes from denied to anything else
          */
@@ -248,18 +231,18 @@ class Home extends React.Component {
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
-    onNavigatorEvent(event) {
-        if (event.type !== 'DeepLink') {
-            return;
-        }
+    // onNavigatorEvent(event) {
+    //     if (event.type !== 'DeepLink') {
+    //         return;
+    //     }
 
-        if (event.link === 'Settings') {
-            this.props.navigator.push({
-                screen: 'Settings',
-                title: Strings.settings.title,
-            });
-        }
-    }
+    //     if (event.link === 'Settings') {
+    //         this.props.navigator.push({
+    //             screen: 'Settings',
+    //             title: Strings.settings.title,
+    //         });
+    //     }
+    // }
 
     onRefreshTimeline() {
         this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
@@ -278,6 +261,42 @@ class Home extends React.Component {
         } else {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL;
         }
+    }
+
+    toggleSideMenu() {
+        const { showSideMenu } = this.state;
+        const newSideMenuState = !showSideMenu;
+
+        Navigation.mergeOptions(this.props.componentId, {
+            sideMenu: {
+                left: {
+                    visible: newSideMenuState,
+                },
+            },
+        });
+
+        this.setState({
+            showSideMenu: newSideMenuState,
+        });
+    }
+
+    navigationButtonPressed({ buttonId }) {
+        switch (buttonId) {
+        case 'menuButton':
+            this.toggleSideMenu();
+            break;
+        default:
+            console.warn('Unhandled button press in home screen.');
+            break;
+        }
+    }
+
+    goToPushedView = () => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Home',
+            },
+        });
     }
 
     /**

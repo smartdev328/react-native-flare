@@ -10,7 +10,9 @@ import { BLUETOOTH_LISTENING } from './constants';
 import { configureStore } from './store/index';
 import * as actions from './actions/index';
 import BleManager from './bits/BleManager';
+import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
+import { iconsMap } from './bits/AppIcons';
 import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
 import NotificationManager from './bits/NotificationManager';
@@ -83,44 +85,66 @@ export default class App extends Component {
         case 'secure':
             // eslint-disable-next-line no-console
             console.debug('Starting secure root.');
-            Navigation.startSingleScreenApp({
-                screen: {
-                    screen: 'Home',
-                },
-                drawer: {
-                    left: {
-                        screen: 'LeftDrawer',
-                        disableOpenGesture: true,
-                        fixedWidth: 500,
+            Navigation.setRoot({
+                root: {
+                    sideMenu: {
+                        left: {
+                            component: {
+                                name: 'com.flarejewelry.app.LeftDrawer',
+                            },
+                        },
+                        center: {
+                            stack: {
+                                children: [
+                                    {
+                                        component: {
+                                            name: 'com.flarejewelry.app.Home',
+                                            options: {
+                                                topBar: {
+                                                    leftButtons: [{
+                                                        id: 'menuButton',
+                                                        icon: iconsMap.menu,
+                                                        color: Colors.theme.purple,
+                                                    }],
+                                                    title: {
+                                                        component: {
+                                                            name: 'com.flarejewelry.app.FlareNavBar',
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                            passProps: {
+                                notificationManager: this.notificationManager,
+                                handleBeacon: (dispatch, token, beacon, position) =>
+                                    this.handleBeacon(dispatch, token, beacon, position),
+                            },
+                        },
                     },
-                },
-                animationType: 'fade',
-                appStyle: {
-                    orientation: 'auto',
-                },
-                passProps: {
-                    notificationManager: this.notificationManager,
-                    handleBeacon: (dispatch, token, beacon, position) =>
-                        this.handleBeacon(dispatch, token, beacon, position),
                 },
             });
             break;
         default:
             // eslint-disable-next-line no-console
             console.debug('Starting insecure root.');
-            Navigation.startSingleScreenApp({
-                screen: {
-                    screen: 'SignIn',
-                    navigatorStyle: {
-                        navBarHidden: true,
+            Navigation.setRoot({
+                root: {
+                    stack: {
+                        children: [{
+                            component: {
+                                name: 'com.flarejewelry.app.SignIn',
+                                options: {
+                                    topBar: {
+                                        visible: false,
+                                        animate: false,
+                                    },
+                                },
+                            },
+                        }],
                     },
-                },
-                animationType: 'fade',
-                appStyle: {
-                    orientation: 'auto',
-                },
-                passProps: {
-                    notificationManager: this.notificationManager,
                 },
             });
             break;
