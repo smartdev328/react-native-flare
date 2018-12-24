@@ -8,24 +8,30 @@ import {
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    center: {
+        display: 'flex',
+        flex: 1,
+        height: 45,
+        flexDirection: 'column',
         justifyContent: 'center',
     },
     logo: {
-        width: 98,
-        height: 40,
+        height: 22,
         resizeMode: 'contain',
-        alignSelf: 'center',
     },
 });
 
 function FlareNavBar() {
     return (
         <View style={styles.container}>
-            <Image
-                source={require('../assets/flare_dark.png')}
-                style={styles.logo}
-            />
+            <View style={styles.center}>
+                <Image
+                    source={require('../assets/flare_dark.png')}
+                    style={styles.logo}
+                />
+            </View>
         </View>
     );
 }

@@ -85,6 +85,20 @@ export default class App extends Component {
         case 'secure':
             // eslint-disable-next-line no-console
             console.debug('Starting secure root.');
+            Navigation.setDefaultOptions({
+                topBar: {
+                    leftButtons: [{
+                        id: 'menuButton',
+                        icon: iconsMap.menu,
+                        color: Colors.theme.purple,
+                    }],
+                    title: {
+                        component: {
+                            name: 'com.flarejewelry.app.FlareNavBar',
+                        },
+                    },
+                },
+            });
             Navigation.setRoot({
                 root: {
                     sideMenu: {
@@ -99,20 +113,6 @@ export default class App extends Component {
                                     {
                                         component: {
                                             name: 'com.flarejewelry.app.Home',
-                                            options: {
-                                                topBar: {
-                                                    leftButtons: [{
-                                                        id: 'menuButton',
-                                                        icon: iconsMap.menu,
-                                                        color: Colors.theme.purple,
-                                                    }],
-                                                    title: {
-                                                        component: {
-                                                            name: 'com.flarejewelry.app.FlareNavBar',
-                                                        },
-                                                    },
-                                                },
-                                            },
                                         },
                                     },
                                 ],
