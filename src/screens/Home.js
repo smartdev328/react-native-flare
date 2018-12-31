@@ -231,19 +231,6 @@ class Home extends React.Component {
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
-    // onNavigatorEvent(event) {
-    //     if (event.type !== 'DeepLink') {
-    //         return;
-    //     }
-
-    //     if (event.link === 'Settings') {
-    //         this.props.navigator.push({
-    //             screen: 'Settings',
-    //             title: Strings.settings.title,
-    //         });
-    //     }
-    // }
-
     onRefreshTimeline() {
         this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
     }
