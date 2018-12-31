@@ -6,10 +6,6 @@ import {
 } from 'react-native';
 
 const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        justifyContent: 'center',
-    },
     center: {
         display: 'flex',
         flex: 1,
@@ -25,13 +21,11 @@ const styles = StyleSheet.create({
 
 function FlareNavBar() {
     return (
-        <View style={styles.container}>
-            <View style={styles.center}>
-                <Image
-                    source={require('../assets/flare_dark.png')}
-                    style={styles.logo}
-                />
-            </View>
+        <View style={styles.center}>
+            <Image
+                source={require('../assets/flare_dark.png')}
+                style={styles.logo}
+            />
         </View>
     );
 }

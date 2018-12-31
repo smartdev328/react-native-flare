@@ -95,6 +95,7 @@ export default class App extends Component {
                     title: {
                         component: {
                             name: 'com.flarejewelry.app.FlareNavBar',
+                            alignment: 'center',
                         },
                     },
                 },
