@@ -3,7 +3,6 @@ import React from 'react';
 import { Image } from 'react-native';
 
 export default class FlareDate extends React.PureComponent {
-
     constructor(props) {
         super(props);
 
