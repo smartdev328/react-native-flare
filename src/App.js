@@ -110,6 +110,7 @@ export default class App extends Component {
                         },
                         center: {
                             stack: {
+                                id: 'MAIN_UI_STACK',
                                 children: [
                                     {
                                         component: {

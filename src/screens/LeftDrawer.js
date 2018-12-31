@@ -39,14 +39,16 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class LeftDrawer extends React.Component {
-    handleSignOut() {
-        this.props.dispatch(signOut());
+    static handleSettings() {
+        Navigation.push('MAIN_UI_STACK', {
+            component: {
+                name: 'com.flarejewelry.app.Settings',
+            },
+        });
     }
 
-    handleSettings() {
-        this.props.navigator.handleDeepLink({
-            link: 'Settings',
-        });
+    handleSignOut() {
+        this.props.dispatch(signOut());
     }
 
     goToPushedView = () => {
@@ -70,7 +72,7 @@ class LeftDrawer extends React.Component {
                     style={styles.topImage}
                 />
                 <View>
-                    <TouchableOpacity onPress={() => this.handleSettings()}>
+                    <TouchableOpacity onPress={() => LeftDrawer.handleSettings()}>
                         <Text style={styles.menuItem}>
                             {Strings.leftDrawer.settings}
                         </Text>

@@ -9,6 +9,7 @@ import {
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { summary as configSummary } from '../constants';
 import { setNotificationMessage } from '../actions/userActions';
@@ -79,6 +80,16 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Settings extends React.Component {
+    static options() {
+        return {
+            topBar: {
+                visible: true,
+                animate: false,
+                leftButtons: [],
+            },
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -86,6 +97,14 @@ class Settings extends React.Component {
             promptMessage: props.promptMessage,
             dirty: false,
         };
+    }
+
+    goToPushedView = () => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Settings',
+            },
+        });
     }
 
     changePrompt(newPrompt) {
