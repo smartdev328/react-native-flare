@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: Colors.backgrounds.pink,
         padding: Spacing.medium,
+        width: 280,
+        paddingTop: Spacing.large,
     },
     menuItem: {
         paddingTop: Spacing.medium,
@@ -30,10 +32,10 @@ const styles = StyleSheet.create({
         fontSize: Type.size.medium,
     },
     topImage: {
-        width: 180,
-        height: 180,
+        width: 140,
+        height: 140,
         alignSelf: 'center',
-        marginTop: Spacing.medium,
+        marginTop: Spacing.large,
     },
 });
 
