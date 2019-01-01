@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
-class AddContacts extends React.Component {
+class Contacts extends React.Component {
     constructor(props) {
         super(props);
         this.crewListItemHeight = 140;
@@ -146,4 +146,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(AddContacts);
+export default connect(mapStateToProps)(Contacts);

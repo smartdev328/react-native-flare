@@ -358,20 +358,17 @@ class Home extends React.Component {
     }
 
     showPinCheckScreen() {
-        this.props.navigator.push({
-            screen: 'PinCheck',
-            title: Strings.pin.title,
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.PinCheck',
+            },
         });
     }
 
     handleContactsClick() {
-        this.props.navigator.push({
-            screen: 'AddContacts',
-            title: Strings.contacts.add.title,
-            navigatorStyle: {
-                navBarBackgroundColor: Colors.white,
-                navBarTextColor: Colors.theme.purple,
-                navBarButtonColor: Colors.theme.purple,
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Contacts',
             },
         });
     }
