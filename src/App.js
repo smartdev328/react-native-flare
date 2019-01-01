@@ -115,14 +115,14 @@ export default class App extends Component {
                                     {
                                         component: {
                                             name: 'com.flarejewelry.app.Home',
+                                            passProps: {
+                                                notificationManager: this.notificationManager,
+                                                handleBeacon: (dispatch, token, beacon, position) =>
+                                                    this.handleBeacon(dispatch, token, beacon, position),
+                                            },
                                         },
                                     },
                                 ],
-                            },
-                            passProps: {
-                                notificationManager: this.notificationManager,
-                                handleBeacon: (dispatch, token, beacon, position) =>
-                                    this.handleBeacon(dispatch, token, beacon, position),
                             },
                         },
                     },

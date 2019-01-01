@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import Colors from '../bits/Colors';
 import Strings from '../locales/en';
@@ -39,9 +40,19 @@ const styles = StyleSheet.create({
 });
 
 class PinCheck extends React.Component {
+    static options() {
+        return {
+            topBar: {
+                visible: true,
+                animate: false,
+                leftButtons: [],
+            },
+        };
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.hasActiveFlare && !this.props.hasActiveFlare) {
-            this.props.navigator.pop(this.props.componentId);
+            Navigation.pop(this.props.componentId);
         }
     }
 
