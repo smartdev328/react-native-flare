@@ -144,6 +144,9 @@ export default class App extends Component {
                                         animate: false,
                                     },
                                 },
+                                passProps: {
+                                    notificationManager: this.notificationManager,
+                                },
                             },
                         }],
                     },
