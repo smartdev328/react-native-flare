@@ -41,6 +41,14 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class LeftDrawer extends React.Component {
+    static handleJewelry() {
+        Navigation.push('MAIN_UI_STACK', {
+            component: {
+                name: 'com.flarejewelry.app.Jewelry',
+            },
+        });
+    }
+
     static handleSettings() {
         Navigation.push('MAIN_UI_STACK', {
             component: {
@@ -74,6 +82,11 @@ class LeftDrawer extends React.Component {
                     style={styles.topImage}
                 />
                 <View>
+                    <TouchableOpacity onPress={() => LeftDrawer.handleJewelry()}>
+                        <Text style={styles.menuItem}>
+                            {Strings.leftDrawer.jewelry}
+                        </Text>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => LeftDrawer.handleSettings()}>
                         <Text style={styles.menuItem}>
                             {Strings.leftDrawer.settings}

@@ -12,6 +12,7 @@ export const FLARE_TIMELINE_REFRESH_INTERVAL = parseInt(Config.FLARE_TIMELINE_RE
 export const BEACON_CACHE_PRUNE_INTERVAL_IN_MS = parseInt(Config.BEACON_CACHE_PRUNE_INTERVAL_IN_MS, 10);
 export const UNIQUE_BEACON_TIMING_IN_MS = parseInt(Config.UNIQUE_BEACON_TIMING_IN_MS, 10);
 export const BEACON_CACHE_MAX_AGE_IN_MINS = parseInt(Config.BEACON_CACHE_MAX_AGE_IN_MINS, 10);
+export const DEVICE_ID_LABEL_LENGTH = parseInt(Config.DEVICE_ID_LABEL_LENGTH, 10);
 
 export const summary = [
     { key: 'API', value: API_URL },

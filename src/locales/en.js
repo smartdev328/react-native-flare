@@ -31,6 +31,7 @@ const Strings = {
         },
     },
     leftDrawer: {
+        jewelry: 'Jewelry',
         settings: 'Settings',
         signOut: 'Sign Out',
     },
@@ -56,11 +57,13 @@ const Strings = {
         errorAddingDevice: 'Please enter a valid code',
     },
     jewelry: {
+        addNew: 'Add New',
+        remove: 'Remove',
         cuffV1: {
-            name: 'Cuff v1',
+            name: 'Flare Prototype',
         },
         cuffV2: {
-            name: 'Cuff v2',
+            name: 'Flare Cuff',
         },
     },
     permissions: {
