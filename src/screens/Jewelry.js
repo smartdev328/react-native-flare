@@ -6,11 +6,9 @@ import {
 import { connect } from 'react-redux';
 
 import Button from '../bits/Button';
-import Colors from '../bits/Colors';
 import JewelryList from '../bits/JewelryList';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
-import Type from '../bits/Type';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,17 +32,26 @@ class Jewelry extends React.Component {
         };
     }
 
+    addNewJewelry() {
+        console.debug('Add new jewelry');
+    }
+
+    removeJewelry(deviceID) {
+        console.debug(`Remove jewelry with deviceID ${deviceID}`);
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <JewelryList
                     jewelry={this.props.devices}
+                    onRemove={deviceID => this.removeJewelry(deviceID)}
                 />
                 <View style={styles.buttonArea}>
                     <Button
                         rounded
                         primary
-                        onPress={() => this.sendTestFlare()}
+                        onPress={() => this.addNewJewelry()}
                         title={Strings.jewelry.addNew}
                     />
                 </View>

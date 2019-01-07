@@ -53,12 +53,14 @@ export function user(state = initialState.user, action = {}) {
      * is to keep all devices in sync with each other.
      */
     case types.ACCOUNT_DETAILS_SUCCESS:
-        return state.merge({
+        return state.replace(state, {
             crewEvents: action.data.crew_events,
             crews: action.data.crews,
             devices: action.data.devices,
             hasActiveFlare: action.data.crew_events && action.data.crew_events.length > 0,
             profile: action.data.profile,
+        }, {
+            deep: true,
         });
 
     /**

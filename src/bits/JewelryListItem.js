@@ -1,7 +1,8 @@
 /* eslint global-require: "off" */
 import React from 'react';
-import { Button, Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { DeviceTypes } from './DeviceConstants';
+import Button from './Button';
 import Colors from './Colors';
 import FlareDeviceID from './FlareDeviceID';
 import Spacing from './Spacing';
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
     },
     label: {
         alignSelf: 'center',
+        marginBottom: Spacing.small,
     },
     labelBold: {
         fontWeight: 'bold',
@@ -55,11 +57,14 @@ export default class JewelryListItem extends React.PureComponent {
                         style={styles.labelText}
                     />
                 </View>
-                <Button
-                    onPress={() => this.saveCustomPrompt()}
-                    title={Strings.jewelry.remove}
-                    style={{ borderWidth: 1 }}
-                />
+                {this.props.onRemove &&
+                    <Button
+                        onPress={() => this.props.onRemove(this.props.item.id)}
+                        title={Strings.jewelry.remove}
+                        rounded
+                        outline
+                    />
+                }
             </View>
         );
     }

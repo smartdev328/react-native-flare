@@ -12,6 +12,7 @@ const JewelryList = function createJewelryList(props) {
             renderItem={({ item }) => (
                 <JewelryListItem
                     item={item}
+                    onRemove={props.onRemove}
                 />
             )}
         />
