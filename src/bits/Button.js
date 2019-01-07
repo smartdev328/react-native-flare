@@ -26,6 +26,20 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
     },
+    outlineBackground: {
+        backgroundColor: Colors.transparent,
+        borderColor: Colors.black,
+        borderWidth: 2,
+        height: 32,
+        minHeight: 32,
+        maxHeight: 32,
+    },
+    outlineForeground: {
+        padding: 0,
+        margin: 0,
+        paddingLeft: Spacing.small,
+        paddingRight: Spacing.small,
+    },
     primaryBackground: {
         backgroundColor: Colors.theme.pink,
         padding: Spacing.large,
@@ -48,12 +62,14 @@ function Button(props) {
                 props.fullWidth && styles.fullWidth,
                 props.primary && styles.primaryBackground,
                 props.left && styles.left,
+                props.outline && styles.outlineBackground,
             ]}
         >
             <Text
                 style={[
                     styles.text,
                     props.primary && styles.primaryForeground,
+                    props.outline && styles.outlineForeground,
                 ]}
                 allowFontScaling={false}
             >
