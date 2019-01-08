@@ -59,6 +59,15 @@ const Strings = {
     jewelry: {
         addNew: 'Add New',
         remove: 'Remove',
+        removeConfirm: {
+            promptBegin: 'After you remove jewelry with label ',
+            promptEnd:
+                ", pressing its button won't do anything. " +
+                ' You will not get calls and your crew will not receive alerts.\n\n' +
+                'Are you sure you want to remove it?',
+            confirmLabel: 'Yes, remove it',
+            cancelLabel: 'No, keep it',
+        },
         cuffV1: {
             name: 'Flare Prototype',
         },

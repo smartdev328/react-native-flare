@@ -4,8 +4,10 @@ import {
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import Button from '../bits/Button';
+import FlareDeviceID from '../bits/FlareDeviceID';
 import JewelryList from '../bits/JewelryList';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
@@ -37,7 +39,19 @@ class Jewelry extends React.Component {
     }
 
     removeJewelry(deviceID) {
-        console.debug(`Remove jewelry with deviceID ${deviceID}`);
+        const jewelryLabel = FlareDeviceID.getJewelryLabelFromDeviceID(deviceID);
+        const prompt =
+            `${Strings.jewelry.removeConfirm.promptBegin}${jewelryLabel}${Strings.jewelry.removeConfirm.promptEnd}`;
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Confirm',
+                passProps: {
+                    cancelLabel: Strings.jewelry.removeConfirm.cancelLabel,
+                    confirmLabel: Strings.jewelry.removeConfirm.confirmLabel,
+                    prompt,
+                },
+            },
+        });
     }
 
     render() {
