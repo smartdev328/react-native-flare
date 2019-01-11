@@ -1,5 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+} from 'react-native';
 import Colors from './Colors';
 import Spacing from './Spacing';
 
@@ -50,33 +54,47 @@ const styles = StyleSheet.create({
     rounded: {
         borderRadius: 32,
     },
+    disabledBackground: {
+        backgroundColor: Colors.grey,
+    },
+    disabledForeground: {
+        color: Colors.greyLight,
+    },
 });
 
-function Button(props) {
-    return (
-        <TouchableOpacity
-            onPress={e => props.onPress(e)}
-            style={[
-                styles.container,
-                props.rounded && styles.rounded,
-                props.fullWidth && styles.fullWidth,
-                props.primary && styles.primaryBackground,
-                props.left && styles.left,
-                props.outline && styles.outlineBackground,
-            ]}
-        >
-            <Text
-                style={[
-                    styles.text,
-                    props.primary && styles.primaryForeground,
-                    props.outline && styles.outlineForeground,
-                ]}
-                allowFontScaling={false}
-            >
-                {props.title}
-            </Text>
-        </TouchableOpacity>
-    );
-}
+export default class Button extends React.PureComponent {
+    handlePress(event) {
+        if (!this.props.disabled) {
+            this.props.onPress(event);
+        }
+    }
 
-export default Button;
+    render() {
+        return (
+            <TouchableOpacity
+                onPress={e => this.handlePress(e)}
+                style={[
+                    styles.container,
+                    this.props.rounded && styles.rounded,
+                    this.props.fullWidth && styles.fullWidth,
+                    this.props.primary && styles.primaryBackground,
+                    this.props.left && styles.left,
+                    this.props.outline && styles.outlineBackground,
+                    this.props.disabled && styles.disabledBackground,
+                ]}
+            >
+                <Text
+                    style={[
+                        styles.text,
+                        this.props.primary && styles.primaryForeground,
+                        this.props.outline && styles.outlineForeground,
+                        this.props.disabled && styles.disabledForeground,
+                    ]}
+                    allowFontScaling={false}
+                >
+                    {this.props.title}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
+};
