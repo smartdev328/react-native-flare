@@ -58,6 +58,17 @@ const Strings = {
     },
     jewelry: {
         addNew: 'Add New',
+        addNewAuto: {
+            prompt: 'Please press the button on your new jewelry 3 times in a row.',
+        },
+        addNewManual: {
+            buttonLabel: 'Add Manually',
+            prompt:
+                'Please point your camera at the QR code on the bottom of your jewelry. ' +
+                'You can also type the jewelry code into the field below.',
+            placeholderDeviceID: 'Jewelry code, eg XXX123',
+        },
+        addThisButtonLabel: 'Add this Jewelry',
         remove: 'Remove',
         removeConfirm: {
             promptBegin: 'After you remove the jewelry with label ',

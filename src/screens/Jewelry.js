@@ -37,7 +37,11 @@ class Jewelry extends React.Component {
     }
 
     addNewJewelry() {
-        console.debug('Add new jewelry');
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.AddJewelry',
+            },
+        });
     }
 
     removeJewelry(deviceID) {
