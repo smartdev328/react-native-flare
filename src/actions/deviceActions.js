@@ -27,3 +27,28 @@ export function claimDevice(token, deviceID) {
         });
     };
 }
+
+export function disclaimDevice(token, deviceID) {
+    return async function removeDeviceFromUser(dispatch) {
+        dispatch({
+            type: types.DEVICE_DISCLAIM_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            `/device/${deviceID}/disclaim`, {
+                method: 'POST',
+            },
+        ).then((response) => {
+            dispatch({
+                type: types.DEVICE_DISCLAIM_SUCCESS,
+                devices: response.data.devices,
+            });
+        }).catch((status) => {
+            dispatch({
+                type: types.DEVICE_DISCLAIM_FAILURE,
+                status,
+            });
+        });
+    };
+}

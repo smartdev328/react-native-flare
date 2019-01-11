@@ -1,11 +1,13 @@
 import React from 'react';
 import {
+    ActivityIndicator,
     StyleSheet,
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
+import { disclaimDevice } from '../actions/index';
 import Button from '../bits/Button';
 import FlareDeviceID from '../bits/FlareDeviceID';
 import JewelryList from '../bits/JewelryList';
@@ -39,6 +41,10 @@ class Jewelry extends React.Component {
     }
 
     removeJewelry(deviceID) {
+        this.props.dispatch(disclaimDevice(this.props.token, deviceID));
+    }
+
+    confirmRemoveJewelry(deviceID) {
         const jewelryLabel = FlareDeviceID.getJewelryLabelFromDeviceID(deviceID);
         const prompt =
             `${Strings.jewelry.removeConfirm.promptBegin}${jewelryLabel}${Strings.jewelry.removeConfirm.promptEnd}`;
@@ -48,6 +54,7 @@ class Jewelry extends React.Component {
                 passProps: {
                     cancelLabel: Strings.jewelry.removeConfirm.cancelLabel,
                     confirmLabel: Strings.jewelry.removeConfirm.confirmLabel,
+                    onConfirm: () => this.removeJewelry(deviceID),
                     prompt,
                 },
             },
@@ -57,9 +64,12 @@ class Jewelry extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                {(this.props.claimingDevice || this.props.disclaimingDevice) &&
+                    <ActivityIndicator size={24} />
+                }
                 <JewelryList
                     jewelry={this.props.devices}
-                    onRemove={deviceID => this.removeJewelry(deviceID)}
+                    onRemove={deviceID => this.confirmRemoveJewelry(deviceID)}
                 />
                 <View style={styles.buttonArea}>
                     <Button

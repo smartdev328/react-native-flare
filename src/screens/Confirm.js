@@ -48,6 +48,18 @@ export default class Confirm extends React.Component {
         };
     }
 
+    onConfirm() {
+        this.props.onConfirm();
+        Navigation.pop(this.props.componentId);
+    }
+
+    onCancel() {
+        if (this.props.onCancel) {
+            this.props.onCancel();
+        }
+        Navigation.pop(this.props.componentId);
+    }
+
     goToPushedView = () => {
         Navigation.push(this.props.componentId, {
             component: {
@@ -67,15 +79,15 @@ export default class Confirm extends React.Component {
                 <View style={styles.buttonArea}>
                     {this.props.confirmLabel && this.props.onConfirm &&
                         <Button
-                            onPress={() => this.props.onConfirm()}
+                            onPress={() => this.onConfirm()}
                             title={this.props.confirmLabel}
                             rounded
                             primary
                         />
                     }
-                    {this.props.cancelLabel && this.props.onCancel &&
+                    {this.props.cancelLabel &&
                         <Button
-                            onPress={() => this.props.onCancel()}
+                            onPress={() => this.onCancel()}
                             title={this.props.cancelLabel}
                             rounded
                         />

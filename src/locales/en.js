@@ -60,7 +60,7 @@ const Strings = {
         addNew: 'Add New',
         remove: 'Remove',
         removeConfirm: {
-            promptBegin: 'After you remove jewelry with label ',
+            promptBegin: 'After you remove the jewelry with label ',
             promptEnd:
                 ", pressing its button won't do anything. " +
                 ' You will not get calls and your crew will not receive alerts.\n\n' +

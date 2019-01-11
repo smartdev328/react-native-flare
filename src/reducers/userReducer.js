@@ -180,17 +180,37 @@ export function user(state = initialState.user, action = {}) {
         });
 
     case types.DEVICE_CLAIM_SUCCESS:
-        return state.merge({
+        return state.replace(state, {
             claimingDevice: false,
             claimingDeviceFailure: null,
             devices: action.devices,
         });
 
-    case types.DEVICE_CLAIM_FAILURE:
+    case types.DEVICE_DISCLAIM_FAILURE:
         return state.merge({
             claimingDevice: false,
             claimingDeviceFailure: action.message,
         });
+
+    case types.DEVICE_DISCLAIM_REQUEST:
+        return state.merge({
+            disclaimingDevice: true,
+        });
+
+    case types.DEVICE_DISCLAIM_SUCCESS: {
+        const newState = state.merge({
+            disclaimingDevice: false,
+            devices: action.devices,
+        });
+
+        return newState;
+    }
+
+    case types.DEVICE_REMOVE_FAILURE:
+        return state.merge({
+            disclaimingDevice: false,
+        });
+
 
     /**
      * GET CREW EVENT TIMELINE
