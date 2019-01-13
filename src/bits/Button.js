@@ -97,4 +97,4 @@ export default class Button extends React.PureComponent {
             </TouchableOpacity>
         );
     }
-};
+}
