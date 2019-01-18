@@ -10,9 +10,11 @@ import { Navigation } from 'react-native-navigation';
 import { DEVICE_ID_LABEL_LENGTH } from '../constants';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
+import FlareCodeScanner from '../bits/FlareCodeScanner';
 import Spacing from '../bits/Spacing';
 import Type from '../bits/Type';
 import Strings from '../locales/en';
+import FlareDeviceID from '../bits/FlareDeviceID';
 
 const styles = StyleSheet.create({
     container: {
@@ -29,7 +31,6 @@ const styles = StyleSheet.create({
         color: Colors.theme.pink,
     },
     promptBackground: {
-        marginBottom: Spacing.huge,
     },
     promptForeground: {
         fontSize: Type.size.medium,
@@ -37,6 +38,9 @@ const styles = StyleSheet.create({
     },
     scanCodeArea: {
         flex: 4,
+        width: '100%',
+        marginBottom: Spacing.medium,
+        backgroundColor: Colors.black,
     },
     manualInputArea: {
         alignItems: 'stretch',
@@ -83,6 +87,24 @@ export default class AddJewelryManual extends React.Component {
         });
     }
 
+    getDerivedStateFromProps(props, state) {
+        if (props.deviceID !== state.deviceID) {
+            return {
+                deviceID: props.deviceID,
+            };
+        }
+        return null;
+    }
+
+    onBarCodeRead(scanValue) {
+        console.log(`Scanner read value: ${JSON.stringify(scanValue)}`);
+        if (scanValue && scanValue.data && FlareDeviceID.isValid(scanValue.data)) {
+            this.setState({
+                deviceID: scanValue.data,
+            });
+        }
+    }
+
     goToPushedView = () => {
         Navigation.push(this.props.componentId, {
             component: {
@@ -99,9 +121,10 @@ export default class AddJewelryManual extends React.Component {
                         {Strings.jewelry.addNewManual.prompt}
                     </Text>
                 </View>
-                <View style={styles.scanCodeArea}>
-                    <Text>Placeholder for scanner</Text>
-                </View>
+                <FlareCodeScanner
+                    containerStyle={styles.scanCodeArea}
+                    onBarCodeRead={d => this.onBarCodeRead(d)}
+                />
                 <View style={styles.manualInputArea}>
                     <TextInput
                         autoCapitalize="characters"
@@ -118,7 +141,7 @@ export default class AddJewelryManual extends React.Component {
                         title={Strings.jewelry.addThisButtonLabel}
                         rounded
                         primary
-                        disabled={this.state.deviceID.length !== DEVICE_ID_LABEL_LENGTH}
+                        disabled={this.state.deviceID && this.state.deviceID.length !== DEVICE_ID_LABEL_LENGTH}
                     />
                 </View>
             </View>

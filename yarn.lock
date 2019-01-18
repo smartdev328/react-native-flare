@@ -5462,6 +5462,12 @@ react-native-bluetooth-info@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-native-bluetooth-info/-/react-native-bluetooth-info-1.0.3.tgz#bcb6a06818ea0aeea6f986e5c98719ae2303a615"
 
+react-native-camera@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.8.0.tgz#e4749b112b99ce04c60f581d24624cd413d2d14a"
+  dependencies:
+    prop-types "^15.6.2"
+
 react-native-config@^0.11.5:
   version "0.11.5"
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.5.tgz#516cb7b6ec437c7739236ca075971db3aabdcb95"

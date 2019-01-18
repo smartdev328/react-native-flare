@@ -65,8 +65,10 @@ const Strings = {
             buttonLabel: 'Add Manually',
             prompt:
                 'Please point your camera at the QR code on the bottom of your jewelry. ' +
-                'You can also type the jewelry code into the field below.',
+                'If you prefer, type the jewelry code into the field below.',
             placeholderDeviceID: 'Jewelry code, eg XXX123',
+            cameraPermissionTitle: 'Permission to use camera',
+            cameraPermissionMessage: 'Please let us use your camera so we can scan your jewelry',
         },
         addThisButtonLabel: 'Add this Jewelry',
         remove: 'Remove',

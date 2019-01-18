@@ -45,6 +45,12 @@
 	<string>Bluetooth must be enabled for your jewelry to work</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>We do not want access to your calendars.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We only use the camera when adding jewelry to your account</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We don&apos;t want to access your microphone.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We don&apos;t want to access your photo library</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Choose which friends to contact when you need backup</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
