@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 
 export default class Button extends React.PureComponent {
     handlePress(event) {
-        if (!this.props.disabled) {
+        if (!this.props.disabled && this.props.onPress) {
             this.props.onPress(event);
         }
     }

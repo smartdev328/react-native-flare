@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    KeyboardAvoidingView,
     StyleSheet,
     Text,
     TextInput,
@@ -26,28 +27,26 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 0,
+        padding: Spacing.medium,
         backgroundColor: Colors.backgrounds.blue,
         color: Colors.theme.pink,
     },
     promptBackground: {
+        marginBottom: Spacing.medium,
     },
     promptForeground: {
         fontSize: Type.size.medium,
-        padding: Spacing.medium,
     },
     scanCodeArea: {
         flex: 4,
         width: '100%',
         marginBottom: Spacing.medium,
-        backgroundColor: Colors.black,
     },
     manualInputArea: {
         alignItems: 'stretch',
         flex: 1,
         flexDirection: 'row',
         marginBottom: Spacing.medium,
-        padding: Spacing.small,
     },
     manualInputField: {
         flex: 1,
@@ -87,8 +86,8 @@ export default class AddJewelryManual extends React.Component {
         });
     }
 
-    getDerivedStateFromProps(props, state) {
-        if (props.deviceID !== state.deviceID) {
+    static getDerivedStateFromProps(props, state) {
+        if (props.deviceID && props.deviceID !== state.deviceID) {
             return {
                 deviceID: props.deviceID,
             };
@@ -113,9 +112,20 @@ export default class AddJewelryManual extends React.Component {
         });
     }
 
+    onAddThisJewelry() {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.AddJewelryConfirm',
+                passProps: {
+                    deviceID: this.state.deviceID,
+                },
+            },
+        });
+    }
+
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <View style={styles.promptBackground}>
                     <Text style={styles.promptForeground}>
                         {Strings.jewelry.addNewManual.prompt}
@@ -137,14 +147,14 @@ export default class AddJewelryManual extends React.Component {
                 </View>
                 <View style={styles.buttonArea}>
                     <Button
-                        onPress={() => this.onAddThis()}
+                        onPress={() => this.onAddThisJewelry()}
                         title={Strings.jewelry.addThisButtonLabel}
                         rounded
                         primary
-                        disabled={this.state.deviceID && this.state.deviceID.length !== DEVICE_ID_LABEL_LENGTH}
+                        disabled={!FlareDeviceID.isValid(this.state.deviceID)}
                     />
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }

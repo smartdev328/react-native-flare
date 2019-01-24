@@ -12,6 +12,9 @@ export default class FlareDeviceID extends React.PureComponent {
     }
 
     static isValid(deviceID) {
+        if (!deviceID) {
+            return false;
+        }
         let valid = true;
         const cleanedID = deviceID.replace(/[^0-9A-F]+/g, '');
         if (cleanedID.length !== DEVICE_ID_LABEL_LENGTH) {

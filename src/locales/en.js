@@ -61,6 +61,12 @@ const Strings = {
         addNewAuto: {
             prompt: 'Please press the button on your new jewelry 3 times in a row.',
         },
+        addNewConfirm: {
+            fccMessage: 'CONTAINS FCC ID: RYYEYSLSN',
+            placeholderTwoFactor: 'Last 3 digits',
+            prompt: 'Got it! Please look at the bottom of your jewelry and type the last 3 digits of the code you see.',
+            sampleDigits: '???',
+        },
         addNewManual: {
             buttonLabel: 'Add Manually',
             prompt:
@@ -70,6 +76,7 @@ const Strings = {
             cameraPermissionTitle: 'Permission to use camera',
             cameraPermissionMessage: 'Please let us use your camera so we can scan your jewelry',
         },
+        addNewTryAgain: "That's not right. Let's try again.",
         addThisButtonLabel: 'Add this Jewelry',
         remove: 'Remove',
         removeConfirm: {

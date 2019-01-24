@@ -13,6 +13,7 @@ export const BEACON_CACHE_PRUNE_INTERVAL_IN_MS = parseInt(Config.BEACON_CACHE_PR
 export const UNIQUE_BEACON_TIMING_IN_MS = parseInt(Config.UNIQUE_BEACON_TIMING_IN_MS, 10);
 export const BEACON_CACHE_MAX_AGE_IN_MINS = parseInt(Config.BEACON_CACHE_MAX_AGE_IN_MINS, 10);
 export const DEVICE_ID_LABEL_LENGTH = parseInt(Config.DEVICE_ID_LABEL_LENGTH, 10);
+export const DEVICE_TWO_FACTOR_LABEL_LENGTH = parseInt(Config.DEVICE_TWO_FACTOR_LABEL_LENGTH, 10);
 export const MAX_DEVICE_ID = parseInt(Config.MAX_DEVICE_ID, 10);
 
 export const summary = [
