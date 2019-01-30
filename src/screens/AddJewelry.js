@@ -5,6 +5,7 @@ import {
     Text,
     View,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import Button from '../bits/Button';
@@ -38,11 +39,11 @@ const styles = StyleSheet.create({
         flex: 2,
     },
     buttonArea: {
-        marginBottom: Spacing.small,
+        marginBottom: Spacing.medium,
     },
 });
 
-export default class AddJewelry extends React.Component {
+class AddJewelry extends React.Component {
     static options() {
         return {
             topBar: {
@@ -51,6 +52,28 @@ export default class AddJewelry extends React.Component {
                 leftButtons: [],
             },
         };
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            highestPressCount: {},
+        };
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        const { shortPressCounts } = props;
+        const latestShortPress = shortPressCounts[0] || {};
+        const { highestPressCount } = state;
+
+        if (latestShortPress.deviceID !== highestPressCount.deviceID ||
+            latestShortPress.count !== highestPressCount.count) {
+            return {
+                highestPressCount: latestShortPress,
+            };
+        }
+        return null;
     }
 
     onPressManual() {
@@ -70,6 +93,24 @@ export default class AddJewelry extends React.Component {
     }
 
     render() {
+        // Choose an image based on the largest number of short presses we've received from any single device.
+        // @see BeaconCache.getRecentShortPressCounts
+        let image = '';
+        switch (this.state.highestPressCount.count) {
+        case 0:
+            image = require('../assets/add-device-scanning-0.png');
+            break;
+        case 1:
+            image = require('../assets/add-device-scanning-1.png');
+            break;
+        case 2:
+            image = require('../assets/add-device-scanning-2.png');
+            break;
+        case 3:
+        default:
+            image = require('../assets/add-device-scanning-3.png');
+            break;
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.promptBackground}>
@@ -79,7 +120,7 @@ export default class AddJewelry extends React.Component {
                 </View>
                 <View style={styles.scanningArea}>
                     <Image
-                        source={require('../assets/add-device-scanning.png')}
+                        source={image}
                         style={styles.scanningImage}
                         resizeMode="stretch"
                     />
@@ -95,3 +136,11 @@ export default class AddJewelry extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        shortPressCounts: state.beacons.recentShortPressCounts,
+    };
+}
+
+export default connect(mapStateToProps)(AddJewelry);

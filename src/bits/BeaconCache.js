@@ -1,10 +1,12 @@
 import moment from 'moment';
 import {
-    BEACON_CACHE_PRUNE_INTERVAL_IN_MS,
     BEACON_CACHE_MAX_AGE_IN_MINS,
-    UNIQUE_BEACON_TIMING_IN_MS,
+    BEACON_CACHE_PRUNE_INTERVAL_IN_MS,
     BLUETOOTH_BEACON_LOGGING,
+    DEVICE_ADDITION_THREE_PRESS_MAX_TIME,
+    UNIQUE_BEACON_TIMING_IN_MS,
 } from '../constants';
+import { BeaconTypes } from './BleConstants';
 
 export default class BeaconCache {
     constructor() {
@@ -125,5 +127,30 @@ export default class BeaconCache {
         if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
             console.debug(`Pruning stats: ${JSON.stringify(totals)}`);
         }
+    }
+
+    /**
+     * Determine the number of recent short presses per device. Return an array of those press counts per device, sorted
+     * by descending number of presses.
+     */
+    getRecentShortPressCounts() {
+        const oldestTimeToConsider = new Date().getTime() - DEVICE_ADDITION_THREE_PRESS_MAX_TIME;
+        const relevantCounts = Object.keys(this.beaconCache[BeaconTypes.Short.name]).map((deviceID) => {
+            const beacons =
+                Object.keys(this.beaconCache[BeaconTypes.Short.name][deviceID])
+                    .filter(uuid => this.beaconCache[BeaconTypes.Short.name][deviceID][uuid].getTime() >= oldestTimeToConsider);
+            return {
+                deviceID: parseInt(deviceID, 10),
+                count: beacons.length,
+            };
+        }).sort((a, b) => {
+            if (a.count < b.count) {
+                return -1;
+            } else if (a.count > b.count) {
+                return 1;
+            }
+            return 0;
+        });
+        return relevantCounts;
     }
 }

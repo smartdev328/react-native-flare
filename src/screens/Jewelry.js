@@ -40,6 +40,9 @@ class Jewelry extends React.Component {
         Navigation.push(this.props.componentId, {
             component: {
                 name: 'com.flarejewelry.app.AddJewelry',
+                passProps: {
+                    bleManager: this.props.bleManager,
+                },
             },
         });
     }

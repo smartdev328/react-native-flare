@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 export default class JewelryListItem extends React.PureComponent {
     render() {
         return (
-            <View style={styles.container}>
+            <View style={styles.container} key={this.props.item.id}>
                 <Image
                     style={styles.image}
                     source={DeviceTypes[this.props.item.type - 1].image}

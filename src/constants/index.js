@@ -15,6 +15,7 @@ export const BEACON_CACHE_MAX_AGE_IN_MINS = parseInt(Config.BEACON_CACHE_MAX_AGE
 export const DEVICE_ID_LABEL_LENGTH = parseInt(Config.DEVICE_ID_LABEL_LENGTH, 10);
 export const DEVICE_TWO_FACTOR_LABEL_LENGTH = parseInt(Config.DEVICE_TWO_FACTOR_LABEL_LENGTH, 10);
 export const MAX_DEVICE_ID = parseInt(Config.MAX_DEVICE_ID, 10);
+export const DEVICE_ADDITION_THREE_PRESS_MAX_TIME = parseInt(Config.DEVICE_ADDITION_THREE_PRESS_MAX_TIME, 10);
 
 export const summary = [
     { key: 'API', value: API_URL },

@@ -19,6 +19,12 @@ export function beacons(state = initialState.beacons, action = {}) {
         });
     }
 
+    case types.BEACON_COUNTS_UPDATED: {
+        return state.replace({
+            recentShortPressCounts: action.shortPressCounts,
+        });
+    }
+
     /**
      * Remove all "problem" beacons with the given UUID, timestamp and retry counter values.
      */

@@ -96,7 +96,15 @@ export default class BleManager {
 
         switch (beacon.type) {
         case BeaconTypes.Short.name:
-            dispatch(call(token, beacon, position, forCurrentUser));
+            dispatch(call(token, beacon, position, forCurrentUser)).then(() => {
+                // Track short presses for all nearby devices so we can know when users are adding jewelry
+                if (!forCurrentUser) {
+                    dispatch({
+                        type: actionTypes.BEACON_COUNTS_UPDATED,
+                        shortPressCounts: this.beaconCache.getRecentShortPressCounts(),
+                    });
+                }
+            });
             break;
 
         case BeaconTypes.Long.name:
@@ -109,6 +117,7 @@ export default class BleManager {
             break;
         }
 
+        // Inform the UI if the beacon is for the current user
         if (forCurrentUser || SHOW_ALL_BEACONS_IN_HOME_SCREEN) {
             dispatch({
                 type: actionTypes.BEACON_RECEIVED,
@@ -130,7 +139,6 @@ export default class BleManager {
     processBeaconInRange(data, options) {
         data.beacons.forEach((beacon) => {
             const parsedBeacon = BleUtils.parseBeacon(beacon);
-
 
             if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
                 console.debug(`Beacon ${JSON.stringify(parsedBeacon)}`);

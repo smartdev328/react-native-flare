@@ -29,6 +29,7 @@ export const initialState = Immutable({
     beacons: {
         latest: null,
         recent: [],
+        recentShortPressCounts: [],
         problems: [],
     },
     hardware: {
