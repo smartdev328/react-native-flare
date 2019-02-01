@@ -8,6 +8,8 @@ import {
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
+import * as actionTypes from '../actions/actionTypes';
+import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../constants';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
@@ -38,6 +40,9 @@ const styles = StyleSheet.create({
     scanningArea: {
         flex: 2,
     },
+    dopeImage: {
+        alignSelf: 'center',
+    },
     buttonArea: {
         marginBottom: Spacing.medium,
     },
@@ -57,8 +62,13 @@ class AddJewelry extends React.Component {
     constructor(props) {
         super(props);
 
+        Navigation.events().bindComponent(this);
+        props.dispatch({
+            type: actionTypes.BEACON_COUNTS_RESET,
+        });
         this.state = {
             highestPressCount: {},
+            listening: false,
         };
     }
 
@@ -76,11 +86,38 @@ class AddJewelry extends React.Component {
         return null;
     }
 
+    componentDidUpdate() {
+        const { listening, highestPressCount } = this.state;
+        if (listening && highestPressCount.count > DEVICE_ADDITION_MIN_PRESS_COUNT) {
+            Navigation.push('MAIN_UI_STACK', {
+                component: {
+                    name: 'com.flarejewelry.app.AddJewelryConfirm',
+                },
+            });
+        }
+    }
+
     onPressManual() {
         Navigation.push(this.props.componentId, {
             component: {
                 name: 'com.flarejewelry.app.AddJewelryManual',
             },
+        });
+    }
+
+    componentDidAppear() {
+        this.setState({
+            listening: true,
+        });
+    }
+
+    componentDidDisappear() {
+        this.setState({
+            listening: false,
+            highestPressCount: {},
+        });
+        this.props.dispatch({
+            type: actionTypes.BEACON_COUNTS_RESET,
         });
     }
 
@@ -96,7 +133,9 @@ class AddJewelry extends React.Component {
         // Choose an image based on the largest number of short presses we've received from any single device.
         // @see BeaconCache.getRecentShortPressCounts
         let image = '';
+        let haveEnoughBeacons = false;
         switch (this.state.highestPressCount.count) {
+        case undefined:
         case 0:
             image = require('../assets/add-device-scanning-0.png');
             break;
@@ -109,6 +148,7 @@ class AddJewelry extends React.Component {
         case 3:
         default:
             image = require('../assets/add-device-scanning-3.png');
+            haveEnoughBeacons = true;
             break;
         }
         return (
@@ -124,6 +164,13 @@ class AddJewelry extends React.Component {
                         style={styles.scanningImage}
                         resizeMode="stretch"
                     />
+                    {haveEnoughBeacons &&
+                        <Image
+                            source={require('../assets/dope.png')}
+                            style={styles.dopeImage}
+                            resizeMode="stretch"
+                        />
+                    }
                 </View>
                 <View style={styles.buttonArea}>
                     <Button

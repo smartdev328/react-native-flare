@@ -14,6 +14,7 @@ export const BEACON_RECEIVED = 'flare.app.beacons.RECEIVED';
 export const BEACON_SHORT_PRESS = 'flare.app.beacons.SHORT';
 export const CLEAR_PROBLEM_BEACONS = 'flare.app.beacons.problems.CLEAR';
 export const BEACON_COUNTS_UPDATED = 'flare.app.beacons.COUNTS_UPDATED';
+export const BEACON_COUNTS_RESET = 'flare.app.beacons.COUNTS_RESET';
 
 export const ACTIVATE_FLARE_FAILURE = 'flare.app.activate.FAILURE';
 export const ACTIVATE_FLARE_REQUEST = 'flare.app.activate.REQUEST';

@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { disclaimDevice } from '../actions/index';
+import * as actionTypes from '../actions/actionTypes';
 import Button from '../bits/Button';
 import FlareDeviceID from '../bits/FlareDeviceID';
 import JewelryList from '../bits/JewelryList';
@@ -37,6 +38,9 @@ class Jewelry extends React.Component {
     }
 
     addNewJewelry() {
+        this.props.dispatch({
+            type: actionTypes.BEACON_COUNTS_RESET,
+        });
         Navigation.push(this.props.componentId, {
             component: {
                 name: 'com.flarejewelry.app.AddJewelry',

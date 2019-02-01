@@ -113,6 +113,11 @@ export default class App extends Component {
                                 children: [
                                     {
                                         component: {
+                                            name: 'com.flarejewelry.app.AddJewelryConfirm',
+                                        },
+                                    },
+                                    {
+                                        component: {
                                             name: 'com.flarejewelry.app.Home',
                                             passProps: {
                                                 bleManager: this.bleManager,
