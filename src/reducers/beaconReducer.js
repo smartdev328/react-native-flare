@@ -10,10 +10,11 @@ export function beacons(state = initialState.beacons, action = {}) {
         });
 
     case types.BEACON_HANDLING_FAILED: {
-        const problems = state.problems.concat({
-            beacon: action.beacon,
-            position: action.position,
-        });
+        const problems = state.problems ?
+            state.problems.concat({
+                beacon: action.beacon,
+                position: action.position,
+            }) : null;
         return state.merge({
             problems,
         });

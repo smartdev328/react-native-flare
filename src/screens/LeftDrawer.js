@@ -8,6 +8,7 @@ import {
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
+import { changeAppRoot } from '../actions';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
 import Spacing from '../bits/Spacing';
@@ -49,15 +50,8 @@ class LeftDrawer extends React.Component {
         });
     }
 
-    static handleJewelry(bleManager) {
-        Navigation.push('MAIN_UI_STACK', {
-            component: {
-                name: 'com.flarejewelry.app.Jewelry',
-                passProps: {
-                    bleManager,
-                },
-            },
-        });
+    handleJewelry() {
+        this.props.dispatch(changeAppRoot('secure-jewelry'));
     }
 
     handleSignOut() {
@@ -85,7 +79,7 @@ class LeftDrawer extends React.Component {
                     style={styles.topImage}
                 />
                 <View>
-                    <TouchableOpacity onPress={() => LeftDrawer.handleJewelry(this.props.bleManager)}>
+                    <TouchableOpacity onPress={() => this.handleJewelry()}>
                         <Text style={styles.menuItem}>
                             {Strings.leftDrawer.jewelry}
                         </Text>

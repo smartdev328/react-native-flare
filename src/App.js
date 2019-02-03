@@ -63,7 +63,9 @@ export default class App extends Component {
             console.debug(`NAVIGATION -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
 
-            if (root === 'secure' && BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
+            const secureRoots = ['secure', 'secure-jewelry'];
+
+            if (secureRoots.indexOf(root) !== -1 && BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
                 this.bleManager.startListening({
                     store,
                 });
@@ -113,11 +115,6 @@ export default class App extends Component {
                                 children: [
                                     {
                                         component: {
-                                            name: 'com.flarejewelry.app.AddJewelryConfirm',
-                                        },
-                                    },
-                                    {
-                                        component: {
                                             name: 'com.flarejewelry.app.Home',
                                             passProps: {
                                                 bleManager: this.bleManager,
@@ -130,6 +127,28 @@ export default class App extends Component {
                                 ],
                             },
                         },
+                    },
+                },
+            });
+            break;
+        case 'secure-jewelry':
+            Navigation.setRoot({
+                root: {
+                    stack: {
+                        id: 'JEWELRY_STACK',
+                        options: {
+                            topBar: {
+                                visible: false,
+                            },
+                        },
+                        children: [{
+                            component: {
+                                name: 'com.flarejewelry.app.Jewelry',
+                                passProps: {
+                                    bleManager: this.bleManager,
+                                },
+                            },
+                        }],
                     },
                 },
             });

@@ -10,8 +10,6 @@ export function changeAppRoot(root) {
 
 export function initializeApp(root = 'insecure') {
     return async function initApp(dispatch) {
-        // since all business logic should be inside redux actions
-        // this is a good place to put your app initialization code
         dispatch(changeAppRoot(root));
     };
 }

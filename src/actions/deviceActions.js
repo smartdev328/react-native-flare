@@ -3,7 +3,7 @@ import ProtectedAPICall from '../bits/ProtectedAPICall';
 import * as types from './actionTypes';
 
 // eslint-disable-next-line import/prefer-default-export
-export function claimDevice(token, deviceID) {
+export function claimDevice(token, deviceID, secondFactor) {
     return async function claimDeviceForUser(dispatch) {
         dispatch({
             type: types.DEVICE_CLAIM_REQUEST,
@@ -13,6 +13,9 @@ export function claimDevice(token, deviceID) {
             API_URL,
             `/device/${deviceID}/claim`, {
                 method: 'POST',
+                body: {
+                    secondFactor,
+                },
             },
         ).then((response) => {
             dispatch({

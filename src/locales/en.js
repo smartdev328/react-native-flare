@@ -78,6 +78,7 @@ const Strings = {
         },
         addNewTryAgain: "That's not right. Let's try again.",
         addThisButtonLabel: 'Add this Jewelry',
+        emptyList: "You don't have any jewelry. Press the Add New button to add some jewelry to your account",
         remove: 'Remove',
         removeConfirm: {
             promptBegin: 'After you remove the jewelry with label ',

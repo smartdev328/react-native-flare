@@ -12,6 +12,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../constants';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
+import FlareDeviceID from '../bits/FlareDeviceID';
 import Spacing from '../bits/Spacing';
 import Type from '../bits/Type';
 import Strings from '../locales/en';
@@ -89,9 +90,12 @@ class AddJewelry extends React.Component {
     componentDidUpdate() {
         const { listening, highestPressCount } = this.state;
         if (listening && highestPressCount.count > DEVICE_ADDITION_MIN_PRESS_COUNT) {
-            Navigation.push('MAIN_UI_STACK', {
+            Navigation.push('JEWELRY_STACK', {
                 component: {
                     name: 'com.flarejewelry.app.AddJewelryConfirm',
+                    passProps: {
+                        deviceID: FlareDeviceID.getJewelryLabelFromDeviceID(highestPressCount.deviceID),
+                    },
                 },
             });
         }

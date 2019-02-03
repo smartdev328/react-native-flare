@@ -1,15 +1,18 @@
 import React from 'react';
 import {
     Image,
+    KeyboardAvoidingView,
     StyleSheet,
     Text,
     TextInput,
     View,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 
 import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../constants';
+import { claimDevice } from '../actions/index';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
     },
     pointAtJewelry: {
         position: 'absolute',
-        top: 80,
+        top: 100,
         left: 0,
         right: 0,
         textAlign: 'center',
@@ -65,8 +68,8 @@ const styles = StyleSheet.create({
     previewLabel: {
         position: 'absolute',
         top: 140,
-        left: 0,
-        right: 0,
+        left: '25%',
+        right: '25%',
     },
     buttonArea: {
         flex: 1,
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class AddJewelry extends React.Component {
+class AddJewelryConfirm extends React.Component {
     static options() {
         return {
             topBar: {
@@ -100,6 +103,9 @@ export default class AddJewelry extends React.Component {
         this.setState({
             twoFactor: newCode.replace(/[^0-9A-Z]+/g, ''),
         });
+        if (newCode.length === DEVICE_TWO_FACTOR_LABEL_LENGTH) {
+            this.props.dispatch(claimDevice(this.props.token, this.props.deviceID, newCode));
+        }
     }
 
     goToPushedView = () => {
@@ -112,7 +118,7 @@ export default class AddJewelry extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container}>
                 <View style={styles.promptBackground}>
                     <Text style={styles.promptForeground}>
                         {Strings.jewelry.addNewConfirm.prompt}
@@ -148,11 +154,19 @@ export default class AddJewelry extends React.Component {
                 </View>
                 <View style={styles.buttonArea}>
                     <Button
-                        onPress={() => AddJewelry.onPressTryAgain()}
+                        onPress={() => AddJewelryConfirm.onPressTryAgain()}
                         title={Strings.jewelry.addNewTryAgain}
                     />
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        shortPressCounts: state.beacons.recentShortPressCounts,
+    };
+}
+
+export default connect(mapStateToProps)(AddJewelryConfirm);
