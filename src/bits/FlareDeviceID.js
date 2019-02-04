@@ -21,7 +21,7 @@ export default class FlareDeviceID extends React.PureComponent {
             valid = false;
         }
         const parsedID = parseInt(cleanedID, 10);
-        if (parsedID > 0 && parsedID < MAX_DEVICE_ID) {
+        if (parsedID < 1 || parsedID > MAX_DEVICE_ID) {
             valid = false;
         }
         return valid;
