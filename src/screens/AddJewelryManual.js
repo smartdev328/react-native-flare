@@ -80,12 +80,6 @@ export default class AddJewelryManual extends React.Component {
         };
     }
 
-    changeManualDeviceID(newDeviceID) {
-        this.setState({
-            deviceID: newDeviceID.replace(/[^0-9A-F]+/g, ''),
-        });
-    }
-
     static getDerivedStateFromProps(props, state) {
         if (props.deviceID && props.deviceID !== state.deviceID) {
             return {
@@ -104,14 +98,6 @@ export default class AddJewelryManual extends React.Component {
         }
     }
 
-    goToPushedView = () => {
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.AddJewelryManual',
-            },
-        });
-    }
-
     onAddThisJewelry() {
         Navigation.push(this.props.componentId, {
             component: {
@@ -120,6 +106,20 @@ export default class AddJewelryManual extends React.Component {
                     deviceID: this.state.deviceID,
                 },
             },
+        });
+    }
+
+    goToPushedView = () => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.AddJewelryManual',
+            },
+        });
+    }
+
+    changeManualDeviceID(newDeviceID) {
+        this.setState({
+            deviceID: newDeviceID.replace(/[^0-9A-F]+/g, ''),
         });
     }
 

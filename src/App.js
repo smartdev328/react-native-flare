@@ -134,21 +134,33 @@ export default class App extends Component {
         case 'secure-jewelry':
             Navigation.setRoot({
                 root: {
-                    stack: {
-                        id: 'JEWELRY_STACK',
-                        options: {
-                            topBar: {
-                                visible: false,
-                            },
-                        },
-                        children: [{
+                    sideMenu: {
+                        left: {
                             component: {
-                                name: 'com.flarejewelry.app.Jewelry',
+                                name: 'com.flarejewelry.app.LeftDrawer',
                                 passProps: {
                                     bleManager: this.bleManager,
                                 },
                             },
-                        }],
+                        },
+                        center: {
+                            stack: {
+                                id: 'JEWELRY_STACK',
+                                options: {
+                                    topBar: {
+                                        visible: false,
+                                    },
+                                },
+                                children: [{
+                                    component: {
+                                        name: 'com.flarejewelry.app.Jewelry',
+                                        passProps: {
+                                            bleManager: this.bleManager,
+                                        },
+                                    },
+                                }],
+                            },
+                        },
                     },
                 },
             });

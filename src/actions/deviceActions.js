@@ -13,14 +13,15 @@ export function claimDevice(token, deviceID, secondFactor) {
             API_URL,
             `/device/${deviceID}/claim`, {
                 method: 'POST',
-                body: {
-                    secondFactor,
+                data: {
+                    second_factor: secondFactor,
                 },
             },
         ).then((response) => {
             dispatch({
                 type: types.DEVICE_CLAIM_SUCCESS,
                 devices: response.data.devices,
+                claimedDevice: deviceID,
             });
         }).catch((status) => {
             dispatch({

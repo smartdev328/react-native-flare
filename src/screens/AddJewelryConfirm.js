@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    ActivityIndicator,
     Image,
     KeyboardAvoidingView,
     StyleSheet,
@@ -68,8 +69,8 @@ const styles = StyleSheet.create({
     previewLabel: {
         position: 'absolute',
         top: 140,
-        left: '25%',
-        right: '25%',
+        left: '5%',
+        right: '5%',
     },
     buttonArea: {
         flex: 1,
@@ -97,6 +98,16 @@ class AddJewelryConfirm extends React.Component {
 
     static onPressTryAgain() {
         Navigation.popTo('com.flarejewelry.app.AddJewelry');
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.claimedDevice !== prevProps.claimedDevice) {
+            Navigation.push('JEWELRY_STACK', {
+                component: {
+                    name: 'com.flarejewelry.app.Jewelry',
+                },
+            });
+        }
     }
 
     changeTwoFactor(newCode) {
@@ -143,14 +154,19 @@ class AddJewelryConfirm extends React.Component {
                     />
                 </View>
                 <View style={styles.manualInputArea}>
-                    <TextInput
-                        autoCapitalize="characters"
-                        placeholder={Strings.jewelry.addNewConfirm.placeholderTwoFactor}
-                        style={styles.manualInputField}
-                        value={this.state.twoFactor}
-                        onChangeText={v => this.changeTwoFactor(v)}
-                        maxLength={DEVICE_TWO_FACTOR_LABEL_LENGTH}
-                    />
+                    {this.props.claimingDevice &&
+                        <ActivityIndicator />
+                    }
+                    {!this.props.claimingDevice &&
+                        <TextInput
+                            autoCapitalize="characters"
+                            placeholder={Strings.jewelry.addNewConfirm.placeholderTwoFactor}
+                            style={styles.manualInputField}
+                            value={this.state.twoFactor}
+                            onChangeText={v => this.changeTwoFactor(v)}
+                            maxLength={DEVICE_TWO_FACTOR_LABEL_LENGTH}
+                        />
+                    }
                 </View>
                 <View style={styles.buttonArea}>
                     <Button
@@ -166,6 +182,9 @@ class AddJewelryConfirm extends React.Component {
 function mapStateToProps(state) {
     return {
         shortPressCounts: state.beacons.recentShortPressCounts,
+        claimingDevice: state.user.claimingDevice,
+        claimedDevice: state.user.claimedDevice,
+        token: state.user.token,
     };
 }
 
