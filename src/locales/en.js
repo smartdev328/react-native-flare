@@ -31,6 +31,7 @@ const Strings = {
         },
     },
     leftDrawer: {
+        home: 'Home',
         jewelry: 'Jewelry',
         settings: 'Settings',
         signOut: 'Sign Out',

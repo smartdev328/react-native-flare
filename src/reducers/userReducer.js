@@ -180,7 +180,7 @@ export function user(state = initialState.user, action = {}) {
         });
 
     case types.DEVICE_CLAIM_SUCCESS:
-        return state.replace(state, {
+        return state.merge({
             claimedDevice: action.claimedDevice,
             claimingDevice: false,
             claimingDeviceFailure: null,
@@ -188,7 +188,7 @@ export function user(state = initialState.user, action = {}) {
         });
 
     case types.DEVICE_CLAIM_FAILURE:
-        return state.replace({
+        return state.merge({
             claimingDevice: false,
             claimedDevice: null,
             claimingDeviceFailure: action.message,

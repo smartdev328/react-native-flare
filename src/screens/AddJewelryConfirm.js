@@ -97,11 +97,11 @@ class AddJewelryConfirm extends React.Component {
     }
 
     static onPressTryAgain() {
-        Navigation.popTo('com.flarejewelry.app.AddJewelry');
+        Navigation.popToRoot('JEWELRY_STACK');
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.claimedDevice !== prevProps.claimedDevice) {
+        if (!this.props.claimingDevice && this.props.claimedDevice !== prevProps.claimedDevice) {
             Navigation.push('JEWELRY_STACK', {
                 component: {
                     name: 'com.flarejewelry.app.Jewelry',

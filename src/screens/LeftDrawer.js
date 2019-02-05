@@ -50,6 +50,10 @@ class LeftDrawer extends React.Component {
         });
     }
 
+    handleHome() {
+        this.props.dispatch(changeAppRoot('secure'));
+    }
+
     handleJewelry() {
         this.props.dispatch(changeAppRoot('secure-jewelry'));
     }
@@ -79,6 +83,11 @@ class LeftDrawer extends React.Component {
                     style={styles.topImage}
                 />
                 <View>
+                    <TouchableOpacity onPress={() => this.handleHome()}>
+                        <Text style={styles.menuItem}>
+                            {Strings.leftDrawer.home}
+                        </Text>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleJewelry()}>
                         <Text style={styles.menuItem}>
                             {Strings.leftDrawer.jewelry}
