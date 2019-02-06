@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>27</string>
+	<string>28</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
@@ -47,10 +47,6 @@
 	<string>We do not want access to your calendars.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We only use the camera when adding jewelry to your account</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We don&apos;t want to access your microphone.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We don&apos;t want to access your photo library</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Choose which friends to contact when you need backup</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -61,8 +57,12 @@
 	<string>Share your location with your friends when you need backup</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Share your location with your friends when you need backup</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We don't want to access your microphone.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>We do not want access to your movement data.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We don't want to access your photo library</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>We do not want access to speech recognition.</string>
 	<key>UIAppFonts</key>
