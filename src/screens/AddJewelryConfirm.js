@@ -101,13 +101,21 @@ class AddJewelryConfirm extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (!this.props.claimingDevice && this.props.claimedDevice !== prevProps.claimedDevice) {
-            Navigation.push('JEWELRY_STACK', {
-                component: {
-                    name: 'com.flarejewelry.app.Jewelry',
-                },
-            });
+        if (!this.props.claimingDevice && prevProps.claimingDevice && this.props.claimedDevice) {
+            Navigation.popToRoot('JEWELRY_STACK');
         }
+    }
+
+    componentDidAppear() {
+        this.setState({
+            twoFactor: null,
+        });
+    }
+
+    componentDidDisappear() {
+        this.setState({
+            twoFactor: null,
+        });
     }
 
     changeTwoFactor(newCode) {

@@ -132,6 +132,21 @@ export default class App extends Component {
             });
             break;
         case 'secure-jewelry':
+            Navigation.setDefaultOptions({
+                topBar: {
+                    leftButtons: [{
+                        id: 'menuButton',
+                        icon: iconsMap.menu,
+                        color: Colors.theme.purple,
+                    }],
+                    title: {
+                        component: {
+                            name: 'com.flarejewelry.app.FlareNavBar',
+                            alignment: 'center',
+                        },
+                    },
+                },
+            });
             Navigation.setRoot({
                 root: {
                     sideMenu: {
