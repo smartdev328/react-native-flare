@@ -62,14 +62,14 @@ export function flare(token, beacon, position, forCurrentUser) {
                     position,
                 },
             },
-        ).then(() => {
+        ).then((response) => {
             if (forCurrentUser) {
                 dispatch({
                     type: types.ACTIVATE_FLARE_SUCCESS,
                     data: {
                         beacon,
                         position,
-                        crewEvents: [],
+                        crewEvents: response.data.crew_events,
                     },
                 });
             }

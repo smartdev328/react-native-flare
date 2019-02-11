@@ -75,7 +75,7 @@ export function user(state = initialState.user, action = {}) {
         return state.merge({
             activatingFlareState: 'success',
             hasActiveFlare: true,
-            crewEvents: [],
+            crewEvents: action.data.crewEvents,
             crewEventTimeline: [],
         });
 
