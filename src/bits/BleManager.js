@@ -123,6 +123,8 @@ export default class BleManager {
                 type: actionTypes.BEACON_RECEIVED,
                 beacon,
             });
+        } else if (BLUETOOTH_BEACON_LOGGING === 'enabled') {
+            console.log(`Not updating homescreen with irrelevant beacon ${JSON.stringify(beacon)}`);
         }
 
         if (BLUETOOTH_BEACON_LOGGING === 'enabled' || BLUETOOTH_BEACON_LOGGING === 'verbose') {

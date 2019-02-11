@@ -5,7 +5,7 @@ import { initialState } from './initialState';
 export function beacons(state = initialState.beacons, action = {}) {
     switch (action.type) {
     case types.BEACON_RECEIVED:
-        return state.merge({
+        return state.replace({
             latest: action.beacon,
         });
 
