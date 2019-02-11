@@ -67,6 +67,7 @@ const Strings = {
             placeholderTwoFactor: 'Last 3 digits',
             prompt: 'Got it! Please look at the bottom of your jewelry and type the last 3 digits of the code you see.',
             sampleDigits: '???',
+            secondFactorError: 'Wrong code? Please try again.',
         },
         addNewManual: {
             buttonLabel: 'Add Manually',
@@ -77,7 +78,7 @@ const Strings = {
             cameraPermissionTitle: 'Permission to use camera',
             cameraPermissionMessage: 'Please let us use your camera so we can scan your jewelry',
         },
-        addNewTryAgain: "That's not right. Let's try again.",
+        addNewTryAgain: 'Start over',
         addThisButtonLabel: 'Add this Jewelry',
         emptyList: "You don't have any jewelry. Press the Add New button to add some jewelry to your account",
         remove: 'Remove',

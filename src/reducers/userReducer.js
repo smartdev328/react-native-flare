@@ -191,7 +191,7 @@ export function user(state = initialState.user, action = {}) {
         return state.merge({
             claimingDevice: false,
             claimedDevice: null,
-            claimingDeviceFailure: action.message,
+            claimingDeviceFailure: action.status,
         });
 
     case types.DEVICE_DISCLAIM_REQUEST:

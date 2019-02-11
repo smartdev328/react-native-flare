@@ -76,6 +76,16 @@ const styles = StyleSheet.create({
         flex: 1,
         marginBottom: Spacing.small,
     },
+    secondFactorErrorBg: {
+        justifyContent: 'center',
+        backgroundColor: Colors.theme.pink,
+        paddingTop: Spacing.small,
+        paddingBottom: Spacing.small,
+    },
+    secondFactorErrorFg: {
+        textAlign: 'center',
+        color: Colors.white,
+    },
 });
 
 class AddJewelryConfirm extends React.Component {
@@ -162,6 +172,13 @@ class AddJewelryConfirm extends React.Component {
                         circleTwoFactor
                     />
                 </View>
+                {!this.props.claimingDevice && this.props.claimingDeviceFailure &&
+                    <View style={styles.secondFactorErrorBg}>
+                        <Text style={styles.secondFactorErrorFg}>
+                            {Strings.jewelry.addNewConfirm.secondFactorError}
+                        </Text>
+                    </View>
+                }
                 <View style={styles.manualInputArea}>
                     {this.props.claimingDevice &&
                         <ActivityIndicator />
@@ -192,6 +209,7 @@ function mapStateToProps(state) {
     return {
         shortPressCounts: state.beacons.recentShortPressCounts,
         claimingDevice: state.user.claimingDevice,
+        claimingDeviceFailure: state.user.claimingDeviceFailure,
         claimedDevice: state.user.claimedDevice,
         token: state.user.token,
     };
