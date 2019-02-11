@@ -123,7 +123,8 @@ class AddJewelryConfirm extends React.Component {
             twoFactor: newCode.replace(/[^0-9A-Z]+/g, ''),
         });
         if (newCode.length === DEVICE_TWO_FACTOR_LABEL_LENGTH) {
-            this.props.dispatch(claimDevice(this.props.token, this.props.deviceID, newCode));
+            const numericDeviceID = parseInt(this.props.deviceID, 16);
+            this.props.dispatch(claimDevice(this.props.token, numericDeviceID, newCode));
         }
     }
 
