@@ -17,6 +17,7 @@ export const DEVICE_TWO_FACTOR_LABEL_LENGTH = parseInt(Config.DEVICE_TWO_FACTOR_
 export const MAX_DEVICE_ID = parseInt(Config.MAX_DEVICE_ID, 10);
 export const DEVICE_ADDITION_THREE_PRESS_MAX_TIME = parseInt(Config.DEVICE_ADDITION_THREE_PRESS_MAX_TIME, 10);
 export const DEVICE_ADDITION_MIN_PRESS_COUNT = parseInt(Config.DEVICE_ADDITION_MIN_PRESS_COUNT, 10);
+export const MANUFACTURING_MODE_ENABLED = Config.MANUFACTURING_MODE_ENABLED === 'true';
 
 export const summary = [
     { key: 'API', value: API_URL },

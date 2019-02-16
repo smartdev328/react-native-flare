@@ -43,6 +43,7 @@ export function user(state = initialState.user, action = {}) {
             crews: action.data.data.crews,
             devices: action.data.data.devices,
             authState: 'succeeded',
+            role: action.data.data.role,
             contactsCrewLookup: getContactsCrewLookup(firstCrew),
         });
     }

@@ -2,7 +2,8 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import * as types from './actionTypes';
 import { changeAppRoot } from './navActions';
-import { API_URL } from '../constants/index';
+import { API_URL, MANUFACTURING_MODE_ENABLED } from '../constants/index';
+import Roles from '../constants/Roles';
 
 export function signIn(email, password) {
     return async function doSignIn(dispatch) {
@@ -17,7 +18,11 @@ export function signIn(email, password) {
                 type: types.AUTH_SUCCESS,
                 data,
             });
-            dispatch(changeAppRoot('secure'));
+            if (MANUFACTURING_MODE_ENABLED && data.data.role === Roles.Manufacturing) {
+                dispatch(changeAppRoot('secure-manufacturing'));
+            } else {
+                dispatch(changeAppRoot('secure'));
+            }
         })
             .catch(res => dispatch({
                 type: types.AUTH_FAILURE,

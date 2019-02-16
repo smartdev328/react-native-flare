@@ -126,6 +126,9 @@ const Strings = {
             title: 'Choose your Crew',
         },
     },
+    manufacturing: {
+        title: 'Flare Manufacturing',
+    },
     notifications: {
         bluetoothDisabled: 'Please turn on bluetooth so that Flare can work! 💔',
         events: {

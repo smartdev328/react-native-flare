@@ -180,6 +180,28 @@ export default class App extends Component {
                 },
             });
             break;
+        case 'secure-manufacturing':
+            Navigation.setRoot({
+                root: {
+                    stack: {
+                        id: 'MANUFACTURING_STACK',
+                        options: {
+                            topBar: {
+                                visible: false,
+                            },
+                        },
+                        children: [{
+                            component: {
+                                name: 'com.flarejewelry.manufacturing.main',
+                                passProps: {
+                                    bleManager: this.bleManager,
+                                },
+                            },
+                        }],
+                    },
+                },
+            });
+            break;
         default:
             // eslint-disable-next-line no-console
             console.debug('Starting insecure root.');
