@@ -96,7 +96,7 @@ class ManufacturingMain extends React.Component {
                 <View style={styles.body}>
                     <DeviceStages
                         stages={Object.keys(Strings.manufacturing.stages)}
-                        devices={this.props.deviceCounts}
+                        deviceCounts={this.props.deviceCounts}
                     />
                 </View>
             </View>
@@ -109,12 +109,7 @@ function mapStateToProps(state) {
         token: state.user.token,
         cancelingActiveFlare: state.user.cancelingActiveFlare,
         hasActiveFlare: state.user.hasActiveFlare,
-        deviceCounts: {
-            new: [],
-            added: [],
-            burnIn: [],
-            ready: [],
-        },
+        deviceCounts: state.beacons.deviceCounts,
     };
 }
 

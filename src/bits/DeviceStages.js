@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
 } from 'react-native';
-import moment from 'moment';
 
 import DeviceStageList from './DeviceStageList';
 import Strings from '../locales/en';
@@ -18,23 +17,6 @@ const styles = StyleSheet.create({
     },
 });
 
-function makeRandomDevice() {
-    return {
-        id: Math.floor(Math.random() * 1024),
-        count: Math.floor(Math.random() * 10),
-        lastBeacon: moment().utc().subtract(Math.floor(Math.random() * 12), 'hours'),
-    };
-}
-
-function getDeviceList() {
-    const count = Math.floor(Math.random() * 10);
-    const list = [];
-    for (let i = 0; i < count; i += 1) {
-        list.push(makeRandomDevice());
-    }
-    return list;
-}
-
 class DeviceStages extends React.PureComponent {
     render() {
         return (
@@ -43,7 +25,7 @@ class DeviceStages extends React.PureComponent {
                     <DeviceStageList
                         key={stage}
                         title={Strings.manufacturing.stages[stage]}
-                        devices={getDeviceList()}
+                        deviceCounts={this.props.deviceCounts[stage]}
                         color={Colors.sequence[index]}
                     />
                 ))}

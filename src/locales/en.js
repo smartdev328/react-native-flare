@@ -84,7 +84,7 @@ const Strings = {
             confirmLabel: 'Yes, remove it',
             promptBegin: 'After you remove the jewelry with label ',
             promptEnd: ", pressing its button won't do anything. " + ' You will not get calls and your crew will not receive alerts.\n\n' + 'Are you sure you want to remove it?',
-        }
+        },
     },
     leftDrawer: {
         home: 'Home',
@@ -105,8 +105,8 @@ const Strings = {
         events: {
             flare: {
                 defaultMessage: 'Get that thing done',
-            }
-        }
+            },
+        },
     },
     permissions: {
         coarseLocation: {

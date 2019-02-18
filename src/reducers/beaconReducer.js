@@ -57,6 +57,22 @@ export function beacons(state = initialState.beacons, action = {}) {
         });
     }
 
+    case types.MANUFACTURING_BEACON_REQUEST:
+        return state.replace({
+            sendingManufacturingBeacon: true,
+        });
+
+    case types.MANUFACTURING_BEACON_SUCCESS:
+        return state.replace({
+            sendingManufacturingBeacon: false,
+            deviceCounts: action.deviceCounts,
+        });
+
+    case types.MANUFACTURING_BEACON_FAILURE:
+        return state.replace({
+            sendingManufacturingBeacon: false,
+        });
+
     default:
         return state;
     }

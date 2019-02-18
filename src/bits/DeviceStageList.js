@@ -67,7 +67,7 @@ export default class DeviceStageList extends React.PureComponent {
                 </View>
                 <View style={styles.listArea}>
                     <FlatList
-                        data={this.props.devices.sort((a, b) => DeviceStageList.compareDeviceListItems(a, b))}
+                        data={this.props.deviceCounts && this.props.deviceCounts.sort((a, b) => DeviceStageList.compareDeviceListItems(a, b))}
                         renderItem={({ item }) => (
                             <DeviceStageListItem
                                 id={item.id}

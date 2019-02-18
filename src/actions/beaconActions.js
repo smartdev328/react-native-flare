@@ -126,11 +126,10 @@ export function cancelActiveFlare(token, pin) {
 
 export function checkin(token, beacon, position, forCurrentUser) {
     return async function doCheckin(dispatch) {
-        const endPoint = MANUFACTURING_MODE_ENABLED ? '/manufacturing/checkin' : '/sos/checkin';
         ProtectedAPICall(
             token,
             API_URL,
-            endPoint, {
+            '/sos/checkin', {
                 method: 'POST',
                 data: {
                     device_id: beacon.deviceID,
@@ -162,6 +161,46 @@ export function checkin(token, beacon, position, forCurrentUser) {
                     status,
                 });
             }
+        });
+    };
+}
+
+export function manufacturingCheckin(token, beacon, position) {
+    return async function doCheckin(dispatch) {
+        dispatch({
+            type: types.MANUFACTURING_BEACON_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            '/manufacturing/checkin', {
+                method: 'POST',
+                data: {
+                    device_id: beacon.deviceID,
+                    timestamp: moment(beacon.timestamp).toISOString(),
+                    position,
+                    details: {
+                        proximity: beacon.proximity,
+                        distance: beacon.distance,
+                        rssi: beacon.rssi,
+                        major: beacon.major,
+                        minor: beacon.minor,
+                        uuid: beacon.uuid,
+                    },
+                },
+            },
+        ).then((response) => {
+            dispatch({
+                type: types.MANUFACTURING_BEACON_SUCCESS,
+                beacon,
+                deviceCounts: response.data.deviceCounts,
+            });
+        }).catch((status) => {
+            dispatch({
+                type: types.MANUFACTURING_BEACON_FAILURE,
+                beacon,
+                status,
+            });
         });
     };
 }

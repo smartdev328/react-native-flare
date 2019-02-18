@@ -31,6 +31,12 @@ export const initialState = Immutable({
         recent: [],
         recentShortPressCounts: [],
         problems: [],
+        deviceCounts: { // must match keys of Strings.manufacting.stages
+            new: 0,
+            added: 0,
+            burnIn: 0,
+            ready: 0,
+        },
     },
     hardware: {
         bluetooth: 'on',

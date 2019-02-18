@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     bottomTimestampArea: {
-        flex: 1,
+        flex: 2,
     },
     bottomTimestampText: {
         textAlign: 'right',

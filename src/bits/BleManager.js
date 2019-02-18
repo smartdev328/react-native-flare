@@ -3,13 +3,14 @@ import { Platform } from 'react-native';
 import Beacons from 'react-native-beacons-manager';
 import RNBluetoothInfo from 'react-native-bluetooth-info';
 
+import { BeaconTypes, Regions } from './BleConstants';
+import { BLUETOOTH_BEACON_LOGGING, SHOW_ALL_BEACONS_IN_HOME_SCREEN, MANUFACTURING_MODE_ENABLED } from '../constants';
+import { call, flare, checkin, manufacturingCheckin } from '../actions/beaconActions';
+import { setBluetoothState } from '../actions/hardwareActions';
+import * as actionTypes from '../actions/actionTypes';
 import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
-import { BeaconTypes, Regions } from './BleConstants';
-import { call, flare, checkin } from '../actions/beaconActions';
-import * as actionTypes from '../actions/actionTypes';
-import { setBluetoothState } from '../actions/hardwareActions';
-import { BLUETOOTH_BEACON_LOGGING, SHOW_ALL_BEACONS_IN_HOME_SCREEN } from '../constants';
+import UserRoleTypes from '../constants/Roles';
 
 export default class BleManager {
     constructor(options) {
@@ -134,6 +135,13 @@ export default class BleManager {
                 console.debug(`@ ${position.coords.latitude}, ${position.coords.longitude}`);
             } else {
                 console.debug('@ unknown location');
+            }
+        }
+
+        if (MANUFACTURING_MODE_ENABLED) {
+            const hasManufacturingRole = this.store.getState().user.role === UserRoleTypes.Manufacturing;
+            if (hasManufacturingRole) {
+                dispatch(manufacturingCheckin(token, beacon, position));
             }
         }
     }
