@@ -100,7 +100,7 @@ class LeftDrawer extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleSignOut()}>
                         <Text style={styles.menuItem}>
-                            {Strings.leftDrawer.signOut}
+                            {Strings.generic.signOut}
                         </Text>
                     </TouchableOpacity>
                 </View>

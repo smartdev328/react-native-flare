@@ -1,7 +1,7 @@
 import Immutable from 'seamless-immutable';
 import moment from 'moment';
 
-import { API_URL } from '../constants/';
+import { API_URL, MANUFACTURING_MODE_ENABLED } from '../constants/';
 import * as types from './actionTypes';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 
@@ -126,10 +126,11 @@ export function cancelActiveFlare(token, pin) {
 
 export function checkin(token, beacon, position, forCurrentUser) {
     return async function doCheckin(dispatch) {
+        const endPoint = MANUFACTURING_MODE_ENABLED ? '/manufacturing/checkin' : '/sos/checkin';
         ProtectedAPICall(
             token,
             API_URL,
-            '/sos/checkin', {
+            endPoint, {
                 method: 'POST',
                 data: {
                     device_id: beacon.deviceID,

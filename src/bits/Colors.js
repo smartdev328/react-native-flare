@@ -15,6 +15,12 @@ export default {
         green: '#ebfbf3',
         greenLight: '#ecfafa',
     },
+    sequence: [
+        '#4D45BF',
+        '#FF4FB5',
+        '#30C4FF',
+        '#32AA6F',
+    ],
     accents: {
         yellow: '#FFD626',
         red: '#FF404A',

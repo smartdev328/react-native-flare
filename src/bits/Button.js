@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
         margin: 0,
         paddingLeft: Spacing.small,
         paddingRight: Spacing.small,
+        textAlign: 'center',
     },
     primaryBackground: {
         backgroundColor: Colors.theme.pink,

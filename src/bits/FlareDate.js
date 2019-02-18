@@ -7,11 +7,17 @@ export default class FlareDate extends React.PureComponent {
     render() {
         const { timestamp } = this.props;
         const actualDate = moment(timestamp);
-        const diff = moment().diff(actualDate, 'hours');
-        const display = diff > 6 ? actualDate.format('l LTS') : actualDate.fromNow();
+
+        let display = '';
+        if (this.props.elapsed) {
+            display = actualDate.fromNow();
+        } else {
+            const diff = moment().diff(actualDate, 'hours');
+            display = diff > 6 ? actualDate.format('l LTS') : actualDate.fromNow();
+        }
 
         return (
-            <Text>{display}</Text>
+            <Text style={this.props.style}>{display}</Text>
         );
     }
 }
