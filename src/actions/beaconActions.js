@@ -193,7 +193,7 @@ export function manufacturingCheckin(token, beacon, position) {
             dispatch({
                 type: types.MANUFACTURING_BEACON_SUCCESS,
                 beacon,
-                deviceCounts: response.data.deviceCounts,
+                latestDeviceUpdate: response.data.manufacturing_event,
             });
         }).catch((status) => {
             dispatch({

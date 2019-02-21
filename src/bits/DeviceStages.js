@@ -25,7 +25,7 @@ class DeviceStages extends React.PureComponent {
                     <DeviceStageList
                         key={stage}
                         title={Strings.manufacturing.stages[stage]}
-                        deviceCounts={this.props.deviceCounts[stage]}
+                        deviceCounts={this.props.deviceCounts && this.props.deviceCounts[stage]}
                         color={Colors.sequence[index]}
                     />
                 ))}

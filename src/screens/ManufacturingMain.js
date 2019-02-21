@@ -82,6 +82,10 @@ class ManufacturingMain extends React.Component {
         return list;
     }
 
+    componentDidMount() {
+        this.props.dispatch(getDeviceCounts(this.props.token));
+    }
+
     handleSignOut() {
         this.props.dispatch(signOut());
     }
@@ -110,10 +114,6 @@ class ManufacturingMain extends React.Component {
                 name: 'com.flarejewelry.manufacturing.main',
             },
         });
-    }
-
-    componentDidMount() {
-        this.props.dispatch(getDeviceCounts(this.props.token));
     }
 
     render() {
