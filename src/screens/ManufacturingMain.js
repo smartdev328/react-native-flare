@@ -1,19 +1,24 @@
 import React from 'react';
 import {
+    ActivityIndicator,
     Image,
     StyleSheet,
     Text,
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
 
+import { BeaconTypes } from '../bits/BleConstants';
+import { manufacturingCheckin } from '../actions/beaconActions';
 import { signOut } from '../actions/authActions';
+import getDeviceCounts from '../actions/manufacturingActions';
 import Button from '../bits/Button';
+import Colors from '../bits/Colors';
 import DeviceStages from '../bits/DeviceStages';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
-import Colors from '../bits/Colors';
 
 const styles = StyleSheet.create({
     container: {
@@ -60,6 +65,45 @@ const styles = StyleSheet.create({
 });
 
 class ManufacturingMain extends React.Component {
+    static makeRandomDevice() {
+        return {
+            id: Math.floor(Math.random() * 1024),
+            count: Math.floor(Math.random() * 10),
+            lastBeacon: moment().utc().subtract(Math.floor(Math.random() * 12), 'hours').toISOString(),
+        };
+    }
+
+    static getDeviceList() {
+        const count = Math.floor(Math.random() * 10);
+        const list = [];
+        for (let i = 0; i < count; i += 1) {
+            list.push(ManufacturingMain.makeRandomDevice());
+        }
+        return list;
+    }
+
+    handleSignOut() {
+        this.props.dispatch(signOut());
+    }
+
+    handleTestBeacon() {
+        const testBeacon = {
+            uuid: 'flare-dev-test',
+            nonce: null,
+            type: BeaconTypes.Checkin,
+            deviceID: 16,
+            rssi: 0,
+            proximity: 'far',
+            accuracy: 0,
+            timestamp: Date.now(),
+        };
+        this.props.dispatch(manufacturingCheckin(
+            this.props.token,
+            testBeacon,
+            /* location= */null,
+        ));
+    }
+
     goToPushedView = () => {
         Navigation.push(this.props.componentId, {
             component: {
@@ -68,8 +112,8 @@ class ManufacturingMain extends React.Component {
         });
     }
 
-    handleSignOut() {
-        this.props.dispatch(signOut());
+    componentDidMount() {
+        this.props.dispatch(getDeviceCounts(this.props.token));
     }
 
     render() {
@@ -86,6 +130,14 @@ class ManufacturingMain extends React.Component {
                         <Text>{Strings.manufacturing.title}</Text>
                     </View>
                     <View style={styles.headerActions}>
+                        {this.props.manufacturingLoading &&
+                            <ActivityIndicator />
+                        }
+                        <Button
+                            outline
+                            onPress={() => this.handleTestBeacon()}
+                            title={Strings.manufacturing.testBeacon}
+                        />
                         <Button
                             outline
                             onPress={() => this.handleSignOut()}
@@ -96,6 +148,12 @@ class ManufacturingMain extends React.Component {
                 <View style={styles.body}>
                     <DeviceStages
                         stages={Object.keys(Strings.manufacturing.stages)}
+                        // deviceCounts={{
+                        //     new: ManufacturingMain.getDeviceList(),
+                        //     added: ManufacturingMain.getDeviceList(),
+                        //     burnIn: ManufacturingMain.getDeviceList(),
+                        //     ready: ManufacturingMain.getDeviceList(),
+                        // }}
                         deviceCounts={this.props.deviceCounts}
                     />
                 </View>
@@ -109,7 +167,8 @@ function mapStateToProps(state) {
         token: state.user.token,
         cancelingActiveFlare: state.user.cancelingActiveFlare,
         hasActiveFlare: state.user.hasActiveFlare,
-        deviceCounts: state.beacons.deviceCounts,
+        deviceCounts: state.manufacturing.deviceCounts,
+        manufacturingLoading: state.manufacturing.loading,
     };
 }
 

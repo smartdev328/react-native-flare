@@ -67,16 +67,16 @@ export default class DeviceStageList extends React.PureComponent {
                 </View>
                 <View style={styles.listArea}>
                     <FlatList
-                        data={this.props.deviceCounts && this.props.deviceCounts.sort((a, b) => DeviceStageList.compareDeviceListItems(a, b))}
+                        data={this.props.deviceCounts && this.props.deviceCounts.asMutable().sort((a, b) => DeviceStageList.compareDeviceListItems(a, b))}
                         renderItem={({ item }) => (
                             <DeviceStageListItem
                                 id={item.id}
                                 count={item.count}
-                                lastBeacon={item.lastBeacon}
+                                lastBeacon={item.timestamp}
                                 color={this.props.color}
                             />
                         )}
-                        keyExtractor={item => `${item.lastBeacon}-${item.id}`}
+                        keyExtractor={item => `${item.timestamp}-${item.id}`}
                         refreshing={false}
                         ref={(ref) => { this.flatList = ref; }}
                     />

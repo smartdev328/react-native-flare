@@ -60,14 +60,16 @@ const Strings = {
             placeholderTwoFactor: 'Last 3 digits',
             prompt: 'Got it! Please look at the bottom of your jewelry and type the last 3 digits of the code you see.',
             sampleDigits: '???',
-            secondFactorError: 'Wrong code? Please try again.'
+            secondFactorError: 'Wrong code? Please try again.',
         },
         addNewManual: {
             buttonLabel: 'Add Manually',
             cameraPermissionMessage: 'Please let us use your camera so we can scan your jewelry',
             cameraPermissionTitle: 'Permission to use camera',
             placeholderDeviceID: 'Jewelry code, eg XXX123',
-            prompt: 'Please point your camera at the QR code on the bottom of your jewelry. ' + 'If you prefer, type the jewelry code into the field below.',
+            prompt:
+                'Please point your camera at the QR code on the bottom of your jewelry. ' +
+                'If you prefer, type the jewelry code into the field below.',
         },
         addNewTryAgain: 'Start over',
         addThisButtonLabel: 'Add this Jewelry',
@@ -93,12 +95,14 @@ const Strings = {
     },
     manufacturing: {
         title: 'Device Provisioning',
+        /* Stages -- must match server enum */
         stages: {
-            new: 'New',
-            added: 'Added',
-            burnIn: 'Burn In',
-            ready: 'Ready',
+            New: 'New',
+            Added: 'Added',
+            BurnIn: 'Burn In',
+            Ready: 'Ready',
         },
+        testBeacon: 'Test',
     },
     notifications: {
         bluetoothDisabled: 'Please turn on bluetooth so that Flare can work! 💔',
@@ -120,7 +124,7 @@ const Strings = {
         fineLocation: {
             message: 'Please give Flare permission to use your location. We only share ' + 'your location with your selected contacts when you need backup.',
             title: 'Flare wants your precise location',
-        }
+        },
     },
     pin: {
         failure: 'Invalid PIN',
@@ -150,7 +154,7 @@ const Strings = {
         signInLabel: 'Sign In',
         usernamePrompt: 'Email',
         warning: 'You need to sign in so Flare can work! 🔥',
-    }
+    },
 };
 
 export default Strings;

@@ -41,4 +41,5 @@ export const initialState = Immutable({
     hardware: {
         bluetooth: 'on',
     },
+    manufacturing: {},
 });
