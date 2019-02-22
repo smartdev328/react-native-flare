@@ -30,13 +30,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     topDeviceLabelArea: {
-        flex: 9,
+        flex: 8,
     },
     topDeviceLabelText: {
         fontSize: Type.size.large,
     },
     topDeviceCountArea: {
-        flex: 1,
+        flex: 2,
         display: 'flex',
         justifyContent: 'center',
         backgroundColor: Colors.greyLight,
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: Colors.white,
         fontWeight: 'bold',
+        padding: Spacing.tiny,
     },
     bottomDeviceIDArea: {
         flex: 1,
