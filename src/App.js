@@ -63,7 +63,7 @@ export default class App extends Component {
             console.debug(`NAVIGATION -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
 
-            const secureRoots = ['secure', 'secure-jewelry'];
+            const secureRoots = ['secure', 'secure-jewelry', 'secure-manufacturing'];
 
             if (secureRoots.indexOf(root) !== -1 && BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
                 this.bleManager.startListening({

@@ -112,11 +112,22 @@ export default class BleManager {
             dispatch(flare(token, beacon, position, forCurrentUser));
             break;
 
+        case BeaconTypes.Manufacturing.name:
+            if (MANUFACTURING_MODE_ENABLED) {
+                const hasManufacturingRole = this.store.getState().user.role === UserRoleTypes.Manufacturing;
+                if (hasManufacturingRole) {
+                    dispatch(manufacturingCheckin(token, beacon, position));
+                }
+            }
+            break;
+
         case BeaconTypes.Checkin.name:
         default:
             dispatch(checkin(token, beacon, position, forCurrentUser));
             break;
         }
+
+
 
         // Inform the UI if the beacon is for the current user
         if (forCurrentUser || SHOW_ALL_BEACONS_IN_HOME_SCREEN) {
@@ -135,13 +146,6 @@ export default class BleManager {
                 console.debug(`@ ${position.coords.latitude}, ${position.coords.longitude}`);
             } else {
                 console.debug('@ unknown location');
-            }
-        }
-
-        if (MANUFACTURING_MODE_ENABLED) {
-            const hasManufacturingRole = this.store.getState().user.role === UserRoleTypes.Manufacturing;
-            if (hasManufacturingRole) {
-                dispatch(manufacturingCheckin(token, beacon, position));
             }
         }
     }

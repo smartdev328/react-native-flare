@@ -70,7 +70,7 @@ export default class DeviceStageList extends React.PureComponent {
                         data={this.props.deviceCounts && this.props.deviceCounts.asMutable().sort((a, b) => DeviceStageList.compareDeviceListItems(a, b))}
                         renderItem={({ item }) => (
                             <DeviceStageListItem
-                                id={item.id}
+                                id={item.device_id}
                                 count={item.count}
                                 lastBeacon={item.timestamp}
                                 color={this.props.color}
