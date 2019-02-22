@@ -65,47 +65,12 @@ const styles = StyleSheet.create({
 });
 
 class ManufacturingMain extends React.Component {
-    static makeRandomDevice() {
-        return {
-            id: Math.floor(Math.random() * 1024),
-            count: Math.floor(Math.random() * 10),
-            lastBeacon: moment().utc().subtract(Math.floor(Math.random() * 12), 'hours').toISOString(),
-        };
-    }
-
-    static getDeviceList() {
-        const count = Math.floor(Math.random() * 10);
-        const list = [];
-        for (let i = 0; i < count; i += 1) {
-            list.push(ManufacturingMain.makeRandomDevice());
-        }
-        return list;
-    }
-
     componentDidMount() {
         this.props.dispatch(getDeviceCounts(this.props.token));
     }
 
     handleSignOut() {
         this.props.dispatch(signOut());
-    }
-
-    handleTestBeacon() {
-        const testBeacon = {
-            uuid: 'flare-dev-test',
-            nonce: null,
-            type: BeaconTypes.Checkin,
-            deviceID: 16,
-            rssi: 0,
-            proximity: 'far',
-            accuracy: 0,
-            timestamp: Date.now(),
-        };
-        this.props.dispatch(manufacturingCheckin(
-            this.props.token,
-            testBeacon,
-            /* location= */null,
-        ));
     }
 
     goToPushedView = () => {
@@ -135,11 +100,6 @@ class ManufacturingMain extends React.Component {
                         }
                         <Button
                             outline
-                            onPress={() => this.handleTestBeacon()}
-                            title={Strings.manufacturing.testBeacon}
-                        />
-                        <Button
-                            outline
                             onPress={() => this.handleSignOut()}
                             title={Strings.generic.signOut}
                         />
@@ -148,12 +108,6 @@ class ManufacturingMain extends React.Component {
                 <View style={styles.body}>
                     <DeviceStages
                         stages={Object.keys(Strings.manufacturing.stages)}
-                        // deviceCounts={{
-                        //     new: ManufacturingMain.getDeviceList(),
-                        //     added: ManufacturingMain.getDeviceList(),
-                        //     burnIn: ManufacturingMain.getDeviceList(),
-                        //     ready: ManufacturingMain.getDeviceList(),
-                        // }}
                         deviceCounts={this.props.deviceCounts}
                     />
                 </View>
