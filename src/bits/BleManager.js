@@ -11,6 +11,7 @@ import * as actionTypes from '../actions/actionTypes';
 import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
 import UserRoleTypes from '../constants/Roles';
+import ManufacturingStages from '../constants/ManufacturingStages';
 
 export default class BleManager {
     constructor(options) {
@@ -116,7 +117,16 @@ export default class BleManager {
             if (MANUFACTURING_MODE_ENABLED) {
                 const hasManufacturingRole = this.store.getState().user.role === UserRoleTypes.Manufacturing;
                 if (hasManufacturingRole) {
-                    dispatch(manufacturingCheckin(token, beacon, position));
+                    dispatch(manufacturingCheckin(token, beacon, position, ManufacturingStages.indexOf('Added')));
+                }
+            }
+            break;
+
+        case BeaconTypes.BurnIn.name:
+            if (MANUFACTURING_MODE_ENABLED) {
+                const hasManufacturingRole = this.store.getState().user.role === UserRoleTypes.Manufacturing;
+                if (hasManufacturingRole) {
+                    dispatch(manufacturingCheckin(token, beacon, position, ManufacturingStages.indexOf('BurnIn')));
                 }
             }
             break;

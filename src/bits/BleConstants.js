@@ -29,4 +29,5 @@ export const BeaconTypes = {
     Long: { name: 'Long', value: 1 },
     Checkin: { name: 'Checkin', value: 2 },
     Manufacturing: { name: 'Manufacturing', value: 3 },
+    BurnIn: { name: 'BurnIn', value: 4 },
 };

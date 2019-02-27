@@ -4,6 +4,7 @@ import moment from 'moment';
 import { API_URL } from '../constants/';
 import * as types from './actionTypes';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
+import ManufacturingStages from '../constants/ManufacturingStages';
 
 export function call(token, beacon, position, forCurrentUser) {
     return async function doCall(dispatch) {
@@ -165,7 +166,7 @@ export function checkin(token, beacon, position, forCurrentUser) {
     };
 }
 
-export function manufacturingCheckin(token, beacon, position) {
+export function manufacturingCheckin(token, beacon, position, stage) {
     return async function doCheckin(dispatch) {
         dispatch({
             type: types.MANUFACTURING_BEACON_REQUEST,
@@ -187,6 +188,7 @@ export function manufacturingCheckin(token, beacon, position) {
                         minor: beacon.minor,
                         uuid: beacon.uuid,
                     },
+                    stage,
                 },
             },
         ).then((response) => {
