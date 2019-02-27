@@ -36,12 +36,17 @@ class OnboardingMain extends React.Component {
                     pages={[
                         {
                             backgroundColor: Colors.white,
-                            image:
-                                <LottieView
-                                    source={require('../assets/lotties/heart.json')}
-                                    autoPlay
-                                    loop={false}
-                                />,
+                            image: <LottieView
+                                source={require('../assets/lotties/heart.json')}
+                                autoPlay
+                                duration={2000}
+                                loop={false}
+                                resizeMode="cover"
+                                style={{
+                                    width: 292,
+                                    height: 292,
+                                }}
+                            />,
                             title: Strings.onboarding.welcome.title,
                             subtitle: Strings.onboarding.welcome.subtitle,
                         },
