@@ -3,6 +3,7 @@ package com.flarejewelry;
 import android.app.Application;
 
 // import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.lottie.LottiePackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.reactlibrary.RNBluetoothInfoPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;

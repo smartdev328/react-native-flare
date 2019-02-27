@@ -112,6 +112,32 @@ const Strings = {
             },
         },
     },
+    onboarding: {
+        welcome: {
+            title: 'Welcome!',
+            subtitle: "We're so excited that you're using Flare.",
+        },
+        location: {
+            title: 'Location',
+            subtitle: 'Flare needs permission to access your location.',
+        },
+        shortPress: {
+            title: 'Short Press',
+            subtitle: 'Press the button on your jewelry briefly a few times in a row.',
+        },
+        longPress: {
+            title: 'Hold',
+            subtitle: 'Now hold the button down for longer, about 3 seconds, and let go',
+        },
+        cancelFlare: {
+            title: "When you're ready",
+            subtitle: "Choose the PIN code that you'll enter when canceling Flares in the future.",
+        },
+        contacts: {
+            title: 'Contacts',
+            subtitle: "Please give us permission to access your contacts. You'll choose which contacts we reach out to when you hold the button.",
+        },
+    },
     permissions: {
         coarseLocation: {
             message: 'Please give Flare permission to use your location. We only share your ' + 'location with your selected contacts when you need backup.',

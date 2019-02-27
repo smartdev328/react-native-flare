@@ -30,6 +30,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "i18next": "^11.10.2",
+    "lottie-react-native": "^2.5.11",
     "moment": "^2.22.1",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
@@ -43,6 +44,7 @@
     "react-native-contacts": "^2.2.4",
     "react-native-i18n": "^2.0.15",
     "react-native-navigation": "^2.2.5",
+    "react-native-onboarding-swiper": "^1.0.1",
     "react-native-permissions": "^1.1.1",
     "react-native-push-notification": "^3.1.2",
     "react-native-splash-screen": "^3.1.1",

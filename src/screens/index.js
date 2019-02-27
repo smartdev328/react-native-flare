@@ -9,11 +9,12 @@ import Home from './Home';
 import Jewelry from './Jewelry';
 import ManufacturingMain from './ManufacturingMain';
 import LeftDrawer from './LeftDrawer';
+import Onboarding from './Onboarding';
 import PinCheck from './PinCheck';
 import Settings from './Settings';
 import SignIn from './SignIn';
 
-import { MANUFACTURING_MODE_ENABLED } from '../constants';
+import { MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants';
 
 export default (store, Provider) => {
     Navigation.registerComponentWithRedux('com.flarejewelry.app.AddJewelry', () => AddJewelry, Provider, store);
@@ -28,6 +29,10 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux('com.flarejewelry.app.PinCheck', () => PinCheck, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Settings', () => Settings, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.SignIn', () => SignIn, Provider, store);
+    if (ONBOARDING_ENABLED) {
+        Navigation.registerComponentWithRedux('com.flarejewelry.onboarding.main', () => Onboarding, Provider, store);
+    }
+
     if (MANUFACTURING_MODE_ENABLED) {
         Navigation.registerComponentWithRedux('com.flarejewelry.manufacturing.main', () => ManufacturingMain, Provider, store);
     }

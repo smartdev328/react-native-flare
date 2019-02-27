@@ -202,6 +202,29 @@ export default class App extends Component {
                 },
             });
             break;
+        case 'secure-onboarding':
+            console.debug('Starting onboarding root.');
+            Navigation.setRoot({
+                root: {
+                    stack: {
+                        id: 'ONBOARDING',
+                        options: {
+                            topBar: {
+                                visible: false,
+                            },
+                        },
+                        children: [{
+                            component: {
+                                name: 'com.flarejewelry.onboarding.main',
+                                passProps: {
+                                    bleManager: this.bleManager,
+                                },
+                            },
+                        }],
+                    },
+                },
+            });
+            break;
         default:
             // eslint-disable-next-line no-console
             console.debug('Starting insecure root.');

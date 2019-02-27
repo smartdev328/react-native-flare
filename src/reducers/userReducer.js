@@ -44,6 +44,7 @@ export function user(state = initialState.user, action = {}) {
             devices: action.data.data.devices,
             authState: 'succeeded',
             role: action.data.data.role,
+            hasViewedTutorial: !!action.data.data.viewed_tutorial,
             contactsCrewLookup: getContactsCrewLookup(firstCrew),
         });
     }

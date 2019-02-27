@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import * as types from './actionTypes';
 import { changeAppRoot } from './navActions';
-import { API_URL, MANUFACTURING_MODE_ENABLED } from '../constants/index';
+import { API_URL, MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants/index';
 import Roles from '../constants/Roles';
 
 export function signIn(email, password) {
@@ -20,6 +20,8 @@ export function signIn(email, password) {
             });
             if (MANUFACTURING_MODE_ENABLED && data.data.role === Roles.Manufacturing) {
                 dispatch(changeAppRoot('secure-manufacturing'));
+            } else if (ONBOARDING_ENABLED && !data.data.viewed_tutorial) {
+                dispatch(changeAppRoot('secure-onboarding'));
             } else {
                 dispatch(changeAppRoot('secure'));
             }
