@@ -1,4 +1,6 @@
 rootProject.name = 'flare'
+include ':react-native-camera'
+project(':react-native-camera').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-camera/android')
 include ':react-native-bluetooth-info'
 project(':react-native-bluetooth-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bluetooth-info/android')
 include ':react-native-background-timer'
@@ -12,7 +14,7 @@ project(':react-native-splash-screen').projectDir = new File(rootProject.project
 include ':react-native-config'
 project(':react-native-config').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-config/android')
 include ':react-native-navigation'
-project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/android/app/')
+project(':react-native-navigation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-navigation/lib/android/app/')
 include ':react-native-contacts'
 project(':react-native-contacts').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-contacts/android')
 include ':react-native-vector-icons'

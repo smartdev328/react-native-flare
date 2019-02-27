@@ -3,6 +3,7 @@ package com.flarejewelry;
 import android.app.Application;
 
 // import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
 import com.reactlibrary.RNBluetoothInfoPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
