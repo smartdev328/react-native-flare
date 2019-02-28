@@ -127,6 +127,8 @@ const Strings = {
         shortPress: {
             title: 'Short Press',
             subtitle: 'Press the button on your jewelry briefly a few times in a row.',
+            titleNoBluetooth: 'Enable Bluetooth',
+            subtitleNoBluetooth: 'Please enable Bluetooth before using your jewelry.',
         },
         longPress: {
             title: 'Hold',

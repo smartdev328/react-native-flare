@@ -48,14 +48,15 @@ class OnboardingMain extends React.Component {
                     givePage
                     showSkip
                     showBack
-                    onSkip={d => console.log(`skiiiiiip ${JSON.stringify(d)}`)}
+                    onSkip={d => console.log(`TODO: Implement skip! ${JSON.stringify(d)}`)}
                     pages={[
                         {
+                            /* Welcome */
                             backgroundColor: Colors.white,
                             image: <LottieView
                                 source={require('../assets/lotties/heart.json')}
                                 autoPlay
-                                duration={2000}
+                                speed={0.7}
                                 loop={false}
                                 resizeMode="cover"
                                 style={{
@@ -67,12 +68,12 @@ class OnboardingMain extends React.Component {
                             subtitle: Strings.onboarding.welcome.subtitle,
                         },
                         {
+                            /* Location */
                             backgroundColor: Colors.white,
                             image: <LottieView
                                 source={require('../assets/lotties/location.json')}
                                 autoPlay
-                                duration={6000}
-                                loop={false}
+                                loop
                                 resizeMode="cover"
                                 style={{
                                     width: 292,
@@ -89,7 +90,6 @@ class OnboardingMain extends React.Component {
                                         <LottieView
                                             source={require('../assets/lotties/checkmark.json')}
                                             autoPlay
-                                            duration={3000}
                                             loop={false}
                                             resizeMode="center"
                                             style={{
@@ -108,14 +108,39 @@ class OnboardingMain extends React.Component {
                                     }
                                 </View>
                             ),
-                            showDone: false,
                         },
                         {
+                            /* Bluetooth and short press */
                             backgroundColor: Colors.white,
-                            image: <Image source={require('../assets/home-diamond.png')} />,
-                            title: Strings.onboarding.shortPress.title,
-                            subtitle: Strings.onboarding.shortPress.subtitle,
-                            showDone: false,
+                            image: this.props.bluetoothEnabled ?
+                                <LottieView
+                                    source={require('../assets/lotties/dino-dance.json')}
+                                    autoPlay
+                                    loop
+                                    resizeMode="cover"
+                                    style={{
+                                        width: 292,
+                                        height: 292,
+                                    }}
+                                /> :
+                                <LottieView
+                                    source={require('../assets/lotties/ripple.json')}
+                                    autoPlay
+                                    loop
+                                    resizeMode="cover"
+                                    style={{
+                                        width: 292,
+                                        height: 292,
+                                    }}
+                                />,
+                            title:
+                                this.props.bluetoothEnabled ?
+                                    Strings.onboarding.shortPress.title :
+                                    Strings.onboarding.shortPress.titleNoBluetooth,
+                            subtitle:
+                                this.props.bluetoothEnabled ?
+                                    Strings.onboarding.shortPress.subtitle :
+                                    Strings.onboarding.shortPress.subtitleNoBluetooth,
                         },
                         {
                             backgroundColor: Colors.white,
@@ -149,6 +174,7 @@ function mapStateToProps(state) {
     return {
         token: state.user.token,
         permissions: state.user.permissions,
+        bluetoothEnabled: state.hardware.bluetooth === 'on',
     };
 }
 
