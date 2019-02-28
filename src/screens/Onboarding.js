@@ -33,6 +33,9 @@ class OnboardingMain extends React.Component {
             <View style={styles.container}>
                 <Onboarding
                     givePage
+                    showSkip
+                    showBack
+                    onSkip={d => console.log(`skiiiiiip ${JSON.stringify(d)}`)}
                     pages={[
                         {
                             backgroundColor: Colors.white,
@@ -56,7 +59,6 @@ class OnboardingMain extends React.Component {
                             title: Strings.onboarding.location.title,
                             subtitle: Strings.onboarding.location.subtitle,
                             showDone: false,
-                            showSkip: false,
                         },
                         {
                             backgroundColor: Colors.white,
@@ -64,7 +66,6 @@ class OnboardingMain extends React.Component {
                             title: Strings.onboarding.shortPress.title,
                             subtitle: Strings.onboarding.shortPress.subtitle,
                             showDone: false,
-                            showSkip: false,
                         },
                         {
                             backgroundColor: Colors.white,
@@ -72,7 +73,6 @@ class OnboardingMain extends React.Component {
                             title: Strings.onboarding.longPress.title,
                             subtitle: Strings.onboarding.longPress.subtitle,
                             showDone: false,
-                            showSkip: false,
                         },
                         {
                             backgroundColor: Colors.white,
@@ -80,7 +80,6 @@ class OnboardingMain extends React.Component {
                             title: Strings.onboarding.cancelFlare.title,
                             subtitle: Strings.onboarding.cancelFlare.subtitle,
                             showDone: false,
-                            showSkip: false,
                         },
                         {
                             backgroundColor: Colors.white,
@@ -88,7 +87,6 @@ class OnboardingMain extends React.Component {
                             title: Strings.onboarding.contacts.title,
                             subtitle: Strings.onboarding.contacts.subtitle,
                             showDone: false,
-                            showSkip: false,
                         },
                     ]}
                 />

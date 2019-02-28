@@ -5516,9 +5516,9 @@ react-native-navigation@^2.2.5:
     react-lifecycles-compat "2.0.0"
     tslib "1.9.3"
 
-react-native-onboarding-swiper@^1.0.1:
+"react-native-onboarding-swiper@https://github.com/mgaron/react-native-onboarding-swiper.git#add-back-button":
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-onboarding-swiper/-/react-native-onboarding-swiper-1.0.1.tgz#6849a5de33ea5a4f1446aac82ee7f72e883c818d"
+  resolved "https://github.com/mgaron/react-native-onboarding-swiper.git#41fd52e388ec803623b2e881413d68f531f81d80"
   dependencies:
     tinycolor2 "^1.4.1"
 
