@@ -10,9 +10,6 @@ export function checkPermissions() {
     return async function doCheck(dispatch) {
         const permissions = {
             contacts: null,
-            location: {
-                type: 'always',
-            },
         };
 
         if (Platform.OS === 'ios') {
@@ -51,6 +48,32 @@ export function checkPermissions() {
                         granted: true,
                     });
                 });
+            });
+    };
+}
+
+export function getPermission(name, options) {
+    return async function doCheck(dispatch) {
+        Permissions
+            .check(name, options)
+            .then((checkResponse) => {
+                if (checkResponse !== 'authorized') {
+                    Permissions
+                        .request(name, options)
+                        .then((response) => {
+                            dispatch({
+                                type: types.PERMISSIONS_SUCCESS,
+                                permission: name,
+                                granted: response === 'authorized',
+                            });
+                        });
+                } else {
+                    dispatch({
+                        type: types.PERMISSIONS_SUCCESS,
+                        permission: name,
+                        granted: true,
+                    });
+                }
             });
     };
 }

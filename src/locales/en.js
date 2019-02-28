@@ -116,10 +116,13 @@ const Strings = {
         welcome: {
             title: 'Welcome!',
             subtitle: "We're so excited that you're using Flare.",
+            alwaysAllow: 'Always allow',
         },
         location: {
             title: 'Location',
-            subtitle: 'Flare needs permission to access your location.',
+            subtitle:
+                'To let your jewelry work, Flare needs permission to access your location ' +
+                "even when it's running in the background.",
         },
         shortPress: {
             title: 'Short Press',
