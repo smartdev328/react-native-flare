@@ -21,12 +21,12 @@ export function beacons(state = initialState.beacons, action = {}) {
     }
 
     case types.BEACON_COUNTS_RESET:
-        return state.replace({
+        return state.merge({
             recentShortPressCounts: [],
         });
 
     case types.BEACON_COUNTS_UPDATED:
-        return state.replace({
+        return state.merge({
             recentShortPressCounts: action.shortPressCounts,
         });
 

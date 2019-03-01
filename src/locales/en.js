@@ -127,8 +127,18 @@ const Strings = {
         shortPress: {
             title: 'Short Press',
             subtitle: 'Press the button on your jewelry briefly a few times in a row.',
-            titleNoBluetooth: 'Enable Bluetooth',
-            subtitleNoBluetooth: 'Please enable Bluetooth before using your jewelry.',
+            noBluetooth: {
+                title: 'Enable Bluetooth',
+                subtitle: 'Please enable Bluetooth before using your jewelry.',
+            },
+            multipleDevices: {
+                title: 'Wait a sec',
+                subtitle: "It's noisy in here. Wait a sec and try again, or maybe move to a different room.",
+            },
+            singleDevice: {
+                title: 'Short Press',
+                subtitleStart: 'OMG we heard something! Look at the label on your jewelry. Does it start with this?',
+            },
         },
         longPress: {
             title: 'Hold',

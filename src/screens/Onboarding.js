@@ -12,9 +12,11 @@ import Onboarding from 'react-native-onboarding-swiper';
 
 import { getPermission } from '../actions/userActions';
 import Colors from '../bits/Colors';
+import FlareDeviceID from '../bits/FlareDeviceID';
 import Strings from '../locales/en';
 import Button from '../bits/Button';
 import Spacing from '../bits/Spacing';
+import Type from '../bits/Type';
 
 const styles = StyleSheet.create({
     container: {
@@ -26,9 +28,47 @@ const styles = StyleSheet.create({
     subtitleText: {
         marginBottom: Spacing.large,
     },
+    foundJewelryIntro: {
+        textAlign: 'center',
+    },
+    foundJewelryID: {
+        margin: Spacing.large,
+        fontSize: Type.size.medium,
+        textAlign: 'center',
+    },
 });
 
 class OnboardingMain extends React.Component {
+    static getDerivedStateFromProps(props, state) {
+        const { shortPressCounts } = props;
+        const { highestPressCount, multipleDevicesBroadcasting } = state;
+        const newHighestPressCount = (shortPressCounts && shortPressCounts.length > 0 && shortPressCounts[0]) || {};
+
+        const newMultipleBroadcasting = shortPressCounts && shortPressCounts.length > 1;
+        const multipleBroadcastChanged = multipleDevicesBroadcasting !== newMultipleBroadcasting;
+        const highestPressCountChanged =
+            newHighestPressCount.deviceID !== highestPressCount.deviceID ||
+            newHighestPressCount.count !== highestPressCount.count;
+
+        if (multipleBroadcastChanged || highestPressCountChanged) {
+            return {
+                highestPressCount: newHighestPressCount,
+                multipleDevicesBroadcasting,
+            };
+        }
+
+        return null;
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            highestPressCount: {},
+            multipleDevicesBroadcasting: false,
+        };
+    }
+
     goToPushedView = () => {
         Navigation.push(this.props.componentId, {
             component: {
@@ -42,6 +82,42 @@ class OnboardingMain extends React.Component {
     }
 
     render() {
+        // Dynamically configure bluetooth page
+        let bluetoothTitle = null;
+        let bluetoothSubtitle = null;
+        let bluetoothImageSource = null;
+
+        if (!this.props.bluetoothEnabled) {
+            // bluetooth is disabled
+            bluetoothImageSource = require('../assets/lotties/hmm.json');
+            bluetoothTitle = Strings.onboarding.shortPress.noBluetooth.title;
+            bluetoothSubtitle = Strings.onboarding.shortPress.noBluetooth.subtitle;
+        } else if (this.state.multipleDevicesBroadcasting) {
+            // too many devices transmitting to know for sure which one belongs to user
+            bluetoothImageSource = require('../assets/lotties/hmm.json');
+            bluetoothTitle = Strings.onboarding.shortPress.multipleDevices.title;
+            bluetoothSubtitle = Strings.onboarding.shortPress.multipleDevices.subtitle;
+        } else if (this.state.highestPressCount.deviceID) {
+            // one good device transmitting
+            bluetoothImageSource = require('../assets/lotties/dino-dance.json');
+            bluetoothTitle = Strings.onboarding.shortPress.singleDevice.title;
+            bluetoothSubtitle = (
+                <View>
+                    <Text style={styles.foundJewelryIntro}>
+                        {Strings.onboarding.shortPress.singleDevice.subtitleStart}
+                    </Text>
+                    <Text style={styles.foundJewelryID}>
+                        {FlareDeviceID.getJewelryLabelFromDeviceID(this.state.highestPressCount.deviceID)}
+                    </Text>
+                </View>
+            );
+        } else {
+            // no devices found yet
+            bluetoothImageSource = require('../assets/lotties/ripple.json');
+            bluetoothTitle = Strings.onboarding.shortPress.title;
+            bluetoothSubtitle = Strings.onboarding.shortPress.subtitle;
+        }
+
         return (
             <View style={styles.container}>
                 <Onboarding
@@ -112,9 +188,9 @@ class OnboardingMain extends React.Component {
                         {
                             /* Bluetooth and short press */
                             backgroundColor: Colors.white,
-                            image: this.props.bluetoothEnabled ?
+                            image: (
                                 <LottieView
-                                    source={require('../assets/lotties/dino-dance.json')}
+                                    source={bluetoothImageSource}
                                     autoPlay
                                     loop
                                     resizeMode="cover"
@@ -122,46 +198,27 @@ class OnboardingMain extends React.Component {
                                         width: 292,
                                         height: 292,
                                     }}
-                                /> :
-                                <LottieView
-                                    source={require('../assets/lotties/ripple.json')}
-                                    autoPlay
-                                    loop
-                                    resizeMode="cover"
-                                    style={{
-                                        width: 292,
-                                        height: 292,
-                                    }}
-                                />,
-                            title:
-                                this.props.bluetoothEnabled ?
-                                    Strings.onboarding.shortPress.title :
-                                    Strings.onboarding.shortPress.titleNoBluetooth,
-                            subtitle:
-                                this.props.bluetoothEnabled ?
-                                    Strings.onboarding.shortPress.subtitle :
-                                    Strings.onboarding.shortPress.subtitleNoBluetooth,
+                                />),
+                            title: bluetoothTitle,
+                            subtitle: bluetoothSubtitle,
                         },
                         {
                             backgroundColor: Colors.white,
                             image: <Image source={require('../assets/home-diamond.png')} />,
                             title: Strings.onboarding.longPress.title,
                             subtitle: Strings.onboarding.longPress.subtitle,
-                            showDone: false,
                         },
                         {
                             backgroundColor: Colors.white,
                             image: <Image source={require('../assets/home-diamond.png')} />,
                             title: Strings.onboarding.cancelFlare.title,
                             subtitle: Strings.onboarding.cancelFlare.subtitle,
-                            showDone: false,
                         },
                         {
                             backgroundColor: Colors.white,
                             image: <Image source={require('../assets/home-diamond.png')} />,
                             title: Strings.onboarding.contacts.title,
                             subtitle: Strings.onboarding.contacts.subtitle,
-                            showDone: false,
                         },
                     ]}
                 />
@@ -175,6 +232,7 @@ function mapStateToProps(state) {
         token: state.user.token,
         permissions: state.user.permissions,
         bluetoothEnabled: state.hardware.bluetooth === 'on',
+        shortPressCounts: state.beacons.recentShortPressCounts,
     };
 }
 
