@@ -1,8 +1,11 @@
 import React from 'react';
 import {
+    ActivityIndicator,
     Image,
+    KeyboardAvoidingView,
     StyleSheet,
     Text,
+    TextInput,
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -11,11 +14,12 @@ import LottieView from 'lottie-react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
 import { getPermission } from '../actions/userActions';
-import Colors from '../bits/Colors';
-import FlareDeviceID from '../bits/FlareDeviceID';
-import Strings from '../locales/en';
+import { claimDevice } from '../actions/deviceActions';
+import getBluetoothPage from './OnboardingBluetooth';
 import Button from '../bits/Button';
+import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
+import Strings from '../locales/en';
 import Type from '../bits/Type';
 
 const styles = StyleSheet.create({
@@ -66,6 +70,8 @@ class OnboardingMain extends React.Component {
         this.state = {
             highestPressCount: {},
             multipleDevicesBroadcasting: false,
+            chosenDeviceID: null,
+            secondFactor: '',
         };
     }
 
@@ -81,45 +87,38 @@ class OnboardingMain extends React.Component {
         this.props.dispatch(getPermission('location', { type: 'always' }));
     }
 
-    render() {
-        // Dynamically configure bluetooth page
-        let bluetoothTitle = null;
-        let bluetoothSubtitle = null;
-        let bluetoothImageSource = null;
+    chooseThisDevice(deviceID) {
+        this.setState({
+            chosenDeviceID: deviceID,
+        });
+    }
 
-        if (!this.props.bluetoothEnabled) {
-            // bluetooth is disabled
-            bluetoothImageSource = require('../assets/lotties/hmm.json');
-            bluetoothTitle = Strings.onboarding.shortPress.noBluetooth.title;
-            bluetoothSubtitle = Strings.onboarding.shortPress.noBluetooth.subtitle;
-        } else if (this.state.multipleDevicesBroadcasting) {
-            // too many devices transmitting to know for sure which one belongs to user
-            bluetoothImageSource = require('../assets/lotties/hmm.json');
-            bluetoothTitle = Strings.onboarding.shortPress.multipleDevices.title;
-            bluetoothSubtitle = Strings.onboarding.shortPress.multipleDevices.subtitle;
-        } else if (this.state.highestPressCount.deviceID) {
-            // one good device transmitting
-            bluetoothImageSource = require('../assets/lotties/dino-dance.json');
-            bluetoothTitle = Strings.onboarding.shortPress.singleDevice.title;
-            bluetoothSubtitle = (
-                <View>
-                    <Text style={styles.foundJewelryIntro}>
-                        {Strings.onboarding.shortPress.singleDevice.subtitleStart}
-                    </Text>
-                    <Text style={styles.foundJewelryID}>
-                        {FlareDeviceID.getJewelryLabelFromDeviceID(this.state.highestPressCount.deviceID)}
-                    </Text>
-                </View>
-            );
-        } else {
-            // no devices found yet
-            bluetoothImageSource = require('../assets/lotties/ripple.json');
-            bluetoothTitle = Strings.onboarding.shortPress.title;
-            bluetoothSubtitle = Strings.onboarding.shortPress.subtitle;
-        }
+    changeTwoFactorText(val) {
+        this.setState({
+            secondFactor: val,
+        });
+    }
+
+    claimDevice() {
+        this.dispatch(claimDevice(this.props.token, this.state.chosenDeviceID, this.state.secondFactor));
+    }
+
+    render() {
+        const bluetoothPage = getBluetoothPage({
+            bluetoothEnabled: this.props.bluetoothEnabled,
+            claimingDevice: this.props.claimingDevice,
+            chosenDeviceID: this.state.chosenDeviceID,
+            secondFactor: this.state.secondFactor,
+            multipleDevicesBroadcasting: this.state.multipleDevicesBroadcasting,
+            highestPressCount: this.state.highestPressCount,
+            changeTwoFactorText: e => this.changeTwoFactorText(e),
+            claimDevice: () => this.claimDevice(),
+            chooseThisDevice: id => this.chooseThisDevice(id),
+        });
+
 
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset={600}>
                 <Onboarding
                     givePage
                     showSkip
@@ -185,36 +184,24 @@ class OnboardingMain extends React.Component {
                                 </View>
                             ),
                         },
+                        /* Bluetooth and short press */
+                        bluetoothPage,
                         {
-                            /* Bluetooth and short press */
-                            backgroundColor: Colors.white,
-                            image: (
-                                <LottieView
-                                    source={bluetoothImageSource}
-                                    autoPlay
-                                    loop
-                                    resizeMode="cover"
-                                    style={{
-                                        width: 292,
-                                        height: 292,
-                                    }}
-                                />),
-                            title: bluetoothTitle,
-                            subtitle: bluetoothSubtitle,
-                        },
-                        {
+                            /* Long Press */
                             backgroundColor: Colors.white,
                             image: <Image source={require('../assets/home-diamond.png')} />,
                             title: Strings.onboarding.longPress.title,
                             subtitle: Strings.onboarding.longPress.subtitle,
                         },
                         {
+                            /* Cancel Flare */
                             backgroundColor: Colors.white,
                             image: <Image source={require('../assets/home-diamond.png')} />,
                             title: Strings.onboarding.cancelFlare.title,
                             subtitle: Strings.onboarding.cancelFlare.subtitle,
                         },
                         {
+                            /* Contacts */
                             backgroundColor: Colors.white,
                             image: <Image source={require('../assets/home-diamond.png')} />,
                             title: Strings.onboarding.contacts.title,
@@ -222,7 +209,7 @@ class OnboardingMain extends React.Component {
                         },
                     ]}
                 />
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -233,6 +220,8 @@ function mapStateToProps(state) {
         permissions: state.user.permissions,
         bluetoothEnabled: state.hardware.bluetooth === 'on',
         shortPressCounts: state.beacons.recentShortPressCounts,
+        claimingDevice: state.user.claimingDevice,
+        claimedDevice: state.user.claimedDevice,
     };
 }
 

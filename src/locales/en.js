@@ -138,6 +138,11 @@ const Strings = {
             singleDevice: {
                 title: 'Short Press',
                 subtitleStart: 'OMG we heard something! Look at the label on your jewelry. Does it start with this?',
+                buttonLabel: "That's Mine",
+            },
+            chosenDevice: {
+                title: 'Confirm Jewelry',
+                subtitle: 'Check the label on your jewelry. Enter the last 3 characters in the code.',
             },
         },
         longPress: {
