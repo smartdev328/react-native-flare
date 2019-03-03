@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-    ActivityIndicator,
     Image,
     KeyboardAvoidingView,
     StyleSheet,
     Text,
-    TextInput,
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -13,11 +11,13 @@ import { Navigation } from 'react-native-navigation';
 import LottieView from 'lottie-react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
-import { getPermission } from '../actions/userActions';
+import { BeaconTypes } from '../bits/BleConstants';
 import { claimDevice } from '../actions/deviceActions';
-import getBluetoothPage from './OnboardingBluetooth';
+import { getPermission } from '../actions/userActions';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
+import getBluetoothPage from './onboarding/Bluetooth';
+import getLongPressPage from './onboarding/LongPress';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
@@ -54,10 +54,15 @@ class OnboardingMain extends React.Component {
             newHighestPressCount.deviceID !== highestPressCount.deviceID ||
             newHighestPressCount.count !== highestPressCount.count;
 
+        // Only change state flag once after receiving a long press
+        const receivedLongPress = state.receivedLongPress ||
+            (props.latestBeacon && props.latestBeacon.type === BeaconTypes.Long.name);
+
         if (multipleBroadcastChanged || highestPressCountChanged) {
             return {
                 highestPressCount: newHighestPressCount,
                 multipleDevicesBroadcasting,
+                receivedLongPress,
             };
         }
 
@@ -100,10 +105,18 @@ class OnboardingMain extends React.Component {
     }
 
     claimDevice() {
-        this.dispatch(claimDevice(this.props.token, this.state.chosenDeviceID, this.state.secondFactor));
+        this.props.dispatch(claimDevice(this.props.token, this.state.chosenDeviceID, this.state.secondFactor));
     }
 
     render() {
+        /**
+         * The bluetooth page has many internal states. Unfortunately, the onboarding
+         * library operates on an array of objects instead of JSX elements. That means
+         * we pass this higher order component's props and state into the complex page
+         * so that it can change dynamically without making this component messy. To
+         * improve rendering performance, consider deriving state and passing that
+         * (conditionally) to the generator function instead.
+         */
         const bluetoothPage = getBluetoothPage({
             bluetoothEnabled: this.props.bluetoothEnabled,
             claimingDevice: this.props.claimingDevice,
@@ -111,11 +124,19 @@ class OnboardingMain extends React.Component {
             secondFactor: this.state.secondFactor,
             multipleDevicesBroadcasting: this.state.multipleDevicesBroadcasting,
             highestPressCount: this.state.highestPressCount,
+            deviceHasBeenClaimed: this.props.claimedDevice && this.props.claimedDevice === this.state.chosenDeviceID,
             changeTwoFactorText: e => this.changeTwoFactorText(e),
             claimDevice: () => this.claimDevice(),
             chooseThisDevice: id => this.chooseThisDevice(id),
         });
 
+        /**
+         * The long press page has a few internal states too.
+         */
+        const longPressPage = getLongPressPage({
+            bluetoothEnabled: this.props.bluetoothEnabled,
+            receivedLongPress: this.state.receivedLongPress,
+        });
 
         return (
             <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset={600}>
@@ -184,15 +205,8 @@ class OnboardingMain extends React.Component {
                                 </View>
                             ),
                         },
-                        /* Bluetooth and short press */
                         bluetoothPage,
-                        {
-                            /* Long Press */
-                            backgroundColor: Colors.white,
-                            image: <Image source={require('../assets/home-diamond.png')} />,
-                            title: Strings.onboarding.longPress.title,
-                            subtitle: Strings.onboarding.longPress.subtitle,
-                        },
+                        longPressPage,
                         {
                             /* Cancel Flare */
                             backgroundColor: Colors.white,
@@ -222,6 +236,7 @@ function mapStateToProps(state) {
         shortPressCounts: state.beacons.recentShortPressCounts,
         claimingDevice: state.user.claimingDevice,
         claimedDevice: state.user.claimedDevice,
+        latestBeacon: state.beacons.latest,
     };
 }
 

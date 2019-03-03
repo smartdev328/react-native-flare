@@ -124,13 +124,13 @@ const Strings = {
                 'To let your jewelry work, Flare needs permission to access your location ' +
                 "even when it's running in the background.",
         },
+        noBluetooth: {
+            title: 'Enable Bluetooth',
+            subtitle: 'Please enable Bluetooth before using your jewelry.',
+        },
         shortPress: {
             title: 'Short Press',
             subtitle: 'Press the button on your jewelry briefly a few times in a row.',
-            noBluetooth: {
-                title: 'Enable Bluetooth',
-                subtitle: 'Please enable Bluetooth before using your jewelry.',
-            },
             multipleDevices: {
                 title: 'Wait a sec',
                 subtitle: "It's noisy in here. Wait a sec and try again, or maybe move to a different room.",
@@ -144,10 +144,26 @@ const Strings = {
                 title: 'Confirm Jewelry',
                 subtitle: 'Check the label on your jewelry. Enter the last 3 characters in the code.',
             },
+            deviceClaimed: {
+                title: 'All Yours',
+                subtitle:
+                    "Your new piece of jewelry is connected to your account. Next we'll show you another " +
+                    'type of button press.',
+            },
         },
         longPress: {
-            title: 'Hold',
-            subtitle: 'Now hold the button down for longer, about 3 seconds, and let go',
+            waiting: {
+                title: 'Long Press',
+                subtitle: 'Now hold the button down for longer, about 3 seconds, and let go',
+            },
+            success: {
+                title: 'Long Press 😎🎉✨',
+                subtitle:
+                    'After a long press, we reach out to a group of your contacts that you choose. ' +
+                    'They receive a text message telling them where you are and how to reach you. ' +
+                    'You can see their group messages in the app. Press Next to learn how to cancel ' +
+                    "your flare and tell your crew that you're okay.",
+            },
         },
         cancelFlare: {
             title: "When you're ready",

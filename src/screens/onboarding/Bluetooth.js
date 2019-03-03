@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../constants';
-import Button from '../bits/Button';
-import Colors from '../bits/Colors';
-import FlareDeviceID from '../bits/FlareDeviceID';
-import JewelryLabelPreview from '../bits/JewelryLabelPreview';
-import Spacing from '../bits/Spacing';
-import Type from '../bits/Type';
-import Strings from '../locales/en';
+import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../../constants';
+import Button from '../../bits/Button';
+import Colors from '../../bits/Colors';
+import FlareDeviceID from '../../bits/FlareDeviceID';
+import JewelryLabelPreview from '../../bits/JewelryLabelPreview';
+import Spacing from '../../bits/Spacing';
+import Type from '../../bits/Type';
+import Strings from '../../locales/en';
 
 const styles = StyleSheet.create({
     bluetoothConfirm: {
@@ -57,8 +57,11 @@ export default function getBluetoothPage(args) {
 
     if (!args.bluetoothEnabled) {
         // bluetooth is disabled
-        imageSource = require('../assets/lotties/hmm.json');
-        ({ title, subtitle } = Strings.onboarding.shortPress.noBluetooth);
+        imageSource = require('../../assets/lotties/hmm.json');
+        ({ title, subtitle } = Strings.onboarding.noBluetooth);
+    } else if (args.deviceHasBeenClaimed) {
+        imageSource = require('../../assets/lotties/gift.json');
+        ({ title, subtitle } = Strings.onboarding.shortPress.deviceClaimed);
     } else if (args.chosenDeviceID) {
         image = (
             <View style={styles.image}>
@@ -92,11 +95,11 @@ export default function getBluetoothPage(args) {
         );
     } else if (args.multipleDevicesBroadcasting) {
         // too many devices transmitting to know for sure which one belongs to user
-        imageSource = require('../assets/lotties/hmm.json');
+        imageSource = require('../../assets/lotties/hmm.json');
         ({ title, subtitle } = Strings.onboarding.shortPress.multipleDevices);
     } else if (args.highestPressCount.deviceID) {
         // one good device transmitting
-        imageSource = require('../assets/lotties/dino-dance.json');
+        imageSource = require('../../assets/lotties/dino-dance.json');
         ({ title } = Strings.onboarding.shortPress.singleDevice);
         subtitle = (
             <View>
@@ -121,7 +124,7 @@ export default function getBluetoothPage(args) {
         );
     } else {
         // no devices found yet
-        imageSource = require('../assets/lotties/ripple.json');
+        imageSource = require('../../assets/lotties/ripple.json');
         ({ title, subtitle } = Strings.onboarding.shortPress);
     }
 
@@ -145,5 +148,4 @@ export default function getBluetoothPage(args) {
         title,
         subtitle,
     };
-
 }
