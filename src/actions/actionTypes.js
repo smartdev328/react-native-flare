@@ -65,3 +65,7 @@ export const MANUFACTURING_BEACON_SUCCESS = 'flare.manufacturing.BEACON_SUCCESS'
 export const MANUFACTURING_GET_DEVICES_FAILURE = 'flare.mapnufacturing.GET_DEVICES_FAILURE';
 export const MANUFACTURING_GET_DEVICES_REQUEST = 'flare.mapnufacturing.GET_DEVICES_REQUEST';
 export const MANUFACTURING_GET_DEVICES_SUCCESS = 'flare.mapnufacturing.GET_DEVICES_SUCCESS';
+
+export const USER_SET_PIN_FAILURE = 'flare.app.USER_SET_PIN_FAILURE';
+export const USER_SET_PIN_REQUEST = 'flare.app.USER_SET_PIN_REQUEST';
+export const USER_SET_PIN_SUCCESS = 'flare.app.USER_SET_PIN_SUCCESS';

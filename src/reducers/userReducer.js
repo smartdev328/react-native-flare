@@ -262,6 +262,28 @@ export function user(state = initialState.user, action = {}) {
         });
     }
 
+    /**
+     * SET USER PIN
+     */
+    case types.USER_SET_PIN_REQUEST:
+        return state.merge({
+            updatingPIN: true,
+            updatedPIN: false,
+        });
+
+    case types.USER_SET_PIN_SUCCESS:
+        return state.merge({
+            updatingPIN: false,
+            updatedPIN: true,
+        });
+
+    case types.USER_SET_PIN_FAILURE:
+        return state.merge({
+            updatingPIN: false,
+            updatedPIN: false,
+            pinUpdateError: action.error,
+        });
+
     default:
         return state;
     }

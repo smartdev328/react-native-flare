@@ -227,3 +227,30 @@ export function setNotificationMessage(token, message, custom) {
         });
     };
 }
+
+export function setCancelPIN(token, pin) {
+    return function setPin(dispatch) {
+        dispatch({
+            type: types.USER_SET_PIN_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            '/users/pin', {
+                method: 'PUT',
+                data: {
+                    pin,
+                },
+            },
+        ).then(() => {
+            dispatch({
+                type: types.USER_SET_PIN_SUCCESS,
+            });
+        }).catch((error) => {
+            dispatch({
+                type: types.USER_SET_PIN_FAILURE,
+                error,
+            });
+        });
+    };
+}

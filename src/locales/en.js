@@ -165,9 +165,23 @@ const Strings = {
                     "your flare and tell your crew that you're okay.",
             },
         },
-        cancelFlare: {
-            title: "When you're ready",
-            subtitle: "Choose the PIN code that you'll enter when canceling Flares in the future.",
+        longPressCancel: {
+            initial: {
+                title: 'Cancel your Flare',
+                subtitle:
+                    "Once you're feeling comfortable, cancel your Flare so that your contacts know that " +
+                    "you're okay. To stop other people from canceling your Flare, it's protected by a secret " +
+                    'pin code that you choose. Go ahead and choose your PIN here:',
+                buttonLabel: 'Set PIN',
+            },
+            hasSetPin: {
+                title: 'Good to Go',
+                subtitle:
+                    'Great! You pressed the button to get a call. You held the button to start a test Flare. ' +
+                    "Finally, you canceled the test Flare. Next you'll choose the people who we'll reach out to " +
+                    'when you really need it.',
+            },
+            pinPlaceholder: 'Secret code',
         },
         contacts: {
             title: 'Contacts',

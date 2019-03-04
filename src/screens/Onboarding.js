@@ -13,11 +13,12 @@ import Onboarding from 'react-native-onboarding-swiper';
 
 import { BeaconTypes } from '../bits/BleConstants';
 import { claimDevice } from '../actions/deviceActions';
-import { getPermission } from '../actions/userActions';
+import { getPermission, setCancelPIN } from '../actions/userActions';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import getBluetoothPage from './onboarding/Bluetooth';
 import getLongPressPage from './onboarding/LongPress';
+import getLongPressCancelPage from './onboarding/LongPressCancel';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
@@ -58,11 +59,12 @@ class OnboardingMain extends React.Component {
         const receivedLongPress = state.receivedLongPress ||
             (props.latestBeacon && props.latestBeacon.type === BeaconTypes.Long.name);
 
-        if (multipleBroadcastChanged || highestPressCountChanged) {
+        if (multipleBroadcastChanged || highestPressCountChanged || props.updatedPIN !== state.hasSetPin) {
             return {
                 highestPressCount: newHighestPressCount,
                 multipleDevicesBroadcasting,
                 receivedLongPress,
+                hasSetPin: props.updatedPIN,
             };
         }
 
@@ -77,25 +79,24 @@ class OnboardingMain extends React.Component {
             multipleDevicesBroadcasting: false,
             chosenDeviceID: null,
             secondFactor: '',
+            cancelPIN: '',
+            hasSetPin: props.hasSetPin,
+            lastPinSet: null,
         };
     }
 
-    goToPushedView = () => {
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.onboarding.main',
-            },
-        });
+    setCancelPIN() {
+        this.props.dispatch(setCancelPIN(this.props.token, this.state.cancelPIN));
     }
 
-    requestLocationPermission() {
-        this.props.dispatch(getPermission('location', { type: 'always' }));
-    }
-
-    chooseThisDevice(deviceID) {
+    changeCancelPIN(val) {
         this.setState({
-            chosenDeviceID: deviceID,
+            cancelPIN: val,
         });
+    }
+
+    claimDevice() {
+        this.props.dispatch(claimDevice(this.props.token, this.state.chosenDeviceID, this.state.secondFactor));
     }
 
     changeTwoFactorText(val) {
@@ -104,8 +105,22 @@ class OnboardingMain extends React.Component {
         });
     }
 
-    claimDevice() {
-        this.props.dispatch(claimDevice(this.props.token, this.state.chosenDeviceID, this.state.secondFactor));
+    chooseThisDevice(deviceID) {
+        this.setState({
+            chosenDeviceID: deviceID,
+        });
+    }
+
+    requestLocationPermission() {
+        this.props.dispatch(getPermission('location', { type: 'always' }));
+    }
+
+    goToPushedView = () => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.onboarding.main',
+            },
+        });
     }
 
     render() {
@@ -136,6 +151,13 @@ class OnboardingMain extends React.Component {
         const longPressPage = getLongPressPage({
             bluetoothEnabled: this.props.bluetoothEnabled,
             receivedLongPress: this.state.receivedLongPress,
+        });
+
+        const longPressCancelPage = getLongPressCancelPage({
+            hasSetPin: this.state.hasSetPin,
+            pin: this.state.cancelPIN,
+            changeCancelPIN: e => this.changeCancelPIN(e),
+            setCancelPIN: () => this.setCancelPIN(),
         });
 
         return (
@@ -207,13 +229,7 @@ class OnboardingMain extends React.Component {
                         },
                         bluetoothPage,
                         longPressPage,
-                        {
-                            /* Cancel Flare */
-                            backgroundColor: Colors.white,
-                            image: <Image source={require('../assets/home-diamond.png')} />,
-                            title: Strings.onboarding.cancelFlare.title,
-                            subtitle: Strings.onboarding.cancelFlare.subtitle,
-                        },
+                        longPressCancelPage,
                         {
                             /* Contacts */
                             backgroundColor: Colors.white,
@@ -237,6 +253,9 @@ function mapStateToProps(state) {
         claimingDevice: state.user.claimingDevice,
         claimedDevice: state.user.claimedDevice,
         latestBeacon: state.beacons.latest,
+        lastPinSet: state.user.pinUpdateTime,
+        updatedPIN: state.user.updatedPIN,
+        updatingPIN: state.user.updatingPIN,
     };
 }
 
