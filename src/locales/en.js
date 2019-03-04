@@ -184,8 +184,15 @@ const Strings = {
             pinPlaceholder: 'Secret code',
         },
         contacts: {
-            title: 'Contacts',
-            subtitle: "Please give us permission to access your contacts. You'll choose which contacts we reach out to when you hold the button.",
+            initial: {
+                buttonLabel: 'Give Access',
+                title: 'Contacts',
+                subtitle: "Please give us permission to access your contacts. You'll choose which contacts we reach out to when you hold the button.",
+            },
+            hasPermission: {
+                title: 'Contacts (again)',
+                subtitle: 'Press the button below to choose the contacts you want to reach with Flare.',
+            },
         },
     },
     permissions: {

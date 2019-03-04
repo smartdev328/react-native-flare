@@ -12,6 +12,7 @@ import LottieView from 'lottie-react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
 import { BeaconTypes } from '../bits/BleConstants';
+import { changeAppRoot } from '../actions';
 import { claimDevice } from '../actions/deviceActions';
 import { getPermission, setCancelPIN } from '../actions/userActions';
 import Button from '../bits/Button';
@@ -19,6 +20,7 @@ import Colors from '../bits/Colors';
 import getBluetoothPage from './onboarding/Bluetooth';
 import getLongPressPage from './onboarding/LongPress';
 import getLongPressCancelPage from './onboarding/LongPressCancel';
+import getContactsPage from './onboarding/Contacts';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
@@ -111,8 +113,16 @@ class OnboardingMain extends React.Component {
         });
     }
 
+    chooseCrew() {
+        this.props.dispatch(changeAppRoot('secure'));
+    }
+
     requestLocationPermission() {
         this.props.dispatch(getPermission('location', { type: 'always' }));
+    }
+
+    requestContactsPermission() {
+        this.props.dispatch(getPermission('contacts'));
     }
 
     goToPushedView = () => {
@@ -158,6 +168,11 @@ class OnboardingMain extends React.Component {
             pin: this.state.cancelPIN,
             changeCancelPIN: e => this.changeCancelPIN(e),
             setCancelPIN: () => this.setCancelPIN(),
+        });
+
+        const contactsPage = getContactsPage({
+            hasContactsPermission: this.props.permissions.contacts,
+            chooseCrew: () => this.chooseCrew(),
         });
 
         return (
@@ -230,13 +245,7 @@ class OnboardingMain extends React.Component {
                         bluetoothPage,
                         longPressPage,
                         longPressCancelPage,
-                        {
-                            /* Contacts */
-                            backgroundColor: Colors.white,
-                            image: <Image source={require('../assets/home-diamond.png')} />,
-                            title: Strings.onboarding.contacts.title,
-                            subtitle: Strings.onboarding.contacts.subtitle,
-                        },
+                        contactsPage,
                     ]}
                 />
             </KeyboardAvoidingView>
