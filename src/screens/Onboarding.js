@@ -117,6 +117,20 @@ class OnboardingMain extends React.Component {
         this.props.dispatch(changeAppRoot('secure'));
     }
 
+    skipOnboarding() {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Confirm',
+                passProps: {
+                    cancelLabel: Strings.generic.cancel,
+                    confirmLabel: Strings.generic.confirm,
+                    onConfirm: () => this.props.dispatch(changeAppRoot('secure')),
+                    prompt: Strings.onboarding.skipConfirmPrompt,
+                },
+            },
+        });
+    }
+
     requestLocationPermission() {
         this.props.dispatch(getPermission('location', { type: 'always' }));
     }
@@ -181,7 +195,7 @@ class OnboardingMain extends React.Component {
                     givePage
                     showSkip
                     showBack
-                    onSkip={d => console.log(`TODO: Implement skip! ${JSON.stringify(d)}`)}
+                    onSkip={() => this.skipOnboarding()}
                     pages={[
                         {
                             /* Welcome */

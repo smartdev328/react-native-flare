@@ -34,6 +34,8 @@ const Strings = {
     generic: {
         idPrefix: '#',
         signOut: 'Sign Out',
+        confirm: 'Yeah',
+        cancel: 'Cancel',
     },
     home: {
         bluetoothDisabledWarning: {
@@ -113,6 +115,7 @@ const Strings = {
         },
     },
     onboarding: {
+        skipConfirmPrompt: "Are you sure you want to skip onboarding? The app basically won't work",
         welcome: {
             title: 'Welcome!',
             subtitle: "We're so excited that you're using Flare.",
