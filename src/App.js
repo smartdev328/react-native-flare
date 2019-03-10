@@ -161,14 +161,53 @@ export default class App extends Component {
                         center: {
                             stack: {
                                 id: 'JEWELRY_STACK',
-                                options: {
-                                    topBar: {
-                                        visible: false,
-                                    },
-                                },
                                 children: [{
                                     component: {
                                         name: 'com.flarejewelry.app.Jewelry',
+                                        passProps: {
+                                            bleManager: this.bleManager,
+                                        },
+                                    },
+                                }],
+                            },
+                        },
+                    },
+                },
+            });
+            break;
+        case 'secure-settings':
+            Navigation.setDefaultOptions({
+                topBar: {
+                    leftButtons: [{
+                        id: 'menuButton',
+                        icon: iconsMap.menu,
+                        color: Colors.theme.purple,
+                    }],
+                    title: {
+                        component: {
+                            name: 'com.flarejewelry.app.FlareNavBar',
+                            alignment: 'center',
+                        },
+                    },
+                },
+            });
+            Navigation.setRoot({
+                root: {
+                    sideMenu: {
+                        left: {
+                            component: {
+                                name: 'com.flarejewelry.app.LeftDrawer',
+                                passProps: {
+                                    bleManager: this.bleManager,
+                                },
+                            },
+                        },
+                        center: {
+                            stack: {
+                                id: 'SETTINGS_STACK',
+                                children: [{
+                                    component: {
+                                        name: 'com.flarejewelry.app.Settings',
                                         passProps: {
                                             bleManager: this.bleManager,
                                         },

@@ -42,20 +42,16 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class LeftDrawer extends React.Component {
-    static handleSettings() {
-        Navigation.push('MAIN_UI_STACK', {
-            component: {
-                name: 'com.flarejewelry.app.Settings',
-            },
-        });
-    }
-
     handleHome() {
         this.props.dispatch(changeAppRoot('secure'));
     }
 
     handleJewelry() {
         this.props.dispatch(changeAppRoot('secure-jewelry'));
+    }
+
+    handleSettings() {
+        this.props.dispatch(changeAppRoot('secure-settings'));
     }
 
     handleSignOut() {
@@ -93,7 +89,7 @@ class LeftDrawer extends React.Component {
                             {Strings.leftDrawer.jewelry}
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => LeftDrawer.handleSettings()}>
+                    <TouchableOpacity onPress={() => this.handleSettings()}>
                         <Text style={styles.menuItem}>
                             {Strings.leftDrawer.settings}
                         </Text>
