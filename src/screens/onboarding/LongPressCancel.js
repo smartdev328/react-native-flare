@@ -1,8 +1,5 @@
 import React from 'react';
 import {
-    Button,
-    Image,
-    KeyboardAvoidingView,
     StyleSheet,
     Text,
     TextInput,
@@ -11,10 +8,31 @@ import {
 import LottieView from 'lottie-react-native';
 
 import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../../constants';
+import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
+import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
+import Type from '../../bits/Type';
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    subtitleArea: {
+        paddingHorizontal: Spacing.medium,
+    },
+    subtitleText: {
+        marginBottom: Spacing.medium,
+    },
+    pinInputArea: {
+        margin: Spacing.medium,
+    },
+    pinInputField: {
+        fontSize: Type.size.large,
+        padding: Spacing.small,
+        textAlign: 'center',
+        borderWidth: 1,
+        borderColor: Colors.theme.pink,
+        marginBottom: Spacing.large,
+    },
+});
 
 export default function getLongPressCancelPage(args) {
     let title = null;
@@ -30,23 +48,29 @@ export default function getLongPressCancelPage(args) {
         ({ title } = Strings.onboarding.longPressCancel.initial);
         subtitle = (
             <View>
-                <Text>{Strings.onboarding.longPressCancel.initial.subtitle}</Text>
-                <TextInput
-                    autoCapitalize="characters"
-                    placeholder={Strings.onboarding.longPressCancel.pinPlaceholder}
-                    onChangeText={v => args.changeCancelPIN(v)}
-                    maxLength={LONG_PRESS_CANCEL_PIN_LENGTH}
-                    value={args.pin}
-                    style={styles.pinInput}
-                    secureTextEntry
-                />
-                <Button
-                    title={Strings.onboarding.longPressCancel.initial.buttonLabel}
-                    primary
-                    rounded
-                    onPress={() => args.setCancelPIN()}
-                    disabled={args.pin.length < LONG_PRESS_CANCEL_PIN_LENGTH}
-                />
+                <View style={styles.subtitleArea}>
+                    <Text style={styles.subtitleText}>
+                        {Strings.onboarding.longPressCancel.initial.subtitle}
+                    </Text>
+                </View>
+                <View style={styles.pinInputArea}>
+                    <TextInput
+                        autoCapitalize="characters"
+                        placeholder={Strings.onboarding.longPressCancel.pinPlaceholder}
+                        onChangeText={v => args.changeCancelPIN(v)}
+                        maxLength={LONG_PRESS_CANCEL_PIN_LENGTH}
+                        value={args.pin}
+                        style={styles.pinInputField}
+                        secureTextEntry
+                    />
+                    <Button
+                        title={Strings.onboarding.longPressCancel.initial.buttonLabel}
+                        onPress={() => args.setCancelPIN()}
+                        disabled={args.pin.length < LONG_PRESS_CANCEL_PIN_LENGTH}
+                        primary
+                        rounded
+                    />
+                </View>
             </View>
         );
     }

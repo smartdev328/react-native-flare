@@ -1,13 +1,24 @@
 import React from 'react';
 import {
-    Button,
+    StyleSheet,
     Text,
     View,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 
+import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
+import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
+
+const styles = StyleSheet.create({
+    subtitleArea: {
+        paddingHorizontal: Spacing.medium,
+    },
+    subtitleText: {
+        marginBottom: Spacing.medium,
+    },
+});
 
 export default function getContactsPage(args) {
     let title = null;
@@ -23,7 +34,11 @@ export default function getContactsPage(args) {
         ({ title } = Strings.onboarding.contacts.initial);
         subtitle = (
             <View>
-                <Text>{Strings.onboarding.contacts.initial.subtitle}</Text>
+                <View style={styles.subtitleArea}>
+                    <Text style={styles.subtitleText}>
+                        {Strings.onboarding.contacts.initial.subtitle}
+                    </Text>
+                </View>
                 <Button
                     title={Strings.onboarding.contacts.initial.buttonLabel}
                     primary
