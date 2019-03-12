@@ -31,9 +31,15 @@ class Jewelry extends React.Component {
         return {
             topBar: {
                 visible: true,
-                animate: false,
-                leftButtons: [],
             },
+        };
+    }
+
+    constructor(props) {
+        super(props);
+        Navigation.events().bindComponent(this);
+        this.state = {
+            showSideMenu: false,
         };
     }
 
@@ -70,6 +76,34 @@ class Jewelry extends React.Component {
                 },
             },
         });
+    }
+
+    toggleSideMenu() {
+        const { showSideMenu } = this.state;
+        const newSideMenuState = !showSideMenu;
+
+        Navigation.mergeOptions(this.props.componentId, {
+            sideMenu: {
+                left: {
+                    visible: newSideMenuState,
+                },
+            },
+        });
+
+        this.setState({
+            showSideMenu: newSideMenuState,
+        });
+    }
+
+    navigationButtonPressed({ buttonId }) {
+        switch (buttonId) {
+        case 'menuButton':
+            this.toggleSideMenu();
+            break;
+        default:
+            console.warn('Unhandled button press in home screen.');
+            break;
+        }
     }
 
     render() {

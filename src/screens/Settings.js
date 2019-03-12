@@ -84,18 +84,19 @@ class Settings extends React.Component {
         return {
             topBar: {
                 visible: true,
-                animate: false,
-                leftButtons: [],
             },
         };
     }
 
     constructor(props) {
         super(props);
+        Navigation.events().bindComponent(this);
+
         this.state = {
             promptType: props.promptType,
             promptMessage: props.promptMessage,
             dirty: false,
+            showSideMenu: false,
         };
     }
 
@@ -130,6 +131,34 @@ class Settings extends React.Component {
         // change the prompt and mark as dirty if user disabled custom prompt
         if (!enable) {
             this.changePrompt(Strings.settings.notifications.defaultMessage);
+        }
+    }
+
+    toggleSideMenu() {
+        const { showSideMenu } = this.state;
+        const newSideMenuState = !showSideMenu;
+
+        Navigation.mergeOptions(this.props.componentId, {
+            sideMenu: {
+                left: {
+                    visible: newSideMenuState,
+                },
+            },
+        });
+
+        this.setState({
+            showSideMenu: newSideMenuState,
+        });
+    }
+
+    navigationButtonPressed({ buttonId }) {
+        switch (buttonId) {
+        case 'menuButton':
+            this.toggleSideMenu();
+            break;
+        default:
+            console.warn('Unhandled button press in home screen.');
+            break;
         }
     }
 

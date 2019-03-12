@@ -7,11 +7,9 @@ import {
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
 
-import { BeaconTypes } from '../bits/BleConstants';
-import { manufacturingCheckin } from '../actions/beaconActions';
+import { iconsMap } from '../bits/AppIcons';
 import { signOut } from '../actions/authActions';
 import getDeviceCounts from '../actions/manufacturingActions';
 import Button from '../bits/Button';
@@ -65,8 +63,44 @@ const styles = StyleSheet.create({
 });
 
 class ManufacturingMain extends React.Component {
+    constructor(props) {
+        super(props);
+        Navigation.events().bindComponent(this);
+        this.state = {
+            showSideMenu: false,
+        };
+    }
+
     componentDidMount() {
         this.props.dispatch(getDeviceCounts(this.props.token));
+    }
+
+    toggleSideMenu() {
+        const { showSideMenu } = this.state;
+        const newSideMenuState = !showSideMenu;
+
+        Navigation.mergeOptions(this.props.componentId, {
+            sideMenu: {
+                left: {
+                    visible: newSideMenuState,
+                },
+            },
+        });
+
+        this.setState({
+            showSideMenu: newSideMenuState,
+        });
+    }
+
+    navigationButtonPressed({ buttonId }) {
+        switch (buttonId) {
+        case 'menuButton':
+            this.toggleSideMenu();
+            break;
+        default:
+            console.warn('Unhandled button press in home screen.');
+            break;
+        }
     }
 
     handleSignOut() {

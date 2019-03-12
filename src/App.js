@@ -63,7 +63,13 @@ export default class App extends Component {
             console.debug(`NAVIGATION -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
 
-            const secureRoots = ['secure', 'secure-jewelry', 'secure-manufacturing', 'secure-onboarding'];
+            const secureRoots = [
+                'secure-jewelry',
+                'secure-manufacturing',
+                'secure-onboarding',
+                'secure-settings',
+                'secure',
+            ];
 
             if (secureRoots.indexOf(root) !== -1 && BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
                 this.bleManager.startListening({
@@ -79,6 +85,8 @@ export default class App extends Component {
 
     // eslint-disable-next-line class-methods-use-this
     startApp(root) {
+        // eslint-disable-next-line no-console
+        console.info(`Starting root ${root}.`);
         switch (root) {
         case 'secure':
             // eslint-disable-next-line no-console
@@ -242,7 +250,6 @@ export default class App extends Component {
             });
             break;
         case 'secure-onboarding':
-            console.debug('Starting onboarding root.');
             Navigation.setRoot({
                 root: {
                     stack: {
@@ -266,7 +273,7 @@ export default class App extends Component {
             break;
         default:
             // eslint-disable-next-line no-console
-            console.debug('Starting insecure root.');
+            console.debug('Root is not secure.');
             Navigation.setRoot({
                 root: {
                     stack: {
