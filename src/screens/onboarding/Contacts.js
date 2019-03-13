@@ -26,9 +26,45 @@ export default function getContactsPage(args) {
     let image = null;
     let imageSource = null;
 
-    if (args.hasContactsPermission) {
+    if (args.hasContactsPermission && args.crews && args.crews.length) {
+        /**
+         * User has given contacts access and has chosen a crew
+         */
         imageSource = require('../../assets/lotties/checkmark.json');
-        ({ title, subtitle } = Strings.onboarding.contacts.hasPermission);
+        ({ title, subtitle } = Strings.onboarding.contacts.hasCrew);
+        subtitle = (
+            <View>
+                <View style={styles.subtitleArea}>
+                    <Text style={styles.subtitleText}>
+                        {Strings.onboarding.contacts.hasCrew.subtitle}
+                    </Text>
+                </View>
+                <Button
+                    title={Strings.onboarding.contacts.hasCrew.buttonLabel}
+                    primary
+                    rounded
+                    onPress={() => args.endOnboarding()}
+                />
+            </View>
+        );
+    } else if (args.hasContactsPermission) {
+        imageSource = require('../../assets/lotties/checkmark.json');
+        ({ title } = Strings.onboarding.contacts.hasPermission);
+        subtitle = (
+            <View>
+                <View style={styles.subtitleArea}>
+                    <Text style={styles.subtitleText}>
+                        {Strings.onboarding.contacts.hasPermission.subtitle}
+                    </Text>
+                </View>
+                <Button
+                    title={Strings.onboarding.contacts.hasPermission.chooseCrewLabel}
+                    primary
+                    rounded
+                    onPress={() => args.chooseCrew()}
+                />
+            </View>
+        );
     } else {
         imageSource = require('../../assets/lotties/unlock.json');
         ({ title } = Strings.onboarding.contacts.initial);
@@ -43,7 +79,7 @@ export default function getContactsPage(args) {
                     title={Strings.onboarding.contacts.initial.buttonLabel}
                     primary
                     rounded
-                    onPress={() => args.chooseCrew()}
+                    onPress={() => args.requestContactsPermission()}
                 />
             </View>
         );

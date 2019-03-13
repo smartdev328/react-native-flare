@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
+import { iconsMap } from '../bits/AppIcons';
 import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
 import CrewList from '../bits/CrewList';
@@ -39,10 +40,42 @@ const styles = StyleSheet.create({
         paddingBottom: Spacing.large,
         fontSize: Type.size.medium,
     },
+    tutorialOverlay: {
+        padding: Spacing.medium,
+        backgroundColor: Colors.backgrounds.pink,
+        marginBottom: Spacing.medium,
+    },
+    tutorialTitle: {
+        fontWeight: 'bold',
+        fontSize: Type.size.medium,
+        marginBottom: Spacing.small,
+    },
+    tutorialText: {
+    },
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Contacts extends React.Component {
+    static options() {
+        return {
+            topBar: {
+                visible: true,
+                animate: false,
+                leftButtons: [{
+                    id: 'backButton',
+                    icon: iconsMap.back,
+                    color: Colors.theme.purple,
+                }],
+                title: {
+                    component: {
+                        name: 'com.flarejewelry.app.FlareNavBar',
+                        alignment: 'center',
+                    },
+                },
+            },
+        };
+    }
+
     constructor(props) {
         super(props);
         this.crewListItemHeight = 140;
@@ -52,21 +85,21 @@ class Contacts extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(fetchContacts());
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.crew !== this.props.crew) {
-            this.onPropsUpdate();
+    static getDerivedStateFromProps(props, state) {
+        const { crew } = props;
+        const crewLength = crew && crew.length;
+        if (crewLength !== state.crew.length) {
+            return {
+                crew: props.crew,
+                crewListHeight: props.crew.members.length * this.crewListItemHeight,
+            };
         }
-    }
 
-    onPropsUpdate() {
-        this.setState({
-            crew: this.props.crew,
-            crewListHeight: this.props.crew.members.length * this.crewListItemHeight,
-        });
+        return null;
     }
 
     handleContactPress(contact) {
@@ -99,10 +132,19 @@ class Contacts extends React.Component {
         } = this.props;
         return (
             <View style={styles.container}>
+                {!this.props.hasViewedTutorial &&
+                    <View style={styles.tutorialOverlay}>
+                        <Text style={styles.tutorialTitle}>{Strings.onboarding.contacts.overlay.title}</Text>
+                        <Text style={styles.tutorialText}>{Strings.onboarding.contacts.overlay.instructions}</Text>
+                    </View>
+                }
+                {this.props.hasViewedTutorial &&
                 <View>
                     <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
                 </View>
-                {this.props.crew && this.props.crew.members && this.props.crew.members.length === 0 &&
+                }
+                {this.props.hasViewedTutorial && this.props.crew &&
+                    this.props.crew.members && this.props.crew.members.length === 0 &&
                     <View>
                         <Text style={styles.instructions}>
                             {Strings.contacts.chooseInstruction}
@@ -142,6 +184,7 @@ function mapStateToProps(state) {
         contacts: state.user.contacts,
         contactsCount: state.user.contactsCount,
         contactsCrewLookup: state.user.contactsCrewLookup,
+        hasViewedTutorial: state.user.hasViewedTutorial,
         loading: state.user.crewUpdateState === 'requested',
     };
 }

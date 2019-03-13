@@ -4,7 +4,7 @@ const Strings = {
     },
     beacons: {
         lastReceived: 'Latest beacon',
-        notYetReceived: 'No beacons detected',
+        notYetReceived: 'Waiting for beacons',
     },
     contacts: {
         add: {
@@ -47,7 +47,7 @@ const Strings = {
         contactsButtonLabelAdd: 'Choose Your Crew',
         contactsButtonLabelEdit: 'Edit Your Crew',
         lastBeacon: {
-            absent: 'No beacons received',
+            absent: 'Waiting for beacons',
             present: 'Last beacon received',
         },
         title: 'Welcome',
@@ -185,15 +185,25 @@ const Strings = {
             pinPlaceholder: 'Secret code',
         },
         contacts: {
-            initial: {
-                buttonLabel: 'Give Access',
-                title: 'Contacts',
-                subtitle: "Please give us permission to access your contacts. You'll choose which contacts we reach out to when you hold the button.",
+            hasCrew: {
+                buttonLabel: "Let's Go",
+                subtitle: "You're ready to use Flare.",
+                title: 'All set!',
             },
             hasPermission: {
-                title: 'Contacts (again)',
+                chooseCrewLabel: 'Choose Crew',
                 subtitle: 'Press the button below to choose the contacts you want to reach with Flare.',
+                title: 'Choose Your Crew',
             },
+            initial: {
+                buttonLabel: 'Give Access',
+                subtitle: "Please give us permission to access your contacts. You'll choose which contacts we reach out to when you hold the button.",
+                title: 'Contacts',
+            },
+            overlay: {
+                instructions: 'Choose up to 5 contacts by pressing on their names, then press the back button.',
+                title: 'Last step: choose your crew!',
+            }
         },
     },
     permissions: {

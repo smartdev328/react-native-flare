@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    Image,
     KeyboardAvoidingView,
     StyleSheet,
     Text,
@@ -46,6 +45,22 @@ const styles = StyleSheet.create({
 });
 
 class OnboardingMain extends React.Component {
+    static options() {
+        return {
+            topBar: {
+                visible: true,
+                animate: false,
+                leftButtons: [],
+                title: {
+                    component: {
+                        name: 'com.flarejewelry.app.FlareNavBar',
+                        alignment: 'center',
+                    },
+                },
+            },
+        };
+    }
+
     static getDerivedStateFromProps(props, state) {
         const { shortPressCounts } = props;
         const { highestPressCount, multipleDevicesBroadcasting } = state;
@@ -114,6 +129,14 @@ class OnboardingMain extends React.Component {
     }
 
     chooseCrew() {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Contacts',
+            },
+        });
+    }
+
+    endOnboarding() {
         this.props.dispatch(changeAppRoot('secure'));
     }
 
@@ -185,16 +208,24 @@ class OnboardingMain extends React.Component {
         });
 
         const contactsPage = getContactsPage({
+            crews: this.props.crews,
             hasContactsPermission: this.props.permissions.contacts,
+            requestContactsPermission: () => this.requestContactsPermission(),
             chooseCrew: () => this.chooseCrew(),
+            endOnboarding: () => this.endOnboarding(),
         });
 
         return (
-            <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset={600}>
+            <KeyboardAvoidingView style={styles.container}>
                 <Onboarding
+                    containerStyles={{
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                    }}
                     givePage
                     showSkip
                     showBack
+                    showDone={false}
                     onSkip={() => this.skipOnboarding()}
                     pages={[
                         {
@@ -279,6 +310,7 @@ function mapStateToProps(state) {
         lastPinSet: state.user.pinUpdateTime,
         updatedPIN: state.user.updatedPIN,
         updatingPIN: state.user.updatingPIN,
+        crews: state.user.crews,
     };
 }
 
