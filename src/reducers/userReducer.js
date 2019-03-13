@@ -284,6 +284,22 @@ export function user(state = initialState.user, action = {}) {
             pinUpdateError: action.error,
         });
 
+    case types.USER_SET_ONBOARDING_COMPLETE_REQUEST:
+        return state.merge({
+            settingOnboardingComplete: true,
+        });
+
+    case types.USER_SET_ONBOARDING_COMPLETE_SUCCESS:
+        return state.merge({
+            settingOnboardingComplete: false,
+            hasViewedTutorial: true,
+        });
+
+    case types.USER_SET_ONBOARDING_COMPLETE_FAILURE:
+        return state.merge({
+            settingOnboardingComplete: false,
+        });
+
     default:
         return state;
     }

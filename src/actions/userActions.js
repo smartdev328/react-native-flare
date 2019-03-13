@@ -254,3 +254,27 @@ export function setCancelPIN(token, pin) {
         });
     };
 }
+
+export function setOnboardingComplete(token) {
+    return function setPin(dispatch) {
+        dispatch({
+            type: types.USER_SET_ONBOARDING_COMPLETE_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            '/users/onboarding/complete', {
+                method: 'PUT',
+            },
+        ).then(() => {
+            dispatch({
+                type: types.USER_SET_ONBOARDING_COMPLETE_SUCCESS,
+            });
+        }).catch((error) => {
+            dispatch({
+                type: types.USER_SET_ONBOARDING_COMPLETE_FAILURE,
+                error,
+            });
+        });
+    };
+}

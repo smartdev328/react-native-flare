@@ -13,7 +13,7 @@ import Onboarding from 'react-native-onboarding-swiper';
 import { BeaconTypes } from '../bits/BleConstants';
 import { changeAppRoot } from '../actions';
 import { claimDevice } from '../actions/deviceActions';
-import { getPermission, setCancelPIN } from '../actions/userActions';
+import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import getBluetoothPage from './onboarding/Bluetooth';
@@ -137,6 +137,7 @@ class OnboardingMain extends React.Component {
     }
 
     endOnboarding() {
+        this.props.dispatch(setOnboardingComplete(this.props.token));
         this.props.dispatch(changeAppRoot('secure'));
     }
 
@@ -147,7 +148,7 @@ class OnboardingMain extends React.Component {
                 passProps: {
                     cancelLabel: Strings.generic.cancel,
                     confirmLabel: Strings.generic.confirm,
-                    onConfirm: () => this.props.dispatch(changeAppRoot('secure')),
+                    onConfirm: () => this.endOnboarding(),
                     prompt: Strings.onboarding.skipConfirmPrompt,
                 },
             },
