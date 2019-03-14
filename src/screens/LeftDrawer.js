@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
         marginVertical: Spacing.large,
         fontSize: Type.size.small,
         paddingHorizontal: Spacing.small,
+        width: '75%',
+        alignItems: 'center',
+        textAlign: 'center',
     },
     topImage: {
         width: 140,
