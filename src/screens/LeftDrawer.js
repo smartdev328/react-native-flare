@@ -55,12 +55,6 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class LeftDrawer extends React.Component {
-    handleAmbassador() {
-        Linking
-            .openURL(AMBASSADOR_SIGNUP_URL)
-            .catch((err) => console.error('An error occurred', err));
-    }
-
     handleHome() {
         this.props.dispatch(changeAppRoot('secure'));
     }
@@ -98,7 +92,7 @@ class LeftDrawer extends React.Component {
                     style={styles.topImage}
                 />
                 <View>
-                    <TouchableOpacity onPress={() => this.handleAmbassador()}>
+                    <TouchableOpacity onPress={() => Linking.openURL(AMBASSADOR_SIGNUP_URL)}>
                         <Text style={[styles.menuItem, styles.specialMenuItem]}>
                             {Strings.leftDrawer.ambassador}
                         </Text>
