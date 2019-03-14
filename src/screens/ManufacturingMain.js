@@ -9,7 +9,6 @@ import {
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
-import { iconsMap } from '../bits/AppIcons';
 import { signOut } from '../actions/authActions';
 import getDeviceCounts from '../actions/manufacturingActions';
 import Button from '../bits/Button';

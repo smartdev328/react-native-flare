@@ -87,7 +87,10 @@ const Strings = {
             cancelLabel: 'No, keep it',
             confirmLabel: 'Yes, remove it',
             promptBegin: 'After you remove the jewelry with label ',
-            promptEnd: ", pressing its button won't do anything. " + ' You will not get calls and your crew will not receive alerts.\n\n' + 'Are you sure you want to remove it?',
+            promptEnd:
+                ", pressing its button won't do anything. " +
+                ' You will not get calls and your crew will not receive alerts.\n\n' +
+                'Are you sure you want to remove it?',
         },
     },
     leftDrawer: {
@@ -198,26 +201,34 @@ const Strings = {
             },
             initial: {
                 buttonLabel: 'Give Access',
-                subtitle: "Please give us permission to access your contacts. You'll choose which contacts we reach out to when you hold the button.",
+                subtitle:
+                    "Please give us permission to access your contacts. You'll choose which contacts we reach " +
+                    'out to when you hold the button.',
                 title: 'Contacts',
             },
             overlay: {
                 instructions: 'Choose up to 5 contacts by pressing on their names, then press the back button.',
                 title: 'Last step: choose your crew!',
-            }
+            },
         },
     },
     permissions: {
         coarseLocation: {
-            message: 'Please give Flare permission to use your location. We only share your ' + 'location with your selected contacts when you need backup.',
+            message:
+                'Please give Flare permission to use your location. We only share your ' +
+                'location with your selected contacts when you need backup.',
             title: 'Flare wants your general location',
         },
         contacts: {
-            message: 'Please give Flare permission to read your contacts. We display your ' + 'contacts so that you can choose your crew.',
+            message:
+                'Please give Flare permission to read your contacts. We display your ' +
+                'contacts so that you can choose your crew.',
             title: 'Flare wants to read your contacts',
         },
         fineLocation: {
-            message: 'Please give Flare permission to use your location. We only share ' + 'your location with your selected contacts when you need backup.',
+            message:
+                'Please give Flare permission to use your location. We only share ' +
+                'your location with your selected contacts when you need backup.',
             title: 'Flare wants your precise location',
         },
     },
@@ -251,7 +262,10 @@ const Strings = {
             customPromptPlaceholder: 'Your custom popup text',
             defaultMessage: 'Reminder: 8am appt tomorrow',
             defaultOption: 'Default',
-            promptSelectionBody: "When you press and hold the button on your bracelet to send out a flare, we'll send you a push " + "notification. It's your secret message! That's how you'll know that your flare was sent out " + 'successfully. Customize the message below.',
+            promptSelectionBody:
+                "When you press and hold the button on your bracelet to send out a flare, we'll send you a push " +
+                "notification. It's your secret message! That's how you'll know that your flare was sent out " +
+                'successfully. Customize the message below.',
             promptSelectionTitle: 'Custom popup message',
             saveButtonLabel: 'Save popup',
             title: 'Notifications',
