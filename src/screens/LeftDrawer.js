@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Linking,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -9,6 +10,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { changeAppRoot } from '../actions';
+import { AMBASSADOR_SIGNUP_URL } from '../constants';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
 import Spacing from '../bits/Spacing';
@@ -32,6 +34,14 @@ const styles = StyleSheet.create({
         paddingBottom: Spacing.medium,
         fontSize: Type.size.medium,
     },
+    specialMenuItem: {
+        borderWidth: 1,
+        borderColor: Colors.grey,
+        borderRadius: 16,
+        marginVertical: Spacing.large,
+        fontSize: Type.size.small,
+        paddingHorizontal: Spacing.small,
+    },
     topImage: {
         width: 140,
         height: 140,
@@ -42,6 +52,12 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class LeftDrawer extends React.Component {
+    handleAmbassador() {
+        Linking
+            .openURL(AMBASSADOR_SIGNUP_URL)
+            .catch((err) => console.error('An error occurred', err));
+    }
+
     handleHome() {
         this.props.dispatch(changeAppRoot('secure'));
     }
@@ -79,6 +95,11 @@ class LeftDrawer extends React.Component {
                     style={styles.topImage}
                 />
                 <View>
+                    <TouchableOpacity onPress={() => this.handleAmbassador()}>
+                        <Text style={[styles.menuItem, styles.specialMenuItem]}>
+                            {Strings.leftDrawer.ambassador}
+                        </Text>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleHome()}>
                         <Text style={styles.menuItem}>
                             {Strings.leftDrawer.home}

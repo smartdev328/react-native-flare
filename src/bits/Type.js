@@ -1,6 +1,6 @@
 const Type = {
     size: {
-        small: 4,
+        small: 14,
         medium: 18,
         large: 24,
     },

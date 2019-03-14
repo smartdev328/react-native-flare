@@ -91,6 +91,7 @@ const Strings = {
         },
     },
     leftDrawer: {
+        ambassador: 'Become an ambassador',
         home: 'Home',
         jewelry: 'Jewelry',
         settings: 'Settings',
@@ -228,6 +229,22 @@ const Strings = {
     settings: {
         config: {
             title: 'Configuration',
+        },
+        sections: {
+            account: {
+                title: 'Account',
+                links: {
+                    privacy: 'Privacy',
+                    notifications: 'Custom popup message',
+                    call: 'Phone call script',
+                },
+            },
+            diagnostics: {
+                title: 'Diagnostics',
+                links: {
+                    config: 'About this app',
+                },
+            },
         },
         notifications: {
             customOption: 'Custom',
