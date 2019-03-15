@@ -24,7 +24,7 @@ import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 
 import { checkPermissions, getCrewEventTimeline } from '../actions/userActions';
-import { flare, processQueuedBeacons } from '../actions/beaconActions';
+import { flare, processQueuedBeacons, call } from '../actions/beaconActions';
 import Location from '../helpers/location';
 import CrewEventTimeline from '../bits/CrewEventTimeline';
 import { BeaconTypes } from '../bits/BleConstants';
@@ -395,6 +395,28 @@ class Home extends React.Component {
         ));
     }
 
+    sendTestCall() {
+        if (!__DEV__) {
+            return;
+        }
+        const testBeacon = {
+            uuid: 'flare-dev-test',
+            nonce: null,
+            type: BeaconTypes.Short,
+            deviceID: this.props.devices[0].id,
+            rssi: 0,
+            proximity: 'far',
+            accuracy: 0,
+            timestamp: Date.now(),
+        };
+        this.props.dispatch(call(
+            this.props.token,
+            testBeacon,
+            null,
+            /* forCurrentUser= */ true,
+        ));
+    }
+
     render() {
         return (
             <View style={[styles.container, this.props.hasActiveFlare && styles.containerWithActiveFlare]}>
@@ -502,6 +524,14 @@ class Home extends React.Component {
                             primary
                             onPress={() => this.sendTestFlare()}
                             title={Strings.dev.sendTestFlare}
+                        />
+                    }
+                    {__DEV__ && !this.props.hasActiveFlare &&
+                        <Button
+                            rounded
+                            primary
+                            onPress={() => this.sendTestCall()}
+                            title={Strings.dev.sendTestCall}
                         />
                     }
                 </View>

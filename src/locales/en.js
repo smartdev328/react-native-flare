@@ -25,7 +25,8 @@ const Strings = {
         title: 'You held down the button so we reached out to your crew.',
     },
     dev: {
-        sendTestFlare: 'Send test flare',
+        sendTestFlare: 'Flare',
+        sendTestCall: 'Call',
     },
     deviceSelector: {
         enterDeviceCodePrompt: 'Enter the code printed on your jewelry',
