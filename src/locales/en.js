@@ -238,6 +238,15 @@ const Strings = {
         title: 'Cancel Flare',
     },
     settings: {
+        call: {
+            details: 'Choose what you hear when you press the jewelry button and we call you.',
+            title: 'Phone call script',
+            saveButtonLabel: 'Use script',
+            scripts: {
+                roomMate: 'Roommate needs help',
+                littleSisterKitchen: 'Younger sister in kitchen',
+            },
+        },
         config: {
             title: 'Support info',
         },

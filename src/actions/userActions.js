@@ -306,3 +306,31 @@ export function setAnalyticsEnabled(token, enabled) {
         });
     };
 }
+
+export function setCallScript(token, script) {
+    return function setEnabled(dispatch) {
+        dispatch({
+            type: types.USER_SET_CALL_SCRIPT_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            '/sos/call/script', {
+                method: 'POST',
+                data: {
+                    script,
+                },
+            },
+        ).then((response) => {
+            dispatch({
+                type: types.USER_SET_CALL_SCRIPT_SUCCESS,
+                script: response.data.script,
+            });
+        }).catch((error) => {
+            dispatch({
+                type: types.USER_SET_CALL_SCRIPT_FAILURE,
+                error,
+            });
+        });
+    };
+}

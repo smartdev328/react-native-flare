@@ -316,6 +316,22 @@ export function user(state = initialState.user, action = {}) {
             savingSetting: false,
         });
 
+    case types.USER_SET_CALL_SCRIPT_REQUEST:
+        return state.merge({
+            savingSetting: true,
+        });
+
+    case types.USER_SET_CALL_SCRIPT_SUCCESS:
+        return state.merge({
+            savingSetting: false,
+            callScript: action.script,
+        });
+
+    case types.USER_SET_CALL_SCRIPT_FAILURE:
+        return state.merge({
+            savingSetting: false,
+        });
+
     default:
         return state;
     }

@@ -144,7 +144,6 @@ class SettingsNotifications extends React.PureComponent {
                     <Button
                         rounded
                         primary
-                        left
                         onPress={() => this.saveCustomPrompt()}
                         title={Strings.settings.notifications.saveButtonLabel}
                     />

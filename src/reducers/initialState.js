@@ -1,5 +1,6 @@
 import Immutable from 'seamless-immutable';
 import Strings from '../locales/en';
+import CallScripts from '../constants/CallScripts';
 
 // eslint-disable-next-line
 export const initialState = Immutable({
@@ -7,6 +8,7 @@ export const initialState = Immutable({
         root: 'insecure', // 'insecure' / 'secure',
     },
     user: {
+        callSript: CallScripts.Default,
         contacts: [],
         contactsCrewLookup: {},
         crewEvents: [],
