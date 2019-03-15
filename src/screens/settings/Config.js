@@ -1,11 +1,9 @@
 import React from 'react';
 import {
-    ActivityIndicator,
     StyleSheet,
     Text,
     View,
 } from 'react-native';
-import { connect } from 'react-redux';
 
 import { iconsMap } from '../../bits/AppIcons';
 import { summary as configSummary } from '../../constants';
@@ -28,12 +26,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: Spacing.small,
         fontSize: Type.size.medium,
     },
-    details: {
-        paddingHorizontal: Spacing.small,
-    },
 });
 
-class SettingsConfig extends React.PureComponent {
+export default class SettingsConfig extends React.PureComponent {
     static options() {
         return {
             topBar: {
@@ -54,10 +49,6 @@ class SettingsConfig extends React.PureComponent {
         };
     }
 
-    enableAnalytics(enabled) {
-        this.props.dispatch(setAnalyticsEnabled(this.props.token, enabled));
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -65,21 +56,9 @@ class SettingsConfig extends React.PureComponent {
                     <Text style={styles.title}>
                         {Strings.settings.titlePrefix}{Strings.settings.config.title}
                     </Text>
-                    {this.props.savingSetting &&
-                        <ActivityIndicator />
-                    }
                 </View>
                 <EnvironmentListing config={configSummary} />
             </View>
         );
     }
 }
-
-function mapStateToProps(state) {
-    return {
-        token: state.user.token,
-        analyticsEnabled: state.user.analyticsEnabled,
-    };
-}
-
-export default connect(mapStateToProps)(SettingsConfig);
