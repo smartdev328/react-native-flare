@@ -246,14 +246,14 @@ const Strings = {
                 title: 'Account',
                 links: {
                     privacy: 'Privacy',
-                    notifications: 'Custom popup message',
+                    notifications: 'Notifications',
                     call: 'Phone call script',
                 },
             },
             diagnostics: {
                 title: 'Diagnostics',
                 links: {
-                    config: 'About this app',
+                    config: 'Support info',
                 },
             },
         },
@@ -263,9 +263,8 @@ const Strings = {
             defaultMessage: 'Reminder: 8am appt tomorrow',
             defaultOption: 'Default',
             promptSelectionBody:
-                "When you press and hold the button on your bracelet to send out a flare, we'll send you a push " +
-                "notification. It's your secret message! That's how you'll know that your flare was sent out " +
-                'successfully. Customize the message below.',
+                "You'll see this notification when you press and hold the button on your jewelry. " +
+                'When it pops up you know that we reached out to your crew.',
             promptSelectionTitle: 'Custom popup message',
             saveButtonLabel: 'Save popup',
             title: 'Notifications',
