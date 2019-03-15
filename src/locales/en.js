@@ -239,7 +239,7 @@ const Strings = {
     },
     settings: {
         config: {
-            title: 'Configuration',
+            title: 'Support info',
         },
         sections: {
             account: {
