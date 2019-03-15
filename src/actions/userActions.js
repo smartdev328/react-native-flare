@@ -278,3 +278,31 @@ export function setOnboardingComplete(token) {
         });
     };
 }
+
+export function setAnalyticsEnabled(token, enabled) {
+    return function setEnabled(dispatch) {
+        dispatch({
+            type: types.USER_SET_ANALYTICS_ENABLED_REQUEST,
+        });
+        ProtectedAPICall(
+            token,
+            API_URL,
+            '/ua/privacy', {
+                method: 'PUT',
+                data: {
+                    enabled,
+                },
+            },
+        ).then((response) => {
+            dispatch({
+                type: types.USER_SET_ANALYTICS_ENABLED_SUCCESS,
+                analyticsEnabled: response.data.privacy.analytics_enabled,
+            });
+        }).catch((error) => {
+            dispatch({
+                type: types.USER_SET_ANALYTICS_ENABLED_FAILURE,
+                error,
+            });
+        });
+    };
+}

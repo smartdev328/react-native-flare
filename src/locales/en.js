@@ -270,7 +270,18 @@ const Strings = {
             saveButtonLabel: 'Save popup',
             title: 'Notifications',
         },
+        privacy: {
+            title: 'Privacy',
+            analytics: {
+                prompt: 'Send analytics data to Flare',
+                details:
+                    'Cupcake ipsum dolor sit amet. Cookie powder caramels powder apple pie. Chocolate macaroon ' +
+                    'sesame snaps tiramisu jujubes brownie tootsie roll. Tootsie roll wafer biscuit lollipop topping ' +
+                    'danish jelly chupa chups candy.',
+            }
+        },
         title: 'Settings',
+        titlePrefix: 'Settings: ',
     },
     signin: {
         forgotPassword: 'Forgot Password',

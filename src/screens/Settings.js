@@ -114,7 +114,7 @@ export default class Settings extends React.Component {
     showCallScreen() {
         Navigation.push(this.props.componentId, {
             component: {
-                name: 'com.flarejewelry.app.settings.call',
+                name: 'com.flarejewelry.app.settings.Call',
             },
         });
     }
@@ -122,7 +122,7 @@ export default class Settings extends React.Component {
     showConfigScreen() {
         Navigation.push(this.props.componentId, {
             component: {
-                name: 'com.flarejewelry.app.settings.config',
+                name: 'com.flarejewelry.app.settings.Config',
             },
         });
     }
@@ -130,7 +130,7 @@ export default class Settings extends React.Component {
     showNotificationsScreen() {
         Navigation.push(this.props.componentId, {
             component: {
-                name: 'com.flarejewelry.app.settings.notifications',
+                name: 'com.flarejewelry.app.settings.Notifications',
             },
         });
     }
@@ -138,7 +138,7 @@ export default class Settings extends React.Component {
     showPrivacyScreen() {
         Navigation.push(this.props.componentId, {
             component: {
-                name: 'com.flarejewelry.app.settings.privacy',
+                name: 'com.flarejewelry.app.settings.Privacy',
             },
         });
     }

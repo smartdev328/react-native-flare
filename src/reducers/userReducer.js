@@ -300,6 +300,22 @@ export function user(state = initialState.user, action = {}) {
             settingOnboardingComplete: false,
         });
 
+    case types.USER_SET_ANALYTICS_ENABLED_REQUEST:
+        return state.merge({
+            savingSetting: true,
+        });
+
+    case types.USER_SET_ANALYTICS_ENABLED_SUCCESS:
+        return state.merge({
+            savingSetting: false,
+            analyticsEnabled: action.analyticsEnabled,
+        });
+
+    case types.USER_SET_ANALYTICS_ENABLED_FAILURE:
+        return state.merge({
+            savingSetting: false,
+        });
+
     default:
         return state;
     }
