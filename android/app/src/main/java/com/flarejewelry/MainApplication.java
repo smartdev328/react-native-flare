@@ -2,12 +2,11 @@ package com.flarejewelry;
 
 import android.app.Application;
 
-// import com.facebook.react.ReactApplication;
 import com.airbnb.android.react.lottie.LottiePackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.reactlibrary.RNBluetoothInfoPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.wix.reactnativenotifications.RNNotificationsPackage;
 import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.react.ReactNativeHost;
@@ -20,10 +19,15 @@ import com.reactnativenavigation.NavigationApplication;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
+import com.flarejewelry.NotificationsLifecycleFacade;
+import com.flarejewelry.CustomPushNotification;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends NavigationApplication {
+public class MainApplication extends NavigationApplication implements INotificationsApplication {
+
+    private NotificationsLifecycleFacade notificationsLifecycleFacade;
 
     @Override
     public boolean isDebug() {
@@ -35,12 +39,12 @@ public class MainApplication extends NavigationApplication {
         // Add additional packages you require here
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
-            // eg. new VectorIconsPackage()
             new BackgroundTimerPackage(),
             new ReactNativeConfigPackage(),
             new ReactNativeContacts(),
             new RNI18nPackage(),
             new VectorIconsPackage()
+            new RNNotificationsPackage(MainApplication.this)
         );
     }
 
@@ -58,5 +62,19 @@ public class MainApplication extends NavigationApplication {
     public void onCreate() {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
+
+        notificationsLifecycleFacade = new NotificationsLifecycleFacade();
+        setActivityCallbacks(notificationsLifecycleFacade);
+    }
+
+    @Override
+    public IPushNotification getPushNotification(Context context, Bundle bundle, AppLifecycleFacade defaultFacade, AppLaunchHelper defaultAppLaunchHelper) {
+        return new CustomPushNotification(
+        	context,
+        	bundle,
+        	notificationsLifecycleFacade, // Instead of defaultFacade!!!
+        	defaultAppLaunchHelper,
+        	new JsIOHelper()
+		);
     }
 }
