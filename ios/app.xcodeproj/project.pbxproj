@@ -2024,7 +2024,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.flarejewelry.app;
 				PRODUCT_NAME = app;
 				PROVISIONING_PROFILE = "71959e2f-756b-41cc-b43b-9dba7382195e";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.flarejewelry.app 1553279125";
+				PROVISIONING_PROFILE_SPECIFIER = "Flare Developer";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};

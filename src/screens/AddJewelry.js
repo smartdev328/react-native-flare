@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    Image,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -131,7 +126,7 @@ class AddJewelry extends React.Component {
                 name: 'com.flarejewelry.app.AddJewelry',
             },
         });
-    }
+    };
 
     render() {
         // Choose an image based on the largest number of short presses we've received from any single device.
@@ -168,13 +163,13 @@ class AddJewelry extends React.Component {
                         style={styles.scanningImage}
                         resizeMode="stretch"
                     />
-                    {haveEnoughBeacons &&
+                    {haveEnoughBeacons && (
                         <Image
                             source={require('../assets/dope.png')}
                             style={styles.dopeImage}
                             resizeMode="stretch"
                         />
-                    }
+                    )}
                 </View>
                 <View style={styles.buttonArea}>
                     <Button

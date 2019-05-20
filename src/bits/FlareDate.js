@@ -14,17 +14,19 @@ export default class FlareDate extends React.PureComponent {
             if (this.props.elapsed) {
                 display = actualDate.fromNow();
             } else {
-                const diff = moment().diff(actualDate, 'hours');
-                display = diff > 6 ? actualDate.format('l LTS') : actualDate.fromNow();
+                const diff = moment()
+                    .utc()
+                    .diff(actualDate, 'hours');
+                display =
+                    diff > 6
+                        ? actualDate.format('l LTS')
+                        : actualDate.utc().fromNow();
             }
         }
-        return (
-            <Text style={this.props.style}>{display}</Text>
-        );
+        return <Text style={this.props.style}>{display}</Text>;
     }
 }
 
 FlareDate.propTypes = {
     timestamp: PropTypes.string.isRequired,
 };
-

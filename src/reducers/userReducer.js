@@ -31,11 +31,12 @@ export function user(state = initialState.user, action = {}) {
         });
     case types.AUTH_SUCCESS: {
         const firstCrew =
-            action.data &&
-            action.data.data &&
-            action.data.data.crews &&
-            action.data.data.crews.length ?
-                action.data.data.crews[0] : { id: 0, members: [] };
+                action.data &&
+                action.data.data &&
+                action.data.data.crews &&
+                action.data.data.crews.length
+                    ? action.data.data.crews[0]
+                    : { id: 0, members: [] };
 
         return state.merge({
             token: action.data.data.auth_token,
@@ -55,15 +56,21 @@ export function user(state = initialState.user, action = {}) {
      * is to keep all devices in sync with each other.
      */
     case types.ACCOUNT_DETAILS_SUCCESS:
-        return state.replace(state, {
-            crewEvents: action.data.crew_events,
-            crews: action.data.crews,
-            devices: action.data.devices,
-            hasActiveFlare: action.data.crew_events && action.data.crew_events.length > 0,
-            profile: action.data.profile,
-        }, {
-            deep: true,
-        });
+        return state.replace(
+            state,
+            {
+                crewEvents: action.data.crew_events,
+                crews: action.data.crews,
+                devices: action.data.devices,
+                hasActiveFlare:
+                        action.data.crew_events &&
+                        action.data.crew_events.length > 0,
+                profile: action.data.profile,
+            },
+            {
+                deep: true,
+            },
+        );
 
     /**
      * BEACONS
@@ -85,7 +92,6 @@ export function user(state = initialState.user, action = {}) {
         return state.merge({
             activatingFlareState: 'failure',
         });
-
 
     case types.CANCEL_ACTIVE_FLARE_REQUEST:
         return state.merge({
@@ -164,7 +170,11 @@ export function user(state = initialState.user, action = {}) {
             requestingPermissionsFailed: true,
         });
     case types.PERMISSIONS_SUCCESS: {
-        const updatedPermissions = Immutable.setIn(state.permissions, [action.permission], action.granted);
+        const updatedPermissions = Immutable.setIn(
+            state.permissions,
+            [action.permission],
+            action.granted,
+        );
         return state.merge({
             permissions: updatedPermissions,
             requestingPermissions: false,
@@ -256,7 +266,11 @@ export function user(state = initialState.user, action = {}) {
     }
 
     case types.SETTINGS_SET_POPUP_MESSAGE_FAILURE: {
-        const updatedSettings = Immutable.setIn(state.settings, ['saving'], false);
+        const updatedSettings = Immutable.setIn(
+            state.settings,
+            ['saving'],
+            false,
+        );
         return state.merge({
             settings: updatedSettings,
         });

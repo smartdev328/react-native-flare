@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import FlareDeviceID from './FlareDeviceID';
 import FlareDate from './FlareDate';
@@ -67,15 +63,21 @@ function DeviceStageListItem(props) {
                         {FlareDeviceID.getJewelryLabelFromDeviceID(props.id)}
                     </Text>
                 </View>
-                <View style={[styles.topDeviceCountArea, { backgroundColor: props.color }]}>
-                    <Text style={styles.topDeviceCountText}>
-                        {props.count}
-                    </Text>
+                <View
+                    style={[
+                        styles.topDeviceCountArea,
+                        { backgroundColor: props.color },
+                    ]}
+                >
+                    <Text style={styles.topDeviceCountText}>{props.count}</Text>
                 </View>
             </View>
             <View style={styles.bottom}>
                 <View style={styles.bottomDeviceIDArea}>
-                    <Text>{Strings.generic.idPrefix}{props.id}</Text>
+                    <Text>
+                        {Strings.generic.idPrefix}
+                        {props.id}
+                    </Text>
                 </View>
                 <View style={styles.bottomTimestampArea}>
                     <FlareDate
