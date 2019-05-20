@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    KeyboardAvoidingView,
-    StyleSheet,
-    Text,
-} from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, StyleSheet, Text } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -57,15 +52,13 @@ class PinCheck extends React.Component {
     }
 
     async checkCode(code) {
-        this.props.dispatch(cancelActiveFlare(this.props.token, code));
+        this.props.dispatch(cancelActiveFlare(this.props.authToken, code));
     }
 
     render() {
         return (
             <KeyboardAvoidingView style={styles.container}>
-                <Text style={styles.prompt}>
-                    {Strings.pin.prompt}
-                </Text>
+                <Text style={styles.prompt}>{Strings.pin.prompt}</Text>
                 <CodeInput
                     codeLength={4}
                     secureTextEntry
@@ -73,9 +66,9 @@ class PinCheck extends React.Component {
                     keyboardType="numeric"
                     activeColor="#000000"
                 />
-                {this.props.cancelingActiveFlare && this.props.cancelActiveFlareState === 'request' &&
+                {this.props.cancelingActiveFlare && this.props.cancelActiveFlareState === 'request' && (
                     <ActivityIndicator />
-                }
+                )}
             </KeyboardAvoidingView>
         );
     }
@@ -83,7 +76,7 @@ class PinCheck extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        token: state.user.token,
+        authToken: state.user.authToken,
         cancelingActiveFlare: state.user.cancelingActiveFlare,
         hasActiveFlare: state.user.hasActiveFlare,
     };

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../bits/AppIcons';
@@ -50,8 +45,7 @@ const styles = StyleSheet.create({
         fontSize: Type.size.medium,
         marginBottom: Spacing.small,
     },
-    tutorialText: {
-    },
+    tutorialText: {},
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -61,11 +55,13 @@ class Contacts extends React.Component {
             topBar: {
                 visible: true,
                 animate: false,
-                leftButtons: [{
-                    id: 'backButton',
-                    icon: iconsMap.back,
-                    color: Colors.theme.purple,
-                }],
+                leftButtons: [
+                    {
+                        id: 'backButton',
+                        icon: iconsMap.back,
+                        color: Colors.theme.purple,
+                    },
+                ],
                 title: {
                     component: {
                         name: 'com.flarejewelry.app.FlareNavBar',
@@ -120,44 +116,41 @@ class Contacts extends React.Component {
         });
 
         const crewId = (this.state.crew && this.state.crew.id) || 0;
-        this.props.dispatch(setCrewMembers(this.props.token, crewId, newMembers));
+        this.props.dispatch(setCrewMembers(this.props.authToken, crewId, newMembers));
     }
 
     render() {
         const {
-            contacts,
-            contactsCount,
-            contactsCrewLookup,
-            crew,
+            contacts, contactsCount, contactsCrewLookup, crew,
         } = this.props;
         return (
             <View style={styles.container}>
-                {!this.props.hasViewedTutorial &&
+                {!this.props.hasViewedTutorial && (
                     <View style={styles.tutorialOverlay}>
                         <Text style={styles.tutorialTitle}>{Strings.onboarding.contacts.overlay.title}</Text>
                         <Text style={styles.tutorialText}>{Strings.onboarding.contacts.overlay.instructions}</Text>
                     </View>
-                }
-                {this.props.hasViewedTutorial &&
-                <View>
-                    <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
-                </View>
-                }
-                {this.props.hasViewedTutorial && this.props.crew &&
-                    this.props.crew.members && this.props.crew.members.length === 0 &&
+                )}
+                {this.props.hasViewedTutorial && (
                     <View>
-                        <Text style={styles.instructions}>
-                            {Strings.contacts.chooseInstruction}
-                        </Text>
+                        <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
                     </View>
-                }
-                {this.props.crew && this.props.crew.members && this.props.crew.members.length > 0 &&
+                )}
+                {this.props.hasViewedTutorial &&
+                    this.props.crew &&
+                    this.props.crew.members &&
+                    this.props.crew.members.length === 0 && (
+                    <View>
+                        <Text style={styles.instructions}>{Strings.contacts.chooseInstruction}</Text>
+                    </View>
+                )}
+                {this.props.crew && this.props.crew.members && this.props.crew.members.length > 0 && (
                     <CrewList
                         style={{ height: this.state.crewListHeight }}
                         crew={crew}
                         onPressContact={contact => this.handleContactPress(contact)}
                     />
-                }
+                )}
                 <ContactsList
                     contacts={contacts}
                     contactsCount={contactsCount}
@@ -165,11 +158,7 @@ class Contacts extends React.Component {
                     onPressContact={contact => this.handleContactPress(contact)}
                 />
 
-                <View>
-                    {this.props.loading &&
-                        <ActivityIndicator />
-                    }
-                </View>
+                <View>{this.props.loading && <ActivityIndicator />}</View>
             </View>
         );
     }
@@ -177,9 +166,9 @@ class Contacts extends React.Component {
 
 function mapStateToProps(state) {
     const { crews } = state.user;
-    const crew = (crews && crews.length) ? crews[0] : { name: null, members: [] };
+    const crew = crews && crews.length ? crews[0] : { name: null, members: [] };
     return {
-        token: state.user.token,
+        authToken: state.user.authToken,
         crew,
         contacts: state.user.contacts,
         contactsCount: state.user.contactsCount,

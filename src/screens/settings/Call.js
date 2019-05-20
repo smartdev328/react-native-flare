@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    Picker,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { ActivityIndicator, Picker, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../../bits/AppIcons';
@@ -41,11 +35,13 @@ class SettingsCall extends React.PureComponent {
             topBar: {
                 visible: true,
                 animate: false,
-                leftButtons: [{
-                    id: 'backButton',
-                    icon: iconsMap.back,
-                    color: Colors.theme.purple,
-                }],
+                leftButtons: [
+                    {
+                        id: 'backButton',
+                        icon: iconsMap.back,
+                        color: Colors.theme.purple,
+                    },
+                ],
                 title: {
                     component: {
                         name: 'com.flarejewelry.app.FlareNavBar',
@@ -66,7 +62,7 @@ class SettingsCall extends React.PureComponent {
     }
 
     saveCallScript() {
-        this.props.dispatch(setCallScript(this.props.token, this.state.callScript));
+        this.props.dispatch(setCallScript(this.props.authToken, this.state.callScript));
         this.setState({
             dirty: false,
         });
@@ -78,12 +74,11 @@ class SettingsCall extends React.PureComponent {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.title}>
-                        {Strings.settings.titlePrefix}{Strings.settings.call.title}
+                        {Strings.settings.titlePrefix}
+                        {Strings.settings.call.title}
                     </Text>
                 </View>
-                <Text style={styles.details}>
-                    {Strings.settings.call.details}
-                </Text>
+                <Text style={styles.details}>{Strings.settings.call.details}</Text>
                 <Picker
                     selectedValue={this.state.callScript}
                     onValueChange={itemValue =>
@@ -93,26 +88,21 @@ class SettingsCall extends React.PureComponent {
                         })
                     }
                 >
-                    <Picker.Item
-                        label={Strings.settings.call.scripts.roomMate}
-                        value={CallScripts.Default}
-                    />
+                    <Picker.Item label={Strings.settings.call.scripts.roomMate} value={CallScripts.Default} />
                     <Picker.Item
                         label={Strings.settings.call.scripts.littleSisterKitchen}
                         value={CallScripts.LittleSisterInKitchen}
                     />
                 </Picker>
-                {this.props.savingSetting &&
-                    <ActivityIndicator />
-                }
-                {this.state.dirty &&
+                {this.props.savingSetting && <ActivityIndicator />}
+                {this.state.dirty && (
                     <Button
                         rounded
                         primary
                         onPress={() => this.saveCallScript()}
                         title={Strings.settings.call.saveButtonLabel}
                     />
-                }
+                )}
             </View>
         );
     }
@@ -120,7 +110,7 @@ class SettingsCall extends React.PureComponent {
 
 function mapStateToProps(state) {
     return {
-        token: state.user.token,
+        authToken: state.user.authToken,
         callScript: state.user.callScript,
         savingSetting: state.user.savingSetting,
     };

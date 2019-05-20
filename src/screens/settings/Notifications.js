@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../../bits/AppIcons';
@@ -52,11 +46,13 @@ class SettingsNotifications extends React.PureComponent {
             topBar: {
                 visible: true,
                 animate: false,
-                leftButtons: [{
-                    id: 'backButton',
-                    icon: iconsMap.back,
-                    color: Colors.theme.purple,
-                }],
+                leftButtons: [
+                    {
+                        id: 'backButton',
+                        icon: iconsMap.back,
+                        color: Colors.theme.purple,
+                    },
+                ],
                 title: {
                     component: {
                         name: 'com.flarejewelry.app.FlareNavBar',
@@ -80,11 +76,7 @@ class SettingsNotifications extends React.PureComponent {
         this.setState({
             dirty: false,
         });
-        this.props.dispatch(setNotificationMessage(
-            this.props.token,
-            this.state.promptMessage,
-            this.state.promptType,
-        ));
+        this.props.dispatch(setNotificationMessage(this.props.authToken, this.state.promptMessage, this.state.promptType));
     }
 
     updateCustomPrompt(newPrompt) {
@@ -102,9 +94,9 @@ class SettingsNotifications extends React.PureComponent {
 
     enableCustomPrompt(enable) {
         this.setState({
-            promptType: enable ?
-                Strings.settings.notifications.customOption :
-                Strings.settings.notifications.defaultOption,
+            promptType: enable
+                ? Strings.settings.notifications.customOption
+                : Strings.settings.notifications.defaultOption,
         });
 
         // change the prompt and mark as dirty if user disabled custom prompt
@@ -118,11 +110,10 @@ class SettingsNotifications extends React.PureComponent {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.title}>
-                        {Strings.settings.titlePrefix}{Strings.settings.notifications.title}
+                        {Strings.settings.titlePrefix}
+                        {Strings.settings.notifications.title}
                     </Text>
-                    {this.props.savingSetting &&
-                        <ActivityIndicator />
-                    }
+                    {this.props.savingSetting && <ActivityIndicator />}
                 </View>
                 <SettingsToggle
                     label={Strings.settings.notifications.promptSelectionTitle}
@@ -137,17 +128,15 @@ class SettingsNotifications extends React.PureComponent {
                         style={styles.customInputField}
                     />
                 </View>
-                <Text style={styles.details}>
-                    {Strings.settings.notifications.promptSelectionBody}
-                </Text>
-                {this.state.dirty &&
+                <Text style={styles.details}>{Strings.settings.notifications.promptSelectionBody}</Text>
+                {this.state.dirty && (
                     <Button
                         rounded
                         primary
                         onPress={() => this.saveCustomPrompt()}
                         title={Strings.settings.notifications.saveButtonLabel}
                     />
-                }
+                )}
             </View>
         );
     }
@@ -158,7 +147,7 @@ function mapStateToProps(state) {
         promptType: state.user.settings.promptType,
         promptMessage: state.user.settings.promptMessage,
         saving: state.user.settings.saving,
-        token: state.user.token,
+        authToken: state.user.authToken,
     };
 }
 

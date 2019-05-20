@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    Image,
-    KeyboardAvoidingView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
+import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -134,7 +126,7 @@ class AddJewelryConfirm extends React.Component {
         });
         if (newCode.length === DEVICE_TWO_FACTOR_LABEL_LENGTH) {
             const numericDeviceID = parseInt(this.props.deviceID, 16);
-            this.props.dispatch(claimDevice(this.props.token, numericDeviceID, newCode));
+            this.props.dispatch(claimDevice(this.props.authToken, numericDeviceID, newCode));
         }
     }
 
@@ -144,46 +136,33 @@ class AddJewelryConfirm extends React.Component {
                 name: 'com.flarejewelry.app.AddJewelryConfirm',
             },
         });
-    }
+    };
 
     render() {
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <View style={styles.promptBackground}>
-                    <Text style={styles.promptForeground}>
-                        {Strings.jewelry.addNewConfirm.prompt}
-                    </Text>
+                    <Text style={styles.promptForeground}>{Strings.jewelry.addNewConfirm.prompt}</Text>
                 </View>
                 <View style={styles.preview}>
-                    <Image
-                        source={require('../assets/cuff-v2.png')}
-                        style={styles.previewImage}
-                        resizeMode="contain"
-                    />
-                    <Icon
-                        name="arrow-long-up"
-                        size={30}
-                        color={Colors.theme.cream}
-                        style={styles.pointAtJewelry}
-                    />
+                    <Image source={require('../assets/cuff-v2.png')} style={styles.previewImage} resizeMode="contain" />
+                    <Icon name="arrow-long-up" size={30} color={Colors.theme.cream} style={styles.pointAtJewelry} />
                     <JewelryLabelPreview
                         deviceID={this.props.deviceID}
                         containerStyle={styles.previewLabel}
                         circleTwoFactor
                     />
                 </View>
-                {!this.props.claimingDevice && this.props.claimingDeviceFailure &&
+                {!this.props.claimingDevice && this.props.claimingDeviceFailure && (
                     <View style={styles.secondFactorErrorBg}>
                         <Text style={styles.secondFactorErrorFg}>
                             {Strings.jewelry.addNewConfirm.secondFactorError}
                         </Text>
                     </View>
-                }
+                )}
                 <View style={styles.manualInputArea}>
-                    {this.props.claimingDevice &&
-                        <ActivityIndicator />
-                    }
-                    {!this.props.claimingDevice &&
+                    {this.props.claimingDevice && <ActivityIndicator />}
+                    {!this.props.claimingDevice && (
                         <TextInput
                             autoCapitalize="characters"
                             placeholder={Strings.jewelry.addNewConfirm.placeholderTwoFactor}
@@ -192,7 +171,7 @@ class AddJewelryConfirm extends React.Component {
                             onChangeText={v => this.changeTwoFactor(v)}
                             maxLength={DEVICE_TWO_FACTOR_LABEL_LENGTH}
                         />
-                    }
+                    )}
                 </View>
                 <View style={styles.buttonArea}>
                     <Button
@@ -211,7 +190,7 @@ function mapStateToProps(state) {
         claimingDevice: state.user.claimingDevice,
         claimingDeviceFailure: state.user.claimingDeviceFailure,
         claimedDevice: state.user.claimedDevice,
-        token: state.user.token,
+        authToken: state.user.authToken,
     };
 }
 

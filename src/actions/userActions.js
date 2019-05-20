@@ -15,66 +15,56 @@ export function checkPermissions() {
         if (Platform.OS === 'ios') {
             permissions.bluetooth = null;
             permissions.notification = {
-                type: [
-                    'alert',
-                    'badge',
-                ],
+                type: ['alert', 'badge'],
             };
         }
 
-        Permissions
-            .checkMultiple(Object.keys(permissions))
-            .then((checkResponse) => {
-                // Request permission for each service that is not authorized.
-                const permissionsToRequest = Object.keys(checkResponse).filter(p => checkResponse[p] !== 'authorized');
-                permissionsToRequest.forEach((permission) => {
-                    const options = permissions[permission];
-                    Permissions.request(permission, options).then((reqResponse) => {
-                        dispatch({
-                            type: types.PERMISSIONS_SUCCESS,
-                            permission,
-                            granted: reqResponse === 'authorized',
-                        });
-                    });
-                });
-
-                // Ensure that the redux store knows about services that are already authorized.
-                const permissionsAlreadyGranted =
-                    Object.keys(checkResponse).filter(p => checkResponse[p] === 'authorized');
-                permissionsAlreadyGranted.forEach((permission) => {
+        Permissions.checkMultiple(Object.keys(permissions)).then((checkResponse) => {
+            // Request permission for each service that is not authorized.
+            const permissionsToRequest = Object.keys(checkResponse).filter(p => checkResponse[p] !== 'authorized');
+            permissionsToRequest.forEach((permission) => {
+                const options = permissions[permission];
+                Permissions.request(permission, options).then((reqResponse) => {
                     dispatch({
                         type: types.PERMISSIONS_SUCCESS,
                         permission,
-                        granted: true,
+                        granted: reqResponse === 'authorized',
                     });
                 });
             });
+
+            // Ensure that the redux store knows about services that are already authorized.
+            const permissionsAlreadyGranted = Object.keys(checkResponse).filter(p => checkResponse[p] === 'authorized');
+            permissionsAlreadyGranted.forEach((permission) => {
+                dispatch({
+                    type: types.PERMISSIONS_SUCCESS,
+                    permission,
+                    granted: true,
+                });
+            });
+        });
     };
 }
 
 export function getPermission(name, options) {
     return async function doCheck(dispatch) {
-        Permissions
-            .check(name, options)
-            .then((checkResponse) => {
-                if (checkResponse !== 'authorized') {
-                    Permissions
-                        .request(name, options)
-                        .then((response) => {
-                            dispatch({
-                                type: types.PERMISSIONS_SUCCESS,
-                                permission: name,
-                                granted: response === 'authorized',
-                            });
-                        });
-                } else {
+        Permissions.check(name, options).then((checkResponse) => {
+            if (checkResponse !== 'authorized') {
+                Permissions.request(name, options).then((response) => {
                     dispatch({
                         type: types.PERMISSIONS_SUCCESS,
                         permission: name,
-                        granted: true,
+                        granted: response === 'authorized',
                     });
-                }
-            });
+                });
+            } else {
+                dispatch({
+                    type: types.PERMISSIONS_SUCCESS,
+                    permission: name,
+                    granted: true,
+                });
+            }
+        });
     };
 }
 
@@ -83,26 +73,24 @@ export function setCrewMembers(token, crewId, members) {
         dispatch({
             type: types.CREW_SET_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            `/crews/${crewId}`, {
-                method: 'POST',
-                data: {
-                    members,
-                },
+        ProtectedAPICall(token, API_URL, `/crews/${crewId}`, {
+            method: 'POST',
+            data: {
+                members,
             },
-        ).then((response) => {
-            dispatch({
-                type: types.CREW_SET_SUCCESS,
-                crew: response.data.data.crew,
+        })
+            .then((response) => {
+                dispatch({
+                    type: types.CREW_SET_SUCCESS,
+                    crew: response.data.data.crew,
+                });
+            })
+            .catch((status) => {
+                dispatch({
+                    type: types.CREW_SET_FAILURE,
+                    status,
+                });
             });
-        }).catch((status) => {
-            dispatch({
-                type: types.CREW_SET_FAILURE,
-                status,
-            });
-        });
     };
 }
 
@@ -137,22 +125,19 @@ export function syncAccountDetails(args) {
             };
         }
 
-        ProtectedAPICall(
-            args.token,
-            API_URL,
-            '/auth/status',
-            requestOptions,
-        ).then((response) => {
-            dispatch({
-                type: types.ACCOUNT_DETAILS_SUCCESS,
-                data: response.data.data,
+        ProtectedAPICall(args.authToken, API_URL, '/auth/status', requestOptions)
+            .then((response) => {
+                dispatch({
+                    type: types.ACCOUNT_DETAILS_SUCCESS,
+                    data: response.data.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.ACCOUNT_DETAILS_FAILURE,
+                    status: error,
+                });
             });
-        }).catch((error) => {
-            dispatch({
-                type: types.ACCOUNT_DETAILS_FAILURE,
-                status: error,
-            });
-        });
     };
 }
 
@@ -179,23 +164,21 @@ export function getCrewEventTimeline(token, eventID) {
         dispatch({
             type: types.GET_FLARE_TIMELINE_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            `/sos/flare/${eventID}`, {
-                method: 'GET',
-            },
-        ).then((response) => {
-            dispatch({
-                type: types.GET_FLARE_TIMELINE_SUCCESS,
-                data: response.data.data,
+        ProtectedAPICall(token, API_URL, `/sos/flare/${eventID}`, {
+            method: 'GET',
+        })
+            .then((response) => {
+                dispatch({
+                    type: types.GET_FLARE_TIMELINE_SUCCESS,
+                    data: response.data.data,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.GET_FLARE_TIMELINE_FAILURE,
+                    error,
+                });
             });
-        }).catch((error) => {
-            dispatch({
-                type: types.GET_FLARE_TIMELINE_FAILURE,
-                error,
-            });
-        });
     };
 }
 
@@ -204,27 +187,25 @@ export function setNotificationMessage(token, message, custom) {
         dispatch({
             type: types.SETTINGS_SET_POPUP_MESSAGE_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            '/users/notification', {
-                method: 'POST',
-                data: {
-                    message,
-                },
+        ProtectedAPICall(token, API_URL, '/users/notification', {
+            method: 'POST',
+            data: {
+                message,
             },
-        ).then((response) => {
-            dispatch({
-                type: types.SETTINGS_SET_POPUP_MESSAGE_SUCCESS,
-                data: response.data.data,
-                custom,
+        })
+            .then((response) => {
+                dispatch({
+                    type: types.SETTINGS_SET_POPUP_MESSAGE_SUCCESS,
+                    data: response.data.data,
+                    custom,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.SETTINGS_SET_POPUP_MESSAGE_FAILURE,
+                    error,
+                });
             });
-        }).catch((error) => {
-            dispatch({
-                type: types.SETTINGS_SET_POPUP_MESSAGE_FAILURE,
-                error,
-            });
-        });
     };
 }
 
@@ -233,25 +214,23 @@ export function setCancelPIN(token, pin) {
         dispatch({
             type: types.USER_SET_PIN_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            '/users/pin', {
-                method: 'PUT',
-                data: {
-                    pin,
-                },
+        ProtectedAPICall(token, API_URL, '/users/pin', {
+            method: 'PUT',
+            data: {
+                pin,
             },
-        ).then(() => {
-            dispatch({
-                type: types.USER_SET_PIN_SUCCESS,
+        })
+            .then(() => {
+                dispatch({
+                    type: types.USER_SET_PIN_SUCCESS,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.USER_SET_PIN_FAILURE,
+                    error,
+                });
             });
-        }).catch((error) => {
-            dispatch({
-                type: types.USER_SET_PIN_FAILURE,
-                error,
-            });
-        });
     };
 }
 
@@ -260,22 +239,20 @@ export function setOnboardingComplete(token) {
         dispatch({
             type: types.USER_SET_ONBOARDING_COMPLETE_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            '/users/onboarding/complete', {
-                method: 'PUT',
-            },
-        ).then(() => {
-            dispatch({
-                type: types.USER_SET_ONBOARDING_COMPLETE_SUCCESS,
+        ProtectedAPICall(token, API_URL, '/users/onboarding/complete', {
+            method: 'PUT',
+        })
+            .then(() => {
+                dispatch({
+                    type: types.USER_SET_ONBOARDING_COMPLETE_SUCCESS,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.USER_SET_ONBOARDING_COMPLETE_FAILURE,
+                    error,
+                });
             });
-        }).catch((error) => {
-            dispatch({
-                type: types.USER_SET_ONBOARDING_COMPLETE_FAILURE,
-                error,
-            });
-        });
     };
 }
 
@@ -284,26 +261,24 @@ export function setAnalyticsEnabled(token, enabled) {
         dispatch({
             type: types.USER_SET_ANALYTICS_ENABLED_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            '/ua/privacy', {
-                method: 'PUT',
-                data: {
-                    enabled,
-                },
+        ProtectedAPICall(token, API_URL, '/ua/privacy', {
+            method: 'PUT',
+            data: {
+                enabled,
             },
-        ).then((response) => {
-            dispatch({
-                type: types.USER_SET_ANALYTICS_ENABLED_SUCCESS,
-                analyticsEnabled: response.data.privacy.analytics_enabled,
+        })
+            .then((response) => {
+                dispatch({
+                    type: types.USER_SET_ANALYTICS_ENABLED_SUCCESS,
+                    analyticsEnabled: response.data.privacy.analytics_enabled,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.USER_SET_ANALYTICS_ENABLED_FAILURE,
+                    error,
+                });
             });
-        }).catch((error) => {
-            dispatch({
-                type: types.USER_SET_ANALYTICS_ENABLED_FAILURE,
-                error,
-            });
-        });
     };
 }
 
@@ -312,25 +287,23 @@ export function setCallScript(token, script) {
         dispatch({
             type: types.USER_SET_CALL_SCRIPT_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            '/sos/call/script', {
-                method: 'POST',
-                data: {
-                    script,
-                },
+        ProtectedAPICall(token, API_URL, '/sos/call/script', {
+            method: 'POST',
+            data: {
+                script,
             },
-        ).then((response) => {
-            dispatch({
-                type: types.USER_SET_CALL_SCRIPT_SUCCESS,
-                script: response.data.script,
+        })
+            .then((response) => {
+                dispatch({
+                    type: types.USER_SET_CALL_SCRIPT_SUCCESS,
+                    script: response.data.script,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.USER_SET_CALL_SCRIPT_FAILURE,
+                    error,
+                });
             });
-        }).catch((error) => {
-            dispatch({
-                type: types.USER_SET_CALL_SCRIPT_FAILURE,
-                error,
-            });
-        });
     };
 }

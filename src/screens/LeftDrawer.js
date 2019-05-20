@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    Linking,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -77,45 +71,30 @@ class LeftDrawer extends React.Component {
                 name: 'com.flarejewelry.app.LeftDrawer',
             },
         });
-    }
+    };
 
     render() {
         return (
             <View style={styles.container}>
                 <RandomImage
-                    sources={[
-                        { uri: 'flower' },
-                        { uri: 'notsorry' },
-                        { uri: 'vibe' },
-                        { uri: 'bolt' },
-                    ]}
+                    sources={[{ uri: 'flower' }, { uri: 'notsorry' }, { uri: 'vibe' }, { uri: 'bolt' }]}
                     style={styles.topImage}
                 />
                 <View>
                     <TouchableOpacity onPress={() => Linking.openURL(AMBASSADOR_SIGNUP_URL)}>
-                        <Text style={[styles.menuItem, styles.specialMenuItem]}>
-                            {Strings.leftDrawer.ambassador}
-                        </Text>
+                        <Text style={[styles.menuItem, styles.specialMenuItem]}>{Strings.leftDrawer.ambassador}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleHome()}>
-                        <Text style={styles.menuItem}>
-                            {Strings.leftDrawer.home}
-                        </Text>
+                        <Text style={styles.menuItem}>{Strings.leftDrawer.home}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleJewelry()}>
-                        <Text style={styles.menuItem}>
-                            {Strings.leftDrawer.jewelry}
-                        </Text>
+                        <Text style={styles.menuItem}>{Strings.leftDrawer.jewelry}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleSettings()}>
-                        <Text style={styles.menuItem}>
-                            {Strings.leftDrawer.settings}
-                        </Text>
+                        <Text style={styles.menuItem}>{Strings.leftDrawer.settings}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleSignOut()}>
-                        <Text style={styles.menuItem}>
-                            {Strings.generic.signOut}
-                        </Text>
+                        <Text style={styles.menuItem}>{Strings.generic.signOut}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -125,7 +104,7 @@ class LeftDrawer extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        token: state.user.token,
+        authToken: state.user.authToken,
         cancelingActiveFlare: state.user.cancelingActiveFlare,
         hasActiveFlare: state.user.hasActiveFlare,
     };

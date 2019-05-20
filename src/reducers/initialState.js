@@ -22,7 +22,8 @@ export const initialState = Immutable({
             notification: false,
         },
         profile: {},
-        token: null,
+        authToken: null,
+        radioToken: null,
         settings: {
             promptType: Strings.settings.notifications.defaultOption,
             promptMessage: Strings.settings.notifications.defaultMessage,
@@ -33,7 +34,8 @@ export const initialState = Immutable({
         recent: [],
         recentShortPressCounts: [],
         problems: [],
-        deviceCounts: { // must match keys of Strings.manufacting.stages
+        deviceCounts: {
+            // must match keys of Strings.manufacting.stages
             new: 0,
             added: 0,
             burnIn: 0,

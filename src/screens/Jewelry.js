@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    View,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -58,13 +54,14 @@ class Jewelry extends React.Component {
     }
 
     removeJewelry(deviceID) {
-        this.props.dispatch(disclaimDevice(this.props.token, deviceID));
+        this.props.dispatch(disclaimDevice(this.props.authToken, deviceID));
     }
 
     confirmRemoveJewelry(deviceID) {
         const jewelryLabel = FlareDeviceID.getJewelryLabelFromDeviceID(deviceID);
-        const prompt =
-            `${Strings.jewelry.removeConfirm.promptBegin}${jewelryLabel}${Strings.jewelry.removeConfirm.promptEnd}`;
+        const prompt = `${Strings.jewelry.removeConfirm.promptBegin}${jewelryLabel}${
+            Strings.jewelry.removeConfirm.promptEnd
+        }`;
         Navigation.push(this.props.componentId, {
             component: {
                 name: 'com.flarejewelry.app.Confirm',
@@ -109,20 +106,10 @@ class Jewelry extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                {(this.props.claimingDevice || this.props.disclaimingDevice) &&
-                    <ActivityIndicator size={24} />
-                }
-                <JewelryList
-                    jewelry={this.props.devices}
-                    onRemove={deviceID => this.confirmRemoveJewelry(deviceID)}
-                />
+                {(this.props.claimingDevice || this.props.disclaimingDevice) && <ActivityIndicator size={24} />}
+                <JewelryList jewelry={this.props.devices} onRemove={deviceID => this.confirmRemoveJewelry(deviceID)} />
                 <View style={styles.buttonArea}>
-                    <Button
-                        rounded
-                        primary
-                        onPress={() => this.addNewJewelry()}
-                        title={Strings.jewelry.addNew}
-                    />
+                    <Button rounded primary onPress={() => this.addNewJewelry()} title={Strings.jewelry.addNew} />
                 </View>
             </View>
         );
@@ -131,7 +118,7 @@ class Jewelry extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        token: state.user.token,
+        authToken: state.user.authToken,
         devices: state.user.devices,
         loading: state.user.loadingDevices === 'requested',
     };

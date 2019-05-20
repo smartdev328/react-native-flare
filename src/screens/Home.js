@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
 import { Navigation } from 'react-native-navigation';
 
-
 import {
     ACCOUNT_SYNC_INTERVAL,
     ACCOUNT_SYNC_INTERVAL_FLARE,
@@ -24,7 +23,7 @@ import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 
 import { checkPermissions, getCrewEventTimeline } from '../actions/userActions';
-import { flare, processQueuedBeacons, call } from '../actions/beaconActions';
+import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
 import Location from '../helpers/location';
 import CrewEventTimeline from '../bits/CrewEventTimeline';
 import { BeaconTypes } from '../bits/BleConstants';
@@ -127,6 +126,11 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
     },
+    devOnlyButtons: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
 });
 
 class Home extends React.Component {
@@ -156,7 +160,7 @@ class Home extends React.Component {
         // Users may have modified their accounts on other devices or on the web. Keep this device
         // in sync by fetching server-stored data.
         this.props.dispatch(syncAccountDetails({
-            token: this.props.token,
+            authToken: this.props.authToken,
         }));
 
         // Periodically fetch account status to ensure auth and to observe account changes from other devices.
@@ -179,9 +183,12 @@ class Home extends React.Component {
         /**
          * If device bluetooth state has changed and it's no longer on, show a local notification.
          */
-        if (this.props.hardware && this.props.hardware.bluetooth !== 'on' &&
+        if (
+            this.props.hardware &&
+            this.props.hardware.bluetooth !== 'on' &&
             this.props.hardware.bluetooth !== prevProps.hardware.bluetooth &&
-            !this.props.hasActiveFlare) {
+            !this.props.hasActiveFlare
+        ) {
             this.props.notificationManager.localNotify({
                 message: Strings.notifications.bluetoothDisabled,
             });
@@ -190,8 +197,10 @@ class Home extends React.Component {
         /**
          * Show a local notification when we're first requesting a flare
          */
-        if (prevProps.activatingFlareState !== this.props.activatingFlareState &&
-            this.props.activatingFlareState === 'request') {
+        if (
+            prevProps.activatingFlareState !== this.props.activatingFlareState &&
+            this.props.activatingFlareState === 'request'
+        ) {
             this.props.notificationManager.localNotify({
                 message: this.props.crewEventNotificationMessage,
             });
@@ -232,7 +241,7 @@ class Home extends React.Component {
     }
 
     onRefreshTimeline() {
-        this.props.dispatch(getCrewEventTimeline(this.props.token, this.props.crewEvents[0].id));
+        this.props.dispatch(getCrewEventTimeline(this.props.authToken, this.props.crewEvents[0].id));
     }
 
     /**
@@ -284,7 +293,7 @@ class Home extends React.Component {
                 name: 'com.flarejewelry.app.Home',
             },
         });
-    }
+    };
 
     /**
      * Submit user location and fetch any account updates.
@@ -302,9 +311,11 @@ class Home extends React.Component {
             timeout: ACCOUNT_SYNC_INTERVAL,
         }).then((position) => {
             this.props.dispatch(syncAccountDetails({
-                token: this.props.token,
+                authToken: this.props.authToken,
                 status: {
-                    timestamp: moment().utc().format('YYYY-MM-DD HH:mm:ss'),
+                    timestamp: moment()
+                        .utc()
+                        .format('YYYY-MM-DD HH:mm:ss'),
                     latitude: position.latitude,
                     longitude: position.longitude,
                     details: {
@@ -318,11 +329,7 @@ class Home extends React.Component {
 
         // Process any beacon events that we tried (and failed) to submit earlier.
         if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
-            this.props.dispatch(processQueuedBeacons(
-                this.props.handleBeacon,
-                this.props.token,
-                this.props.problemBeacons,
-            ));
+            this.props.dispatch(processQueuedBeacons(this.props.handleBeacon, this.props.authToken, this.props.problemBeacons));
         }
     }
 
@@ -330,7 +337,7 @@ class Home extends React.Component {
         if (this.props.crewEvents && this.props.crewEvents.length > 0) {
             const event = this.props.crewEvents[0];
             if (event) {
-                this.props.dispatch(getCrewEventTimeline(this.props.token, event.id));
+                this.props.dispatch(getCrewEventTimeline(this.props.authToken, event.id));
             }
         }
     }
@@ -387,12 +394,7 @@ class Home extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(flare(
-            this.props.token,
-            testBeacon,
-            null,
-            /* forCurrentUser= */ true,
-        ));
+        this.props.dispatch(flare(this.props.authToken, testBeacon, null, /* forCurrentUser= */ true));
     }
 
     sendTestCall() {
@@ -409,12 +411,24 @@ class Home extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(call(
-            this.props.token,
-            testBeacon,
-            null,
-            /* forCurrentUser= */ true,
-        ));
+        this.props.dispatch(call(this.props.authToken, testBeacon, null, /* forCurrentUser= */ true));
+    }
+
+    sendTestCheckin() {
+        if (!__DEV__) {
+            return;
+        }
+        const testBeacon = {
+            uuid: 'flare-dev-test',
+            nonce: null,
+            type: BeaconTypes.Checkin,
+            deviceID: this.props.devices[0].id,
+            rssi: 0,
+            proximity: 'far',
+            accuracy: 0,
+            timestamp: Date.now(),
+        };
+        this.props.dispatch(checkin(this.props.radioToken, testBeacon, null, /* forCurrentUser= */ true));
     }
 
     render() {
@@ -425,28 +439,19 @@ class Home extends React.Component {
                     style={styles.backgroundSplatBottom}
                     resizeMode="stretch"
                 />
-                {!this.props.hasActiveFlare &&
+                {!this.props.hasActiveFlare && (
                     <View style={styles.idleBackground}>
                         <Image
                             source={require('../assets/bg-splat-green.png')}
                             style={styles.backgroundSplatTop}
                             resizeMode="stretch"
                         />
-                        <Image
-                            source={require('../assets/home-star.png')}
-                            style={styles.backgroundStar}
-                        />
-                        <Image
-                            source={require('../assets/home-flower-purple.png')}
-                            style={styles.backgroundFlower}
-                        />
-                        <Image
-                            source={require('../assets/home-diamond.png')}
-                            style={styles.backgroundDiamond}
-                        />
+                        <Image source={require('../assets/home-star.png')} style={styles.backgroundStar} />
+                        <Image source={require('../assets/home-flower-purple.png')} style={styles.backgroundFlower} />
+                        <Image source={require('../assets/home-diamond.png')} style={styles.backgroundDiamond} />
                     </View>
-                }
-                {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare &&
+                )}
+                {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare && (
                     <View style={styles.bluetoothDisabledWarning}>
                         <Text style={styles.bluetoothDisabledWarningTitle}>
                             {Strings.home.bluetoothDisabledWarning.title}
@@ -455,48 +460,39 @@ class Home extends React.Component {
                             {Strings.home.bluetoothDisabledWarning.body}
                         </Text>
                     </View>
-                }
-                {!this.props.hasActiveFlare &&
+                )}
+                {!this.props.hasActiveFlare && (
                     <View style={styles.deviceSelector}>
                         <DeviceSelector
-                            addDevice={deviceID => this.props.dispatch(claimDevice(this.props.token, deviceID))}
+                            addDevice={deviceID => this.props.dispatch(claimDevice(this.props.authToken, deviceID))}
                             devices={this.props.devices}
                             claimingDevice={this.props.claimingDevice}
                             claimingDeviceFailure={this.props.claimingDeviceFailure}
                         >
                             <View style={styles.centered}>
-                                {!this.props.latestBeacon &&
-                                    <Text>
-                                        {Strings.home.lastBeacon.absent}
-                                    </Text>
-                                }
-                                {this.props.latestBeacon &&
+                                {!this.props.latestBeacon && <Text>{Strings.home.lastBeacon.absent}</Text>}
+                                {this.props.latestBeacon && (
                                     <View style={styles.centered}>
                                         <Image
                                             source={require('../assets/home-network-icon.png')}
                                             style={[styles.networkIcon]}
                                             resizeMode="contain"
                                         />
-                                        <Text>
-                                            {Strings.home.lastBeacon.present}
-                                        </Text>
+                                        <Text>{Strings.home.lastBeacon.present}</Text>
                                         <Text style={[styles.centered, styles.dimmed]}>
                                             {moment(this.props.latestBeacon.timestamp).format('MMM D @ h:mma')}
                                             {SHOW_ALL_BEACONS_IN_HOME_SCREEN &&
-                                                ` – ${this.props.latestBeacon.deviceID}`
-                                            }
+                                                ` – ${this.props.latestBeacon.deviceID}`}
                                         </Text>
                                     </View>
-                                }
+                                )}
                             </View>
                         </DeviceSelector>
                     </View>
-                }
-                {this.props.hasActiveFlare &&
+                )}
+                {this.props.hasActiveFlare && (
                     <View style={styles.crewTimelineContainer}>
-                        <Text style={styles.timelineHeader}>
-                            {Strings.crewEventTimeline.title}
-                        </Text>
+                        <Text style={styles.timelineHeader}>{Strings.crewEventTimeline.title}</Text>
                         <CrewEventTimeline
                             timeline={this.props.crewEventTimeline}
                             onRefresh={() => this.onRefreshTimeline()}
@@ -508,32 +504,38 @@ class Home extends React.Component {
                             title={Strings.home.cancelActiveFlare}
                         />
                     </View>
-                }
+                )}
                 <View style={styles.footer}>
-                    {!this.props.hasActiveFlare &&
+                    {!this.props.hasActiveFlare && (
                         <Button
                             rounded
                             primary
                             onPress={() => this.handleContactsClick()}
                             title={this.props.contactsLabel}
                         />
-                    }
-                    {__DEV__ && !this.props.hasActiveFlare &&
-                        <Button
-                            rounded
-                            primary
-                            onPress={() => this.sendTestFlare()}
-                            title={Strings.dev.sendTestFlare}
-                        />
-                    }
-                    {__DEV__ && !this.props.hasActiveFlare &&
-                        <Button
-                            rounded
-                            primary
-                            onPress={() => this.sendTestCall()}
-                            title={Strings.dev.sendTestCall}
-                        />
-                    }
+                    )}
+                    {__DEV__ && !this.props.hasActiveFlare && (
+                        <View style={styles.devOnlyButtons}>
+                            <Button
+                                rounded
+                                primary
+                                onPress={() => this.sendTestFlare()}
+                                title={Strings.dev.sendTestFlare}
+                            />
+                            <Button
+                                rounded
+                                primary
+                                onPress={() => this.sendTestCall()}
+                                title={Strings.dev.sendTestCall}
+                            />
+                            <Button
+                                rounded
+                                primary
+                                onPress={() => this.sendTestCheckin()}
+                                title={Strings.dev.sendTestCheckin}
+                            />
+                        </View>
+                    )}
                 </View>
             </View>
         );
@@ -542,9 +544,9 @@ class Home extends React.Component {
 
 function mapStateToProps(state) {
     const contactsLabel =
-        state.user.crews && state.user.crews.length ?
-            Strings.home.contactsButtonLabelEdit :
-            Strings.home.contactsButtonLabelAdd;
+        state.user.crews && state.user.crews.length
+            ? Strings.home.contactsButtonLabelEdit
+            : Strings.home.contactsButtonLabelAdd;
 
     return {
         activatingFlareState: state.user.activatingFlareState,
@@ -562,7 +564,8 @@ function mapStateToProps(state) {
         latestBeacon: state.beacons.latest,
         permissions: state.user.permissions,
         problemBeacons: state.beacons.problems,
-        token: state.user.token,
+        authToken: state.user.authToken,
+        radioToken: state.user.radioToken,
     };
 }
 

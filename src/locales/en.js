@@ -27,6 +27,7 @@ const Strings = {
     dev: {
         sendTestFlare: 'Flare',
         sendTestCall: 'Call',
+        sendTestCheckin: 'Checkin',
     },
     deviceSelector: {
         enterDeviceCodePrompt: 'Enter the code printed on your jewelry',
@@ -183,9 +184,7 @@ const Strings = {
             },
             hasSetPin: {
                 title: 'Good to Go',
-                subtitle:
-                    "Great! Next you'll choose the people who we'll reach out to " +
-                    'when you really need it.',
+                subtitle: "Great! Next you'll choose the people who we'll reach out to " + 'when you really need it.',
             },
             pinPlaceholder: 'Secret code',
         },
@@ -287,7 +286,7 @@ const Strings = {
                     'Cupcake ipsum dolor sit amet. Cookie powder caramels powder apple pie. Chocolate macaroon ' +
                     'sesame snaps tiramisu jujubes brownie tootsie roll. Tootsie roll wafer biscuit lollipop topping ' +
                     'danish jelly chupa chups candy.',
-            }
+            },
         },
         title: 'Settings',
         titlePrefix: 'Settings: ',

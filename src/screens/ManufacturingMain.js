@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    Image,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -71,7 +65,7 @@ class ManufacturingMain extends React.Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(getDeviceCounts(this.props.token));
+        this.props.dispatch(getDeviceCounts(this.props.authToken));
     }
 
     toggleSideMenu() {
@@ -112,30 +106,21 @@ class ManufacturingMain extends React.Component {
                 name: 'com.flarejewelry.manufacturing.main',
             },
         });
-    }
+    };
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.logoArea}>
-                        <Image
-                            source={require('../assets/flare_dark.png')}
-                            style={styles.logoImage}
-                        />
+                        <Image source={require('../assets/flare_dark.png')} style={styles.logoImage} />
                     </View>
                     <View style={styles.brandArea}>
                         <Text>{Strings.manufacturing.title}</Text>
                     </View>
                     <View style={styles.headerActions}>
-                        {this.props.manufacturingLoading &&
-                            <ActivityIndicator />
-                        }
-                        <Button
-                            outline
-                            onPress={() => this.handleSignOut()}
-                            title={Strings.generic.signOut}
-                        />
+                        {this.props.manufacturingLoading && <ActivityIndicator />}
+                        <Button outline onPress={() => this.handleSignOut()} title={Strings.generic.signOut} />
                     </View>
                 </View>
                 <View style={styles.body}>
@@ -151,7 +136,7 @@ class ManufacturingMain extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        token: state.user.token,
+        authToken: state.user.authToken,
         cancelingActiveFlare: state.user.cancelingActiveFlare,
         hasActiveFlare: state.user.hasActiveFlare,
         deviceCounts: state.manufacturing.deviceCounts,

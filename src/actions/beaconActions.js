@@ -4,6 +4,7 @@ import moment from 'moment';
 import { API_URL } from '../constants/';
 import * as types from './actionTypes';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
+import { BeaconTypes } from '../bits/BleConstants';
 
 export function call(token, beacon, position, forCurrentUser) {
     return async function doCall(dispatch) {
@@ -120,11 +121,12 @@ export function cancelActiveFlare(token, pin) {
 
 export function checkin(token, beacon, position, forCurrentUser) {
     return async function doCheckin(dispatch) {
-        ProtectedAPICall(token, API_URL, '/sos/checkin', {
+        ProtectedAPICall(token, API_URL, '/radio/beacon', {
             method: 'POST',
             data: {
                 device_id: beacon.deviceID,
                 timestamp: moment(beacon.timestamp).toISOString(),
+                type: BeaconTypes.Checkin,
                 position,
                 details: {
                     proximity: beacon.proximity,
@@ -216,11 +218,7 @@ export function processQueuedBeacons(handleBeacon, token, problemBeacons) {
             } else {
                 retry += 1;
             }
-            const updatedBeacon = Immutable.setIn(
-                problem.beacon,
-                ['retry'],
-                retry,
-            );
+            const updatedBeacon = Immutable.setIn(problem.beacon, ['retry'], retry);
 
             // resubmit the beacon with the incremented retry counter
             handleBeacon(dispatch, token, updatedBeacon, problem.position);

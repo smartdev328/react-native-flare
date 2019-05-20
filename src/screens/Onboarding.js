@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    KeyboardAvoidingView,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import LottieView from 'lottie-react-native';
@@ -73,8 +68,8 @@ class OnboardingMain extends React.Component {
             newHighestPressCount.count !== highestPressCount.count;
 
         // Only change state flag once after receiving a long press
-        const receivedLongPress = state.receivedLongPress ||
-            (props.latestBeacon && props.latestBeacon.type === BeaconTypes.Long.name);
+        const receivedLongPress =
+            state.receivedLongPress || (props.latestBeacon && props.latestBeacon.type === BeaconTypes.Long.name);
 
         if (multipleBroadcastChanged || highestPressCountChanged || props.updatedPIN !== state.hasSetPin) {
             return {
@@ -103,7 +98,7 @@ class OnboardingMain extends React.Component {
     }
 
     setCancelPIN() {
-        this.props.dispatch(setCancelPIN(this.props.token, this.state.cancelPIN));
+        this.props.dispatch(setCancelPIN(this.props.authToken, this.state.cancelPIN));
     }
 
     changeCancelPIN(val) {
@@ -113,7 +108,7 @@ class OnboardingMain extends React.Component {
     }
 
     claimDevice() {
-        this.props.dispatch(claimDevice(this.props.token, this.state.chosenDeviceID, this.state.secondFactor));
+        this.props.dispatch(claimDevice(this.props.authToken, this.state.chosenDeviceID, this.state.secondFactor));
     }
 
     changeTwoFactorText(val) {
@@ -137,7 +132,7 @@ class OnboardingMain extends React.Component {
     }
 
     endOnboarding() {
-        this.props.dispatch(setOnboardingComplete(this.props.token));
+        this.props.dispatch(setOnboardingComplete(this.props.authToken));
         this.props.dispatch(changeAppRoot('secure'));
     }
 
@@ -169,7 +164,7 @@ class OnboardingMain extends React.Component {
                 name: 'com.flarejewelry.onboarding.main',
             },
         });
-    }
+    };
 
     render() {
         /**
@@ -232,40 +227,42 @@ class OnboardingMain extends React.Component {
                         {
                             /* Welcome */
                             backgroundColor: Colors.white,
-                            image: <LottieView
-                                source={require('../assets/lotties/heart.json')}
-                                autoPlay
-                                speed={0.7}
-                                loop={false}
-                                resizeMode="cover"
-                                style={{
-                                    width: 292,
-                                    height: 292,
-                                }}
-                            />,
+                            image: (
+                                <LottieView
+                                    source={require('../assets/lotties/heart.json')}
+                                    autoPlay
+                                    speed={0.7}
+                                    loop={false}
+                                    resizeMode="cover"
+                                    style={{
+                                        width: 292,
+                                        height: 292,
+                                    }}
+                                />
+                            ),
                             title: Strings.onboarding.welcome.title,
                             subtitle: Strings.onboarding.welcome.subtitle,
                         },
                         {
                             /* Location */
                             backgroundColor: Colors.white,
-                            image: <LottieView
-                                source={require('../assets/lotties/location.json')}
-                                autoPlay
-                                loop
-                                resizeMode="cover"
-                                style={{
-                                    width: 292,
-                                    height: 292,
-                                }}
-                            />,
+                            image: (
+                                <LottieView
+                                    source={require('../assets/lotties/location.json')}
+                                    autoPlay
+                                    loop
+                                    resizeMode="cover"
+                                    style={{
+                                        width: 292,
+                                        height: 292,
+                                    }}
+                                />
+                            ),
                             title: Strings.onboarding.location.title,
                             subtitle: (
                                 <View style={styles.subtitleArea}>
-                                    <Text style={styles.subtitleText}>
-                                        {Strings.onboarding.location.subtitle}
-                                    </Text>
-                                    {this.props.permissions.location &&
+                                    <Text style={styles.subtitleText}>{Strings.onboarding.location.subtitle}</Text>
+                                    {this.props.permissions.location && (
                                         <LottieView
                                             source={require('../assets/lotties/checkmark.json')}
                                             autoPlay
@@ -276,15 +273,15 @@ class OnboardingMain extends React.Component {
                                                 height: 96,
                                             }}
                                         />
-                                    }
-                                    {!this.props.permissions.location &&
+                                    )}
+                                    {!this.props.permissions.location && (
                                         <Button
                                             title={Strings.onboarding.welcome.alwaysAllow}
                                             primary
                                             rounded
                                             onPress={() => this.requestLocationPermission()}
                                         />
-                                    }
+                                    )}
                                 </View>
                             ),
                         },
@@ -301,7 +298,7 @@ class OnboardingMain extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        token: state.user.token,
+        authToken: state.user.authToken,
         permissions: state.user.permissions,
         bluetoothEnabled: state.hardware.bluetooth === 'on',
         shortPressCounts: state.beacons.recentShortPressCounts,

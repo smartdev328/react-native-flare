@@ -17,29 +17,27 @@ function getContactsCrewLookup(crew) {
 export function user(state = initialState.user, action = {}) {
     switch (action.type) {
     /**
-     * AUTHENTICATION
-     */
+         * AUTHENTICATION
+         */
     case types.AUTH_FAILURE:
         return state.merge({
-            token: null,
+            authToken: null,
             authState: 'failed',
         });
     case types.AUTH_REQUEST:
         return state.merge({
-            token: null,
+            authToken: null,
             authState: 'requested',
         });
     case types.AUTH_SUCCESS: {
         const firstCrew =
-                action.data &&
-                action.data.data &&
-                action.data.data.crews &&
-                action.data.data.crews.length
+                action.data && action.data.data && action.data.data.crews && action.data.data.crews.length
                     ? action.data.data.crews[0]
                     : { id: 0, members: [] };
 
         return state.merge({
-            token: action.data.data.auth_token,
+            authToken: action.data.data.auth_token,
+            radioToken: action.data.data.radio_token,
             profile: action.data.data.profile,
             crews: action.data.data.crews,
             devices: action.data.data.devices,
@@ -51,10 +49,10 @@ export function user(state = initialState.user, action = {}) {
     }
 
     /**
-     * ACCOUNT STATUS
-     * We check account status on app launch after users authenticate. The intent
-     * is to keep all devices in sync with each other.
-     */
+         * ACCOUNT STATUS
+         * We check account status on app launch after users authenticate. The intent
+         * is to keep all devices in sync with each other.
+         */
     case types.ACCOUNT_DETAILS_SUCCESS:
         return state.replace(
             state,
@@ -62,9 +60,7 @@ export function user(state = initialState.user, action = {}) {
                 crewEvents: action.data.crew_events,
                 crews: action.data.crews,
                 devices: action.data.devices,
-                hasActiveFlare:
-                        action.data.crew_events &&
-                        action.data.crew_events.length > 0,
+                hasActiveFlare: action.data.crew_events && action.data.crew_events.length > 0,
                 profile: action.data.profile,
             },
             {
@@ -72,9 +68,9 @@ export function user(state = initialState.user, action = {}) {
             },
         );
 
-    /**
-     * BEACONS
-     */
+        /**
+         * BEACONS
+         */
     case types.ACTIVATE_FLARE_REQUEST:
         return state.merge({
             activatingFlareState: 'request',
@@ -114,9 +110,9 @@ export function user(state = initialState.user, action = {}) {
             cancelActiveFlareState: 'failure',
         });
 
-    /**
-     * CONTACTS
-     */
+        /**
+         * CONTACTS
+         */
     case types.CONTACTS_REQUEST:
         return state.merge({
             contactsState: 'requested',
@@ -137,8 +133,8 @@ export function user(state = initialState.user, action = {}) {
     }
 
     /**
-     * CREWS
-     */
+         * CREWS
+         */
     case types.CREW_SET_REQUEST:
         return state.merge({
             crewUpdateState: 'requested',
@@ -158,8 +154,8 @@ export function user(state = initialState.user, action = {}) {
     }
 
     /**
-     * PERMISSIONS
-     */
+         * PERMISSIONS
+         */
     case types.PERMISSIONS_REQUEST:
         return state.merge({
             requestingPermissions: true,
@@ -170,11 +166,7 @@ export function user(state = initialState.user, action = {}) {
             requestingPermissionsFailed: true,
         });
     case types.PERMISSIONS_SUCCESS: {
-        const updatedPermissions = Immutable.setIn(
-            state.permissions,
-            [action.permission],
-            action.granted,
-        );
+        const updatedPermissions = Immutable.setIn(state.permissions, [action.permission], action.granted);
         return state.merge({
             permissions: updatedPermissions,
             requestingPermissions: false,
@@ -183,8 +175,8 @@ export function user(state = initialState.user, action = {}) {
     }
 
     /**
-     * DEVICES
-     */
+         * DEVICES
+         */
     case types.DEVICE_CLAIM_REQUEST:
         return state.merge({
             claimingDevice: true,
@@ -225,10 +217,9 @@ export function user(state = initialState.user, action = {}) {
             disclaimingDevice: false,
         });
 
-
-    /**
-     * GET CREW EVENT TIMELINE
-     */
+        /**
+         * GET CREW EVENT TIMELINE
+         */
     case types.GET_FLARE_TIMELINE_REQUEST:
         return state.merge({
             crewEventTimelineState: 'requested',
@@ -245,10 +236,9 @@ export function user(state = initialState.user, action = {}) {
             crewEventTimelineState: 'failed',
         });
 
-
-    /**
-     * SET NOTIFICATION MESSAGE
-     */
+        /**
+         * SET NOTIFICATION MESSAGE
+         */
     case types.SETTINGS_SET_POPUP_MESSAGE_REQUEST: {
         Immutable.setIn(state.settings, ['saving'], true);
         return state;
@@ -266,19 +256,15 @@ export function user(state = initialState.user, action = {}) {
     }
 
     case types.SETTINGS_SET_POPUP_MESSAGE_FAILURE: {
-        const updatedSettings = Immutable.setIn(
-            state.settings,
-            ['saving'],
-            false,
-        );
+        const updatedSettings = Immutable.setIn(state.settings, ['saving'], false);
         return state.merge({
             settings: updatedSettings,
         });
     }
 
     /**
-     * SET USER PIN
-     */
+         * SET USER PIN
+         */
     case types.USER_SET_PIN_REQUEST:
         return state.merge({
             updatingPIN: true,

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../../bits/AppIcons';
@@ -39,11 +34,13 @@ class SettingsPrivacy extends React.PureComponent {
             topBar: {
                 visible: true,
                 animate: false,
-                leftButtons: [{
-                    id: 'backButton',
-                    icon: iconsMap.back,
-                    color: Colors.theme.purple,
-                }],
+                leftButtons: [
+                    {
+                        id: 'backButton',
+                        icon: iconsMap.back,
+                        color: Colors.theme.purple,
+                    },
+                ],
                 title: {
                     component: {
                         name: 'com.flarejewelry.app.FlareNavBar',
@@ -55,7 +52,7 @@ class SettingsPrivacy extends React.PureComponent {
     }
 
     enableAnalytics(enabled) {
-        this.props.dispatch(setAnalyticsEnabled(this.props.token, enabled));
+        this.props.dispatch(setAnalyticsEnabled(this.props.authToken, enabled));
     }
 
     render() {
@@ -63,20 +60,17 @@ class SettingsPrivacy extends React.PureComponent {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.title}>
-                        {Strings.settings.titlePrefix}{Strings.settings.privacy.title}
+                        {Strings.settings.titlePrefix}
+                        {Strings.settings.privacy.title}
                     </Text>
-                    {this.props.savingSetting &&
-                        <ActivityIndicator />
-                    }
+                    {this.props.savingSetting && <ActivityIndicator />}
                 </View>
                 <SettingsToggle
                     label={Strings.settings.privacy.analytics.prompt}
                     value={this.props.analyticsEnabled}
                     onValueChange={enable => this.enableAnalytics(enable)}
                 />
-                <Text style={styles.details}>
-                    {Strings.settings.privacy.analytics.details}
-                </Text>
+                <Text style={styles.details}>{Strings.settings.privacy.analytics.details}</Text>
             </View>
         );
     }
@@ -84,7 +78,7 @@ class SettingsPrivacy extends React.PureComponent {
 
 function mapStateToProps(state) {
     return {
-        token: state.user.token,
+        authToken: state.user.authToken,
         analyticsEnabled: state.user.analyticsEnabled,
     };
 }
