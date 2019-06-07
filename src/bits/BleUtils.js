@@ -11,11 +11,9 @@ class BleUtils {
         const typeBits = majorBits.substring(0, 8);
         const typeNumber = parseInt(typeBits, 2);
         const versionRangeSize = 10;
-        const deviceVersion =
-            (typeNumber + (versionRangeSize - (typeNumber % versionRangeSize))) / versionRangeSize;
+        const deviceVersion = (typeNumber + (versionRangeSize - (typeNumber % versionRangeSize))) / versionRangeSize;
         const beaconTypeNumber = typeNumber % versionRangeSize;
-        const beaconType =
-            Object.keys(BeaconTypes).find(type => BeaconTypes[type].value === beaconTypeNumber);
+        const beaconType = Object.keys(BeaconTypes).find(type => BeaconTypes[type].value === beaconTypeNumber);
         return {
             deviceVersion,
             beaconType,
@@ -43,14 +41,24 @@ class BleUtils {
         return nonce;
     }
 
+    /**
+     * Extract the device version, beacon type and device ID from the beacon payload.
+     *
+     *   1. convert major bytes to bits, padded if necessary
+     *   2. convert minor bytes to bits, padded if necessary
+     *   3. calculate device version and beacon type from major
+     *       3a. type is first byte of major mod version range size
+     *       3b. device version =
+     *           (type + (versionRangeSize - (type % versionRangeSize))) / versionRangeSize;
+     *   4. calculate device ID from major, minor, device version
+     *       4a. concatenate first byte of major with 2 bytes of minor
+     *       4b. device id = convert concatenated number to decimal
+     *
+     * @param {*} beacon
+     */
     static parseBeacon(beacon) {
         const {
-            uuid,
-            major,
-            minor,
-            rssi,
-            proximity,
-            accuracy,
+            uuid, major, minor, rssi, proximity, accuracy,
         } = beacon;
 
         const majorBitsUnpadded = major.toString(2);
