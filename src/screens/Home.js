@@ -22,7 +22,7 @@ import DeviceSelector from '../bits/DeviceSelector';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 
-import { checkPermissions, getCrewEventTimeline } from '../actions/userActions';
+import { getCrewEventTimeline } from '../actions/userActions';
 import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
 import Location from '../helpers/location';
 import CrewEventTimeline from '../bits/CrewEventTimeline';
@@ -148,9 +148,6 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        // Check permissions just in case they've changed
-        this.props.dispatch(checkPermissions());
-
         // Contacts are not stored on the server. It takes a while to fetch them locally, so we
         // start that process now before users need to view them.
         if (this.props.permissions.contacts) {
@@ -355,8 +352,6 @@ class Home extends React.Component {
         console.debug(`App went to state ${nextAppState}.`);
         switch (nextAppState) {
         case 'active':
-            this.props.dispatch(checkPermissions());
-            break;
         case 'inactive':
         case 'background':
         default:

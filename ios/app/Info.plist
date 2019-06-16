@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>32</string>
+	<string>34</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
@@ -39,12 +39,8 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>We do not want access to your music. Required by supporting library.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Bluetooth must be enabled for your jewelry to work</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>We do not want access to your calendars. Required by supporting library.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We only use the camera when adding jewelry to your account</string>
 	<key>NSContactsUsageDescription</key>
@@ -57,14 +53,6 @@
 	<string>Share your location with your friends when you need backup</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Share your location with your friends when you need backup</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We don&apos;t want to access your microphone. Required by supporting library.</string>
-	<key>NSMotionUsageDescription</key>
-	<string>We do not want access to your movement data. Required by supporting library.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We don&apos;t want to access your photo library. Required by supporting library.</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>We do not want access to speech recognition. Required by supporting library.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -89,6 +77,10 @@
 		<string>Rubik-Medium.ttf</string>
 		<string>Rubik-MediumItalic.ttf</string>
 		<string>Rubik-Regular.ttf</string>
+		<string>AntDesign.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
