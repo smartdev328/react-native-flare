@@ -126,7 +126,7 @@ export function checkin(token, beacon, position, forCurrentUser) {
             data: {
                 device_id: beacon.deviceID,
                 timestamp: moment(beacon.timestamp).toISOString(),
-                type: BeaconTypes.Checkin,
+                type: BeaconTypes.Checkin.value,
                 position,
                 details: {
                     proximity: beacon.proximity,
