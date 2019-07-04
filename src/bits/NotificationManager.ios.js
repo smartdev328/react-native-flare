@@ -3,9 +3,15 @@ import NotificationsIOS from 'react-native-notifications';
 /* eslint-disable class-methods-use-this */
 export default class NotificationManager {
     constructor() {
+        this.boundOnNotificationReceivedForeground = this.onNotificationReceivedForeground.bind(this);
+        this.boundOnNotificationReceivedBackground = this.onNotificationReceivedBackground.bind(this);
+        this.boundOnNotificationOpened = this.onNotificationOpened.bind(this);
+
         NotificationsIOS.addEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
-        NotificationsIOS.addEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
-        NotificationsIOS.requestPermissions();
+        NotificationsIOS.addEventListener(
+            'remoteNotificationsRegistrationFailed',
+            this.onPushRegistrationFailed.bind(this),
+        );
     }
 
     onPushRegistered(deviceToken) {
@@ -24,9 +30,28 @@ export default class NotificationManager {
         console.error(error);
     }
 
+    onNotificationReceivedForeground(notification) {
+        console.log('Notification Received - Foreground', notification);
+    }
+
+    onNotificationReceivedBackground(notification) {
+        console.log('Notification Received - Background', notification);
+    }
+
+    onNotificationOpened(notification) {
+        console.log('Notification opened by device user', notification);
+    }
+
     componentWillUnmount() {
-        NotificationsIOS.removeEventListener('remoteNotificationsRegistered', this.onPushRegistered.bind(this));
-        NotificationsIOS.removeEventListener('remoteNotificationsRegistrationFailed', this.onPushRegistrationFailed.bind(this));
+        NotificationsIOS.removeEventListener(
+            'notificationReceivedForeground',
+            this.boundOnNotificationReceivedForeground,
+        );
+        NotificationsIOS.removeEventListener(
+            'notificationReceivedBackground',
+            this.boundOnNotificationReceivedBackground,
+        );
+        NotificationsIOS.removeEventListener('notificationOpened', this.boundOnNotificationOpened);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -40,7 +65,7 @@ export default class NotificationManager {
             alertTitle: options.title,
             silent: playSound,
             category: 'SOME_CATEGORY',
-            userInfo: { },
+            userInfo: {},
         });
     }
 
