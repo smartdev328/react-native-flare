@@ -34,33 +34,21 @@ export default class BleManager {
         Regions.forEach(region => Beacons.stopMonitoringForRegion(region));
         Beacons.stopUpdatingLocation();
 
-        RNBluetoothInfo.removeEventListener(
-            'change',
-            (change) => {
-                this.onBluetoothStateChange(change);
-            },
-        );
+        RNBluetoothInfo.removeEventListener('change', (change) => {
+            this.onBluetoothStateChange(change);
+        });
 
-        Beacons.BeaconsEventEmitter.removeListener(
-            'beaconsDidRange',
-            (data) => {
-                this.processBeaconInRange(data);
-            },
-        );
+        Beacons.BeaconsEventEmitter.removeListener('beaconsDidRange', (data) => {
+            this.processBeaconInRange(data);
+        });
 
-        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.removeListener(
-            'regionDidEnter',
-            (region) => {
-                Beacons.startRangingBeaconsInRegion(region);
-            },
-        );
+        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.removeListener('regionDidEnter', (region) => {
+            Beacons.startRangingBeaconsInRegion(region);
+        });
 
-        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.removeListener(
-            'regionDidExit',
-            (region) => {
-                Beacons.stopRangingBeaconsInRegion(region);
-            },
-        );
+        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.removeListener('regionDidExit', (region) => {
+            Beacons.stopRangingBeaconsInRegion(region);
+        });
 
         this.beaconCache.shutdown();
         delete this.beaconCache;
@@ -113,13 +101,8 @@ export default class BleManager {
             dispatch(flare(token, beacon, position, forCurrentUser));
             break;
 
-        case BeaconTypes.Manufacturing.name:
-            if (MANUFACTURING_MODE_ENABLED) {
-                const hasManufacturingRole = this.store.getState().user.role === UserRoleTypes.Manufacturing;
-                if (hasManufacturingRole) {
-                    dispatch(manufacturingCheckin(token, beacon, position, ManufacturingStages.indexOf('Added')));
-                }
-            }
+        case BeaconTypes.Sleep.name:
+            console.log('TODO: handle device going to sleep');
             break;
 
         case BeaconTypes.BurnIn.name:
@@ -136,8 +119,6 @@ export default class BleManager {
             dispatch(checkin(token, beacon, position, forCurrentUser));
             break;
         }
-
-
 
         // Inform the UI if the beacon is for the current user
         if (forCurrentUser || SHOW_ALL_BEACONS_IN_HOME_SCREEN) {
@@ -180,12 +161,14 @@ export default class BleManager {
                     this.getCurrentPosition({
                         enableHighAccuracy: true,
                         timeout: 60000,
-                    }).then((position) => {
-                        this.handleBeacon(options.store.dispatch, token, parsedBeacon, position);
-                    }).catch((err) => {
-                        console.debug(`Failed to get location: ${err}. Reporting beacon without it.`);
-                        this.handleBeacon(options.store.dispatch, token, parsedBeacon);
-                    });
+                    })
+                        .then((position) => {
+                            this.handleBeacon(options.store.dispatch, token, parsedBeacon, position);
+                        })
+                        .catch((err) => {
+                            console.debug(`Failed to get location: ${err}. Reporting beacon without it.`);
+                            this.handleBeacon(options.store.dispatch, token, parsedBeacon);
+                        });
                 }
             }
         });
@@ -212,25 +195,16 @@ export default class BleManager {
             });
         }
 
-        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener(
-            'beaconsDidRange',
-            (data) => {
-                this.processBeaconInRange(data, options);
-            },
-        );
+        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange', (data) => {
+            this.processBeaconInRange(data, options);
+        });
 
-        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
-            'regionDidEnter',
-            (region) => {
-                Beacons.startRangingBeaconsInRegion(region);
-            },
-        );
+        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener('regionDidEnter', (region) => {
+            Beacons.startRangingBeaconsInRegion(region);
+        });
 
-        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
-            'regionDidExit',
-            (region) => {
-                Beacons.stopRangingBeaconsInRegion(region);
-            },
-        );
+        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener('regionDidExit', (region) => {
+            Beacons.stopRangingBeaconsInRegion(region);
+        });
     }
 }
