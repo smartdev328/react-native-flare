@@ -481,7 +481,7 @@ class Home extends React.Component {
                                             <FlareDeviceID value={this.props.latestBeacon.deviceID} style={[styles.centered]} />
                                         }
                                     </View>
-                                }
+                                )}
                             </View>
                         </DeviceSelector>
                     </View>
