@@ -6,7 +6,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
 import { Navigation } from 'react-native-navigation';
-
+import FlareDeviceID from '../bits/FlareDeviceID';
 import {
     ACCOUNT_SYNC_INTERVAL,
     ACCOUNT_SYNC_INTERVAL_FLARE,
@@ -476,11 +476,12 @@ class Home extends React.Component {
                                         <Text>{Strings.home.lastBeacon.present}</Text>
                                         <Text style={[styles.centered, styles.dimmed]}>
                                             {moment(this.props.latestBeacon.timestamp).format('MMM D @ h:mma')}
-                                            {SHOW_ALL_BEACONS_IN_HOME_SCREEN &&
-                                                ` – ${this.props.latestBeacon.deviceID}`}
                                         </Text>
+                                        {SHOW_ALL_BEACONS_IN_HOME_SCREEN &&
+                                            <FlareDeviceID value={this.props.latestBeacon.deviceID} style={[styles.centered]} />
+                                        }
                                     </View>
-                                )}
+                                }
                             </View>
                         </DeviceSelector>
                     </View>

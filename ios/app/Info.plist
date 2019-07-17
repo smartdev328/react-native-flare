@@ -21,11 +21,11 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>34</string>
+	<string>35</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -39,8 +39,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Bluetooth must be enabled for your jewelry to work</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We only use the camera when adding jewelry to your account</string>
 	<key>NSContactsUsageDescription</key>
