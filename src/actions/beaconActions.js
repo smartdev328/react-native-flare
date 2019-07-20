@@ -8,10 +8,11 @@ import { BeaconTypes } from '../bits/BleConstants';
 
 export function call(token, beacon, position, forCurrentUser) {
     return async function doCall(dispatch) {
-        ProtectedAPICall(token, API_URL, '/sos/call', {
+        ProtectedAPICall(token, API_URL, '/radio/beacon', {
             method: 'POST',
             data: {
                 device_id: beacon.deviceID,
+                type: BeaconTypes.Short.value,
                 nonce: beacon.nonce,
                 timestamp: moment(beacon.timestamp).toISOString(),
                 position,
@@ -49,10 +50,11 @@ export function flare(token, beacon, position, forCurrentUser) {
                 type: types.ACTIVATE_FLARE_REQUEST,
             });
         }
-        ProtectedAPICall(token, API_URL, '/sos/flare', {
+        ProtectedAPICall(token, API_URL, '/radio/beacon', {
             method: 'POST',
             data: {
                 device_id: beacon.deviceID,
+                type: BeaconTypes.Long.value,
                 nonce: beacon.nonce,
                 timestamp: moment(beacon.timestamp).toISOString(),
                 position,
