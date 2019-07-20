@@ -142,6 +142,11 @@ export default class BleManager {
     }
 
     processBeaconInRange(data, options) {
+
+        if (!this.beaconCache) {
+            this.beaconCache = new BeaconCache();
+        }
+
         data.beacons.forEach((beacon) => {
             const parsedBeacon = BleUtils.parseBeacon(beacon);
 
