@@ -31,19 +31,21 @@ export function user(state = initialState.user, action = {}) {
         });
     case types.AUTH_SUCCESS: {
         const firstCrew =
-                action.data && action.data.data && action.data.data.crews && action.data.data.crews.length
-                    ? action.data.data.crews[0]
+                action.data && action.data && action.data.crews && action.data.crews.length
+                    ? action.data.crews[0]
                     : { id: 0, members: [] };
 
         return state.merge({
-            authToken: action.data.data.auth_token,
-            radioToken: action.data.data.radio_token,
-            profile: action.data.data.profile,
-            crews: action.data.data.crews,
-            devices: action.data.data.devices,
+            authToken: action.data.auth_token,
+            radioToken: action.data.radio_token,
+            profile: action.data.profile,
+            crews: action.data.crews,
+            crewEvents: action.data.crew_events,
+            hasActiveFlare: action.data.crew_events && action.data.crew_events.length > 0,
+            devices: action.data.devices,
             authState: 'succeeded',
-            role: action.data.data.role,
-            hasViewedTutorial: !!action.data.data.viewed_tutorial,
+            role: action.data.role,
+            hasViewedTutorial: !!action.data.viewed_tutorial,
             contactsCrewLookup: getContactsCrewLookup(firstCrew),
         });
     }
