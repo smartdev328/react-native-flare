@@ -383,13 +383,13 @@ class Home extends React.Component {
             uuid: 'flare-dev-test',
             nonce: null,
             type: BeaconTypes.Long,
-            deviceID: this.props.devices[0].id,
+            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
             rssi: 0,
             proximity: 'far',
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(flare(this.props.authToken, testBeacon, null, /* forCurrentUser= */ true));
+        this.props.dispatch(flare(this.props.radioToken, testBeacon, null, /* forCurrentUser= */ true));
     }
 
     sendTestCall() {
@@ -400,13 +400,13 @@ class Home extends React.Component {
             uuid: 'flare-dev-test',
             nonce: null,
             type: BeaconTypes.Short,
-            deviceID: this.props.devices[0].id,
+            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
             rssi: 0,
             proximity: 'far',
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(call(this.props.authToken, testBeacon, null, /* forCurrentUser= */ true));
+        this.props.dispatch(call(this.props.radioToken, testBeacon, null, /* forCurrentUser= */ true));
     }
 
     sendTestCheckin() {
@@ -417,7 +417,7 @@ class Home extends React.Component {
             uuid: 'flare-dev-test',
             nonce: null,
             type: BeaconTypes.Checkin,
-            deviceID: this.props.devices[0].id,
+            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
             rssi: 0,
             proximity: 'far',
             accuracy: 0,
