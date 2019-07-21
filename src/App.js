@@ -93,11 +93,13 @@ export default class App extends Component {
             console.debug('Starting secure root.');
             Navigation.setDefaultOptions({
                 topBar: {
-                    leftButtons: [{
-                        id: 'menuButton',
-                        icon: iconsMap.menu,
-                        color: Colors.theme.purple,
-                    }],
+                    leftButtons: [
+                        {
+                            id: 'menuButton',
+                            icon: iconsMap.menu,
+                            color: Colors.theme.purple,
+                        },
+                    ],
                     title: {
                         component: {
                             name: 'com.flarejewelry.app.FlareNavBar',
@@ -142,11 +144,13 @@ export default class App extends Component {
         case 'secure-jewelry':
             Navigation.setDefaultOptions({
                 topBar: {
-                    leftButtons: [{
-                        id: 'menuButton',
-                        icon: iconsMap.menu,
-                        color: Colors.theme.purple,
-                    }],
+                    leftButtons: [
+                        {
+                            id: 'menuButton',
+                            icon: iconsMap.menu,
+                            color: Colors.theme.purple,
+                        },
+                    ],
                     title: {
                         component: {
                             name: 'com.flarejewelry.app.FlareNavBar',
@@ -169,14 +173,16 @@ export default class App extends Component {
                         center: {
                             stack: {
                                 id: 'JEWELRY_STACK',
-                                children: [{
-                                    component: {
-                                        name: 'com.flarejewelry.app.Jewelry',
-                                        passProps: {
-                                            bleManager: this.bleManager,
+                                children: [
+                                    {
+                                        component: {
+                                            name: 'com.flarejewelry.app.Jewelry',
+                                            passProps: {
+                                                bleManager: this.bleManager,
+                                            },
                                         },
                                     },
-                                }],
+                                ],
                             },
                         },
                     },
@@ -186,11 +192,13 @@ export default class App extends Component {
         case 'secure-settings':
             Navigation.setDefaultOptions({
                 topBar: {
-                    leftButtons: [{
-                        id: 'menuButton',
-                        icon: iconsMap.menu,
-                        color: Colors.theme.purple,
-                    }],
+                    leftButtons: [
+                        {
+                            id: 'menuButton',
+                            icon: iconsMap.menu,
+                            color: Colors.theme.purple,
+                        },
+                    ],
                     title: {
                         component: {
                             name: 'com.flarejewelry.app.FlareNavBar',
@@ -213,14 +221,16 @@ export default class App extends Component {
                         center: {
                             stack: {
                                 id: 'SETTINGS_STACK',
-                                children: [{
-                                    component: {
-                                        name: 'com.flarejewelry.app.Settings',
-                                        passProps: {
-                                            bleManager: this.bleManager,
+                                children: [
+                                    {
+                                        component: {
+                                            name: 'com.flarejewelry.app.Settings',
+                                            passProps: {
+                                                bleManager: this.bleManager,
+                                            },
                                         },
                                     },
-                                }],
+                                ],
                             },
                         },
                     },
@@ -237,14 +247,16 @@ export default class App extends Component {
                                 visible: false,
                             },
                         },
-                        children: [{
-                            component: {
-                                name: 'com.flarejewelry.manufacturing.main',
-                                passProps: {
-                                    bleManager: this.bleManager,
+                        children: [
+                            {
+                                component: {
+                                    name: 'com.flarejewelry.manufacturing.main',
+                                    passProps: {
+                                        bleManager: this.bleManager,
+                                    },
                                 },
                             },
-                        }],
+                        ],
                     },
                 },
             });
@@ -259,14 +271,16 @@ export default class App extends Component {
                                 visible: false,
                             },
                         },
-                        children: [{
-                            component: {
-                                name: 'com.flarejewelry.onboarding.main',
-                                passProps: {
-                                    bleManager: this.bleManager,
+                        children: [
+                            {
+                                component: {
+                                    name: 'com.flarejewelry.onboarding.main',
+                                    passProps: {
+                                        bleManager: this.bleManager,
+                                    },
                                 },
                             },
-                        }],
+                        ],
                     },
                 },
             });
@@ -277,20 +291,22 @@ export default class App extends Component {
             Navigation.setRoot({
                 root: {
                     stack: {
-                        children: [{
-                            component: {
-                                name: 'com.flarejewelry.app.SignIn',
-                                options: {
-                                    topBar: {
-                                        visible: false,
-                                        animate: false,
+                        children: [
+                            {
+                                component: {
+                                    name: 'com.flarejewelry.app.SignIn',
+                                    options: {
+                                        topBar: {
+                                            visible: false,
+                                            animate: false,
+                                        },
+                                    },
+                                    passProps: {
+                                        notificationManager: this.notificationManager,
                                     },
                                 },
-                                passProps: {
-                                    notificationManager: this.notificationManager,
-                                },
                             },
-                        }],
+                        ],
                     },
                 },
             });

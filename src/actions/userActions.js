@@ -66,7 +66,7 @@ export function syncAccountDetails(args) {
             .then((response) => {
                 dispatch({
                     type: types.ACCOUNT_DETAILS_SUCCESS,
-                    data: response.data.data,
+                    data: response.data,
                 });
             })
             .catch((error) => {

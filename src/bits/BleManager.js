@@ -142,7 +142,6 @@ export default class BleManager {
     }
 
     processBeaconInRange(data, options) {
-
         if (!this.beaconCache) {
             this.beaconCache = new BeaconCache();
         }
@@ -162,17 +161,17 @@ export default class BleManager {
                 if (!this.beaconCache.hasAlreadyHandled(parsedBeacon)) {
                     this.beaconCache.markAsHandled(parsedBeacon);
 
-                    const { token } = options.store.getState().user;
+                    const { radioToken } = options.store.getState().user;
                     this.getCurrentPosition({
                         enableHighAccuracy: true,
                         timeout: 60000,
                     })
                         .then((position) => {
-                            this.handleBeacon(options.store.dispatch, token, parsedBeacon, position);
+                            this.handleBeacon(options.store.dispatch, radioToken, parsedBeacon, position);
                         })
                         .catch((err) => {
                             console.debug(`Failed to get location: ${err}. Reporting beacon without it.`);
-                            this.handleBeacon(options.store.dispatch, token, parsedBeacon);
+                            this.handleBeacon(options.store.dispatch, radioToken, parsedBeacon);
                         });
                 }
             }
