@@ -22,7 +22,17 @@ if (__DEV__ && REDUX_LOGGING) {
 const transformerConfig = {
     whitelistPerReducer: {
         nav: ['root'],
-        user: ['profile', 'crews', 'devices', 'authState', 'token', 'settings', 'hasActiveFlare', 'role'],
+        user: [
+            'profile',
+            'crews',
+            'devices',
+            'authState',
+            'authToken',
+            'radioToken',
+            'settings',
+            'hasActiveFlare',
+            'role',
+        ],
         beacons: ['latest', 'problems'],
     },
 };
@@ -40,9 +50,5 @@ const combinedReducer = persistCombineReducers(persistConfig, reducers);
 // eslint-disable-next-line
 export function configureStore(initialState) {
     const enhancer = compose(applyMiddleware(...middleware));
-    return createStore(
-        combinedReducer,
-        initialState,
-        enhancer,
-    );
+    return createStore(combinedReducer, initialState, enhancer);
 }
