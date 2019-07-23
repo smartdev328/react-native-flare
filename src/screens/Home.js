@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: Colors.theme.blueDark,
+        backgroundColor: Colors.theme.cream,
         paddingBottom: Spacing.small,
     },
     containerWithActiveFlare: {
-        backgroundColor: Colors.backgrounds.pink,
+        backgroundColor: Colors.theme.peach,
     },
     idleBackground: {
         position: 'absolute',
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     },
     navbar: {
         opacity: 1,
-        backgroundColor: Colors.theme.blueDark,
+        backgroundColor: Colors.theme.cream,
     },
     bluetoothDisabledWarning: {
         padding: Spacing.medium,
@@ -379,6 +379,13 @@ class Home extends React.Component {
         if (!__DEV__) {
             return;
         }
+        const position = {
+            coords: {
+                latitude: 42.354338,
+                longitude: -71.065497,
+            },
+        };
+
         const testBeacon = {
             uuid: 'flare-dev-test',
             nonce: null,
@@ -389,7 +396,7 @@ class Home extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(flare(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true));
+        this.props.dispatch(flare(this.props.radioToken, testBeacon, position, /* forCurrentUser= */ true));
     }
 
     sendTestCall() {
@@ -429,23 +436,6 @@ class Home extends React.Component {
     render() {
         return (
             <View style={[styles.container, this.props.hasActiveFlare && styles.containerWithActiveFlare]}>
-                <Image
-                    source={require('../assets/bg-splat-pink.png')}
-                    style={styles.backgroundSplatBottom}
-                    resizeMode="stretch"
-                />
-                {!this.props.hasActiveFlare && (
-                    <View style={styles.idleBackground}>
-                        <Image
-                            source={require('../assets/bg-splat-green.png')}
-                            style={styles.backgroundSplatTop}
-                            resizeMode="stretch"
-                        />
-                        <Image source={require('../assets/home-star.png')} style={styles.backgroundStar} />
-                        <Image source={require('../assets/home-flower-purple.png')} style={styles.backgroundFlower} />
-                        <Image source={require('../assets/home-diamond.png')} style={styles.backgroundDiamond} />
-                    </View>
-                )}
                 {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare && (
                     <View style={styles.bluetoothDisabledWarning}>
                         <Text style={styles.bluetoothDisabledWarningTitle}>

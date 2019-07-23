@@ -2,8 +2,10 @@ export default {
     theme: {
         blue: '#4D45BF',
         blueLight: '#30C4FF',
+        cream: '#F4F2EC',
         green: '#57DE9C',
-        purple: '#33244A',
+        purple: '#6978F6',
+        peach: '#F9885E',
         pink: '#ff50b5',
         pinkLight: '#FFD7D2',
     },
@@ -15,12 +17,7 @@ export default {
         green: '#ebfbf3',
         greenLight: '#ecfafa',
     },
-    sequence: [
-        '#4D45BF',
-        '#FF4FB5',
-        '#30C4FF',
-        '#32AA6F',
-    ],
+    sequence: ['#4D45BF', '#FF4FB5', '#30C4FF', '#32AA6F'],
     accents: {
         yellow: '#FFD626',
         red: '#FF404A',

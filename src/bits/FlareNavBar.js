@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-    Image,
-    StyleSheet,
-    View,
-} from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import Colors from './Colors';
 
 const styles = StyleSheet.create({
     center: {
@@ -12,6 +9,7 @@ const styles = StyleSheet.create({
         height: 45,
         flexDirection: 'column',
         justifyContent: 'center',
+        backgroundColor: Colors.theme.cream,
     },
     logo: {
         height: 22,
@@ -22,10 +20,7 @@ const styles = StyleSheet.create({
 function FlareNavBar() {
     return (
         <View style={styles.center}>
-            <Image
-                source={require('../assets/flare_dark.png')}
-                style={styles.logo}
-            />
+            <Image source={require('../assets/flare_dark.png')} style={styles.logo} />
         </View>
     );
 }

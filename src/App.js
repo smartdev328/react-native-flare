@@ -93,6 +93,10 @@ export default class App extends Component {
             console.debug('Starting secure root.');
             Navigation.setDefaultOptions({
                 topBar: {
+                    background: {
+                        color: Colors.theme.cream,
+                        translucent: false,
+                    },
                     leftButtons: [
                         {
                             id: 'menuButton',
@@ -144,6 +148,10 @@ export default class App extends Component {
         case 'secure-jewelry':
             Navigation.setDefaultOptions({
                 topBar: {
+                    background: {
+                        color: Colors.theme.cream,
+                        translucent: false,
+                    },
                     leftButtons: [
                         {
                             id: 'menuButton',
