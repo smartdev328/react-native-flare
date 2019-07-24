@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { iconsMap } from '../../bits/AppIcons';
 import { summary as configSummary } from '../../constants';
@@ -16,15 +12,19 @@ import Type from '../../bits/Type';
 const styles = StyleSheet.create({
     container: {
         paddingVertical: Spacing.medium,
-        backgroundColor: Colors.backgrounds.blue,
+        backgroundColor: Colors.theme.cream,
         display: 'flex',
         height: '100%',
         justifyContent: 'flex-start',
     },
     title: {
-        paddingVertical: Spacing.medium,
-        paddingHorizontal: Spacing.small,
-        fontSize: Type.size.medium,
+        fontSize: 12,
+        fontWeight: 'bold',
+        letterSpacing: 1.2,
+        color: Colors.black,
+        textTransform: 'uppercase',
+        paddingHorizontal: Spacing.large,
+        marginBottom: Spacing.medium,
     },
 });
 
@@ -34,11 +34,13 @@ export default class SettingsConfig extends React.PureComponent {
             topBar: {
                 visible: true,
                 animate: false,
-                leftButtons: [{
-                    id: 'backButton',
-                    icon: iconsMap.back,
-                    color: Colors.theme.purple,
-                }],
+                leftButtons: [
+                    {
+                        id: 'backButton',
+                        icon: iconsMap.back,
+                        color: Colors.theme.purple,
+                    },
+                ],
                 title: {
                     component: {
                         name: 'com.flarejewelry.app.FlareNavBar',
@@ -54,7 +56,8 @@ export default class SettingsConfig extends React.PureComponent {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.title}>
-                        {Strings.settings.titlePrefix}{Strings.settings.config.title}
+                        {Strings.settings.titlePrefix}
+                        {Strings.settings.config.title}
                     </Text>
                 </View>
                 <EnvironmentListing config={configSummary} />

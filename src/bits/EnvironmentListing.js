@@ -6,12 +6,15 @@ import Spacing from './Spacing';
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        borderTopColor: Colors.white,
+        borderTopWidth: 1,
     },
     item: {
-        padding: Spacing.medium,
+        paddingVertical: Spacing.medium,
+        paddingHorizontal: Spacing.large,
         display: 'flex',
         flexDirection: 'row',
-        borderBottomColor: Colors.grey,
+        borderBottomColor: Colors.white,
         borderBottomWidth: 1,
     },
     key: {
