@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
 import Strings from '../locales/en';
@@ -17,14 +11,21 @@ const styles = StyleSheet.create({
     section: {
         display: 'flex',
         justifyContent: 'flex-start',
-        marginBottom: Spacing.medium,
+        marginBottom: Spacing.large,
+        marginHorizontal: Spacing.large,
+    },
+    sectionTitleContainer: {
+        marginHorizontal: Spacing.medium,
+        paddingVertical: Spacing.small,
+        borderBottomColor: Colors.white,
+        borderBottomWidth: 2,
     },
     sectionTitle: {
-        fontSize: Type.size.small,
+        fontSize: 12,
         fontWeight: 'bold',
-        paddingVertical: Spacing.medium,
-        paddingLeft: Spacing.medium,
-        color: Colors.grey,
+        letterSpacing: 1.2,
+        color: Colors.black,
+        textTransform: 'uppercase',
     },
     item: {
         flex: 1,
@@ -33,7 +34,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: Spacing.small,
         paddingLeft: Spacing.medium,
-        backgroundColor: Colors.white,
         marginBottom: Spacing.tiny,
     },
     itemLabelArea: {
@@ -59,35 +59,26 @@ export default class SettingSection extends React.PureComponent {
     render() {
         return (
             <View style={styles.section}>
-                <Text style={styles.sectionTitle}>
-                    {this.props.title}
-                </Text>
+                <View style={styles.sectionTitleContainer}>
+                    <Text style={styles.sectionTitle}>{this.props.title}</Text>
+                </View>
                 <FlatList
                     data={this.props.pages}
                     keyExtractor={item => item.name}
                     renderItem={({ item }) => (
-                        <TouchableOpacity
-                            onPress={() => this.props.onPress(item)}
-                            style={styles.item}
-                        >
+                        <TouchableOpacity onPress={() => this.props.onPress(item)} style={styles.item}>
                             <View style={styles.itemLabelArea}>
-                                <View style={[styles.iconBackground, { backgroundColor: item.iconBackgroundColor }]}>
-                                    <Icon
-                                        style={styles.itemIcon}
-                                        name={item.icon}
-                                        size={24}
-                                        color={Colors.white}
-                                    />
-                                </View>
+                                {item.icon && (
+                                    <View
+                                        style={[styles.iconBackground, { backgroundColor: item.iconBackgroundColor }]}
+                                    >
+                                        <Icon style={styles.itemIcon} name={item.icon} size={24} color={Colors.white} />
+                                    </View>
+                                )}
                                 <Text style={styles.itemLabel}>
                                     {Strings.settings.sections[this.props.name].links[item.name]}
                                 </Text>
                             </View>
-                            <Icon
-                                name="chevron-small-right"
-                                size={20}
-                                color={Colors.grey}
-                            />
                         </TouchableOpacity>
                     )}
                     contentContainerStyle={styles.sectionBody}

@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
 import Colors from '../bits/Colors';
@@ -16,30 +13,26 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'flex-start',
         paddingVertical: Spacing.medium,
-        backgroundColor: Colors.backgrounds.blue,
-        color: Colors.theme.pink,
+        backgroundColor: Colors.theme.cream,
+        color: Colors.theme.black,
     },
 });
 
 const SettingsPages = {
     call: {
         name: 'call',
-        icon: 'phone',
         iconBackgroundColor: Colors.theme.blue,
     },
     config: {
         name: 'config',
-        icon: 'tools',
         iconBackgroundColor: Colors.theme.purple,
     },
     notifications: {
         name: 'notifications',
-        icon: 'megaphone',
         iconBackgroundColor: Colors.theme.blue,
     },
     privacy: {
         name: 'privacy',
-        icon: 'eye',
         iconBackgroundColor: Colors.theme.blue,
     },
 };
@@ -59,14 +52,6 @@ const SettingsSections = [
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Settings extends React.Component {
-    static options() {
-        return {
-            topBar: {
-                visible: true,
-            },
-        };
-    }
-
     constructor(props) {
         super(props);
         Navigation.events().bindComponent(this);
@@ -81,7 +66,7 @@ export default class Settings extends React.Component {
                 name: 'com.flarejewelry.app.Settings',
             },
         });
-    }
+    };
 
     toggleSideMenu() {
         const { showSideMenu } = this.state;

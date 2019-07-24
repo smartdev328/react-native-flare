@@ -222,6 +222,10 @@ export default class App extends Component {
         case 'secure-settings':
             Navigation.setDefaultOptions({
                 topBar: {
+                    background: {
+                        color: Colors.theme.cream,
+                        translucent: false,
+                    },
                     leftButtons: [
                         {
                             id: 'menuButton',
@@ -262,6 +266,16 @@ export default class App extends Component {
                                         },
                                     },
                                 ],
+                            },
+                        },
+                        options: {
+                            sideMenu: {
+                                left: {
+                                    width: LEFT_NAVIGATION_WIDTH,
+                                },
+                            },
+                            topBar: {
+                                noBorder: true,
                             },
                         },
                     },

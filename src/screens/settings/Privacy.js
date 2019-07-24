@@ -13,18 +13,22 @@ import Type from '../../bits/Type';
 const styles = StyleSheet.create({
     container: {
         paddingVertical: Spacing.medium,
-        backgroundColor: Colors.backgrounds.blue,
+        backgroundColor: Colors.theme.cream,
         display: 'flex',
         height: '100%',
         justifyContent: 'flex-start',
     },
     title: {
-        paddingVertical: Spacing.medium,
-        paddingHorizontal: Spacing.small,
-        fontSize: Type.size.medium,
+        fontSize: 12,
+        fontWeight: 'bold',
+        letterSpacing: 1.2,
+        color: Colors.black,
+        textTransform: 'uppercase',
+        paddingHorizontal: Spacing.large,
+        marginBottom: Spacing.medium,
     },
     details: {
-        paddingHorizontal: Spacing.small,
+        paddingHorizontal: Spacing.large,
     },
 });
 
@@ -38,7 +42,7 @@ class SettingsPrivacy extends React.PureComponent {
                     {
                         id: 'backButton',
                         icon: iconsMap.back,
-                        color: Colors.theme.purple,
+                        color: Colors.black,
                     },
                 ],
                 title: {

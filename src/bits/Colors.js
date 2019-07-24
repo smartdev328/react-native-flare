@@ -5,6 +5,7 @@ export default {
         cream: '#F4F2EC',
         green: '#78C4BE',
         purple: '#6978F6',
+        purpleLight: '#B1B9FA',
         peach: '#F9885E',
         pink: '#ff50b5',
         pinkLight: '#FFD7D2',
