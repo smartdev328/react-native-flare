@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { changeAppRoot } from '../actions';
-import { AMBASSADOR_SIGNUP_URL } from '../constants';
+import { AMBASSADOR_SIGNUP_URL, LEFT_NAVIGATION_WIDTH } from '../constants';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
 import Spacing from '../bits/Spacing';
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: Colors.backgrounds.pink,
         padding: Spacing.medium,
-        width: 280,
+        width: LEFT_NAVIGATION_WIDTH,
         paddingTop: Spacing.large,
     },
     menuItem: {
@@ -29,15 +29,17 @@ const styles = StyleSheet.create({
         fontSize: Type.size.medium,
     },
     specialMenuItem: {
-        borderWidth: 1,
-        borderColor: Colors.grey,
-        borderRadius: 16,
+        borderWidth: 2,
+        borderColor: Colors.white,
+        color: Colors.white,
         marginVertical: Spacing.large,
         fontSize: Type.size.small,
+        fontWeight: 'bold',
         paddingHorizontal: Spacing.small,
-        width: '75%',
-        alignItems: 'center',
-        textAlign: 'center',
+        width: '85%',
+        alignItems: 'flex-start',
+        textAlign: 'left',
+        textTransform: 'uppercase',
     },
     topImage: {
         width: 140,
@@ -81,9 +83,6 @@ class LeftDrawer extends React.Component {
                     style={styles.topImage}
                 />
                 <View>
-                    <TouchableOpacity onPress={() => Linking.openURL(AMBASSADOR_SIGNUP_URL)}>
-                        <Text style={[styles.menuItem, styles.specialMenuItem]}>{Strings.leftDrawer.ambassador}</Text>
-                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleHome()}>
                         <Text style={styles.menuItem}>{Strings.leftDrawer.home}</Text>
                     </TouchableOpacity>
@@ -95,6 +94,9 @@ class LeftDrawer extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.handleSignOut()}>
                         <Text style={styles.menuItem}>{Strings.generic.signOut}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => Linking.openURL(AMBASSADOR_SIGNUP_URL)}>
+                        <Text style={[styles.menuItem, styles.specialMenuItem]}>{Strings.leftDrawer.ambassador}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

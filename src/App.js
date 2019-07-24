@@ -6,7 +6,7 @@ import SplashScreen from 'react-native-splash-screen';
 import axios from 'axios';
 import BackgroundTimer from 'react-native-background-timer';
 
-import { BLUETOOTH_LISTENING } from './constants';
+import { BLUETOOTH_LISTENING, LEFT_NAVIGATION_WIDTH } from './constants';
 import { configureStore } from './store/index';
 import * as actions from './actions/index';
 import BleManager from './bits/BleManager';
@@ -139,6 +139,13 @@ export default class App extends Component {
                                         },
                                     },
                                 ],
+                            },
+                        },
+                        options: {
+                            sideMenu: {
+                                left: {
+                                    width: LEFT_NAVIGATION_WIDTH,
+                                },
                             },
                         },
                     },

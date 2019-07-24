@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Colors from './Colors';
 import Spacing from './Spacing';
 
@@ -13,9 +9,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 2,
         alignSelf: 'center',
-        height: 60,
-        minHeight: 60,
-        maxHeight: 60,
+        height: 40,
+        minHeight: 40,
+        maxHeight: 40,
     },
     left: {
         alignSelf: 'flex-start',
@@ -46,10 +42,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     primaryBackground: {
-        backgroundColor: Colors.theme.pink,
-        padding: Spacing.large,
+        backgroundColor: Colors.transparent,
+        borderColor: Colors.white,
+        borderRadius: 0,
+        borderBottomWidth: 2,
+        padding: Spacing.medium,
     },
     primaryForeground: {
+        textTransform: 'uppercase',
         color: Colors.white,
     },
     rounded: {
@@ -60,6 +60,12 @@ const styles = StyleSheet.create({
     },
     disabledForeground: {
         color: Colors.greyLight,
+    },
+    blackenedBackground: {
+        borderColor: Colors.black,
+    },
+    blackenedForeground: {
+        color: Colors.black,
     },
 });
 
@@ -82,6 +88,7 @@ export default class Button extends React.PureComponent {
                     this.props.left && styles.left,
                     this.props.outline && styles.outlineBackground,
                     this.props.disabled && styles.disabledBackground,
+                    this.props.blackened && styles.blackenedBackground,
                 ]}
             >
                 <Text
@@ -90,6 +97,7 @@ export default class Button extends React.PureComponent {
                         this.props.primary && styles.primaryForeground,
                         this.props.outline && styles.outlineForeground,
                         this.props.disabled && styles.disabledForeground,
+                        this.props.blackened && styles.blackenedForeground,
                     ]}
                     allowFontScaling={false}
                 >

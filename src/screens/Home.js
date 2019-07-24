@@ -496,6 +496,7 @@ class Home extends React.Component {
                         <Button
                             rounded
                             primary
+                            blackened
                             onPress={() => this.handleContactsClick()}
                             title={this.props.contactsLabel}
                         />
