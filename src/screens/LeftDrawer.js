@@ -5,6 +5,7 @@ import { Navigation } from 'react-native-navigation';
 
 import { changeAppRoot } from '../actions';
 import { AMBASSADOR_SIGNUP_URL, LEFT_NAVIGATION_WIDTH } from '../constants';
+import Aura from '../bits/Aura';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
 import Spacing from '../bits/Spacing';
@@ -78,6 +79,7 @@ class LeftDrawer extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <Aura />
                 <RandomImage
                     sources={[{ uri: 'flower' }, { uri: 'notsorry' }, { uri: 'vibe' }, { uri: 'bolt' }]}
                     style={styles.topImage}
