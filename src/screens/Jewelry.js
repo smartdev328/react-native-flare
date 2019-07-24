@@ -10,11 +10,13 @@ import FlareDeviceID from '../bits/FlareDeviceID';
 import JewelryList from '../bits/JewelryList';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
+import Colors from '../bits/Colors';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: Spacing.medium,
+        backgroundColor: Colors.theme.cream,
     },
     buttonArea: {
         paddingTop: Spacing.small,
