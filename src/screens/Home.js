@@ -458,11 +458,6 @@ class Home extends React.Component {
                                 {!this.props.latestBeacon && <Text>{Strings.home.lastBeacon.absent}</Text>}
                                 {this.props.latestBeacon && (
                                     <View style={styles.centered}>
-                                        <Image
-                                            source={require('../assets/home-network-icon.png')}
-                                            style={[styles.networkIcon]}
-                                            resizeMode="contain"
-                                        />
                                         <Text>{Strings.home.lastBeacon.present}</Text>
                                         <Text style={[styles.centered, styles.dimmed]}>
                                             {moment(this.props.latestBeacon.timestamp).format('MMM D @ h:mma')}

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme.cream,
     },
     logo: {
-        height: 22,
+        height: 64,
         resizeMode: 'contain',
     },
 });
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 function FlareNavBar() {
     return (
         <View style={styles.center}>
-            <Image source={require('../assets/flare_dark.png')} style={styles.logo} />
+            <Image source={require('../assets/logo-aura.png')} style={styles.logo} />
         </View>
     );
 }

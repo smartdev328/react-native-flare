@@ -97,11 +97,12 @@ export default class App extends Component {
                         color: Colors.theme.cream,
                         translucent: false,
                     },
+                    noBorder: true,
                     leftButtons: [
                         {
                             id: 'menuButton',
                             icon: iconsMap.menu,
-                            color: Colors.theme.purple,
+                            color: Colors.black,
                         },
                     ],
                     title: {
@@ -147,6 +148,9 @@ export default class App extends Component {
                                     width: LEFT_NAVIGATION_WIDTH,
                                 },
                             },
+                            topBar: {
+                                noBorder: true,
+                            },
                         },
                     },
                 },
@@ -163,7 +167,7 @@ export default class App extends Component {
                         {
                             id: 'menuButton',
                             icon: iconsMap.menu,
-                            color: Colors.theme.purple,
+                            color: Colors.black,
                         },
                     ],
                     title: {
@@ -172,6 +176,7 @@ export default class App extends Component {
                             alignment: 'center',
                         },
                     },
+                    noBorder: true,
                 },
             });
             Navigation.setRoot({
@@ -211,7 +216,7 @@ export default class App extends Component {
                         {
                             id: 'menuButton',
                             icon: iconsMap.menu,
-                            color: Colors.theme.purple,
+                            color: Colors.black,
                         },
                     ],
                     title: {
@@ -220,6 +225,7 @@ export default class App extends Component {
                             alignment: 'center',
                         },
                     },
+                    noBorder: true,
                 },
             });
             Navigation.setRoot({

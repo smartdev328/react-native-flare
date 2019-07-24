@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-    ActivityIndicator,
-    Image,
-    KeyboardAvoidingView,
-    Linking,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
+import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, TextInput, View } from 'react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -125,7 +117,7 @@ class SignIn extends Component {
                 name: 'com.flarejewelry.app.SignIn',
             },
         });
-    }
+    };
 
     changeUserName(newValue) {
         this.setState({
@@ -172,22 +164,17 @@ class SignIn extends Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
-                <Image
-                    source={require('../assets/flare_dark.png')}
-                    style={styles.logo}
-                />
-                {this.state.showWarning &&
+                <Image source={require('../assets/logo-aura.png')} style={styles.logo} />
+                {this.state.showWarning && (
                     <View style={styles.warning}>
                         <Text>{Strings.signin.warning}</Text>
                     </View>
-                }
-                {(this.state.invalid || this.props.authState === 'failed') &&
+                )}
+                {(this.state.invalid || this.props.authState === 'failed') && (
                     <View style={styles.invalid}>
-                        <Text style={styles.invalidText}>
-                            {Strings.signin.invalid}
-                        </Text>
+                        <Text style={styles.invalidText}>{Strings.signin.invalid}</Text>
                     </View>
-                }
+                )}
                 <View style={styles.inputs}>
                     <TextInput
                         autoCapitalize="none"
@@ -212,17 +199,10 @@ class SignIn extends Component {
                     />
                 </View>
                 <View style={styles.loadingContainer}>
-                    {this.props.authState === 'requested' &&
-                        <ActivityIndicator color={Colors.white} />
-                    }
+                    {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
                 </View>
                 <View style={styles.buttons}>
-                    <Button
-                        rounded
-                        primary
-                        onPress={() => this.startSignIn()}
-                        title={Strings.signin.signInLabel}
-                    />
+                    <Button rounded primary onPress={() => this.startSignIn()} title={Strings.signin.signInLabel} />
                 </View>
             </KeyboardAvoidingView>
         );
