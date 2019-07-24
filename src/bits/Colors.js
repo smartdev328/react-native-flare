@@ -3,7 +3,7 @@ export default {
         blue: '#4D45BF',
         blueLight: '#30C4FF',
         cream: '#F4F2EC',
-        green: '#57DE9C',
+        green: '#78C4BE',
         purple: '#6978F6',
         peach: '#F9885E',
         pink: '#ff50b5',

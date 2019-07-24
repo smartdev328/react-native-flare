@@ -1,7 +1,7 @@
 const Type = {
     size: {
         small: 14,
-        medium: 18,
+        medium: 20,
         large: 24,
     },
 };

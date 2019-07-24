@@ -162,6 +162,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-radial-gradient')
     implementation project(':lottie-react-native')
     compile project(':react-native-notifications')
     compile project(':react-native-camera')

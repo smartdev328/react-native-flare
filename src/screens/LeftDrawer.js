@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -20,33 +20,41 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: Colors.backgrounds.pink,
-        padding: Spacing.medium,
+        paddingTop: Spacing.small,
+        paddingLeft: Spacing.medium,
+        paddingRight: Spacing.medium,
+        paddingBottom: Spacing.medium,
         width: LEFT_NAVIGATION_WIDTH,
-        paddingTop: Spacing.large,
     },
     menuItem: {
-        paddingTop: Spacing.medium,
-        paddingBottom: Spacing.medium,
+        paddingTop: Spacing.smallish,
+        paddingBottom: Spacing.smallish,
         fontSize: Type.size.medium,
+        color: Colors.white,
     },
     specialMenuItem: {
         borderWidth: 2,
         borderColor: Colors.white,
         color: Colors.white,
         marginVertical: Spacing.large,
-        fontSize: Type.size.small,
+        fontSize: 16,
         fontWeight: 'bold',
-        paddingHorizontal: Spacing.small,
+        paddingHorizontal: Spacing.smallish,
         width: '85%',
         alignItems: 'flex-start',
         textAlign: 'left',
         textTransform: 'uppercase',
     },
+    logo: {
+        height: 64,
+        width: 180,
+        resizeMode: 'contain',
+        margin: 0,
+        padding: 0,
+    },
     topImage: {
-        width: 140,
-        height: 140,
-        alignSelf: 'center',
-        marginTop: Spacing.large,
+        width: 180,
+        height: 300,
     },
 });
 
@@ -80,8 +88,9 @@ class LeftDrawer extends React.Component {
         return (
             <View style={styles.container}>
                 <Aura />
+                <Image source={require('../assets/logo-aura.png')} style={styles.logo} />
                 <RandomImage
-                    sources={[{ uri: 'flower' }, { uri: 'notsorry' }, { uri: 'vibe' }, { uri: 'bolt' }]}
+                    sources={[{ uri: 'menu-photo-1' }, { uri: 'menu-photo-2' }, { uri: 'menu-photo-3' }]}
                     style={styles.topImage}
                 />
                 <View>
