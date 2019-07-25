@@ -4,11 +4,9 @@ import Colors from './Colors';
 
 const styles = StyleSheet.create({
     center: {
-        display: 'flex',
         flex: 1,
-        height: 45,
-        flexDirection: 'column',
-        justifyContent: 'center',
+        display: 'flex',
+        alignItems: 'center',
         backgroundColor: Colors.theme.cream,
     },
     logo: {
@@ -20,7 +18,7 @@ const styles = StyleSheet.create({
 function FlareNavBar() {
     return (
         <View style={styles.center}>
-            <Image source={require('../assets/logo-aura.png')} style={styles.logo} />
+            <Image source={{ uri: 'logo-aura.png' }} style={styles.logo} />
         </View>
     );
 }
