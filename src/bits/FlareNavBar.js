@@ -4,7 +4,7 @@ import { Image, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     logo: {
         width: 180,
-        height: 64,
+        height: 48,
         resizeMode: 'contain',
     },
 });

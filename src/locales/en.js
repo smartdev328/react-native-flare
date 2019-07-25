@@ -292,6 +292,8 @@ const Strings = {
         titlePrefix: 'Settings: ',
     },
     register: {
+        instructions:
+            'Hey, congrats on getting your Flare! Fill this out to create your account. You need the code written on the sticker we put on your jewelry.',
         usernamePrompt: 'Email',
         passwordPrompt: 'Password',
         confirmPasswordPrompt: 'Confirm Password',

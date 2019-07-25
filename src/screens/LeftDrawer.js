@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         paddingTop: Spacing.small,
         paddingLeft: Spacing.medium,
         paddingRight: Spacing.medium,
-        paddingBottom: Spacing.medium,
+        paddingBottom: Spacing.small,
         width: LEFT_NAVIGATION_WIDTH,
     },
     menuItem: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: Colors.white,
         color: Colors.white,
-        marginVertical: Spacing.large,
+        marginTop: Spacing.large,
         fontSize: 16,
         fontWeight: 'bold',
         paddingHorizontal: Spacing.smallish,
@@ -46,10 +46,10 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
     },
     logo: {
-        height: 64,
+        height: 48,
         width: 180,
         resizeMode: 'contain',
-        margin: 0,
+        marginTop: Spacing.small,
         padding: 0,
     },
     topImage: {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, TextInput, View } from 'react-native';
-import BackgroundTimer from 'react-native-background-timer';
+import { ActivityIndicator, KeyboardAvoidingView, Linking, Text, TextInput, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
+import { iconsMap } from '../bits/AppIcons';
 import { signIn, resetAuth } from '../actions/authActions';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
@@ -70,6 +70,7 @@ const styles = {
         fontSize: 18,
         color: Colors.black,
         textAlign: 'center',
+        borderRadius: 4,
     },
     loadingContainer: {
         flex: 1,
@@ -87,8 +88,14 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
     },
-    signinButton: {
+    registerButton: {
         marginTop: Spacing.huge,
+    },
+    instructionsBackground: {
+        margin: Spacing.large,
+    },
+    instructionsForeground: {
+        color: Colors.white,
     },
 };
 
@@ -96,7 +103,23 @@ class Register extends Component {
     static options() {
         return {
             topBar: {
-                visible: false,
+                background: {
+                    color: Colors.theme.peach,
+                    translucent: false,
+                },
+                leftButtons: [
+                    {
+                        id: 'backButton',
+                        icon: iconsMap.back,
+                        color: Colors.black,
+                    },
+                ],
+                title: {
+                    component: {
+                        name: 'com.flarejewelry.app.FlareNavBar',
+                        alignment: 'center',
+                    },
+                },
             },
         };
     }
@@ -108,6 +131,7 @@ class Register extends Component {
             username: null,
             password: null,
             invalid: false,
+            userTyping: false,
         };
 
         const { dispatch } = props;
@@ -142,6 +166,12 @@ class Register extends Component {
         });
     }
 
+    setInputsFocused(hasFocus) {
+        this.setState({
+            userTyping: hasFocus,
+        });
+    }
+
     async startSignIn() {
         const { dispatch } = this.props;
         const { username, password } = this.state;
@@ -162,11 +192,15 @@ class Register extends Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
-                <Image source={{ uri: 'aura-4.jpg' }} style={styles.backgroundAura} />
-                <Image source={{ uri: 'logo-aura.png' }} style={styles.logo} />
+                <Aura source="aura-5" />
                 {(this.state.invalid || this.props.authState === 'failed') && (
                     <View style={styles.invalid}>
                         <Text style={styles.invalidText}>{Strings.signin.invalid}</Text>
+                    </View>
+                )}
+                {!this.state.userTyping && (
+                    <View style={styles.instructionsBackground}>
+                        <Text style={styles.instructionsForeground}>{Strings.register.instructions}</Text>
                     </View>
                 )}
                 <View style={styles.inputs}>
@@ -177,6 +211,9 @@ class Register extends Component {
                         style={styles.input}
                         value={this.state.username}
                         onChangeText={v => this.changeUserName(v)}
+                        keyboardType="email-address"
+                        onFocus={() => this.setInputsFocused(true)}
+                        onBlur={() => this.setInputsFocused(false)}
                     />
                     <TextInput
                         autoCapitalize="none"
@@ -186,6 +223,8 @@ class Register extends Component {
                         style={styles.input}
                         value={this.state.password}
                         onChangeText={v => this.changePassword(v)}
+                        onFocus={() => this.setInputsFocused(true)}
+                        onBlur={() => this.setInputsFocused(false)}
                     />
                     <TextInput
                         autoCapitalize="none"
@@ -195,6 +234,8 @@ class Register extends Component {
                         style={styles.input}
                         value={this.state.password}
                         onChangeText={v => this.changeConfirmPassword(v)}
+                        onFocus={() => this.setInputsFocused(true)}
+                        onBlur={() => this.setInputsFocused(false)}
                     />
                     <TextInput
                         autoCapitalize="characters"
@@ -203,6 +244,8 @@ class Register extends Component {
                         style={styles.input}
                         value={this.state.serialNumber}
                         onChangeText={v => this.changeSerialNumber(v)}
+                        onFocus={() => this.setInputsFocused(true)}
+                        onBlur={() => this.setInputsFocused(false)}
                     />
                     <Button
                         secondary
@@ -213,7 +256,7 @@ class Register extends Component {
                         primary
                         onPress={() => this.startSignIn()}
                         title={Strings.register.title}
-                        styleBackground={styles.signinButton}
+                        styleBackground={styles.registerButton}
                     />
                 </View>
                 <View style={styles.loadingContainer}>

@@ -67,6 +67,9 @@ const styles = StyleSheet.create({
         color: Colors.white,
         fontWeight: 'normal',
     },
+    invisible: {
+        display: 'none',
+    },
 });
 
 export default class Button extends React.PureComponent {
@@ -90,6 +93,7 @@ export default class Button extends React.PureComponent {
                     this.props.disabled && styles.disabledBackground,
                     this.props.blackened && styles.blackenedBackground,
                     this.props.styleBackground,
+                    this.props.invisible && styles.invisible,
                 ]}
             >
                 <Text

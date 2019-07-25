@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, TextInput, View } from 'react-native';
-import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -31,17 +30,7 @@ const styles = {
     choosePrompt: {
         marginBottom: 12,
     },
-    backgroundAura: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        width: undefined,
-        height: undefined,
-        resizeMode: 'cover',
-    },
-    forgotPassword: {
+    secondaryStyling: {
         fontSize: 18,
     },
     logo: {
@@ -49,6 +38,7 @@ const styles = {
         flex: 4,
         marginTop: Spacing.huge,
         marginBottom: Spacing.huge,
+        minHeight: 88,
         maxHeight: 128,
         resizeMode: 'contain',
     },
@@ -82,6 +72,7 @@ const styles = {
         fontSize: 18,
         color: Colors.black,
         textAlign: 'center',
+        minHeight: 52,
     },
     loadingContainer: {
         flex: 1,
@@ -112,6 +103,8 @@ class SignIn extends Component {
             username: null,
             password: null,
             invalid: false,
+            userNameFocused: false,
+            passwordFocused: false,
         };
 
         const { dispatch } = props;
@@ -146,6 +139,18 @@ class SignIn extends Component {
         });
     }
 
+    userNameFocused(hasFocus) {
+        this.setState({
+            userNameFocused: hasFocus,
+        });
+    }
+
+    passwordFocused(hasFocus) {
+        this.setState({
+            passwordFocused: hasFocus,
+        });
+    }
+
     async startSignIn() {
         const { dispatch } = this.props;
         const { username, password } = this.state;
@@ -166,7 +171,7 @@ class SignIn extends Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
-                <Image source={{ uri: 'aura-4.jpg' }} style={styles.backgroundAura} />
+                <Aura />
                 <Image source={{ uri: 'logo-aura.png' }} style={styles.logo} />
                 {(this.state.invalid || this.props.authState === 'failed') && (
                     <View style={styles.invalid}>
@@ -181,6 +186,10 @@ class SignIn extends Component {
                         style={styles.input}
                         value={this.state.username}
                         onChangeText={v => this.changeUserName(v)}
+                        onFocus={() => this.userNameFocused(true)}
+                        onBlur={() => this.userNameFocused(false)}
+                        keyboardType="email-address"
+                        returnKeyType="next"
                     />
                     <TextInput
                         autoCapitalize="none"
@@ -190,26 +199,44 @@ class SignIn extends Component {
                         style={styles.input}
                         value={this.state.password}
                         onChangeText={v => this.changePassword(v)}
+                        onFocus={() => this.passwordFocused(true)}
+                        onBlur={() => this.passwordFocused(false)}
+                        returnKeyType="done"
+                        onSubmitEditing={() => this.startSignIn()}
                     />
                     <Button
                         secondary
-                        styleForeground={styles.forgotPassword}
+                        styleForeground={styles.secondaryStyling}
                         title={Strings.signin.forgotPassword}
                         onPress={() => Linking.openURL('https://app.flarejewelry.co/reset')}
+                        invisible={this.state.userNameFocused || this.state.passwordFocused}
                     />
                     <Button
                         primary
                         onPress={() => this.startSignIn()}
                         title={Strings.signin.signInLabel}
                         styleBackground={styles.signinButton}
+                        invisible={this.props.authState === 'requested'}
                     />
                 </View>
                 <View style={styles.loadingContainer}>
                     {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
                 </View>
-                <View style={styles.buttons}>
-                    <Button outline title={Strings.signin.register} onPress={() => this.register()} />
-                </View>
+                {this.props.authState !== 'requested' && (
+                    <View style={styles.buttons}>
+                        <Button
+                            secondary
+                            styleForeground={styles.secondaryStyling}
+                            title={Strings.signin.register}
+                            onPress={() => this.register()}
+                            invisible={
+                                this.props.authState === 'requested' ||
+                                this.state.userNameFocused ||
+                                this.state.passwordFocused
+                            }
+                        />
+                    </View>
+                )}
             </KeyboardAvoidingView>
         );
     }
