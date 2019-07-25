@@ -291,6 +291,14 @@ const Strings = {
         title: 'Settings',
         titlePrefix: 'Settings: ',
     },
+    register: {
+        usernamePrompt: 'Email',
+        passwordPrompt: 'Password',
+        confirmPasswordPrompt: 'Confirm Password',
+        serialNumber: 'Jewelry Serial Number',
+        needToBuy: 'I need to buy jewelry',
+        title: 'Create New Account',
+    },
     signin: {
         forgotPassword: 'Forgot Password?',
         invalid: 'Please enter a valid username and password.',

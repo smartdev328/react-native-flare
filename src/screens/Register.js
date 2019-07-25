@@ -22,15 +22,6 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    backgroundGradient: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        opacity: 0.7,
-    },
-    choosePrompt: {
-        marginBottom: 12,
-    },
     backgroundAura: {
         position: 'absolute',
         top: 0,
@@ -40,9 +31,6 @@ const styles = {
         width: undefined,
         height: undefined,
         resizeMode: 'cover',
-    },
-    forgotPassword: {
-        fontSize: 18,
     },
     logo: {
         width: '70%',
@@ -104,7 +92,15 @@ const styles = {
     },
 };
 
-class SignIn extends Component {
+class Register extends Component {
+    static options() {
+        return {
+            topBar: {
+                visible: false,
+            },
+        };
+    }
+
     constructor(props) {
         super(props);
 
@@ -121,7 +117,7 @@ class SignIn extends Component {
     goToPushedView = () => {
         Navigation.push(this.props.componentId, {
             component: {
-                name: 'com.flarejewelry.app.SignIn',
+                name: 'com.flarejewelry.app.Register',
             },
         });
     };
@@ -176,7 +172,7 @@ class SignIn extends Component {
                 <View style={styles.inputs}>
                     <TextInput
                         autoCapitalize="none"
-                        placeholder={Strings.signin.usernamePrompt}
+                        placeholder={Strings.register.usernamePrompt}
                         placeholderTextColor={Colors.black}
                         style={styles.input}
                         value={this.state.username}
@@ -184,31 +180,44 @@ class SignIn extends Component {
                     />
                     <TextInput
                         autoCapitalize="none"
-                        placeholder={Strings.signin.passwordPrompt}
+                        placeholder={Strings.register.passwordPrompt}
                         placeholderTextColor={Colors.black}
                         secureTextEntry
                         style={styles.input}
                         value={this.state.password}
                         onChangeText={v => this.changePassword(v)}
                     />
+                    <TextInput
+                        autoCapitalize="none"
+                        placeholder={Strings.register.confirmPasswordPrompt}
+                        placeholderTextColor={Colors.black}
+                        secureTextEntry
+                        style={styles.input}
+                        value={this.state.password}
+                        onChangeText={v => this.changeConfirmPassword(v)}
+                    />
+                    <TextInput
+                        autoCapitalize="characters"
+                        placeholder={Strings.register.serialNumber}
+                        placeholderTextColor={Colors.black}
+                        style={styles.input}
+                        value={this.state.serialNumber}
+                        onChangeText={v => this.changeSerialNumber(v)}
+                    />
                     <Button
                         secondary
-                        styleForeground={styles.forgotPassword}
-                        title={Strings.signin.forgotPassword}
-                        onPress={() => Linking.openURL('https://app.flarejewelry.co/reset')}
+                        title={Strings.signin.needToBuy}
+                        onPress={() => Linking.openURL('https://getflare.com')}
                     />
                     <Button
                         primary
                         onPress={() => this.startSignIn()}
-                        title={Strings.signin.signInLabel}
+                        title={Strings.register.title}
                         styleBackground={styles.signinButton}
                     />
                 </View>
                 <View style={styles.loadingContainer}>
                     {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
-                </View>
-                <View style={styles.buttons}>
-                    <Button outline title={Strings.signin.register} onPress={() => this.register()} />
                 </View>
             </KeyboardAvoidingView>
         );
@@ -216,9 +225,8 @@ class SignIn extends Component {
 }
 function mapStateToProps(state) {
     return {
-        authState: state.user.authState,
         devices: state.user.devices,
     };
 }
 
-export default connect(mapStateToProps)(SignIn);
+export default connect(mapStateToProps)(Register);
