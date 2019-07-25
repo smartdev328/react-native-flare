@@ -162,8 +162,9 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-radial-gradient')
+    implementation project(':@react-native-community_async-storage')
     implementation project(':lottie-react-native')
+    implementation project(':react-native-radial-gradient')
     compile project(':react-native-notifications')
     compile project(':react-native-camera')
     compile project(':react-native-bluetooth-info')

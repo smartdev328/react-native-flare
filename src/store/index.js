@@ -8,6 +8,7 @@ import logger from 'redux-logger';
 import * as reducers from '../reducers/index';
 import { seamlessImmutableReconciler, seamlessImmutableTransformCreator } from 'redux-persist-seamless-immutable';
 import { REDUX_LOGGING, summary } from '../constants';
+import AsyncStorage from '@react-native-community/async-storage';
 
 let middleware = [thunk];
 
@@ -39,7 +40,7 @@ const transformerConfig = {
 
 const persistConfig = {
     key: 'root',
-    storage,
+    storage: AsyncStorage,
     stateReconciler: seamlessImmutableReconciler,
     transforms: [seamlessImmutableTransformCreator(transformerConfig)],
     version: 1,
