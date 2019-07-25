@@ -115,6 +115,9 @@ export default class App extends Component {
             });
             Navigation.setRoot({
                 root: {
+                    component: {
+                        name: 'com.flarejewelry.app.Root',
+                    },
                     sideMenu: {
                         left: {
                             component: {
