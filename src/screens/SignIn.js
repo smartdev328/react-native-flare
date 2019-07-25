@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { signIn, resetAuth } from '../actions/authActions';
+import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
-
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 
@@ -16,13 +16,11 @@ const styles = {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
-        flex: 1,
+        bottom: 0,
+        right: 0,
+        display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 0,
-        backgroundColor: Colors.backgrounds.blueLight,
     },
     backgroundGradient: {
         position: 'absolute',
@@ -33,11 +31,25 @@ const styles = {
     choosePrompt: {
         marginBottom: 12,
     },
+    backgroundAura: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        width: undefined,
+        height: undefined,
+        resizeMode: 'cover',
+    },
+    forgotPassword: {
+        fontSize: 18,
+    },
     logo: {
         width: '70%',
         flex: 4,
-        margin: Spacing.large,
         marginTop: Spacing.huge,
+        marginBottom: Spacing.huge,
+        maxHeight: 128,
         resizeMode: 'contain',
     },
     invalid: {
@@ -51,22 +63,25 @@ const styles = {
         color: Colors.white,
     },
     inputs: {
-        width: '100%',
         flex: 3,
-        paddingLeft: Spacing.medium,
-        paddingRight: Spacing.medium,
+        width: '80%',
+        padding: Spacing.large,
         alignItems: 'stretch',
+        marginHorizontal: Spacing.large,
         marginBottom: Spacing.huge,
+        borderRadius: Spacing.large,
     },
     input: {
-        marginBottom: Spacing.tiny,
-        backgroundColor: Colors.transparent,
-        borderBottomWidth: 2,
-        borderBottomColor: Colors.theme.cream,
-        fontSize: 20,
-        color: Colors.theme.cream,
-        height: Spacing.huge,
-        minHeight: Spacing.huge,
+        marginBottom: Spacing.small,
+        paddingHorizontal: Spacing.smallish,
+        paddingVertical: Spacing.medium,
+        backgroundColor: Colors.theme.cream,
+        borderBottomWidth: 1,
+        borderBottomColor: Colors.theme.purple,
+        borderRightColor: Colors.theme.peach,
+        fontSize: 18,
+        color: Colors.black,
+        textAlign: 'center',
     },
     loadingContainer: {
         flex: 1,
@@ -77,8 +92,15 @@ const styles = {
         maxHeight: Spacing.huge,
     },
     buttons: {
-        padding: Spacing.medium,
+        padding: Spacing.huge,
         flex: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    signinButton: {
+        marginTop: Spacing.huge,
     },
 };
 
@@ -90,25 +112,10 @@ class SignIn extends Component {
             username: null,
             password: null,
             invalid: false,
-            showWarning: false,
         };
-
-        // We use this flag to break out of our warning loop when the app navigator
-        // is moving away from this screen. Otherwise we don't succeed in stopping the
-        // background timer and users see a warning.
-        this.shuttingDown = false;
 
         const { dispatch } = props;
         dispatch(resetAuth());
-    }
-
-    componentDidMount() {
-        BackgroundTimer.runBackgroundTimer(() => this.showWarning(), /* 15 mins = */ 900000);
-    }
-
-    componentWillUnmount() {
-        this.shuttingDown = true;
-        BackgroundTimer.stopBackgroundTimer();
     }
 
     goToPushedView = () => {
@@ -128,19 +135,6 @@ class SignIn extends Component {
     changePassword(newValue) {
         this.setState({
             password: newValue,
-        });
-    }
-
-    showWarning() {
-        if (this.shuttingDown) {
-            return;
-        }
-        this.setState({
-            showWarning: true,
-        });
-        this.props.notificationManager.clear();
-        this.props.notificationManager.localNotify({
-            message: Strings.signin.warning,
         });
     }
 
@@ -164,12 +158,8 @@ class SignIn extends Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
-                <Image source={require('../assets/logo-aura.png')} style={styles.logo} />
-                {this.state.showWarning && (
-                    <View style={styles.warning}>
-                        <Text>{Strings.signin.warning}</Text>
-                    </View>
-                )}
+                <Image source={{ uri: 'aura-4.jpg' }} style={styles.backgroundAura} />
+                <Image source={{ uri: 'logo-aura.png' }} style={styles.logo} />
                 {(this.state.invalid || this.props.authState === 'failed') && (
                     <View style={styles.invalid}>
                         <Text style={styles.invalidText}>{Strings.signin.invalid}</Text>
@@ -179,6 +169,7 @@ class SignIn extends Component {
                     <TextInput
                         autoCapitalize="none"
                         placeholder={Strings.signin.usernamePrompt}
+                        placeholderTextColor={Colors.black}
                         style={styles.input}
                         value={this.state.username}
                         onChangeText={v => this.changeUserName(v)}
@@ -186,23 +177,30 @@ class SignIn extends Component {
                     <TextInput
                         autoCapitalize="none"
                         placeholder={Strings.signin.passwordPrompt}
+                        placeholderTextColor={Colors.black}
                         secureTextEntry
                         style={styles.input}
                         value={this.state.password}
                         onChangeText={v => this.changePassword(v)}
                     />
                     <Button
-                        fullWidth
-                        simple
+                        secondary
+                        styleForeground={styles.forgotPassword}
                         title={Strings.signin.forgotPassword}
                         onPress={() => Linking.openURL('https://app.flarejewelry.co/reset')}
+                    />
+                    <Button
+                        primary
+                        onPress={() => this.startSignIn()}
+                        title={Strings.signin.signInLabel}
+                        styleBackground={styles.signinButton}
                     />
                 </View>
                 <View style={styles.loadingContainer}>
                     {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
                 </View>
                 <View style={styles.buttons}>
-                    <Button rounded primary onPress={() => this.startSignIn()} title={Strings.signin.signInLabel} />
+                    <Button outline title={Strings.signin.register} onPress={() => console.log('signin')} />
                 </View>
             </KeyboardAvoidingView>
         );

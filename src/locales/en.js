@@ -292,9 +292,10 @@ const Strings = {
         titlePrefix: 'Settings: ',
     },
     signin: {
-        forgotPassword: 'Forgot Password',
+        forgotPassword: 'Forgot Password?',
         invalid: 'Please enter a valid username and password.',
         passwordPrompt: 'Password',
+        register: 'Create New Account',
         signInLabel: 'Sign In',
         usernamePrompt: 'Email',
         warning: 'You need to sign in so Flare can work! 🔥',

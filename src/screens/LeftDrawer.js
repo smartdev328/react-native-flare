@@ -88,7 +88,7 @@ class LeftDrawer extends React.Component {
         return (
             <View style={styles.container}>
                 <Aura />
-                <Image source={require('../assets/logo-aura.png')} style={styles.logo} />
+                <Image source={{ uri: 'logo-aura.png' }} style={styles.logo} />
                 <RandomImage
                     sources={[{ uri: 'menu-photo-1' }, { uri: 'menu-photo-2' }, { uri: 'menu-photo-3' }]}
                     style={styles.topImage}

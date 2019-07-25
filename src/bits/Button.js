@@ -28,18 +28,14 @@ const styles = StyleSheet.create({
     },
     outlineBackground: {
         backgroundColor: Colors.transparent,
-        borderColor: Colors.black,
+        borderColor: Colors.white,
         borderWidth: 2,
-        height: 32,
-        minHeight: 32,
-        maxHeight: 32,
+        padding: Spacing.medium,
     },
     outlineForeground: {
-        padding: 0,
         margin: 0,
-        paddingLeft: Spacing.small,
-        paddingRight: Spacing.small,
         textAlign: 'center',
+        color: Colors.white,
     },
     primaryBackground: {
         backgroundColor: Colors.transparent,
@@ -67,6 +63,10 @@ const styles = StyleSheet.create({
     blackenedForeground: {
         color: Colors.black,
     },
+    secondaryForeground: {
+        color: Colors.white,
+        fontWeight: 'normal',
+    },
 });
 
 export default class Button extends React.PureComponent {
@@ -89,6 +89,7 @@ export default class Button extends React.PureComponent {
                     this.props.outline && styles.outlineBackground,
                     this.props.disabled && styles.disabledBackground,
                     this.props.blackened && styles.blackenedBackground,
+                    this.props.styleBackground,
                 ]}
             >
                 <Text
@@ -98,6 +99,8 @@ export default class Button extends React.PureComponent {
                         this.props.outline && styles.outlineForeground,
                         this.props.disabled && styles.disabledForeground,
                         this.props.blackened && styles.blackenedForeground,
+                        this.props.secondary && styles.secondaryForeground,
+                        this.props.styleForeground,
                     ]}
                     allowFontScaling={false}
                 >
