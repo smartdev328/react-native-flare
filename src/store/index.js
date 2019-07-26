@@ -2,7 +2,6 @@
 /* eslint-disable no-undef */
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistCombineReducers } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import * as reducers from '../reducers/index';
@@ -23,17 +22,7 @@ if (__DEV__ && REDUX_LOGGING) {
 const transformerConfig = {
     whitelistPerReducer: {
         nav: ['root'],
-        user: [
-            'profile',
-            'crews',
-            'devices',
-            'authState',
-            'authToken',
-            'radioToken',
-            'settings',
-            'hasActiveFlare',
-            'role',
-        ],
+        user: ['profile', 'crews', 'devices', 'authToken', 'radioToken', 'settings', 'hasActiveFlare', 'role'],
         beacons: ['latest', 'problems'],
     },
 };
