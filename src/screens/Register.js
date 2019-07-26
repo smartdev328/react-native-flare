@@ -200,7 +200,7 @@ class Register extends Component {
                     <TextInput
                         autoCapitalize="none"
                         placeholder={Strings.register.usernamePrompt}
-                        placeholderTextColor={Colors.black}
+                        placeholderTextColor={Colors.grey}
                         style={styles.input}
                         value={this.state.username}
                         onChangeText={v => this.changeField('username', v)}
@@ -211,7 +211,7 @@ class Register extends Component {
                     <TextInput
                         autoCapitalize="none"
                         placeholder={Strings.register.phonePrompt}
-                        placeholderTextColor={Colors.black}
+                        placeholderTextColor={Colors.grey}
                         style={styles.input}
                         value={this.state.phone}
                         onChangeText={v => this.changeField('phone', v)}
@@ -222,7 +222,7 @@ class Register extends Component {
                     <TextInput
                         autoCapitalize="characters"
                         placeholder={Strings.register.serialNumber}
-                        placeholderTextColor={Colors.black}
+                        placeholderTextColor={Colors.grey}
                         style={styles.input}
                         value={this.state.serialNumber}
                         onChangeText={v => this.changeField('serialNumber', v)}

@@ -180,7 +180,7 @@ class SignIn extends Component {
                     <TextInput
                         autoCapitalize="none"
                         placeholder={Strings.signin.usernamePrompt}
-                        placeholderTextColor={Colors.black}
+                        placeholderTextColor={Colors.grey}
                         style={styles.input}
                         value={this.state.username}
                         onChangeText={v => this.changeUserName(v)}
@@ -192,7 +192,7 @@ class SignIn extends Component {
                     <TextInput
                         autoCapitalize="none"
                         placeholder={Strings.signin.passwordPrompt}
-                        placeholderTextColor={Colors.black}
+                        placeholderTextColor={Colors.grey}
                         secureTextEntry
                         style={styles.input}
                         value={this.state.password}
