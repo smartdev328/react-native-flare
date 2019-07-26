@@ -489,9 +489,8 @@ class Home extends React.Component {
                 <View style={styles.footer}>
                     {!this.props.hasActiveFlare && (
                         <Button
-                            rounded
                             primary
-                            blackened
+                            dark
                             onPress={() => this.handleContactsClick()}
                             title={this.props.contactsLabel}
                         />
@@ -499,20 +498,17 @@ class Home extends React.Component {
                     {__DEV__ && !this.props.hasActiveFlare && (
                         <View style={styles.devOnlyButtons}>
                             <Button
-                                rounded
-                                primary
+                                secondary
                                 onPress={() => this.sendTestFlare()}
                                 title={Strings.dev.sendTestFlare}
                             />
                             <Button
-                                rounded
-                                primary
+                                secondary
                                 onPress={() => this.sendTestCall()}
                                 title={Strings.dev.sendTestCall}
                             />
                             <Button
-                                rounded
-                                primary
+                                secondary
                                 onPress={() => this.sendTestCheckin()}
                                 title={Strings.dev.sendTestCheckin}
                             />
