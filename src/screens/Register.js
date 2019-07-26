@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Linking, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Linking, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -8,6 +8,7 @@ import { signIn, resetAuth } from '../actions/authActions';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
+import FlareTextInput from '../bits/FlareTextInput';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 
@@ -56,19 +57,6 @@ const styles = {
         padding: Spacing.large,
         alignItems: 'stretch',
         marginBottom: Spacing.huge,
-    },
-    input: {
-        marginBottom: Spacing.small,
-        paddingHorizontal: Spacing.smallish,
-        paddingVertical: Spacing.medium,
-        backgroundColor: Colors.theme.cream,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.theme.purple,
-        borderRightColor: Colors.theme.peach,
-        fontSize: 18,
-        color: Colors.black,
-        textAlign: 'center',
-        borderRadius: 4,
     },
     loadingContainer: {
         flex: 1,
@@ -197,33 +185,27 @@ class Register extends Component {
                     </View>
                 )}
                 <View style={styles.inputs}>
-                    <TextInput
+                    <FlareTextInput
                         autoCapitalize="none"
                         placeholder={Strings.register.usernamePrompt}
-                        placeholderTextColor={Colors.grey}
-                        style={styles.input}
                         value={this.state.username}
                         onChangeText={v => this.changeField('username', v)}
                         keyboardType="email-address"
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
                     />
-                    <TextInput
+                    <FlareTextInput
                         autoCapitalize="none"
                         placeholder={Strings.register.phonePrompt}
-                        placeholderTextColor={Colors.grey}
-                        style={styles.input}
                         value={this.state.phone}
                         onChangeText={v => this.changeField('phone', v)}
                         keyboardType="phone-pad"
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
                     />
-                    <TextInput
+                    <FlareTextInput
                         autoCapitalize="characters"
                         placeholder={Strings.register.serialNumber}
-                        placeholderTextColor={Colors.grey}
-                        style={styles.input}
                         value={this.state.serialNumber}
                         onChangeText={v => this.changeField('serialNumber', v)}
                         onFocus={() => this.setInputsFocused(true)}

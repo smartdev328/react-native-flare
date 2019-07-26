@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -9,6 +9,7 @@ import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
+import FlareTextInput from '../bits/FlareTextInput';
 
 const styles = {
     container: {
@@ -58,19 +59,6 @@ const styles = {
         padding: Spacing.large,
         alignItems: 'stretch',
         marginBottom: Spacing.huge,
-    },
-    input: {
-        marginBottom: Spacing.small,
-        paddingHorizontal: Spacing.smallish,
-        paddingVertical: Spacing.medium,
-        backgroundColor: Colors.theme.cream,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.theme.purple,
-        borderRightColor: Colors.theme.peach,
-        fontSize: 18,
-        color: Colors.black,
-        textAlign: 'center',
-        minHeight: 52,
     },
     loadingContainer: {
         flex: 1,
@@ -177,11 +165,9 @@ class SignIn extends Component {
                     </View>
                 )}
                 <View style={styles.inputs}>
-                    <TextInput
+                    <FlareTextInput
                         autoCapitalize="none"
                         placeholder={Strings.signin.usernamePrompt}
-                        placeholderTextColor={Colors.grey}
-                        style={styles.input}
                         value={this.state.username}
                         onChangeText={v => this.changeUserName(v)}
                         onFocus={() => this.userNameFocused(true)}
@@ -189,12 +175,10 @@ class SignIn extends Component {
                         keyboardType="email-address"
                         returnKeyType="next"
                     />
-                    <TextInput
+                    <FlareTextInput
                         autoCapitalize="none"
                         placeholder={Strings.signin.passwordPrompt}
-                        placeholderTextColor={Colors.grey}
                         secureTextEntry
-                        style={styles.input}
                         value={this.state.password}
                         onChangeText={v => this.changePassword(v)}
                         onFocus={() => this.passwordFocused(true)}

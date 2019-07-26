@@ -10,6 +10,9 @@ export default {
         pink: '#ff50b5',
         pinkLight: '#FFD7D2',
     },
+    themeExtended: {
+        creamDark: '#DBD8D3',
+    },
     backgrounds: {
         blue: '#e6f0fb',
         blueLight: '#f4fcff',
