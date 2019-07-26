@@ -56,7 +56,6 @@ const styles = {
         padding: Spacing.large,
         alignItems: 'stretch',
         marginBottom: Spacing.huge,
-        borderRadius: Spacing.large,
     },
     input: {
         marginBottom: Spacing.small,
@@ -130,8 +129,6 @@ class Register extends Component {
         this.state = {
             username: null,
             phone: null,
-            password: null,
-            passwordConfirm: null,
             invalid: false,
             userTyping: false,
         };
@@ -219,28 +216,6 @@ class Register extends Component {
                         value={this.state.phone}
                         onChangeText={v => this.changeField('phone', v)}
                         keyboardType="phone-pad"
-                        onFocus={() => this.setInputsFocused(true)}
-                        onBlur={() => this.setInputsFocused(false)}
-                    />
-                    <TextInput
-                        autoCapitalize="none"
-                        placeholder={Strings.register.passwordPrompt}
-                        placeholderTextColor={Colors.black}
-                        secureTextEntry
-                        style={styles.input}
-                        value={this.state.password}
-                        onChangeText={v => this.changeField('password', v)}
-                        onFocus={() => this.setInputsFocused(true)}
-                        onBlur={() => this.setInputsFocused(false)}
-                    />
-                    <TextInput
-                        autoCapitalize="none"
-                        placeholder={Strings.register.confirmPasswordPrompt}
-                        placeholderTextColor={Colors.black}
-                        secureTextEntry
-                        style={styles.input}
-                        value={this.state.passwordConfirm}
-                        onChangeText={v => this.changeField('passwordConfirm', v)}
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
                     />

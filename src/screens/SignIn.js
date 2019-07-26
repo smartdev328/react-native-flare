@@ -54,12 +54,10 @@ const styles = {
     },
     inputs: {
         flex: 3,
-        width: '80%',
+        width: '100%',
         padding: Spacing.large,
         alignItems: 'stretch',
-        marginHorizontal: Spacing.large,
         marginBottom: Spacing.huge,
-        borderRadius: Spacing.large,
     },
     input: {
         marginBottom: Spacing.small,
