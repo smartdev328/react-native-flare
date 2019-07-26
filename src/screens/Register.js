@@ -52,10 +52,9 @@ const styles = {
     },
     inputs: {
         flex: 3,
-        width: '80%',
+        width: '100%',
         padding: Spacing.large,
         alignItems: 'stretch',
-        marginHorizontal: Spacing.large,
         marginBottom: Spacing.huge,
         borderRadius: Spacing.large,
     },
@@ -89,7 +88,8 @@ const styles = {
         alignItems: 'center',
     },
     registerButton: {
-        marginTop: Spacing.huge,
+        marginTop: Spacing.large,
+        marginBottom: Spacing.huge,
     },
     instructionsBackground: {
         margin: Spacing.large,
@@ -104,7 +104,7 @@ class Register extends Component {
         return {
             topBar: {
                 background: {
-                    color: Colors.theme.peach,
+                    color: '#cf6544',
                     translucent: false,
                 },
                 leftButtons: [
@@ -129,7 +129,9 @@ class Register extends Component {
 
         this.state = {
             username: null,
+            phone: null,
             password: null,
+            passwordConfirm: null,
             invalid: false,
             userTyping: false,
         };
@@ -146,15 +148,9 @@ class Register extends Component {
         });
     };
 
-    changeUserName(newValue) {
+    changeField(fieldName, newValue) {
         this.setState({
-            username: newValue,
-        });
-    }
-
-    changePassword(newValue) {
-        this.setState({
-            password: newValue,
+            [fieldName]: newValue,
         });
     }
 
@@ -210,8 +206,19 @@ class Register extends Component {
                         placeholderTextColor={Colors.black}
                         style={styles.input}
                         value={this.state.username}
-                        onChangeText={v => this.changeUserName(v)}
+                        onChangeText={v => this.changeField('username', v)}
                         keyboardType="email-address"
+                        onFocus={() => this.setInputsFocused(true)}
+                        onBlur={() => this.setInputsFocused(false)}
+                    />
+                    <TextInput
+                        autoCapitalize="none"
+                        placeholder={Strings.register.phonePrompt}
+                        placeholderTextColor={Colors.black}
+                        style={styles.input}
+                        value={this.state.phone}
+                        onChangeText={v => this.changeField('phone', v)}
+                        keyboardType="phone-pad"
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
                     />
@@ -222,7 +229,7 @@ class Register extends Component {
                         secureTextEntry
                         style={styles.input}
                         value={this.state.password}
-                        onChangeText={v => this.changePassword(v)}
+                        onChangeText={v => this.changeField('password', v)}
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
                     />
@@ -232,8 +239,8 @@ class Register extends Component {
                         placeholderTextColor={Colors.black}
                         secureTextEntry
                         style={styles.input}
-                        value={this.state.password}
-                        onChangeText={v => this.changeConfirmPassword(v)}
+                        value={this.state.passwordConfirm}
+                        onChangeText={v => this.changeField('passwordConfirm', v)}
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
                     />
@@ -243,21 +250,28 @@ class Register extends Component {
                         placeholderTextColor={Colors.black}
                         style={styles.input}
                         value={this.state.serialNumber}
-                        onChangeText={v => this.changeSerialNumber(v)}
+                        onChangeText={v => this.changeField('serialNumber', v)}
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
-                    />
-                    <Button
-                        secondary
-                        title={Strings.signin.needToBuy}
-                        onPress={() => Linking.openURL('https://getflare.com')}
                     />
                     <Button
                         primary
                         onPress={() => this.startSignIn()}
                         title={Strings.register.title}
                         styleBackground={styles.registerButton}
+                        disabled={
+                            this.state.password &&
+                            this.state.password.length > 0 &&
+                            this.state.password === this.state.passwordConfirm
+                        }
                     />
+                    {!this.state.userTyping && (
+                        <Button
+                            secondary
+                            title={Strings.register.needToBuy}
+                            onPress={() => Linking.openURL('https://getflare.com')}
+                        />
+                    )}
                 </View>
                 <View style={styles.loadingContainer}>
                     {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
