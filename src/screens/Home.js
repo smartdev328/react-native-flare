@@ -1,7 +1,7 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import { AppState, Image, StyleSheet, Text, View } from 'react-native';
+import { AppState, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';

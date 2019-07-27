@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from './Colors';
 import Spacing from './Spacing';
+import Type from './Type';
 
 const styles = StyleSheet.create({
     container: {
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         lineHeight: 60,
         height: 60,
+        fontSize: Type.size.small,
     },
     fullWidth: {
         width: '100%',
@@ -99,8 +101,8 @@ export default class Button extends React.PureComponent {
                     this.props.outline && styles.outlineBackground,
                     this.props.disabled && styles.disabledBackground,
                     this.props.dark && styles.darkBackground,
-                    this.props.styleBackground,
                     this.props.invisible && styles.invisible,
+                    this.props.styleBackground,
                 ]}
             >
                 {this.props.disabled && <View style={styles.strikeThrough} />}
@@ -114,7 +116,6 @@ export default class Button extends React.PureComponent {
                         this.props.secondary && styles.secondaryForeground,
                         this.props.styleForeground,
                     ]}
-                    allowFontScaling={false}
                 >
                     {this.props.title}
                 </Text>

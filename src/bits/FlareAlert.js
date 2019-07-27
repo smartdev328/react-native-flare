@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.red,
     },
     infoBackground: {
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.theme.blue,
     },
     foreground: {
         color: Colors.white,

@@ -8,6 +8,7 @@ import { signIn, resetAuth } from '../actions/authActions';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
+import FlareAlert from '../bits/FlareAlert';
 import FlareTextInput from '../bits/FlareTextInput';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
@@ -40,16 +41,6 @@ const styles = {
         marginBottom: Spacing.huge,
         maxHeight: 128,
         resizeMode: 'contain',
-    },
-    invalid: {
-        paddingTop: Spacing.small,
-        paddingBottom: Spacing.small,
-        paddingLeft: Spacing.large,
-        paddingRight: Spacing.large,
-        backgroundColor: Colors.theme.blue,
-    },
-    invalidText: {
-        color: Colors.white,
     },
     inputs: {
         flex: 3,
@@ -175,11 +166,9 @@ class Register extends Component {
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Aura source="aura-5" />
                 {(this.state.invalid || this.props.authState === 'failed') && (
-                    <View style={styles.invalid}>
-                        <Text style={styles.invalidText}>{Strings.signin.invalid}</Text>
-                    </View>
+                    <FlareAlert variant="info" message={Strings.signin.invalid} />
                 )}
-                {!this.state.userTyping && (
+                {!this.state.userTyping && !this.state.invalid && (
                     <View style={styles.instructionsBackground}>
                         <Text style={styles.instructionsForeground}>{Strings.register.instructions}</Text>
                     </View>
@@ -211,17 +200,24 @@ class Register extends Component {
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
                     />
-                    <Button
-                        primary
-                        onPress={() => this.startSignIn()}
-                        title={Strings.register.title}
-                        styleBackground={styles.registerButton}
-                        disabled={
-                            this.state.password &&
-                            this.state.password.length > 0 &&
-                            this.state.password === this.state.passwordConfirm
-                        }
-                    />
+                    {this.props.authState !== 'requested' && (
+                        <Button
+                            primary
+                            onPress={() => this.startSignIn()}
+                            title={Strings.register.title}
+                            styleBackground={styles.registerButton}
+                            disabled={
+                                this.state.password &&
+                                this.state.password.length > 0 &&
+                                this.state.password === this.state.passwordConfirm
+                            }
+                        />
+                    )}
+                    {this.props.authState === 'requested' && (
+                        <View style={styles.loadingContainer}>
+                            <ActivityIndicator color={Colors.white} />
+                        </View>
+                    )}
                     {!this.state.userTyping && (
                         <Button
                             secondary
@@ -229,9 +225,6 @@ class Register extends Component {
                             onPress={() => Linking.openURL('https://getflare.com')}
                         />
                     )}
-                </View>
-                <View style={styles.loadingContainer}>
-                    {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
                 </View>
             </KeyboardAvoidingView>
         );

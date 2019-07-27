@@ -31,9 +31,6 @@ const styles = {
     choosePrompt: {
         marginBottom: 12,
     },
-    secondaryStyling: {
-        fontSize: 18,
-    },
     logo: {
         width: '70%',
         flex: 4,
@@ -188,7 +185,6 @@ class SignIn extends Component {
                     />
                     <Button
                         secondary
-                        styleForeground={styles.secondaryStyling}
                         title={Strings.signin.forgotPassword}
                         onPress={() => Linking.openURL('https://app.flarejewelry.co/reset')}
                         invisible={this.state.userNameFocused || this.state.passwordFocused}
@@ -208,7 +204,6 @@ class SignIn extends Component {
                     <View style={styles.buttons}>
                         <Button
                             secondary
-                            styleForeground={styles.secondaryStyling}
                             title={Strings.signin.register}
                             onPress={() => this.register()}
                             invisible={

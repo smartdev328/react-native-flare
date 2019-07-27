@@ -294,11 +294,11 @@ const Strings = {
     register: {
         instructions:
             'Hey, congrats on getting your Flare! Fill this out to create your account. You need the code written on the sticker we put on your jewelry.',
-        phonePrompt: 'Phone number 111-222-3333',
-        usernamePrompt: 'Email',
+        phonePrompt: 'Phone number – no dashes',
+        usernamePrompt: 'Email – you@domain.com',
         passwordPrompt: 'Password',
         confirmPasswordPrompt: 'Confirm Password',
-        serialNumber: 'Jewelry Serial Number',
+        serialNumber: 'Jewelry Serial Number – XXXYYYZZZ',
         needToBuy: 'I need to buy jewelry',
         title: 'Create New Account',
     },

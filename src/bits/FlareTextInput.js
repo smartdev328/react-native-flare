@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: Colors.theme.purple,
         borderRightColor: Colors.theme.peach,
-        fontSize: Type.size.smallish,
+        fontSize: Type.size.small,
         color: Colors.black,
         textAlign: 'center',
         borderTopLeftRadius: topRadius,
