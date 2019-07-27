@@ -177,6 +177,22 @@ export function user(state = initialState.user, action = {}) {
     }
 
     /**
+         * USER REGISTRATION
+         */
+    case types.REGISTER_USER_REQUEST:
+        return state.merge({
+            registrationState: 'requested',
+        });
+    case types.REGISTER_USER_FAILURE:
+        return state.merge({
+            registrationState: 'failed',
+        });
+    case types.REGISTER_USER_SUCCESS:
+        return state.merge({
+            registrationState: 'succeeded',
+        });
+
+        /**
          * DEVICES
          */
     case types.DEVICE_CLAIM_REQUEST:

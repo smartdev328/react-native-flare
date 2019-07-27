@@ -36,6 +36,32 @@ export function signIn(email, password) {
     };
 }
 
+export function registerNewAccount(email, password, serialNumber) {
+    return async function doRegister(dispatch) {
+        dispatch({
+            type: types.REGISTER_USER_REQUEST,
+        });
+        return axios
+            .post(`${API_URL}/auth/register`, {
+                email,
+                password,
+                serialNumber,
+            })
+            .then((response) => {
+                dispatch({
+                    type: types.REGISTER_USER_SUCCESS,
+                    data: response.data,
+                });
+                dispatch(changeAppRoot('secure-onboarding'));
+            })
+            .catch(res =>
+                dispatch({
+                    type: types.REGISTER_USER_FAILURE,
+                    res,
+                }));
+    };
+}
+
 export function resetAuth() {
     return async function doReset() {
         await AsyncStorage.removeItem('userToken');

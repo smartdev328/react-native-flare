@@ -295,12 +295,17 @@ const Strings = {
         instructions:
             'Hey, congrats on getting your Flare! Fill this out to create your account. You need the code written on the sticker we put on your jewelry.',
         phonePrompt: 'Phone number – no dashes',
-        usernamePrompt: 'Email – you@domain.com',
+        emailPrompt: 'Email – you@domain.com',
         passwordPrompt: 'Password',
         confirmPasswordPrompt: 'Confirm Password',
         serialNumber: 'Jewelry Serial Number – XXXYYYZZZ',
         needToBuy: 'I need to buy jewelry',
         title: 'Create New Account',
+        errors: {
+            allFieldsRequired: 'All fields are required.',
+            invalidSerialNumber: 'Please enter a valid serial number.',
+            serverError: 'Something went wrong. Please try again later.',
+        },
     },
     signin: {
         forgotPassword: 'Forgot Password?',

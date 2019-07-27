@@ -66,6 +66,10 @@ export const MANUFACTURING_GET_DEVICES_FAILURE = 'flare.manufacturing.GET_DEVICE
 export const MANUFACTURING_GET_DEVICES_REQUEST = 'flare.manufacturing.GET_DEVICES_REQUEST';
 export const MANUFACTURING_GET_DEVICES_SUCCESS = 'flare.manufacturing.GET_DEVICES_SUCCESS';
 
+export const REGISTER_USER_FAILURE = 'flare.app.REGISTER_USER_FAILURE';
+export const REGISTER_USER_REQUEST = 'flare.app.REGISTER_USER_REQUEST';
+export const REGISTER_USER_SUCCESS = 'flare.app.REGISTER_USER_SUCCESS';
+
 export const USER_SET_PIN_FAILURE = 'flare.app.USER_SET_PIN_FAILURE';
 export const USER_SET_PIN_REQUEST = 'flare.app.USER_SET_PIN_REQUEST';
 export const USER_SET_PIN_SUCCESS = 'flare.app.USER_SET_PIN_SUCCESS';

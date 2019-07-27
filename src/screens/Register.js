@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { iconsMap } from '../bits/AppIcons';
-import { signIn, resetAuth } from '../actions/authActions';
+import { registerNewAccount, resetAuth } from '../actions/authActions';
+import { DEVICE_ID_LABEL_LENGTH, DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../constants';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -106,9 +107,12 @@ class Register extends Component {
         super(props);
 
         this.state = {
-            username: null,
-            phone: null,
+            email: null,
             invalid: false,
+            invalidReason: null,
+            phone: null,
+            registrationState: null,
+            serialNumber: null,
             userTyping: false,
         };
 
@@ -144,21 +148,51 @@ class Register extends Component {
         });
     }
 
-    async startSignIn() {
+    async startRegistration() {
         const { dispatch } = this.props;
-        const { username, password } = this.state;
-        if (username === null || username.length === 0 || password === null || password.length === 0) {
+        const { email, phone, serialNumber } = this.state;
+        const requiredSerialNumberLength = DEVICE_ID_LABEL_LENGTH + DEVICE_TWO_FACTOR_LABEL_LENGTH;
+        if (
+            !email ||
+            email.length === 0 ||
+            !phone ||
+            phone.length === 0 ||
+            !serialNumber ||
+            serialNumber.length === 0
+        ) {
             this.setState({
                 invalid: true,
+                invalidReason: Strings.register.errors.allFieldsRequired,
+            });
+            return;
+        }
+
+        if (serialNumber.length !== requiredSerialNumberLength) {
+            this.setState({
+                invalid: true,
+                invalidReason: Strings.register.errors.invalidSerialNumber,
             });
             return;
         }
 
         this.setState({
             invalid: false,
+            invalidReason: null,
         });
 
-        dispatch(signIn(username, password));
+        dispatch(registerNewAccount(email, phone, serialNumber));
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.registrationState !== state.registrationState) {
+            if (props.registrationState === 'failed') {
+                return {
+                    invalid: true,
+                    invalidReason: Strings.register.errors.serverError,
+                };
+            }
+        }
+        return null;
     }
 
     render() {
@@ -166,7 +200,7 @@ class Register extends Component {
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Aura source="aura-5" />
                 {(this.state.invalid || this.props.authState === 'failed') && (
-                    <FlareAlert variant="info" message={Strings.signin.invalid} />
+                    <FlareAlert variant="info" message={this.state.invalidReason} />
                 )}
                 {!this.state.userTyping && !this.state.invalid && (
                     <View style={styles.instructionsBackground}>
@@ -176,9 +210,9 @@ class Register extends Component {
                 <View style={styles.inputs}>
                     <FlareTextInput
                         autoCapitalize="none"
-                        placeholder={Strings.register.usernamePrompt}
-                        value={this.state.username}
-                        onChangeText={v => this.changeField('username', v)}
+                        placeholder={Strings.register.emailPrompt}
+                        value={this.state.email}
+                        onChangeText={v => this.changeField('email', v)}
                         keyboardType="email-address"
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
@@ -203,7 +237,7 @@ class Register extends Component {
                     {this.props.authState !== 'requested' && (
                         <Button
                             primary
-                            onPress={() => this.startSignIn()}
+                            onPress={() => this.startRegistration()}
                             title={Strings.register.title}
                             styleBackground={styles.registerButton}
                             disabled={
@@ -213,7 +247,7 @@ class Register extends Component {
                             }
                         />
                     )}
-                    {this.props.authState === 'requested' && (
+                    {this.props.registrationState === 'requested' && (
                         <View style={styles.loadingContainer}>
                             <ActivityIndicator color={Colors.white} />
                         </View>
@@ -232,7 +266,7 @@ class Register extends Component {
 }
 function mapStateToProps(state) {
     return {
-        devices: state.user.devices,
+        registrationState: state.user.registrationState,
     };
 }
 
