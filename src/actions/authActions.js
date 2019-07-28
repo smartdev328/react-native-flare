@@ -63,31 +63,6 @@ export function registerNewAccount(email, phone, serial) {
     };
 }
 
-export function setUserDetails(firstName, lastName, password) {
-    return async function doRegister(dispatch) {
-        dispatch({
-            type: types.SET_USER_DETAILS_REQUEST,
-        });
-        return axios
-            .post(`${API_URL}/auth/register/details`, {
-                firstName,
-                lastName,
-                password,
-            })
-            .then((response) => {
-                dispatch({
-                    type: types.SET_USER_DETAILS_SUCCESS,
-                    data: response.data,
-                });
-            })
-            .catch(res =>
-                dispatch({
-                    type: types.SET_USER_DETAILS_FAILURE,
-                    res,
-                }));
-    };
-}
-
 export function resetAuth() {
     return async function doReset() {
         await AsyncStorage.removeItem('userToken');

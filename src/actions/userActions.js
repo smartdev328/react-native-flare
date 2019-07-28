@@ -193,6 +193,33 @@ export function setOnboardingComplete(token) {
     };
 }
 
+export function setUserDetails(token, firstName, lastName, password) {
+    return async function doSetDetails(dispatch) {
+        dispatch({
+            type: types.SET_USER_DETAILS_REQUEST,
+        });
+        ProtectedAPICall(token, API_URL, '/auth/register/details', {
+            method: 'PUT',
+            data: {
+                first: firstName,
+                last: lastName,
+                password,
+            },
+        })
+            .then(() => {
+                dispatch({
+                    type: types.SET_USER_DETAILS_SUCCESS,
+                });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.SET_USER_DETAILS_FAILURE,
+                    error,
+                });
+            });
+    };
+}
+
 export function setAnalyticsEnabled(token, enabled) {
     return function setEnabled(dispatch) {
         dispatch({

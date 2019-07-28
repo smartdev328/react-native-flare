@@ -195,6 +195,23 @@ export function user(state = initialState.user, action = {}) {
         });
 
         /**
+         * SET USER DETAILS
+         */
+    case types.SET_USER_DETAILS_REQUEST:
+        return state.merge({
+            settingDetailsState: 'requested',
+        });
+    case types.SET_USER_DETAILS_FAILURE:
+        return state.merge({
+            settingDetailsState: 'failed',
+        });
+    case types.SET_USER_DETAILS_SUCCESS:
+        return state.merge({
+            settingDetailsState: 'succeeded',
+            completedRegistration: true,
+        });
+
+        /**
          * DEVICES
          */
     case types.DEVICE_CLAIM_REQUEST:

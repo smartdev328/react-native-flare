@@ -313,7 +313,7 @@ const Strings = {
         passwordPrompt: 'Password',
         submitLabel: "Let's do this!",
         errors: {
-            invalidPassword: 'Bad password. Use letters, numbers, and punctuation.',
+            invalidPassword: 'Passwords need to be 8 characters or more. Use letters, numbers, and punctuation.',
         },
     },
     signin: {

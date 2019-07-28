@@ -3,8 +3,9 @@ import { ActivityIndicator, KeyboardAvoidingView, Linking, Text, View } from 're
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
+import { changeAppRoot } from '../actions/navActions';
 import { iconsMap } from '../bits/AppIcons';
-import { setUserDetails } from '../actions/authActions';
+import { setUserDetails } from '../actions/userActions';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -12,7 +13,6 @@ import FlareAlert from '../bits/FlareAlert';
 import FlareTextInput from '../bits/FlareTextInput';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
-import Register from './Register';
 
 const styles = {
     container: {
@@ -65,7 +65,7 @@ class Register2 extends Component {
         return {
             topBar: {
                 background: {
-                    color: '#cf6544',
+                    color: Colors.theme.blue,
                     translucent: false,
                 },
                 leftButtons: [
@@ -111,7 +111,7 @@ class Register2 extends Component {
             invalid: false,
             invalidReason: null,
             lastName: null,
-            settingPasswordState: null,
+            settingDetailsState: null,
             password: null,
             passwordIsValid: false,
             userTyping: false,
@@ -119,15 +119,21 @@ class Register2 extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (props.settingPasswordState !== state.settingPasswordState) {
-            if (props.settingPasswordState === 'failed') {
+        if (props.settingDetailsState !== state.settingDetailsState) {
+            if (props.settingDetailsState === 'failed') {
                 return {
                     invalid: true,
-                    invalidReason: Strings.register2.errors.serverError,
+                    invalidReason: Strings.register.errors.serverError,
                 };
             }
         }
         return null;
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.settingDetailsState !== 'succeeded' && this.props.settingDetailsState === 'succeeded') {
+            this.props.dispatch(changeAppRoot('secure-onboarding'));
+        }
     }
 
     setInputsFocused(hasFocus) {
@@ -172,7 +178,7 @@ class Register2 extends Component {
             return;
         }
 
-        if (!Register.isPasswordValid(password)) {
+        if (!Register2.isPasswordValid(password)) {
             this.setState({
                 invalid: true,
                 invalidReason: Strings.register2.errors.invalidPassword,
@@ -185,14 +191,14 @@ class Register2 extends Component {
             invalidReason: null,
         });
 
-        dispatch(setUserDetails(firstName, lastName, password));
+        dispatch(setUserDetails(this.props.authToken, firstName, lastName, password));
     }
 
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
-                <Aura source="aura-5" />
-                {(this.state.invalid || this.state.settingPasswordState === 'failed') && (
+                <Aura source="aura-4" />
+                {(this.state.invalid || this.props.settingDetailsState === 'failed') && (
                     <FlareAlert variant="info" message={this.state.invalidReason} />
                 )}
                 {!this.state.userTyping && !this.state.invalid && (
@@ -229,22 +235,15 @@ class Register2 extends Component {
                         onBlur={() => this.setInputsFocused(false)}
                         error={!this.state.passwordIsValid}
                     />
-                    {this.props.settingPasswordState !== 'requested' && (
+                    {this.props.settingDetailsState !== 'requested' && (
                         <Button
                             primary
                             onPress={() => this.startSettingPassword()}
                             title={Strings.register2.submitLabel}
                             styleBackground={styles.registerButton}
-                            disabled={
-                                !this.state.firstName ||
-                                this.state.firstName.length === 0 ||
-                                !this.state.lastName ||
-                                this.state.lastName.length === 0 ||
-                                !this.state.passwordIsValid
-                            }
                         />
                     )}
-                    {this.props.settingPasswordState === 'requested' && (
+                    {this.props.settingDetailsState === 'requested' && (
                         <View style={styles.loadingContainer}>
                             <ActivityIndicator color={Colors.white} />
                         </View>
@@ -256,7 +255,8 @@ class Register2 extends Component {
 }
 function mapStateToProps(state) {
     return {
-        settingPasswordState: state.user.settingPasswordState,
+        authToken: state.user.authToken,
+        settingDetailsState: state.user.settingDetailsState,
     };
 }
 
