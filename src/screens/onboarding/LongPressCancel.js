@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../../constants';
@@ -49,9 +44,7 @@ export default function getLongPressCancelPage(args) {
         subtitle = (
             <View>
                 <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>
-                        {Strings.onboarding.longPressCancel.initial.subtitle}
-                    </Text>
+                    <Text style={styles.subtitleText}>{Strings.onboarding.longPressCancel.initial.subtitle}</Text>
                 </View>
                 <View style={styles.pinInputArea}>
                     <TextInput
@@ -86,11 +79,12 @@ export default function getLongPressCancelPage(args) {
                     width: 292,
                     height: 292,
                 }}
-            />);
+            />
+        );
     }
 
     return {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.peach,
         image,
         title,
         subtitle,

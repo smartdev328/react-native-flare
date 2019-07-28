@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TextInput, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../../constants';
@@ -70,13 +64,12 @@ export default function getBluetoothPage(args) {
                     circleTwoFactor
                     containerStyle={styles.jewelryPreview}
                 />
-            </View>);
+            </View>
+        );
         ({ title } = Strings.onboarding.shortPress.chosenDevice);
         subtitle = (
             <View style={styles.bluetoothConfirm}>
-                <Text style={styles.confirmInstructions}>
-                    {Strings.onboarding.shortPress.chosenDevice.subtitle}
-                </Text>
+                <Text style={styles.confirmInstructions}>{Strings.onboarding.shortPress.chosenDevice.subtitle}</Text>
                 <TextInput
                     autoCapitalize="characters"
                     placeholder={Strings.jewelry.addNewConfirm.placeholderTwoFactor}
@@ -103,23 +96,19 @@ export default function getBluetoothPage(args) {
         ({ title } = Strings.onboarding.shortPress.singleDevice);
         subtitle = (
             <View>
-                <Text style={styles.foundJewelryIntro}>
-                    {Strings.onboarding.shortPress.singleDevice.subtitleStart}
-                </Text>
+                <Text style={styles.foundJewelryIntro}>{Strings.onboarding.shortPress.singleDevice.subtitleStart}</Text>
                 <Text style={styles.foundJewelryID}>
                     {FlareDeviceID.getJewelryLabelFromDeviceID(args.highestPressCount.deviceID)}
                 </Text>
-                {args.claimingDevice &&
-                    <ActivityIndicator />
-                }
-                {!args.claimingDevice &&
+                {args.claimingDevice && <ActivityIndicator />}
+                {!args.claimingDevice && (
                     <Button
                         primary
                         rounded
                         title={Strings.onboarding.shortPress.singleDevice.buttonLabel}
                         onPress={() => args.chooseThisDevice(args.highestPressCount.deviceID)}
                     />
-                }
+                )}
             </View>
         );
     } else {
@@ -139,11 +128,12 @@ export default function getBluetoothPage(args) {
                     width: 292,
                     height: 292,
                 }}
-            />);
+            />
+        );
     }
 
     return {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.purple,
         image,
         title,
         subtitle,

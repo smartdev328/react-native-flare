@@ -15,6 +15,7 @@ import getBluetoothPage from './onboarding/Bluetooth';
 import getLongPressPage from './onboarding/LongPress';
 import getLongPressCancelPage from './onboarding/LongPressCancel';
 import getContactsPage from './onboarding/Contacts';
+import getWelcomePage from './onboarding/Welcome';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
@@ -43,15 +44,9 @@ class OnboardingMain extends React.Component {
     static options() {
         return {
             topBar: {
-                visible: true,
+                visible: false,
                 animate: false,
                 leftButtons: [],
-                title: {
-                    component: {
-                        name: 'com.flarejewelry.app.FlareNavBar',
-                        alignment: 'center',
-                    },
-                },
             },
         };
     }
@@ -211,6 +206,11 @@ class OnboardingMain extends React.Component {
             endOnboarding: () => this.endOnboarding(),
         });
 
+        /**
+         * The following pages don't have dynamic states.
+         */
+        const welcomePage = getWelcomePage();
+
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <Onboarding
@@ -219,33 +219,15 @@ class OnboardingMain extends React.Component {
                         alignItems: 'center',
                     }}
                     givePage
-                    showSkip
+                    showSkip={false}
                     showBack
                     showDone={false}
                     onSkip={() => this.skipOnboarding()}
                     pages={[
-                        {
-                            /* Welcome */
-                            backgroundColor: Colors.white,
-                            image: (
-                                <LottieView
-                                    source={require('../assets/lotties/heart.json')}
-                                    autoPlay
-                                    speed={0.7}
-                                    loop={false}
-                                    resizeMode="cover"
-                                    style={{
-                                        width: 292,
-                                        height: 292,
-                                    }}
-                                />
-                            ),
-                            title: Strings.onboarding.welcome.title,
-                            subtitle: Strings.onboarding.welcome.subtitle,
-                        },
+                        welcomePage,
                         {
                             /* Location */
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.theme.purple,
                             image: (
                                 <LottieView
                                     source={require('../assets/lotties/location.json')}

@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import Button from '../../bits/Button';
@@ -35,9 +31,7 @@ export default function getContactsPage(args) {
         subtitle = (
             <View>
                 <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>
-                        {Strings.onboarding.contacts.hasCrew.subtitle}
-                    </Text>
+                    <Text style={styles.subtitleText}>{Strings.onboarding.contacts.hasCrew.subtitle}</Text>
                 </View>
                 <Button
                     title={Strings.onboarding.contacts.hasCrew.buttonLabel}
@@ -53,9 +47,7 @@ export default function getContactsPage(args) {
         subtitle = (
             <View>
                 <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>
-                        {Strings.onboarding.contacts.hasPermission.subtitle}
-                    </Text>
+                    <Text style={styles.subtitleText}>{Strings.onboarding.contacts.hasPermission.subtitle}</Text>
                 </View>
                 <Button
                     title={Strings.onboarding.contacts.hasPermission.chooseCrewLabel}
@@ -71,9 +63,7 @@ export default function getContactsPage(args) {
         subtitle = (
             <View>
                 <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>
-                        {Strings.onboarding.contacts.initial.subtitle}
-                    </Text>
+                    <Text style={styles.subtitleText}>{Strings.onboarding.contacts.initial.subtitle}</Text>
                 </View>
                 <Button
                     title={Strings.onboarding.contacts.initial.buttonLabel}
@@ -96,11 +86,12 @@ export default function getContactsPage(args) {
                     width: 292,
                     height: 292,
                 }}
-            />);
+            />
+        );
     }
 
     return {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.purple,
         image,
         title,
         subtitle,

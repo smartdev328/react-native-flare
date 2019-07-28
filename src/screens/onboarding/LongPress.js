@@ -35,11 +35,12 @@ export default function getLongPressPage(args) {
                     width: 292,
                     height: 292,
                 }}
-            />);
+            />
+        );
     }
 
     return {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.peach,
         image,
         title,
         subtitle,
