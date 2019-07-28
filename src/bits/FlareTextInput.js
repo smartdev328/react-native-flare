@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.themeExtended.creamDark,
         borderBottomColor: Colors.black,
     },
+    error: {
+        borderBottomColor: Colors.red,
+    },
 });
 
 export default function FlareTextInput(props) {
@@ -34,7 +37,7 @@ export default function FlareTextInput(props) {
             {...props}
             editable={!props.disabled}
             placeholderTextColor={Colors.grey}
-            style={[styles.input, props.disabled && styles.disabled]}
+            style={[styles.input, props.disabled && styles.disabled, props.error && styles.error]}
         />
     );
 }
