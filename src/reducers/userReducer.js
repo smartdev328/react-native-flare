@@ -190,6 +190,8 @@ export function user(state = initialState.user, action = {}) {
     case types.REGISTER_USER_SUCCESS:
         return state.merge({
             registrationState: 'succeeded',
+            authToken: action.data.auth_token,
+            radioToken: action.data.radio_token,
         });
 
         /**

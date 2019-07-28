@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
-import * as types from './actionTypes';
+import { Navigation } from 'react-native-navigation';
+
 import { changeAppRoot } from './navActions';
 import { API_URL, MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants/index';
+import * as types from './actionTypes';
 import Roles from '../constants/Roles';
 
 export function signIn(email, password) {
@@ -36,7 +38,7 @@ export function signIn(email, password) {
     };
 }
 
-export function registerNewAccount(email, password, serialNumber) {
+export function registerNewAccount(email, phone, serial) {
     return async function doRegister(dispatch) {
         dispatch({
             type: types.REGISTER_USER_REQUEST,
@@ -44,19 +46,43 @@ export function registerNewAccount(email, password, serialNumber) {
         return axios
             .post(`${API_URL}/auth/register`, {
                 email,
-                password,
-                serialNumber,
+                phone,
+                serial,
             })
             .then((response) => {
                 dispatch({
                     type: types.REGISTER_USER_SUCCESS,
                     data: response.data,
                 });
-                dispatch(changeAppRoot('secure-onboarding'));
             })
             .catch(res =>
                 dispatch({
                     type: types.REGISTER_USER_FAILURE,
+                    res,
+                }));
+    };
+}
+
+export function setUserDetails(firstName, lastName, password) {
+    return async function doRegister(dispatch) {
+        dispatch({
+            type: types.SET_USER_DETAILS_REQUEST,
+        });
+        return axios
+            .post(`${API_URL}/auth/register/details`, {
+                firstName,
+                lastName,
+                password,
+            })
+            .then((response) => {
+                dispatch({
+                    type: types.SET_USER_DETAILS_SUCCESS,
+                    data: response.data,
+                });
+            })
+            .catch(res =>
+                dispatch({
+                    type: types.SET_USER_DETAILS_FAILURE,
                     res,
                 }));
     };

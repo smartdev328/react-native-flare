@@ -296,15 +296,24 @@ const Strings = {
             'Hey, congrats on getting your Flare! Fill this out to create your account. You need the code written on the sticker we put on your jewelry.',
         phonePrompt: 'Phone number – no dashes',
         emailPrompt: 'Email – you@domain.com',
-        passwordPrompt: 'Password',
         confirmPasswordPrompt: 'Confirm Password',
         serialNumber: 'Jewelry Serial Number – XXXYYYZZZ',
         needToBuy: 'I need to buy jewelry',
-        title: 'Create New Account',
+        submitLabel: 'Create New Account',
         errors: {
             allFieldsRequired: 'All fields are required.',
             invalidSerialNumber: 'Please enter a valid serial number.',
             serverError: 'Something went wrong. Please try again later.',
+        },
+    },
+    register2: {
+        instructions: 'Almost done! Please set your name and password so you can start using your jewelry.',
+        firstNamePrompt: 'First name',
+        lastNamePrompt: 'Last name',
+        passwordPrompt: 'Password',
+        submitLabel: "Let's do this!",
+        errors: {
+            invalidPassword: 'Bad password. Use letters, numbers, and punctuation.',
         },
     },
     signin: {

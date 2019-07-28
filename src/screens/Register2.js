@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { iconsMap } from '../bits/AppIcons';
-import { registerNewAccount, resetAuth } from '../actions/authActions';
-import { DEVICE_ID_LABEL_LENGTH, DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../constants';
+import { setUserDetails } from '../actions/authActions';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -13,6 +12,7 @@ import FlareAlert from '../bits/FlareAlert';
 import FlareTextInput from '../bits/FlareTextInput';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
+import Register from './Register';
 
 const styles = {
     container: {
@@ -60,9 +60,7 @@ const styles = {
     },
 };
 
-const requiredSerialNumberLength = DEVICE_ID_LABEL_LENGTH + DEVICE_TWO_FACTOR_LABEL_LENGTH;
-
-class Register extends Component {
+class Register2 extends Component {
     static options() {
         return {
             topBar: {
@@ -87,35 +85,49 @@ class Register extends Component {
         };
     }
 
+    static isPasswordValid(password) {
+        // / https://stackoverflow.com/questions/3466850/regular-expression-to-enforce-complex-passwords-matching-3-out-of-4-rules
+        let valid = true;
+        if (password.length < 8) {
+            valid = false;
+        } else {
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasNonalphas = /\W/.test(password);
+            if (hasUpperCase + hasLowerCase + hasNumbers + hasNonalphas < 3) {
+                valid = false;
+            }
+        }
+
+        return valid;
+    }
+
     constructor(props) {
         super(props);
 
         this.state = {
-            email: null,
+            firstName: null,
             invalid: false,
             invalidReason: null,
-            phone: null,
-            registrationState: null,
-            serialNumber: null,
+            lastName: null,
+            settingPasswordState: null,
+            password: null,
+            passwordIsValid: false,
             userTyping: false,
         };
-
-        const { dispatch } = props;
-        dispatch(resetAuth());
     }
 
-    goToPushedView = () => {
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.Register',
-            },
-        });
-    };
-
-    changeField(fieldName, newValue) {
-        this.setState({
-            [fieldName]: newValue,
-        });
+    static getDerivedStateFromProps(props, state) {
+        if (props.settingPasswordState !== state.settingPasswordState) {
+            if (props.settingPasswordState === 'failed') {
+                return {
+                    invalid: true,
+                    invalidReason: Strings.register2.errors.serverError,
+                };
+            }
+        }
+        return null;
     }
 
     setInputsFocused(hasFocus) {
@@ -124,16 +136,34 @@ class Register extends Component {
         });
     }
 
-    startRegistration() {
+    changeField(fieldName, newValue) {
+        const newState = {
+            [fieldName]: newValue,
+        };
+        if (fieldName === 'password') {
+            newState.passwordIsValid = Register2.isPasswordValid(newValue);
+        }
+        this.setState(newState);
+    }
+
+    goToPushedView = () => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Register2',
+            },
+        });
+    };
+
+    startSettingPassword() {
         const { dispatch } = this.props;
-        const { email, phone, serialNumber } = this.state;
+        const { firstName, lastName, password } = this.state;
         if (
-            !email ||
-            email.length === 0 ||
-            !phone ||
-            phone.length === 0 ||
-            !serialNumber ||
-            serialNumber.length === 0
+            !firstName ||
+            firstName.length === 0 ||
+            !lastName ||
+            lastName.length === 0 ||
+            !password ||
+            password.length === 0
         ) {
             this.setState({
                 invalid: true,
@@ -142,10 +172,10 @@ class Register extends Component {
             return;
         }
 
-        if (serialNumber.length !== requiredSerialNumberLength) {
+        if (!Register.isPasswordValid(password)) {
             this.setState({
                 invalid: true,
-                invalidReason: Strings.register.errors.invalidSerialNumber,
+                invalidReason: Strings.register2.errors.invalidPassword,
             });
             return;
         }
@@ -155,97 +185,69 @@ class Register extends Component {
             invalidReason: null,
         });
 
-        dispatch(registerNewAccount(email, phone, serialNumber));
-    }
-
-    static getDerivedStateFromProps(props, state) {
-        if (props.registrationState !== state.registrationState) {
-            if (props.registrationState === 'failed') {
-                return {
-                    invalid: true,
-                    invalidReason: Strings.register.errors.serverError,
-                };
-            }
-        }
-        return null;
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.registrationState !== 'succeeded' && this.props.registrationState === 'succeeded') {
-            Navigation.push(this.props.componentId, {
-                component: {
-                    name: 'com.flarejewelry.app.Register2',
-                },
-            });
-        }
+        dispatch(setUserDetails(firstName, lastName, password));
     }
 
     render() {
-        const submitDisabled =
-            !this.state.email ||
-            this.state.email.length === 0 ||
-            !this.state.phone ||
-            this.state.phone.length === 0 ||
-            !this.state.serialNumber ||
-            this.state.serialNumber.length < requiredSerialNumberLength;
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Aura source="aura-5" />
-                {(this.state.invalid || this.props.registrationState === 'failed') && (
+                {(this.state.invalid || this.state.settingPasswordState === 'failed') && (
                     <FlareAlert variant="info" message={this.state.invalidReason} />
                 )}
                 {!this.state.userTyping && !this.state.invalid && (
                     <View style={styles.instructionsBackground}>
-                        <Text style={styles.instructionsForeground}>{Strings.register.instructions}</Text>
+                        <Text style={styles.instructionsForeground}>{Strings.register2.instructions}</Text>
                     </View>
                 )}
                 <View style={styles.inputs}>
                     <FlareTextInput
-                        autoCapitalize="none"
-                        placeholder={Strings.register.emailPrompt}
-                        value={this.state.email}
-                        onChangeText={v => this.changeField('email', v)}
-                        keyboardType="email-address"
+                        autoCapitalize="sentences"
+                        placeholder={Strings.register2.firstNamePrompt}
+                        value={this.state.firstName}
+                        onChangeText={v => this.changeField('firstName', v)}
+                        keyboardType="ascii-capable"
+                        onFocus={() => this.setInputsFocused(true)}
+                        onBlur={() => this.setInputsFocused(false)}
+                    />
+                    <FlareTextInput
+                        autoCapitalize="sentences"
+                        placeholder={Strings.register2.lastNamePrompt}
+                        value={this.state.lastName}
+                        onChangeText={v => this.changeField('lastName', v)}
+                        keyboardType="ascii-capable"
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
                     />
                     <FlareTextInput
                         autoCapitalize="none"
-                        placeholder={Strings.register.phonePrompt}
-                        value={this.state.phone}
-                        onChangeText={v => this.changeField('phone', v)}
-                        keyboardType="phone-pad"
+                        placeholder={Strings.register2.passwordPrompt}
+                        value={this.state.password}
+                        secureTextEntry
+                        onChangeText={v => this.changeField('password', v)}
                         onFocus={() => this.setInputsFocused(true)}
                         onBlur={() => this.setInputsFocused(false)}
+                        error={!this.state.passwordIsValid}
                     />
-                    <FlareTextInput
-                        autoCapitalize="characters"
-                        placeholder={Strings.register.serialNumber}
-                        value={this.state.serialNumber}
-                        onChangeText={v => this.changeField('serialNumber', v)}
-                        onFocus={() => this.setInputsFocused(true)}
-                        onBlur={() => this.setInputsFocused(false)}
-                    />
-                    {this.props.registrationState !== 'requested' && (
+                    {this.props.settingPasswordState !== 'requested' && (
                         <Button
                             primary
-                            onPress={() => this.startRegistration()}
-                            title={Strings.register.submitLabel}
+                            onPress={() => this.startSettingPassword()}
+                            title={Strings.register2.submitLabel}
                             styleBackground={styles.registerButton}
-                            disabled={submitDisabled}
+                            disabled={
+                                !this.state.firstName ||
+                                this.state.firstName.length === 0 ||
+                                !this.state.lastName ||
+                                this.state.lastName.length === 0 ||
+                                !this.state.passwordIsValid
+                            }
                         />
                     )}
-                    {this.props.registrationState === 'requested' && (
+                    {this.props.settingPasswordState === 'requested' && (
                         <View style={styles.loadingContainer}>
                             <ActivityIndicator color={Colors.white} />
                         </View>
-                    )}
-                    {!this.state.userTyping && (
-                        <Button
-                            secondary
-                            title={Strings.register.needToBuy}
-                            onPress={() => Linking.openURL('https://getflare.com')}
-                        />
                     )}
                 </View>
             </KeyboardAvoidingView>
@@ -254,8 +256,8 @@ class Register extends Component {
 }
 function mapStateToProps(state) {
     return {
-        registrationState: state.user.registrationState,
+        settingPasswordState: state.user.settingPasswordState,
     };
 }
 
-export default connect(mapStateToProps)(Register);
+export default connect(mapStateToProps)(Register2);

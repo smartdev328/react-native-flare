@@ -12,6 +12,7 @@ import LeftDrawer from './LeftDrawer';
 import Onboarding from './Onboarding';
 import PinCheck from './PinCheck';
 import Register from './Register';
+import Register2 from './Register2';
 import Settings from './Settings';
 import SettingsCall from './settings/Call';
 import SettingsConfig from './settings/Config';
@@ -43,6 +44,7 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux('com.flarejewelry.app.LeftDrawer', () => LeftDrawer, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.PinCheck', () => PinCheck, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Register', () => Register, Provider, store);
+    Navigation.registerComponentWithRedux('com.flarejewelry.app.Register2', () => Register2, Provider, store);
     Navigation.registerComponent('com.flarejewelry.app.Settings', () => Settings);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.settings.Call', () => SettingsCall, Provider, store);
     Navigation.registerComponent('com.flarejewelry.app.settings.Config', () => SettingsConfig);
