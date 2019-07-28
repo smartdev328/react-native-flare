@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
         height: 40,
         minHeight: 40,
         maxHeight: 40,
+        opacity: 1.0,
     },
     left: {
         alignSelf: 'flex-start',
@@ -72,13 +73,6 @@ const styles = StyleSheet.create({
     invisible: {
         display: 'none',
     },
-    strikeThrough: {
-        width: 128,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.greyLight,
-        transform: [{ translateX: -20 }, { rotateZ: '-20deg' }],
-        position: 'absolute',
-    },
 });
 
 export default class Button extends React.PureComponent {
@@ -99,21 +93,20 @@ export default class Button extends React.PureComponent {
                     this.props.primary && styles.primaryBackground,
                     this.props.left && styles.left,
                     this.props.outline && styles.outlineBackground,
-                    this.props.disabled && styles.disabledBackground,
                     this.props.dark && styles.darkBackground,
                     this.props.invisible && styles.invisible,
+                    this.props.disabled && styles.disabledBackground,
                     this.props.styleBackground,
                 ]}
             >
-                {this.props.disabled && <View style={styles.strikeThrough} />}
                 <Text
                     style={[
                         styles.text,
                         this.props.primary && styles.primaryForeground,
                         this.props.outline && styles.outlineForeground,
-                        this.props.disabled && styles.disabledForeground,
                         this.props.dark && styles.darkForeground,
                         this.props.secondary && styles.secondaryForeground,
+                        this.props.disabled && styles.disabledForeground,
                         this.props.styleForeground,
                     ]}
                 >
