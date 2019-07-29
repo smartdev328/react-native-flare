@@ -6488,6 +6488,11 @@ react-native-notifications@^1.5.0:
   dependencies:
     tinycolor2 "^1.4.1"
 
+react-native-permissions@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.2.0.tgz#0deb616bf1565c17c91f1cb1f953809b2892c29e"
+  integrity sha512-+KrP1JZ30RI9p30wsGlGQx22qwiClDnznSQZPpvBMkOIZQ9kXOkLAFXS+vwiHRiiRu/pBMBXYHfI7ng6t2+LbQ==
+
 react-native-safe-modules@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-modules/-/react-native-safe-modules-1.0.0.tgz#10a918adf97da920adb1e33e0c852b1e80123b65"

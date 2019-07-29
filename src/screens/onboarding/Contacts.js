@@ -20,16 +20,16 @@ const styles = StyleSheet.create({
 });
 
 export default function getContactsPage(props) {
-    let title = null;
     let subtitle = null;
     let image = null;
-    let imageSource = null;
+    let lottieSource = null;
+    let imageUri = null;
 
     if (props.hasContactsPermission && props.crews && props.crews.length) {
         /**
          * User has given contacts access and has chosen a crew
          */
-        imageSource = require('../../assets/lotties/checkmark.json');
+        lottieSource = require('../../assets/lotties/checkmark.json');
         ({ title, subtitle } = Strings.onboarding.contacts.hasCrew);
         subtitle = (
             <View>
@@ -44,7 +44,7 @@ export default function getContactsPage(props) {
             </View>
         );
     } else if (props.hasContactsPermission) {
-        imageSource = require('../../assets/lotties/checkmark.json');
+        lottieSource = require('../../assets/lotties/checkmark.json');
         ({ title } = Strings.onboarding.contacts.hasPermission);
         subtitle = (
             <View>
@@ -59,7 +59,7 @@ export default function getContactsPage(props) {
             </View>
         );
     } else {
-        image = { uri: 'onboarding-contacts' };
+        imageUri = { uri: 'onboarding-contacts' };
         ({ title } = Strings.onboarding.contacts.initial);
         subtitle = (
             <View>
@@ -75,10 +75,10 @@ export default function getContactsPage(props) {
         );
     }
 
-    if (imageSource) {
+    if (lottieSource) {
         image = (
             <LottieView
-                source={imageSource}
+                source={lottieSource}
                 autoPlay
                 loop
                 resizeMode="cover"
@@ -93,7 +93,7 @@ export default function getContactsPage(props) {
     return {
         backgroundColor: Colors.theme.purple,
         image: <CommonTop />,
-        title: <CommonMiddle right imageSource={image} />,
+        title: lottieSource ? <CommonMiddle right image={image} /> : <CommonMiddle right imageSource={imageUri} />,
         subtitle,
     };
 }

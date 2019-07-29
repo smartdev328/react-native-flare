@@ -45,6 +45,7 @@
 		456C881F416C46C5A56EBB79 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58E27E809AC94DDE8D14B7DC /* Feather.ttf */; };
 		46A5E2DE998B46568602EF20 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96F93211F4B1407B912388B6 /* Entypo.ttf */; };
 		4EAB4A571E174B5C8EACA560 /* ReactNativeNavigationTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = C08BEFBB39F34C6A970D9DD2 /* ReactNativeNavigationTests.xctest */; };
+		624880F6616646FCAE41116C /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB62C9B6F9BA4ECEA2686AB6 /* libReactNativePermissions.a */; };
 		6510656269AC42D2AA10A0DD /* libLottie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D6BDB9BB12A439092377A45 /* libLottie.a */; };
 		6EA47894F1D542BF8D8C5CEB /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 643F83F361424ED6BD4873DE /* FontAwesome5_Regular.ttf */; };
 		7281F359171F431FB638E2BF /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCD6C153581E4DEFBCE9230B /* Ionicons.ttf */; };
@@ -377,6 +378,13 @@
 			remoteGlobalIDString = A39873CE1EA65EE60051E01A;
 			remoteInfo = "RNVectorIcons-tvOS";
 		};
+		BE2F0A0922EF57060007E14E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9BC790D871D34CA4BDAB4991 /* ReactNativePermissions.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D23B34F1C767B80008B4819;
+			remoteInfo = ReactNativePermissions;
+		};
 		BE34183C20BF4D3C00D25DF4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0A2FC39804C746DB9B5E9323 /* RNI18n.xcodeproj */;
@@ -611,6 +619,7 @@
 		8A9827844C954A1A94A78FE6 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		9423C09563554A28BDB5AB95 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		96F93211F4B1407B912388B6 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		9BC790D871D34CA4BDAB4991 /* ReactNativePermissions.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativePermissions.xcodeproj; path = "../node_modules/react-native-permissions/ios/ReactNativePermissions.xcodeproj"; sourceTree = "<group>"; };
 		A1A4BE5C07D740CC9A0CF04C /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		A6052B5C56BF478482F82488 /* libRCTContacts.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTContacts.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -624,6 +633,7 @@
 		BEA80DC422EA0D0100F2B027 /* app-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "app-Bridging-Header.h"; sourceTree = "<group>"; };
 		BEA80DC522EA0D0100F2B027 /* stack-overflow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "stack-overflow.swift"; sourceTree = "<group>"; };
 		C08BEFBB39F34C6A970D9DD2 /* ReactNativeNavigationTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReactNativeNavigationTests.xctest; sourceTree = "<group>"; };
+		CB62C9B6F9BA4ECEA2686AB6 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativePermissions.a; sourceTree = "<group>"; };
 		CCD6C153581E4DEFBCE9230B /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		D7BCF09062D0485E8215BE31 /* libRNBackgroundTimer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBackgroundTimer.a; sourceTree = "<group>"; };
 		DAAE14CB89644222A912DB05 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -679,6 +689,7 @@
 				6510656269AC42D2AA10A0DD /* libLottie.a in Frameworks */,
 				F4045BD393734F0D8463B7E9 /* libLottieReactNative.a in Frameworks */,
 				8C704BF062F54ECD820DF0B1 /* libRNCAsyncStorage.a in Frameworks */,
+				624880F6616646FCAE41116C /* libReactNativePermissions.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,6 +919,7 @@
 				F3D66D1FED7E43DE859F1EAF /* LottieReactNative.xcodeproj */,
 				02375149803B4588BAF83F32 /* Lottie.xcodeproj */,
 				B95C4251D3EA4C2C923559C5 /* RNCAsyncStorage.xcodeproj */,
+				9BC790D871D34CA4BDAB4991 /* ReactNativePermissions.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -975,6 +987,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		BE2F0A0622EF57060007E14E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE2F0A0A22EF57060007E14E /* libReactNativePermissions.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		BE34180720BF4D3A00D25DF4 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -997,6 +1017,7 @@
 				5D6BDB9BB12A439092377A45 /* libLottie.a */,
 				76E751617AAD41F2AE4797FC /* libLottieReactNative.a */,
 				40CE21602C444601B51629BE /* libRNCAsyncStorage.a */,
+				CB62C9B6F9BA4ECEA2686AB6 /* libReactNativePermissions.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1330,6 +1351,10 @@
 				{
 					ProductGroup = BE5D769E21C97CA20074CDE2 /* Products */;
 					ProjectRef = 29D0DD67CF1A4C1396395EA8 /* ReactNativeNavigation.xcodeproj */;
+				},
+				{
+					ProductGroup = BE2F0A0622EF57060007E14E /* Products */;
+					ProjectRef = 9BC790D871D34CA4BDAB4991 /* ReactNativePermissions.xcodeproj */;
 				},
 				{
 					ProductGroup = BE6ADCD6219F3D6C00750A79 /* Products */;
@@ -1668,6 +1693,13 @@
 			fileType = archive.ar;
 			path = "libRNVectorIcons-tvOS.a";
 			remoteRef = BE0E973C229F04700050F45E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BE2F0A0A22EF57060007E14E /* libReactNativePermissions.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativePermissions.a;
+			remoteRef = BE2F0A0922EF57060007E14E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		BE34183D20BF4D3C00D25DF4 /* libRNI18n.a */ = {
@@ -2015,6 +2047,7 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = appTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -2022,6 +2055,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2066,6 +2100,7 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = appTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -2073,6 +2108,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2119,6 +2155,7 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2169,6 +2206,7 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2220,12 +2258,14 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "app-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2273,12 +2313,14 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "app-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2325,12 +2367,14 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "app-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -2377,12 +2421,14 @@
 					"$(SRCROOT)/../node_modules/react-native-radial-gradient/ios",
 					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "app-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)/System/Library/Frameworks\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);

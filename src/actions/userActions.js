@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import Contacts from 'react-native-contacts';
+import Permissions from 'react-native-permissions';
 
 import * as types from './actionTypes';
 import { API_URL } from '../constants/';
@@ -116,6 +117,28 @@ export function getCrewEventTimeline(token, eventID) {
                     error,
                 });
             });
+    };
+}
+
+export function getPermission(name, options) {
+    return async function doCheck(dispatch) {
+        Permissions.check(name, options).then((checkResponse) => {
+            if (checkResponse !== 'authorized') {
+                Permissions.request(name, options).then((response) => {
+                    dispatch({
+                        type: types.PERMISSIONS_SUCCESS,
+                        permission: name,
+                        granted: response === 'authorized',
+                    });
+                });
+            } else {
+                dispatch({
+                    type: types.PERMISSIONS_SUCCESS,
+                    permission: name,
+                    granted: true,
+                });
+            }
+        });
     };
 }
 
