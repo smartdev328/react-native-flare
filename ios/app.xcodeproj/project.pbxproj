@@ -64,7 +64,6 @@
 		BE4E47E6213E47EB00F2B947 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4E47BE213E476B00F2B947 /* libRCTPushNotification.a */; };
 		BE5917CF229F0F350015E7E5 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE5917CE229F0F350015E7E5 /* JavaScriptCore.framework */; };
 		BE6ADC7E219F246B00750A79 /* libRNiBeacon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE6ADC7D219F246B00750A79 /* libRNiBeacon.a */; };
-		BEA80DC322E8A67300F2B027 /* libSRSRadialGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA80DC022E8A54100F2B027 /* libSRSRadialGradient.a */; };
 		BEA80DC622EA0D0100F2B027 /* stack-overflow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA80DC522EA0D0100F2B027 /* stack-overflow.swift */; };
 		CB315B4B120B4164826A5702 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9423C09563554A28BDB5AB95 /* FontAwesome5_Brands.ttf */; };
 		CD49E371E28F4432A1E4558C /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1568792E5ED743DB942EE2DF /* libRNCamera.a */; };
@@ -651,7 +650,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEA80DC322E8A67300F2B027 /* libSRSRadialGradient.a in Frameworks */,
 				BE5917CF229F0F350015E7E5 /* JavaScriptCore.framework in Frameworks */,
 				BE6ADC7E219F246B00750A79 /* libRNiBeacon.a in Frameworks */,
 				BE4E47E6213E47EB00F2B947 /* libRCTPushNotification.a in Frameworks */,

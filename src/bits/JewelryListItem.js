@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
     labelBold: {
         fontWeight: 'normal',
-        fontSize: Type.size.huge,
+        fontSize: Type.size.large,
         marginTop: Spacing.medium,
         marginBottom: Spacing.small,
     },

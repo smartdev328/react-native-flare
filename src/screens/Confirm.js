@@ -13,8 +13,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
+        width: '80%',
+        height: '80%',
+        marginVertical: '10%',
+        marginHorizontal: '10%',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -50,7 +52,7 @@ export default class Confirm extends React.Component {
     static options() {
         return {
             topBar: {
-                visible: true,
+                visible: false,
                 animate: false,
                 leftButtons: [],
             },
@@ -59,14 +61,14 @@ export default class Confirm extends React.Component {
 
     onConfirm() {
         this.props.onConfirm();
-        Navigation.pop(this.props.componentId);
+        Navigation.dismissModal(this.props.componentId);
     }
 
     onCancel() {
         if (this.props.onCancel) {
             this.props.onCancel();
         }
-        Navigation.pop(this.props.componentId);
+        Navigation.dismissModal(this.props.componentId);
     }
 
     goToPushedView = () => {

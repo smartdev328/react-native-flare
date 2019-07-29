@@ -64,15 +64,21 @@ class Jewelry extends React.Component {
         const prompt = `${Strings.jewelry.removeConfirm.promptBegin}${jewelryLabel}${
             Strings.jewelry.removeConfirm.promptEnd
         }`;
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.Confirm',
-                passProps: {
-                    cancelLabel: Strings.jewelry.removeConfirm.cancelLabel,
-                    confirmLabel: Strings.jewelry.removeConfirm.confirmLabel,
-                    onConfirm: () => this.removeJewelry(deviceID),
-                    prompt,
-                },
+        Navigation.showModal({
+            stack: {
+                children: [
+                    {
+                        component: {
+                            name: 'com.flarejewelry.app.Confirm',
+                            passProps: {
+                                cancelLabel: Strings.jewelry.removeConfirm.cancelLabel,
+                                confirmLabel: Strings.jewelry.removeConfirm.confirmLabel,
+                                onConfirm: () => this.removeJewelry(deviceID),
+                                prompt,
+                            },
+                        },
+                    },
+                ],
             },
         });
     }
