@@ -1,7 +1,11 @@
 import React from 'react';
+import { View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import Colors from '../../bits/Colors';
+import CommonBottom from './CommonBottom';
+import CommonMiddle from './CommonMiddle';
+import CommonTop from './CommonTop';
 import Strings from '../../locales/en';
 
 export default function getLongPressPage(args) {
@@ -40,9 +44,17 @@ export default function getLongPressPage(args) {
     }
 
     return {
-        backgroundColor: Colors.theme.peach,
-        image,
-        title,
-        subtitle,
+        backgroundColor: Colors.theme.purple,
+        image: (
+            <View>
+                <CommonTop />
+            </View>
+        ),
+        title: (
+            <View>
+                <CommonMiddle right body={subtitle} image={image} />
+            </View>
+        ),
+        subtitle: <View />,
     };
 }

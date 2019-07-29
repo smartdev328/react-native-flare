@@ -136,7 +136,8 @@ const Strings = {
         },
         shortPress: {
             title: 'Short Press',
-            subtitle: 'Press the button on your jewelry briefly a few times in a row.',
+            subtitle:
+                'Press the button on your jewelry\nbriefly a few times in a row. Your phone will ring. Take the call, then press Next.',
             multipleDevices: {
                 title: 'Wait a sec',
                 subtitle: "It's noisy in here. Wait a sec and try again, or maybe move to a different room.",
@@ -160,7 +161,7 @@ const Strings = {
         longPress: {
             waiting: {
                 title: 'Long Press',
-                subtitle: 'Now hold the button down for longer, about 3 seconds, and let go',
+                subtitle: 'Now hold the button down for longer, about 3 seconds, and let go.',
             },
             success: {
                 title: 'Long Press 😎🎉✨',

@@ -40,7 +40,8 @@ export default function CommonMiddle(props) {
         <View style={[styles.container, props.left && styles.left, props.right && styles.right]}>
             {props.title && <Text style={styles.h1}>{props.title}</Text>}
             {props.body && <Text style={styles.body}>{props.body}</Text>}
-            <Image source={{ uri: props.imageSource }} style={styles.image} />
+            {props.imageSource && <Image source={{ uri: props.imageSource }} style={styles.image} />}
+            {props.image}
         </View>
     );
 }

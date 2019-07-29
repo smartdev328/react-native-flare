@@ -22,15 +22,17 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     bodyText: {
+        flex: 1,
         fontSize: Type.size.medium,
         color: Colors.white,
-        width: '50%',
     },
     bodyTextLeft: {
-        textAlign: 'right',
+        textAlign: 'left',
+        marginLeft: Spacing.huge,
     },
     bodyTextRight: {
-        textAlign: 'left',
+        textAlign: 'right',
+        marginRight: Spacing.huge,
     },
 });
 

@@ -5,11 +5,14 @@ import LottieView from 'lottie-react-native';
 import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../../constants';
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
+import CommonMiddle from './CommonMiddle';
+import CommonTop from './CommonTop';
 import FlareDeviceID from '../../bits/FlareDeviceID';
 import JewelryLabelPreview from '../../bits/JewelryLabelPreview';
 import Spacing from '../../bits/Spacing';
-import Type from '../../bits/Type';
 import Strings from '../../locales/en';
+import Type from '../../bits/Type';
+import CommonBottom from './CommonBottom';
 
 const styles = StyleSheet.create({
     bluetoothConfirm: {
@@ -43,24 +46,24 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function getBluetoothPage(args) {
+export default function getBluetoothPage(props) {
     let title = null;
     let subtitle = null;
     let image = null;
     let imageSource = null;
 
-    if (!args.bluetoothEnabled) {
+    if (!props.bluetoothEnabled) {
         // bluetooth is disabled
         imageSource = require('../../assets/lotties/hmm.json');
         ({ title, subtitle } = Strings.onboarding.noBluetooth);
-    } else if (args.deviceHasBeenClaimed) {
+    } else if (props.deviceHasBeenClaimed) {
         imageSource = require('../../assets/lotties/gift.json');
         ({ title, subtitle } = Strings.onboarding.shortPress.deviceClaimed);
-    } else if (args.chosenDeviceID) {
+    } else if (props.chosenDeviceID) {
         image = (
             <View style={styles.image}>
                 <JewelryLabelPreview
-                    deviceID={FlareDeviceID.getJewelryLabelFromDeviceID(args.chosenDeviceID)}
+                    deviceID={FlareDeviceID.getJewelryLabelFromDeviceID(props.chosenDeviceID)}
                     circleTwoFactor
                     containerStyle={styles.jewelryPreview}
                 />
@@ -73,24 +76,24 @@ export default function getBluetoothPage(args) {
                 <TextInput
                     autoCapitalize="characters"
                     placeholder={Strings.jewelry.addNewConfirm.placeholderTwoFactor}
-                    onChangeText={v => args.changeTwoFactorText(v)}
+                    onChangeText={v => props.changeTwoFactorText(v)}
                     maxLength={DEVICE_TWO_FACTOR_LABEL_LENGTH}
-                    value={args.secondFactor}
+                    value={props.secondFactor}
                     style={styles.secondFactorInput}
                 />
                 <Button
                     primary
                     rounded
                     title={Strings.onboarding.shortPress.singleDevice.buttonLabel}
-                    onPress={() => args.claimDevice()}
+                    onPress={() => props.claimDevice()}
                 />
             </View>
         );
-    } else if (args.multipleDevicesBroadcasting) {
+    } else if (props.multipleDevicesBroadcasting) {
         // too many devices transmitting to know for sure which one belongs to user
         imageSource = require('../../assets/lotties/hmm.json');
         ({ title, subtitle } = Strings.onboarding.shortPress.multipleDevices);
-    } else if (args.highestPressCount.deviceID) {
+    } else if (props.highestPressCount.deviceID) {
         // one good device transmitting
         imageSource = require('../../assets/lotties/dino-dance.json');
         ({ title } = Strings.onboarding.shortPress.singleDevice);
@@ -98,15 +101,15 @@ export default function getBluetoothPage(args) {
             <View>
                 <Text style={styles.foundJewelryIntro}>{Strings.onboarding.shortPress.singleDevice.subtitleStart}</Text>
                 <Text style={styles.foundJewelryID}>
-                    {FlareDeviceID.getJewelryLabelFromDeviceID(args.highestPressCount.deviceID)}
+                    {FlareDeviceID.getJewelryLabelFromDeviceID(props.highestPressCount.deviceID)}
                 </Text>
-                {args.claimingDevice && <ActivityIndicator />}
-                {!args.claimingDevice && (
+                {props.claimingDevice && <ActivityIndicator />}
+                {!props.claimingDevice && (
                     <Button
                         primary
                         rounded
                         title={Strings.onboarding.shortPress.singleDevice.buttonLabel}
-                        onPress={() => args.chooseThisDevice(args.highestPressCount.deviceID)}
+                        onPress={() => props.chooseThisDevice(props.highestPressCount.deviceID)}
                     />
                 )}
             </View>
@@ -134,8 +137,20 @@ export default function getBluetoothPage(args) {
 
     return {
         backgroundColor: Colors.theme.purple,
-        image,
-        title,
-        subtitle,
+        image: (
+            <View style={styles.imageContainer}>
+                <CommonTop />
+            </View>
+        ),
+        title: (
+            <View style={styles.titleContainer}>
+                <CommonMiddle right image={image} />
+            </View>
+        ),
+        subtitle: (
+            <View style={styles.subtitleContainer}>
+                <CommonBottom right bodyText={subtitle} />
+            </View>
+        ),
     };
 }
