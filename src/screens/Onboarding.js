@@ -130,15 +130,21 @@ class OnboardingMain extends React.Component {
     }
 
     skipOnboarding() {
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.Confirm',
-                passProps: {
-                    cancelLabel: Strings.generic.cancel,
-                    confirmLabel: Strings.generic.confirm,
-                    onConfirm: () => this.endOnboarding(),
-                    prompt: Strings.onboarding.skipConfirmPrompt,
-                },
+        Navigation.showModal({
+            stack: {
+                children: [
+                    {
+                        component: {
+                            name: 'com.flarejewelry.app.Confirm',
+                            passProps: {
+                                cancelLabel: Strings.generic.cancel,
+                                confirmLabel: Strings.generic.confirm,
+                                onConfirm: () => this.endOnboarding(),
+                                prompt: Strings.onboarding.skipConfirmPrompt,
+                            },
+                        },
+                    },
+                ],
             },
         });
     }
