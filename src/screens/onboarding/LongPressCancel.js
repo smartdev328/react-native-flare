@@ -1,12 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
 import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../../constants';
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
+import CommonBottom from './CommonBottom';
+import CommonTop from './CommonTop';
+import CommonMiddle from './CommonMiddle';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
+import FlareTextInput from '../../bits/FlareTextInput';
 import Type from '../../bits/Type';
 
 const styles = StyleSheet.create({
@@ -15,31 +19,23 @@ const styles = StyleSheet.create({
     },
     subtitleText: {
         marginBottom: Spacing.medium,
+        color: Colors.white,
     },
     pinInputArea: {
         margin: Spacing.medium,
     },
-    pinInputField: {
-        fontSize: Type.size.large,
-        padding: Spacing.small,
-        textAlign: 'center',
-        borderWidth: 1,
-        borderColor: Colors.theme.pink,
-        marginBottom: Spacing.large,
-    },
 });
 
-export default function getLongPressCancelPage(args) {
+export default function getLongPressCancelPage(props) {
     let title = null;
     let subtitle = null;
     let image = null;
     let imageSource = null;
 
-    if (args.hasSetPin) {
-        imageSource = require('../../assets/lotties/safe.json');
+    if (props.hasSetPin) {
+        imageSource = { uri: 'onboarding-cancelflare' };
         ({ title, subtitle } = Strings.onboarding.longPressCancel.hasSetPin);
     } else {
-        imageSource = require('../../assets/lotties/unlock.json');
         ({ title } = Strings.onboarding.longPressCancel.initial);
         subtitle = (
             <View>
@@ -47,28 +43,34 @@ export default function getLongPressCancelPage(args) {
                     <Text style={styles.subtitleText}>{Strings.onboarding.longPressCancel.initial.subtitle}</Text>
                 </View>
                 <View style={styles.pinInputArea}>
-                    <TextInput
+                    <FlareTextInput
                         autoCapitalize="characters"
                         placeholder={Strings.onboarding.longPressCancel.pinPlaceholder}
-                        onChangeText={v => args.changeCancelPIN(v)}
+                        onChangeText={v => props.changeCancelPIN(v)}
                         maxLength={LONG_PRESS_CANCEL_PIN_LENGTH}
-                        value={args.pin}
-                        style={styles.pinInputField}
+                        value={props.pin}
+                        secureTextEntry
+                    />
+                    <FlareTextInput
+                        autoCapitalize="characters"
+                        placeholder={Strings.onboarding.longPressCancel.pinConfirmPlaceholder}
+                        onChangeText={v => props.changeConfirmCancelPIN(v)}
+                        maxLength={LONG_PRESS_CANCEL_PIN_LENGTH}
+                        value={props.pinConfirm}
                         secureTextEntry
                     />
                     <Button
                         title={Strings.onboarding.longPressCancel.initial.buttonLabel}
-                        onPress={() => args.setCancelPIN()}
-                        disabled={args.pin.length < LONG_PRESS_CANCEL_PIN_LENGTH}
+                        onPress={() => props.setCancelPIN()}
+                        disabled={props.pin.length < LONG_PRESS_CANCEL_PIN_LENGTH}
                         primary
-                        rounded
                     />
                 </View>
             </View>
         );
     }
 
-    if (imageSource) {
+    if (imageSource && !props.hasSetPin) {
         image = (
             <LottieView
                 source={imageSource}
@@ -85,8 +87,25 @@ export default function getLongPressCancelPage(args) {
 
     return {
         backgroundColor: Colors.theme.peach,
-        image,
-        title,
-        subtitle,
+        image: (
+            <View>
+                <CommonTop />
+            </View>
+        ),
+        title: (
+            <View>
+                {props.hasSetPin && <CommonMiddle center body={title} imageSource={imageSource} />}
+                {!props.hasSetPin && <CommonMiddle center form={subtitle} image={image} />}
+            </View>
+        ),
+        subtitle: (
+            <View>
+                {props.hasSetPin && (
+                    <View>
+                        <CommonBottom center bodyText={subtitle} />
+                    </View>
+                )}
+            </View>
+        ),
     };
 }

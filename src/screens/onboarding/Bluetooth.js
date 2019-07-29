@@ -5,6 +5,7 @@ import LottieView from 'lottie-react-native';
 import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../../constants';
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
+import CommonBottom from './CommonBottom';
 import CommonMiddle from './CommonMiddle';
 import CommonTop from './CommonTop';
 import FlareDeviceID from '../../bits/FlareDeviceID';
@@ -12,7 +13,6 @@ import JewelryLabelPreview from '../../bits/JewelryLabelPreview';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Type from '../../bits/Type';
-import CommonBottom from './CommonBottom';
 
 const styles = StyleSheet.create({
     bluetoothConfirm: {

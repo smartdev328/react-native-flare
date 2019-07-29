@@ -174,17 +174,15 @@ const Strings = {
         },
         longPressCancel: {
             initial: {
-                title: 'Cancel your Flare',
-                subtitle:
-                    "Cancel your Flare to tell your contacts that you're okay. " +
-                    'Choose a secret pin code so only you can cancel your Flares:',
+                subtitle: "Choose the pin code that you'll enter when canceling Flares in the future.",
                 buttonLabel: 'Save Secret',
             },
             hasSetPin: {
-                title: 'Good to Go',
-                subtitle: "Great! Next you'll choose the people who we'll reach out to " + 'when you really need it.',
+                title: 'Nice.',
+                subtitle: "You canceled your Flare, so your friends know that you're safe.",
             },
             pinPlaceholder: 'Secret code',
+            pinConfirmPlaceholder: 'Confirm secret code',
         },
         contacts: {
             hasCrew: {

@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         marginRight: Spacing.huge,
     },
+    center: {
+        alignItems: 'center',
+    },
     h1: {
         fontSize: Type.size.huge,
         color: Colors.white,
@@ -37,11 +40,19 @@ const styles = StyleSheet.create({
 
 export default function CommonMiddle(props) {
     return (
-        <View style={[styles.container, props.left && styles.left, props.right && styles.right]}>
+        <View
+            style={[
+                styles.container,
+                props.left && styles.left,
+                props.right && styles.right,
+                props.center && styles.center,
+            ]}
+        >
             {props.title && <Text style={styles.h1}>{props.title}</Text>}
             {props.body && <Text style={styles.body}>{props.body}</Text>}
             {props.imageSource && <Image source={{ uri: props.imageSource }} style={styles.image} />}
             {props.image}
+            {props.form}
         </View>
     );
 }
