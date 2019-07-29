@@ -16,6 +16,7 @@ import {
 } from '../constants';
 
 import { claimDevice, syncAccountDetails, fetchContacts } from '../actions/index';
+import { iconsMap } from '../bits/AppIcons';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
@@ -371,6 +372,25 @@ class Home extends React.Component {
         Navigation.push(this.props.componentId, {
             component: {
                 name: 'com.flarejewelry.app.Contacts',
+                options: {
+                    topBar: {
+                        visible: true,
+                        animate: false,
+                        leftButtons: [
+                            {
+                                id: 'backButton',
+                                icon: iconsMap.back,
+                                color: Colors.theme.purple,
+                            },
+                        ],
+                        title: {
+                            component: {
+                                name: 'com.flarejewelry.app.FlareNavBar',
+                                alignment: 'center',
+                            },
+                        },
+                    },                    
+                }
             },
         });
     }

@@ -203,8 +203,8 @@ const Strings = {
                 title: 'Contacts',
             },
             overlay: {
-                instructions: 'Choose up to 5 contacts by pressing on their names, then press the back button.',
-                title: 'Last step: choose your crew!',
+                instructions: 'Click on the name of a contact to\nadd them to your crew.',
+                title: 'Choose up to 5 contacts.',
             },
         },
     },

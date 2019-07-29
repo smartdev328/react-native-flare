@@ -35,7 +35,11 @@ export default function getLocationPage(props) {
         ),
         title: (
             <View style={styles.titleContainer}>
-                <CommonMiddle right body={Strings.onboarding.location.subtitle} imageSource="onboarding-location" />
+                <CommonMiddle
+                    right
+                    body={Strings.onboarding.location.subtitle}
+                    imageSource={{ uri: 'onboarding-location' }}
+                />
             </View>
         ),
         subtitle: (

@@ -130,6 +130,11 @@ class OnboardingMain extends React.Component {
         Navigation.push(this.props.componentId, {
             component: {
                 name: 'com.flarejewelry.app.Contacts',
+                options: {
+                    topBar: {
+                        visible: false,
+                    },
+                },
                 passProps: {
                     fromOnboarding: true,
                 },

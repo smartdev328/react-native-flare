@@ -1,21 +1,22 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import Navigation from 'react-native-navigation';
 
 import { iconsMap } from '../bits/AppIcons';
+import { setCrewMembers, fetchContacts } from '../actions/userActions';
 import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
+import CommonTop from './onboarding/CommonTop';
 import CrewList from '../bits/CrewList';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
 
-import { setCrewMembers, fetchContacts } from '../actions/userActions';
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: Spacing.medium,
+        backgroundColor: Colors.theme.cream,
     },
     nameFieldContainer: {
         marginBottom: Spacing.small,
@@ -36,42 +37,26 @@ const styles = StyleSheet.create({
         fontSize: Type.size.medium,
     },
     tutorialOverlay: {
-        padding: Spacing.medium,
-        backgroundColor: Colors.backgrounds.pink,
-        marginBottom: Spacing.medium,
+        paddingHorizontal: Spacing.huge,
+        paddingBottom: Spacing.medium,
+        backgroundColor: Colors.theme.purple,
     },
     tutorialTitle: {
         fontWeight: 'bold',
         fontSize: Type.size.medium,
+        marginTop: Spacing.medium,
         marginBottom: Spacing.small,
+        color: Colors.white,
+        textAlign: 'center',
     },
-    tutorialText: {},
+    tutorialText: {
+        color: Colors.white,
+        textAlign: 'center',
+    },
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Contacts extends React.Component {
-    static options() {
-        return {
-            topBar: {
-                visible: true,
-                animate: false,
-                leftButtons: [
-                    {
-                        id: 'backButton',
-                        icon: iconsMap.back,
-                        color: Colors.theme.purple,
-                    },
-                ],
-                title: {
-                    component: {
-                        name: 'com.flarejewelry.app.FlareNavBar',
-                        alignment: 'center',
-                    },
-                },
-            },
-        };
-    }
-
     constructor(props) {
         super(props);
         this.crewListItemHeight = 140;
@@ -125,18 +110,21 @@ class Contacts extends React.Component {
         } = this.props;
         return (
             <View style={styles.container}>
-                {!this.props.hasViewedTutorial && (
-                    <View style={styles.tutorialOverlay}>
-                        <Text style={styles.tutorialTitle}>{Strings.onboarding.contacts.overlay.title}</Text>
-                        <Text style={styles.tutorialText}>{Strings.onboarding.contacts.overlay.instructions}</Text>
+                {this.props.fromOnboarding && (
+                    <View>
+                        <View style={styles.tutorialOverlay}>
+                            <CommonTop />
+                            <Text style={styles.tutorialTitle}>{Strings.onboarding.contacts.overlay.title}</Text>
+                            <Text style={styles.tutorialText}>{Strings.onboarding.contacts.overlay.instructions}</Text>
+                        </View>
                     </View>
                 )}
-                {this.props.hasViewedTutorial && (
+                {!this.props.fromOnboarding && (
                     <View>
                         <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
                     </View>
                 )}
-                {this.props.hasViewedTutorial &&
+                {!this.props.fromOnboarding &&
                     this.props.crew &&
                     this.props.crew.members &&
                     this.props.crew.members.length === 0 && (
