@@ -84,7 +84,7 @@ const Strings = {
             name: 'Flare Cuff',
         },
         emptyList: "You don't have any jewelry. Press the Add New button to add some jewelry to your account",
-        remove: 'Remove',
+        remove: 'Remove from account',
         removeConfirm: {
             cancelLabel: 'No, keep it',
             confirmLabel: 'Yes, remove it',

@@ -4,6 +4,9 @@ import LottieView from 'lottie-react-native';
 
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
+import CommonBottom from './CommonBottom';
+import CommonTop from './CommonTop';
+import CommonMiddle from './CommonMiddle';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 
@@ -16,13 +19,13 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function getContactsPage(args) {
+export default function getContactsPage(props) {
     let title = null;
     let subtitle = null;
     let image = null;
     let imageSource = null;
 
-    if (args.hasContactsPermission && args.crews && args.crews.length) {
+    if (props.hasContactsPermission && props.crews && props.crews.length) {
         /**
          * User has given contacts access and has chosen a crew
          */
@@ -36,12 +39,11 @@ export default function getContactsPage(args) {
                 <Button
                     title={Strings.onboarding.contacts.hasCrew.buttonLabel}
                     primary
-                    rounded
-                    onPress={() => args.endOnboarding()}
+                    onPress={() => props.endOnboarding()}
                 />
             </View>
         );
-    } else if (args.hasContactsPermission) {
+    } else if (props.hasContactsPermission) {
         imageSource = require('../../assets/lotties/checkmark.json');
         ({ title } = Strings.onboarding.contacts.hasPermission);
         subtitle = (
@@ -52,13 +54,12 @@ export default function getContactsPage(args) {
                 <Button
                     title={Strings.onboarding.contacts.hasPermission.chooseCrewLabel}
                     primary
-                    rounded
-                    onPress={() => args.chooseCrew()}
+                    onPress={() => props.chooseCrew()}
                 />
             </View>
         );
     } else {
-        imageSource = require('../../assets/lotties/unlock.json');
+        image = { uri: 'onboarding-contacts' };
         ({ title } = Strings.onboarding.contacts.initial);
         subtitle = (
             <View>
@@ -68,8 +69,7 @@ export default function getContactsPage(args) {
                 <Button
                     title={Strings.onboarding.contacts.initial.buttonLabel}
                     primary
-                    rounded
-                    onPress={() => args.requestContactsPermission()}
+                    onPress={() => props.requestContactsPermission()}
                 />
             </View>
         );
@@ -92,8 +92,8 @@ export default function getContactsPage(args) {
 
     return {
         backgroundColor: Colors.theme.purple,
-        image,
-        title,
+        image: <CommonTop />,
+        title: <CommonMiddle right imageSource={image} />,
         subtitle,
     };
 }

@@ -15,7 +15,7 @@ import Colors from '../bits/Colors';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: Spacing.medium,
+        paddingVertical: Spacing.medium,
         backgroundColor: Colors.theme.cream,
     },
     buttonArea: {
@@ -111,7 +111,7 @@ class Jewelry extends React.Component {
                 {(this.props.claimingDevice || this.props.disclaimingDevice) && <ActivityIndicator size={24} />}
                 <JewelryList jewelry={this.props.devices} onRemove={deviceID => this.confirmRemoveJewelry(deviceID)} />
                 <View style={styles.buttonArea}>
-                    <Button rounded primary onPress={() => this.addNewJewelry()} title={Strings.jewelry.addNew} />
+                    <Button dark primary onPress={() => this.addNewJewelry()} title={Strings.jewelry.addNew} />
                 </View>
             </View>
         );

@@ -12,9 +12,11 @@ import Type from './Type';
 const styles = StyleSheet.create({
     container: {
         borderBottomWidth: 1,
-        borderBottomColor: Colors.greyLight,
+        borderBottomColor: Colors.black,
         paddingTop: Spacing.small,
-        paddingBottom: Spacing.small,
+        paddingBottom: Spacing.huge,
+    },
+    imageContainer: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -32,11 +34,14 @@ const styles = StyleSheet.create({
         marginBottom: Spacing.small,
     },
     labelBold: {
-        fontWeight: 'bold',
+        fontWeight: 'normal',
+        fontSize: Type.size.huge,
+        marginTop: Spacing.medium,
+        marginBottom: Spacing.small,
     },
     labelText: {
         textAlign: 'center',
-        fontSize: Type.size.medium,
+        fontSize: Type.size.small,
     },
 });
 
@@ -44,27 +49,23 @@ export default class JewelryListItem extends React.PureComponent {
     render() {
         return (
             <View style={styles.container} key={this.props.item.id}>
-                <Image
-                    style={styles.image}
-                    source={DeviceTypes[this.props.item.type - 1].image}
-                />
-                <View style={styles.label}>
-                    <Text style={[styles.labelText, styles.labelBold]}>
-                        {Strings.jewelry[`cuffV${this.props.item.type}`].name}
-                    </Text>
-                    <FlareDeviceID
-                        value={this.props.item.id}
-                        style={styles.labelText}
-                    />
+                <View style={styles.imageContainer}>
+                    <Image style={styles.image} source={DeviceTypes[this.props.item.type - 1].image} />
+                    <View style={styles.label}>
+                        <Text style={[styles.labelText, styles.labelBold]}>
+                            {Strings.jewelry[`cuffV${this.props.item.type}`].name}
+                        </Text>
+                        <FlareDeviceID value={this.props.item.id} style={styles.labelText} />
+                    </View>
                 </View>
-                {this.props.onRemove &&
+                {this.props.onRemove && (
                     <Button
                         onPress={() => this.props.onRemove(this.props.item.id)}
                         title={Strings.jewelry.remove}
-                        rounded
-                        outline
+                        primary
+                        dark
                     />
-                }
+                )}
             </View>
         );
     }
