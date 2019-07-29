@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
+import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
@@ -22,8 +19,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 0,
-        backgroundColor: Colors.backgrounds.pink,
-        color: Colors.theme.pink,
+        backgroundColor: Colors.theme.purple,
+        color: Colors.white,
+    },
+    inset: {
+        position: 'absolute',
+        top: Spacing.medium,
+        right: Spacing.medium,
+        bottom: Spacing.medium,
+        left: Spacing.medium,
+        backgroundColor: Colors.theme.purple,
     },
     promptBackground: {
         marginBottom: Spacing.huge,
@@ -31,9 +36,13 @@ const styles = StyleSheet.create({
     promptForeground: {
         fontSize: Type.size.medium,
         padding: Spacing.medium,
+        color: Colors.white,
     },
     buttonArea: {
         marginBottom: Spacing.huge,
+    },
+    secondaryButtonArea: {
+        marginTop: Spacing.huge,
     },
 });
 
@@ -66,32 +75,26 @@ export default class Confirm extends React.Component {
                 name: 'com.flarejewelry.app.Confirm',
             },
         });
-    }
+    };
 
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.promptBackground}>
-                    <Text style={styles.promptForeground}>
-                        {this.props.prompt}
-                    </Text>
-                </View>
-                <View style={styles.buttonArea}>
-                    {this.props.confirmLabel && this.props.onConfirm &&
-                        <Button
-                            onPress={() => this.onConfirm()}
-                            title={this.props.confirmLabel}
-                            rounded
-                            primary
-                        />
-                    }
-                    {this.props.cancelLabel &&
-                        <Button
-                            onPress={() => this.onCancel()}
-                            title={this.props.cancelLabel}
-                            rounded
-                        />
-                    }
+                <Aura />
+                <View style={styles.inset}>
+                    <View style={styles.promptBackground}>
+                        <Text style={styles.promptForeground}>{this.props.prompt}</Text>
+                    </View>
+                    <View style={styles.buttonArea}>
+                        {this.props.confirmLabel && this.props.onConfirm && (
+                            <Button onPress={() => this.onConfirm()} title={this.props.confirmLabel} primary />
+                        )}
+                        {this.props.cancelLabel && (
+                            <View style={styles.secondaryButtonArea}>
+                                <Button onPress={() => this.onCancel()} title={this.props.cancelLabel} secondary />
+                            </View>
+                        )}
+                    </View>
                 </View>
             </View>
         );
