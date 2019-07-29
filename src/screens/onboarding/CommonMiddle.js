@@ -7,13 +7,24 @@ import Colors from '../../bits/Colors';
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        alignItems: 'flex-end',
         paddingTop: Spacing.medium,
-        marginRight: Spacing.huge,
         marginBottom: Spacing.medium,
+    },
+    right: {
+        alignItems: 'flex-start',
+        marginLeft: Spacing.huge,
+    },
+    left: {
+        alignItems: 'flex-end',
+        marginRight: Spacing.huge,
     },
     h1: {
         fontSize: Type.size.huge,
+        color: Colors.white,
+        marginBottom: Spacing.medium,
+    },
+    body: {
+        fontSize: Type.size.medium,
         color: Colors.white,
         marginBottom: Spacing.medium,
     },
@@ -24,10 +35,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function CommonMiddleRight(props) {
+export default function CommonMiddle(props) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.h1}>{props.title}</Text>
+        <View style={[styles.container, props.left && styles.left, props.right && styles.right]}>
+            {props.title && <Text style={styles.h1}>{props.title}</Text>}
+            {props.body && <Text style={styles.body}>{props.body}</Text>}
             <Image source={{ uri: props.imageSource }} style={styles.image} />
         </View>
     );

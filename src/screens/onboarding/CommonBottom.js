@@ -7,8 +7,14 @@ import Colors from '../../bits/Colors';
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        alignItems: 'flex-end',
+    },
+    left: {
         marginRight: Spacing.huge,
+        alignItems: 'flex-end',
+    },
+    right: {
+        marginLeft: Spacing.huge,
+        alignItems: 'flex-start',
     },
     logo: {
         width: 180,
@@ -17,16 +23,23 @@ const styles = StyleSheet.create({
     },
     bodyText: {
         fontSize: Type.size.medium,
-        textAlign: 'right',
         color: Colors.white,
         width: '50%',
     },
+    bodyTextLeft: {
+        textAlign: 'right',
+    },
+    bodyTextRight: {
+        textAlign: 'left',
+    },
 });
 
-export default function CommonBottomRight(props) {
+export default function CommonBottom(props) {
     return (
-        <View style={styles.container}>
-            <Text style={styles.bodyText}>{props.bodyText}</Text>
+        <View style={[styles.container, props.left && styles.left, props.right && styles.right]}>
+            <Text style={[styles.bodyText, props.left && styles.bodyTextLeft, props.right && styles.bodyTextRight]}>
+                {props.bodyText}
+            </Text>
         </View>
     );
 }

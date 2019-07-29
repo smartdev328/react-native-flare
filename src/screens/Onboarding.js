@@ -2,16 +2,14 @@ import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
-import LottieView from 'lottie-react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
 import { BeaconTypes } from '../bits/BleConstants';
 import { changeAppRoot } from '../actions';
 import { claimDevice } from '../actions/deviceActions';
 import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
-import Button from '../bits/Button';
-import Colors from '../bits/Colors';
 import getBluetoothPage from './onboarding/Bluetooth';
+import getLocationPage from './onboarding/Location';
 import getLongPressPage from './onboarding/LongPress';
 import getLongPressCancelPage from './onboarding/LongPressCancel';
 import getContactsPage from './onboarding/Contacts';
@@ -162,6 +160,11 @@ class OnboardingMain extends React.Component {
     };
 
     render() {
+        const locationPage = getLocationPage({
+            permissions: this.props.permissions,
+            requestLocationPermission: () => this.requestLocationPermission(),
+        });
+
         /**
          * The bluetooth page has many internal states. Unfortunately, the onboarding
          * library operates on an array of objects instead of JSX elements. That means
@@ -223,55 +226,7 @@ class OnboardingMain extends React.Component {
                     showBack
                     showDone={false}
                     onSkip={() => this.skipOnboarding()}
-                    pages={[
-                        welcomePage,
-                        {
-                            /* Location */
-                            backgroundColor: Colors.theme.purple,
-                            image: (
-                                <LottieView
-                                    source={require('../assets/lotties/location.json')}
-                                    autoPlay
-                                    loop
-                                    resizeMode="cover"
-                                    style={{
-                                        width: 292,
-                                        height: 292,
-                                    }}
-                                />
-                            ),
-                            title: Strings.onboarding.location.title,
-                            subtitle: (
-                                <View style={styles.subtitleArea}>
-                                    <Text style={styles.subtitleText}>{Strings.onboarding.location.subtitle}</Text>
-                                    {this.props.permissions.location && (
-                                        <LottieView
-                                            source={require('../assets/lotties/checkmark.json')}
-                                            autoPlay
-                                            loop={false}
-                                            resizeMode="center"
-                                            style={{
-                                                alignSelf: 'center',
-                                                height: 96,
-                                            }}
-                                        />
-                                    )}
-                                    {!this.props.permissions.location && (
-                                        <Button
-                                            title={Strings.onboarding.welcome.alwaysAllow}
-                                            primary
-                                            rounded
-                                            onPress={() => this.requestLocationPermission()}
-                                        />
-                                    )}
-                                </View>
-                            ),
-                        },
-                        bluetoothPage,
-                        longPressPage,
-                        longPressCancelPage,
-                        contactsPage,
-                    ]}
+                    pages={[welcomePage, locationPage, bluetoothPage, longPressPage, longPressCancelPage, contactsPage]}
                 />
             </KeyboardAvoidingView>
         );

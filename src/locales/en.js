@@ -128,10 +128,7 @@ const Strings = {
             alwaysAllow: 'Always allow',
         },
         location: {
-            title: 'Location',
-            subtitle:
-                'To let your jewelry work, Flare needs permission to access your location ' +
-                "even when it's running in the background.",
+            subtitle: 'Flare needs permission to\naccess your location.',
         },
         noBluetooth: {
             title: 'Enable Bluetooth',

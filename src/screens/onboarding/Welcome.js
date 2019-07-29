@@ -1,13 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
-import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import CommonTop from './CommonTop';
-import CommonMiddleRight from './CommonMiddleRight';
-import CommonBottomRight from './CommonBottomRight';
+import CommonMiddle from './CommonMiddle';
+import CommonBottom from './CommonBottom';
 
 const styles = StyleSheet.create({
     imageContainer: {
@@ -34,12 +32,12 @@ export default function getWelcomePage() {
         ),
         title: (
             <View style={styles.titleContainer}>
-                <CommonMiddleRight title={Strings.onboarding.welcome.title} imageSource="onboarding-welcome" />
+                <CommonMiddle left title={Strings.onboarding.welcome.title} imageSource="onboarding-welcome" />
             </View>
         ),
         subtitle: (
             <View style={styles.subtitleContainer}>
-                <CommonBottomRight bodyText={Strings.onboarding.welcome.subtitle} />
+                <CommonBottom left bodyText={Strings.onboarding.welcome.subtitle} />
             </View>
         ),
     };
