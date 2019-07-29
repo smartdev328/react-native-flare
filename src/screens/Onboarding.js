@@ -86,8 +86,17 @@ class OnboardingMain extends React.Component {
             secondFactor: '',
             cancelPIN: '',
             hasSetPin: props.hasSetPin,
-            lastPinSet: null,
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (
+            this.props.permissions &&
+            this.props.permissions.contacts &&
+            this.props.permissions.contacts !== prevProps.permissions.contacts
+        ) {
+            this.endOnboarding();
+        }
     }
 
     setCancelPIN() {
@@ -116,17 +125,16 @@ class OnboardingMain extends React.Component {
         });
     }
 
-    chooseCrew() {
+    endOnboarding() {
+        this.props.dispatch(setOnboardingComplete(this.props.authToken));
         Navigation.push(this.props.componentId, {
             component: {
                 name: 'com.flarejewelry.app.Contacts',
+                passProps: {
+                    fromOnboarding: true,
+                },
             },
         });
-    }
-
-    endOnboarding() {
-        this.props.dispatch(setOnboardingComplete(this.props.authToken));
-        this.props.dispatch(changeAppRoot('secure'));
     }
 
     skipOnboarding() {
@@ -248,7 +256,6 @@ function mapStateToProps(state) {
         claimingDevice: state.user.claimingDevice,
         claimedDevice: state.user.claimedDevice,
         latestBeacon: state.beacons.latest,
-        lastPinSet: state.user.pinUpdateTime,
         updatedPIN: state.user.updatedPIN,
         updatingPIN: state.user.updatingPIN,
         crews: state.user.crews,

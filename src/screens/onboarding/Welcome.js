@@ -32,7 +32,11 @@ export default function getWelcomePage() {
         ),
         title: (
             <View style={styles.titleContainer}>
-                <CommonMiddle left title={Strings.onboarding.welcome.title} imageSource="onboarding-welcome" />
+                <CommonMiddle
+                    left
+                    title={Strings.onboarding.welcome.title}
+                    imageSource={{ uri: 'onboarding-welcome' }}
+                />
             </View>
         ),
         subtitle: (

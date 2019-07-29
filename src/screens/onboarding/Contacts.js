@@ -4,7 +4,6 @@ import LottieView from 'lottie-react-native';
 
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
-import CommonBottom from './CommonBottom';
 import CommonTop from './CommonTop';
 import CommonMiddle from './CommonMiddle';
 import Spacing from '../../bits/Spacing';
@@ -25,27 +24,8 @@ export default function getContactsPage(props) {
     let lottieSource = null;
     let imageUri = null;
 
-    if (props.hasContactsPermission && props.crews && props.crews.length) {
-        /**
-         * User has given contacts access and has chosen a crew
-         */
+    if (props.hasContactsPermission) {
         lottieSource = require('../../assets/lotties/checkmark.json');
-        ({ title, subtitle } = Strings.onboarding.contacts.hasCrew);
-        subtitle = (
-            <View>
-                <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>{Strings.onboarding.contacts.hasCrew.subtitle}</Text>
-                </View>
-                <Button
-                    title={Strings.onboarding.contacts.hasCrew.buttonLabel}
-                    primary
-                    onPress={() => props.endOnboarding()}
-                />
-            </View>
-        );
-    } else if (props.hasContactsPermission) {
-        lottieSource = require('../../assets/lotties/checkmark.json');
-        ({ title } = Strings.onboarding.contacts.hasPermission);
         subtitle = (
             <View>
                 <View style={styles.subtitleArea}>
@@ -54,28 +34,10 @@ export default function getContactsPage(props) {
                 <Button
                     title={Strings.onboarding.contacts.hasPermission.chooseCrewLabel}
                     primary
-                    onPress={() => props.chooseCrew()}
+                    onPress={() => props.endOnboarding()}
                 />
             </View>
         );
-    } else {
-        imageUri = { uri: 'onboarding-contacts' };
-        ({ title } = Strings.onboarding.contacts.initial);
-        subtitle = (
-            <View>
-                <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>{Strings.onboarding.contacts.initial.subtitle}</Text>
-                </View>
-                <Button
-                    title={Strings.onboarding.contacts.initial.buttonLabel}
-                    primary
-                    onPress={() => props.requestContactsPermission()}
-                />
-            </View>
-        );
-    }
-
-    if (lottieSource) {
         image = (
             <LottieView
                 source={lottieSource}
@@ -87,6 +49,20 @@ export default function getContactsPage(props) {
                     height: 292,
                 }}
             />
+        );
+    } else {
+        imageUri = { uri: 'onboarding-contacts' };
+        subtitle = (
+            <View>
+                <View style={styles.subtitleArea}>
+                    <Text style={styles.subtitleText}>{Strings.onboarding.contacts.initial.subtitle}</Text>
+                </View>
+                <Button
+                    title={Strings.onboarding.contacts.initial.buttonLabel}
+                    primary
+                    onPress={() => props.requestContactsPermission()}
+                />
+            </View>
         );
     }
 
