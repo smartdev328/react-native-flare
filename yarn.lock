@@ -6451,10 +6451,10 @@ react-native-confirmation-code-input@^1.0.4:
     lodash "^4.17.4"
     prop-types "^15.5.10"
 
-react-native-contacts@^2.2.4:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-2.2.5.tgz#5f7ff7b0310a095753ef0491d6e9453dcfc17ff8"
-  integrity sha512-yorPL9PS/g3lKIczZZ18s+LI2+tPHfudsAwuEKA63VB0YteBb5Rz2NnMmBzvI3bRdvNgzzXoCPwxOzAHL0tt1g==
+react-native-contacts@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-5.0.2.tgz#8e4d98f363724cd0e815894fdade7ad2d6ca344b"
+  integrity sha512-CEeUwg7r8lgHC95LaoH6RKeZ20P1yMgxSRukDijjQOLTXdEGDy24lXXKBwmFX1pbPZDfDcBIBSwiEsFikeTGXg==
 
 react-native-i18n@^2.0.15:
   version "2.0.15"

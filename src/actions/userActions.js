@@ -84,7 +84,7 @@ export function fetchContacts() {
         dispatch({
             type: types.CONTACTS_REQUEST,
         });
-        Contacts.getAll((err, contacts) => {
+        Contacts.getAllWithoutPhotos((err, contacts) => {
             if (err) {
                 dispatch({ type: types.CONTACTS_FAILURE });
             } else {
