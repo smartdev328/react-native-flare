@@ -1,10 +1,9 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import Navigation from 'react-native-navigation';
 
-import { iconsMap } from '../bits/AppIcons';
 import { setCrewMembers, fetchContacts } from '../actions/userActions';
+import Button from '../bits/Button';
 import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
 import CommonTop from './onboarding/CommonTop';
@@ -12,6 +11,7 @@ import CrewList from '../bits/CrewList';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
+import { Navigation } from 'react-native-navigation';
 
 const styles = StyleSheet.create({
     container: {
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         paddingBottom: Spacing.large,
         fontSize: Type.size.medium,
     },
+    onboardingHeader: {},
     tutorialOverlay: {
         paddingHorizontal: Spacing.huge,
         paddingBottom: Spacing.medium,
@@ -52,6 +53,10 @@ const styles = StyleSheet.create({
     tutorialText: {
         color: Colors.white,
         textAlign: 'center',
+    },
+    tutorialButtons: {
+        backgroundColor: Colors.theme.purple,
+        paddingBottom: Spacing.medium,
     },
 });
 
@@ -104,6 +109,10 @@ class Contacts extends React.Component {
         this.props.dispatch(setCrewMembers(this.props.authToken, crewId, newMembers));
     }
 
+    backToHome() {
+        Navigation.pop(this.props.componentId);
+    }
+
     render() {
         const {
             contacts, contactsCount, contactsCrewLookup, crew,
@@ -111,12 +120,21 @@ class Contacts extends React.Component {
         return (
             <View style={styles.container}>
                 {this.props.fromOnboarding && (
-                    <View>
+                    <View style={styles.onboardingHeader}>
                         <View style={styles.tutorialOverlay}>
                             <CommonTop />
                             <Text style={styles.tutorialTitle}>{Strings.onboarding.contacts.overlay.title}</Text>
                             <Text style={styles.tutorialText}>{Strings.onboarding.contacts.overlay.instructions}</Text>
                         </View>
+                        {this.props.crew && this.props.crew.members && this.props.crew.members.length > 0 && (
+                            <View style={styles.tutorialButtons}>
+                                <Button
+                                    title={Strings.onboarding.contacts.overlay.closeButtonLabel}
+                                    onPress={() => this.backToHome()}
+                                    primary
+                                />
+                            </View>
+                        )}
                     </View>
                 )}
                 {!this.props.fromOnboarding && (
@@ -130,14 +148,12 @@ class Contacts extends React.Component {
                     this.props.crew.members.length === 0 && (
                     <View>
                         <Text style={styles.instructions}>{Strings.contacts.chooseInstruction}</Text>
+                        <CrewList
+                            style={{ height: this.state.crewListHeight }}
+                            crew={crew}
+                            onPressContact={contact => this.handleContactPress(contact)}
+                        />
                     </View>
-                )}
-                {this.props.crew && this.props.crew.members && this.props.crew.members.length > 0 && (
-                    <CrewList
-                        style={{ height: this.state.crewListHeight }}
-                        crew={crew}
-                        onPressContact={contact => this.handleContactPress(contact)}
-                    />
                 )}
                 <ContactsList
                     contacts={contacts}

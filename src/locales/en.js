@@ -205,6 +205,7 @@ const Strings = {
             overlay: {
                 instructions: 'Click on the name of a contact to\nadd them to your crew.',
                 title: 'Choose up to 5 contacts.',
+                closeButtonLabel: 'Save Crew',
             },
         },
     },
