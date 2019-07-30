@@ -68,6 +68,7 @@ class Contacts extends React.Component {
         this.state = {
             crew: props.crew,
             crewListHeight: props.crew.members.length * this.crewListItemHeight,
+            contactSections: null,
         };
     }
 
@@ -76,13 +77,24 @@ class Contacts extends React.Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { crew } = props;
+        const newState = {};
+        const { crew, contacts } = props;
         const crewLength = crew && crew.length;
+        let needsUpdate = false;
         if (crewLength !== state.crew.length) {
-            return {
-                crew: props.crew,
-                crewListHeight: props.crew.members.length * this.crewListItemHeight,
-            };
+            newState.crew = props.crew;
+            newState.crewListHeight = props.crew.members.length * this.crewListItemHeight;
+            needsUpdate = true;
+        }
+
+        const sections = contacts.map(contactSection => contactSection.title);
+        if (sections !== state.contactSections) {
+            newState.contactSections = sections;
+            needsUpdate = true;
+        }
+
+        if (needsUpdate) {
+            return newState;
         }
 
         return null;
@@ -160,6 +172,7 @@ class Contacts extends React.Component {
                     contactsCount={contactsCount}
                     contactsCrewLookup={contactsCrewLookup || {}}
                     onPressContact={contact => this.handleContactPress(contact)}
+                    sectionList={this.state.contactSections}
                 />
 
                 <View>{this.props.loading && <ActivityIndicator />}</View>
