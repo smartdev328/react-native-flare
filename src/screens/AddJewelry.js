@@ -73,8 +73,10 @@ class AddJewelry extends React.Component {
         const latestShortPress = shortPressCounts[0] || {};
         const { highestPressCount } = state;
 
-        if (latestShortPress.deviceID !== highestPressCount.deviceID ||
-            latestShortPress.count !== highestPressCount.count) {
+        if (
+            latestShortPress.deviceID !== highestPressCount.deviceID ||
+            latestShortPress.count !== highestPressCount.count
+        ) {
             return {
                 highestPressCount: latestShortPress,
             };
@@ -153,30 +155,16 @@ class AddJewelry extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.promptBackground}>
-                    <Text style={styles.promptForeground}>
-                        {Strings.jewelry.addNewAuto.prompt}
-                    </Text>
+                    <Text style={styles.promptForeground}>{Strings.jewelry.addNewAuto.prompt}</Text>
                 </View>
                 <View style={styles.scanningArea}>
-                    <Image
-                        source={image}
-                        style={styles.scanningImage}
-                        resizeMode="stretch"
-                    />
+                    <Image source={image} style={styles.scanningImage} resizeMode="stretch" />
                     {haveEnoughBeacons && (
-                        <Image
-                            source={require('../assets/dope.png')}
-                            style={styles.dopeImage}
-                            resizeMode="stretch"
-                        />
+                        <Image source={require('../assets/dope.png')} style={styles.dopeImage} resizeMode="stretch" />
                     )}
                 </View>
                 <View style={styles.buttonArea}>
-                    <Button
-                        onPress={() => this.onPressManual()}
-                        title={Strings.jewelry.addNewManual.buttonLabel}
-                        rounded
-                    />
+                    <Button onPress={() => this.onPressManual()} title={Strings.jewelry.addNewManual.buttonLabel} />
                 </View>
             </View>
         );
