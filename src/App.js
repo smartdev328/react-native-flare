@@ -5,13 +5,13 @@ import { persistStore } from 'redux-persist';
 import SplashScreen from 'react-native-splash-screen';
 import axios from 'axios';
 
-import { BLUETOOTH_LISTENING, LEFT_NAVIGATION_WIDTH } from './constants';
+import { LEFT_NAVIGATION_WIDTH } from './constants';
 import { configureStore } from './store/index';
+import { iconsMap } from './bits/AppIcons';
+import BleProvider from './bits/BleProvider';
 import * as actions from './actions/index';
-import BleManager from './bits/BleManager';
 import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
-import { iconsMap } from './bits/AppIcons';
 import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
 import NotificationManager from './bits/NotificationManager';
@@ -28,12 +28,7 @@ export default class App extends Component {
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
         store = configureStore(initialState);
         this.notificationManager = new NotificationManager();
-
-        if (BLUETOOTH_LISTENING) {
-            this.bleManager = new BleManager({
-                store,
-            });
-        }
+        this.bleProvider = new BleProvider({ store });
 
         axios.interceptors.response.use(
             response => response,
@@ -50,6 +45,7 @@ export default class App extends Component {
             store.subscribe(this.onStoreUpdate.bind(this));
             const { root } = store.getState().nav;
             store.dispatch(actions.initializeApp(root));
+            this.bleProvider.setStore(store);
         });
     }
 
@@ -63,10 +59,8 @@ export default class App extends Component {
             // eslint-disable-next-line no-console
             console.debug(`NAVIGATION -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
-            if (BLUETOOTH_LISTENING) {
-                this.bleManager.setStore(store);
-            }
             this.startApp(root);
+            this.bleProvider.setStore(store);
         }
     }
 
@@ -102,16 +96,10 @@ export default class App extends Component {
             });
             Navigation.setRoot({
                 root: {
-                    component: {
-                        name: 'com.flarejewelry.app.Root',
-                    },
                     sideMenu: {
                         left: {
                             component: {
                                 name: 'com.flarejewelry.app.LeftDrawer',
-                                passProps: {
-                                    bleManager: this.bleManager,
-                                },
                             },
                         },
                         center: {
@@ -122,10 +110,7 @@ export default class App extends Component {
                                         component: {
                                             name: 'com.flarejewelry.app.Home',
                                             passProps: {
-                                                bleManager: this.bleManager,
                                                 notificationManager: this.notificationManager,
-                                                handleBeacon: (dispatch, token, beacon, position) =>
-                                                    this.bleManager.handleBeacon(dispatch, token, beacon, position),
                                             },
                                         },
                                     },
@@ -175,9 +160,6 @@ export default class App extends Component {
                         left: {
                             component: {
                                 name: 'com.flarejewelry.app.LeftDrawer',
-                                passProps: {
-                                    bleManager: this.bleManager,
-                                },
                             },
                         },
                         center: {
@@ -187,9 +169,6 @@ export default class App extends Component {
                                     {
                                         component: {
                                             name: 'com.flarejewelry.app.Jewelry',
-                                            passProps: {
-                                                bleManager: this.bleManager,
-                                            },
                                         },
                                     },
                                 ],
@@ -238,9 +217,6 @@ export default class App extends Component {
                         left: {
                             component: {
                                 name: 'com.flarejewelry.app.LeftDrawer',
-                                passProps: {
-                                    bleManager: this.bleManager,
-                                },
                             },
                         },
                         center: {
@@ -250,9 +226,6 @@ export default class App extends Component {
                                     {
                                         component: {
                                             name: 'com.flarejewelry.app.Settings',
-                                            passProps: {
-                                                bleManager: this.bleManager,
-                                            },
                                         },
                                     },
                                 ],
@@ -286,9 +259,6 @@ export default class App extends Component {
                             {
                                 component: {
                                     name: 'com.flarejewelry.manufacturing.main',
-                                    passProps: {
-                                        bleManager: this.bleManager,
-                                    },
                                 },
                             },
                         ],
@@ -310,9 +280,6 @@ export default class App extends Component {
                             {
                                 component: {
                                     name: 'com.flarejewelry.onboarding.main',
-                                    passProps: {
-                                        bleManager: this.bleManager,
-                                    },
                                 },
                             },
                         ],

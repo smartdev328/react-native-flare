@@ -7,6 +7,7 @@ import Onboarding from 'react-native-onboarding-swiper';
 import { BeaconTypes } from '../bits/BleConstants';
 import { claimDevice } from '../actions/deviceActions';
 import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
+import { startBleListening } from '../actions/hardwareActions';
 import getBluetoothPage from './onboarding/Bluetooth';
 import getLocationPage from './onboarding/Location';
 import getLongPressPage from './onboarding/LongPress';
@@ -96,7 +97,7 @@ class OnboardingMain extends React.Component {
             this.props.permissions.location !== prevProps.permissions.location &&
             this.flatList
         ) {
-            this.props.bleManager.startListening({ radioToken: this.props.radioToken });
+            this.props.dispatch(startBleListening());
             this.flatList.goNext();
         }
 

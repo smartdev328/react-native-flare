@@ -6,7 +6,6 @@ import org.reactnative.camera.RNCameraPackage;
 import com.reactlibrary.RNBluetoothInfoPackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.wix.reactnativenotifications.RNNotificationsPackage;
-import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;

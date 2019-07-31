@@ -16,6 +16,14 @@ export const CLEAR_PROBLEM_BEACONS = 'flare.app.beacons.problems.CLEAR';
 export const BEACON_COUNTS_UPDATED = 'flare.app.beacons.COUNTS_UPDATED';
 export const BEACON_COUNTS_RESET = 'flare.app.beacons.COUNTS_RESET';
 
+export const BLUETOOTH_START_REQUEST = 'flare.app.ble.start.REQUEST';
+export const BLUETOOTH_START_FAILURE = 'flare.app.ble.start.FAILURE';
+export const BLUETOOTH_START_SUCCESS = 'flare.app.ble.start.SUCCESS';
+
+export const BLUETOOTH_STOP_REQUEST = 'flare.app.ble.stop.REQUEST';
+export const BLUETOOTH_STOP_FAILURE = 'flare.app.ble.stop.FAILURE';
+export const BLUETOOTH_STOP_SUCCESS = 'flare.app.ble.stop.SUCCESS';
+
 export const ACTIVATE_FLARE_FAILURE = 'flare.app.activate.FAILURE';
 export const ACTIVATE_FLARE_REQUEST = 'flare.app.activate.REQUEST';
 export const ACTIVATE_FLARE_SUCCESS = 'flare.app.activate.SUCCESS';

@@ -44,6 +44,9 @@ export const initialState = Immutable({
     },
     hardware: {
         bluetooth: 'on',
+        bleListening: false,
+        bleListeningChange: 'succeeded',
+        bleListeningChangeDir: 'down',
     },
     manufacturing: {},
 });

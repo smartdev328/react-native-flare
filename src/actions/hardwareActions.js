@@ -7,6 +7,20 @@ export function setBluetoothState(state) {
     };
 }
 
+export function startBleListening() {
+    return {
+        type: types.BLUETOOTH_START_REQUEST,
+    };
+}
+
+export function stopBleListening() {
+    return {
+        type: types.BLUETOOTH_STOP_REQUEST,
+    };
+}
+
 export default {
     setBluetoothState,
+    startBleListening,
+    stopBleListening,
 };

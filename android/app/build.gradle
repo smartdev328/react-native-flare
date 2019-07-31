@@ -162,6 +162,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-beacons-manager')
     implementation project(':@react-native-community_async-storage')
     implementation project(':lottie-react-native')
     implementation project(':react-native-radial-gradient')
@@ -170,7 +171,6 @@ dependencies {
     compile project(':react-native-bluetooth-info')
     compile project(':react-native-background-timer')
     compile project(':reactnativenotifications')
-    compile project(':react-native-beacons-manager')
     compile project(':react-native-config')
     compile project(':react-native-contacts')
     compile project(':react-native-i18n')

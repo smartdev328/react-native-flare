@@ -15,19 +15,19 @@ import {
     SHOW_ALL_BEACONS_IN_HOME_SCREEN,
 } from '../constants';
 
+import { BeaconTypes } from '../bits/BleConstants';
 import { claimDevice, syncAccountDetails, fetchContacts } from '../actions/index';
+import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
+import { getCrewEventTimeline, getPermission } from '../actions/userActions';
 import { iconsMap } from '../bits/AppIcons';
+import { startBleListening } from '../actions/hardwareActions';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
-import DeviceSelector from '../bits/DeviceSelector';
-import Strings from '../locales/en';
-import Spacing from '../bits/Spacing';
-
-import { getCrewEventTimeline, getPermission } from '../actions/userActions';
-import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
-import Location from '../helpers/location';
 import CrewEventTimeline from '../bits/CrewEventTimeline';
-import { BeaconTypes } from '../bits/BleConstants';
+import DeviceSelector from '../bits/DeviceSelector';
+import Location from '../helpers/location';
+import Spacing from '../bits/Spacing';
+import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
     container: {
@@ -155,12 +155,12 @@ class Home extends React.Component {
             this.props.dispatch(fetchContacts());
         }
 
-        if (!this.props.permission.location) {
+        if (!this.props.permissions.location) {
             this.props.dispatch(getPermission('location', { type: 'always' }));
         }
 
-        if (!this.props.bleManager.isListening()) {
-            this.props.bleManager.startListening({ radioToken: this.props.radioToken });
+        if (!this.props.hardware || !this.props.hardware.bleListening) {
+            this.props.dispatch(startBleListening());
         }
 
         // Users may have modified their accounts on other devices or on the web. Keep this device
