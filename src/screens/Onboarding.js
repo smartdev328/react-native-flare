@@ -5,7 +5,6 @@ import { Navigation } from 'react-native-navigation';
 import Onboarding from 'react-native-onboarding-swiper';
 
 import { BeaconTypes } from '../bits/BleConstants';
-import { changeAppRoot } from '../actions';
 import { claimDevice } from '../actions/deviceActions';
 import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
 import getBluetoothPage from './onboarding/Bluetooth';
@@ -90,6 +89,18 @@ class OnboardingMain extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        // Go to next screen after user gives location permission
+        if (
+            this.props.permissions &&
+            this.props.permissions.location &&
+            this.props.permissions.location !== prevProps.permissions.location &&
+            this.flatList
+        ) {
+            this.props.bleManager.startListening({ radioToken: this.props.radioToken });
+            this.flatList.goNext();
+        }
+
+        // End onboarding if user gave contacts permission
         if (
             this.props.permissions &&
             this.props.permissions.contacts &&
@@ -194,15 +205,8 @@ class OnboardingMain extends React.Component {
          */
         const bluetoothPage = getBluetoothPage({
             bluetoothEnabled: this.props.bluetoothEnabled,
-            claimingDevice: this.props.claimingDevice,
-            chosenDeviceID: this.state.chosenDeviceID,
-            secondFactor: this.state.secondFactor,
-            multipleDevicesBroadcasting: this.state.multipleDevicesBroadcasting,
             highestPressCount: this.state.highestPressCount,
-            deviceHasBeenClaimed: this.props.claimedDevice && this.props.claimedDevice === this.state.chosenDeviceID,
-            changeTwoFactorText: e => this.changeTwoFactorText(e),
-            claimDevice: () => this.claimDevice(),
-            chooseThisDevice: id => this.chooseThisDevice(id),
+            ownedDevices: this.props.devices.map(d => d.id),
         });
 
         /**
@@ -236,6 +240,9 @@ class OnboardingMain extends React.Component {
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <Onboarding
+                    ref={(ref) => {
+                        this.flatList = ref;
+                    }}
                     containerStyles={{
                         justifyContent: 'flex-start',
                         alignItems: 'center',
@@ -255,15 +262,17 @@ class OnboardingMain extends React.Component {
 function mapStateToProps(state) {
     return {
         authToken: state.user.authToken,
-        permissions: state.user.permissions,
         bluetoothEnabled: state.hardware.bluetooth === 'on',
-        shortPressCounts: state.beacons.recentShortPressCounts,
-        claimingDevice: state.user.claimingDevice,
         claimedDevice: state.user.claimedDevice,
+        claimingDevice: state.user.claimingDevice,
+        crews: state.user.crews,
+        devices: state.user.devices || [],
         latestBeacon: state.beacons.latest,
+        permissions: state.user.permissions,
+        radioToken: state.user.radioToken,
+        shortPressCounts: state.beacons.recentShortPressCounts,
         updatedPIN: state.user.updatedPIN,
         updatingPIN: state.user.updatingPIN,
-        crews: state.user.crews,
     };
 }
 

@@ -4,7 +4,6 @@ import { Navigation } from 'react-native-navigation';
 import { persistStore } from 'redux-persist';
 import SplashScreen from 'react-native-splash-screen';
 import axios from 'axios';
-import BackgroundTimer from 'react-native-background-timer';
 
 import { BLUETOOTH_LISTENING, LEFT_NAVIGATION_WIDTH } from './constants';
 import { configureStore } from './store/index';
@@ -29,15 +28,17 @@ export default class App extends Component {
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
         store = configureStore(initialState);
         this.notificationManager = new NotificationManager();
-        this.bleManager = new BleManager({
-            store,
-        });
+
+        if (BLUETOOTH_LISTENING) {
+            this.bleManager = new BleManager({
+                store,
+            });
+        }
 
         axios.interceptors.response.use(
             response => response,
             (error) => {
                 if (error.response.status === 401 || error.response.status === 403) {
-                    this.bleManager.shutdown();
                     store.dispatch(actions.signOut());
                 }
                 return Promise.reject(error);
@@ -62,23 +63,9 @@ export default class App extends Component {
             // eslint-disable-next-line no-console
             console.debug(`NAVIGATION -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
-
-            const secureRoots = [
-                'secure-jewelry',
-                'secure-manufacturing',
-                'secure-onboarding',
-                'secure-settings',
-                'secure',
-            ];
-
-            if (secureRoots.indexOf(root) !== -1 && BLUETOOTH_LISTENING && !this.bleManager.isListening()) {
-                this.bleManager.startListening({
-                    store,
-                });
-            } else {
-                BackgroundTimer.stopBackgroundTimer();
+            if (BLUETOOTH_LISTENING) {
+                this.bleManager.setStore(store);
             }
-
             this.startApp(root);
         }
     }

@@ -23,7 +23,7 @@ import DeviceSelector from '../bits/DeviceSelector';
 import Strings from '../locales/en';
 import Spacing from '../bits/Spacing';
 
-import { getCrewEventTimeline } from '../actions/userActions';
+import { getCrewEventTimeline, getPermission } from '../actions/userActions';
 import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
 import Location from '../helpers/location';
 import CrewEventTimeline from '../bits/CrewEventTimeline';
@@ -153,6 +153,14 @@ class Home extends React.Component {
         // start that process now before users need to view them.
         if (this.props.permissions.contacts) {
             this.props.dispatch(fetchContacts());
+        }
+
+        if (!this.props.permission.location) {
+            this.props.dispatch(getPermission('location', { type: 'always' }));
+        }
+
+        if (!this.props.bleManager.isListening()) {
+            this.props.bleManager.startListening({ radioToken: this.props.radioToken });
         }
 
         // Users may have modified their accounts on other devices or on the web. Keep this device

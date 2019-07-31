@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
-import { Navigation } from 'react-native-navigation';
 
 import { changeAppRoot } from './navActions';
 import { API_URL, MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants/index';
@@ -64,11 +63,10 @@ export function registerNewAccount(email, phone, serial) {
 }
 
 export function resetAuth() {
-    return async function doReset() {
-        await AsyncStorage.removeItem('userToken');
-        return {
+    return async function doReset(dispatch) {
+        dispatch({
             type: types.AUTH_RESET,
-        };
+        });
     };
 }
 

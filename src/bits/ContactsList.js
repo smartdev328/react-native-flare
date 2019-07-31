@@ -53,36 +53,23 @@ const styles = StyleSheet.create({
     },
 });
 
-class ContactsListItem extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.contact = this.props.contact;
-        this.onPressExternal = this.props.onPress;
-        this.onPress = this.onPressContact.bind(this);
-    }
-
-    onPressContact() {
-        this.onPressExternal(this.contact);
-    }
-
-    render() {
-        return (
-            <TouchableOpacity style={styles.listItem} onPress={this.onPress}>
-                <View style={styles.listItemSelection}>
-                    {this.props.selected && <Icon name="check" size={28} color={Colors.theme.blueDark} />}
-                </View>
-                <View style={styles.listItemDetails}>
-                    <Text style={styles.displayName}>
-                        {this.props.contact.name} – {this.props.contact.label}
-                    </Text>
-                    <Text style={styles.phone}>{this.props.contact.phone}</Text>
-                </View>
-            </TouchableOpacity>
-        );
-    }
+function ContactsListItem(props) {
+    return (
+        <TouchableOpacity style={styles.listItem} onPress={() => props.onPress(props.contact)}>
+            <View style={styles.listItemSelection}>
+                {props.selected && <Icon name="check" size={28} color={Colors.theme.blueDark} />}
+            </View>
+            <View style={styles.listItemDetails}>
+                <Text style={styles.displayName}>
+                    {props.contact.name} – {props.contact.label}
+                </Text>
+                <Text style={styles.phone}>{props.contact.phone}</Text>
+            </View>
+        </TouchableOpacity>
+    );
 }
 
-const SectionNavigator = function createSectionNavigator(props) {
+function SectionNavigator(props) {
     return (
         <View style={styles.navigator}>
             {props.sections.map((section, index) => (
@@ -96,9 +83,9 @@ const SectionNavigator = function createSectionNavigator(props) {
             ))}
         </View>
     );
-};
+}
 
-const ContactsList = function createContactsList(props) {
+function ContactsList(props) {
     return (
         <View>
             <SectionList
@@ -120,6 +107,6 @@ const ContactsList = function createContactsList(props) {
             <SectionNavigator sections={props.sectionList} list={this.flatList} />
         </View>
     );
-};
+}
 
 export default ContactsList;

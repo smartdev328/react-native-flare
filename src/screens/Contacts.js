@@ -12,6 +12,7 @@ import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
 import { Navigation } from 'react-native-navigation';
+import { changeAppRoot } from '../actions/navActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -60,14 +61,15 @@ const styles = StyleSheet.create({
     },
 });
 
+const CREW_LIST_ITEM_HEIGHT = 140;
+
 // eslint-disable-next-line react/prefer-stateless-function
 class Contacts extends React.Component {
     constructor(props) {
         super(props);
-        this.crewListItemHeight = 140;
         this.state = {
             crew: props.crew,
-            crewListHeight: props.crew.members.length * this.crewListItemHeight,
+            crewListHeight: props.crew.members.length * CREW_LIST_ITEM_HEIGHT,
             contactSections: null,
         };
     }
@@ -83,7 +85,7 @@ class Contacts extends React.Component {
         let needsUpdate = false;
         if (crewLength !== state.crew.length) {
             newState.crew = props.crew;
-            newState.crewListHeight = props.crew.members.length * this.crewListItemHeight;
+            newState.crewListHeight = props.crew.members.length * CREW_LIST_ITEM_HEIGHT;
             needsUpdate = true;
         }
 
@@ -107,8 +109,10 @@ class Contacts extends React.Component {
         const memberIndex = members.findIndex(e => e.key === contact.key);
         let newMembers = null;
         if (memberIndex === -1) {
+            // If the selected contact is not in the crew, add it
             newMembers = members.concat(contact);
         } else {
+            // The selected contact is in the crew, so remove it by keeping everyone else
             newMembers = members.filter((val, index) => index !== memberIndex);
         }
 
@@ -122,7 +126,7 @@ class Contacts extends React.Component {
     }
 
     backToHome() {
-        Navigation.pop(this.props.componentId);
+        this.props.dispatch(changeAppRoot('secure'));
     }
 
     render() {
@@ -151,20 +155,19 @@ class Contacts extends React.Component {
                 )}
                 {!this.props.fromOnboarding && (
                     <View>
-                        <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
-                    </View>
-                )}
-                {!this.props.fromOnboarding &&
-                    this.props.crew &&
-                    this.props.crew.members &&
-                    this.props.crew.members.length === 0 && (
-                    <View>
-                        <Text style={styles.instructions}>{Strings.contacts.chooseInstruction}</Text>
-                        <CrewList
-                            style={{ height: this.state.crewListHeight }}
-                            crew={crew}
-                            onPressContact={contact => this.handleContactPress(contact)}
-                        />
+                        <View>
+                            <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
+                        </View>
+                        {this.props.crew && this.props.crew.members && this.props.crew.members.length === 0 && (
+                            <View>
+                                <Text style={styles.instructions}>{Strings.contacts.chooseInstruction}</Text>
+                                <CrewList
+                                    style={{ height: this.state.crewListHeight }}
+                                    crew={crew}
+                                    onPressContact={contact => this.handleContactPress(contact)}
+                                />
+                            </View>
+                        )}
                     </View>
                 )}
                 <ContactsList

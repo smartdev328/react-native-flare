@@ -28,6 +28,11 @@ export default class BleManager {
         });
         this.store = options && options.store;
         this.dispatch = this.store && this.store.dispatch;
+        this.radioToken = this.store && this.store.getState().user.radioToken;
+    }
+
+    setStore(store) {
+        this.store = store;
     }
 
     shutdown() {
@@ -80,7 +85,7 @@ export default class BleManager {
 
     // eslint-disable-next-line class-methods-use-this
     handleBeacon(dispatch, token, beacon, position) {
-        const userDevices = this.store.getState().user.devices || [];
+        const userDevices = (this.store && this.store.getState().user.devices) || [];
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser = userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
 
@@ -141,10 +146,12 @@ export default class BleManager {
         }
     }
 
-    processBeaconInRange(data, options) {
+    processBeaconInRange(data) {
         if (!this.beaconCache) {
             this.beaconCache = new BeaconCache();
         }
+
+        const { radioToken } = this.store.getState().user;
 
         data.beacons.forEach((beacon) => {
             const parsedBeacon = BleUtils.parseBeacon(beacon);
@@ -153,25 +160,23 @@ export default class BleManager {
                 console.debug(`Beacon ${JSON.stringify(parsedBeacon)}`);
             }
 
-            if (options && options.onBeaconDetected) {
-                options.onBeaconDetected(parsedBeacon);
+            if (this.onBeaconDetected) {
+                this.onBeaconDetected(parsedBeacon);
             }
 
-            if (options && options.store) {
+            if (radioToken) {
                 if (!this.beaconCache.hasAlreadyHandled(parsedBeacon)) {
                     this.beaconCache.markAsHandled(parsedBeacon);
-
-                    const { radioToken } = options.store.getState().user;
                     this.getCurrentPosition({
                         enableHighAccuracy: true,
                         timeout: 60000,
                     })
                         .then((position) => {
-                            this.handleBeacon(options.store.dispatch, radioToken, parsedBeacon, position);
+                            this.handleBeacon(this.dispatch, radioToken, parsedBeacon, position);
                         })
                         .catch((err) => {
                             console.debug(`Failed to get location: ${err}. Reporting beacon without it.`);
-                            this.handleBeacon(options.store.dispatch, radioToken, parsedBeacon);
+                            this.handleBeacon(this.dispatch, radioToken, parsedBeacon);
                         });
                 }
             }
@@ -182,6 +187,12 @@ export default class BleManager {
         console.debug('Starting BLE listening.');
         this.beaconCache = new BeaconCache();
         this.listening = true;
+        if (options.radioToken) {
+            this.radioToken = options.radioToken;
+        }
+        if (options.dispatch) {
+            this.dispatch = options.dispatch;
+        }
 
         if (Platform.OS === 'ios') {
             // IOS BLE SETUP
@@ -200,7 +211,7 @@ export default class BleManager {
         }
 
         this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange', (data) => {
-            this.processBeaconInRange(data, options);
+            this.processBeaconInRange(data);
         });
 
         this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener('regionDidEnter', (region) => {

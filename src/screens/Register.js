@@ -181,18 +181,23 @@ class Register extends Component {
     }
 
     render() {
-        const submitDisabled =
-            !this.state.email ||
-            this.state.email.length === 0 ||
-            !this.state.phone ||
-            this.state.phone.length === 0 ||
-            !this.state.serialNumber ||
-            this.state.serialNumber.length < requiredSerialNumberLength;
+        const hasEmail = this.state.email && this.state.email.length > 0;
+        const hasPhone = this.state.phone && this.state.phone.length > 0;
+        const hasSerialNumber =
+            this.state.serialNumber && this.state.serialNumber.length === requiredSerialNumberLength;
+        const submitDisabled = !hasEmail || !hasPhone || !hasSerialNumber;
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Aura source="aura-5" />
                 {(this.state.invalid || this.props.registrationState === 'failed') && (
                     <FlareAlert variant="info" message={this.state.invalidReason} />
+                )}
+                {!this.state.invalid &&
+                    this.props.registrationState !== 'failed' &&
+                    hasEmail &&
+                    hasPhone &&
+                    !hasSerialNumber && (
+                    <FlareAlert variant="info" message={Strings.register.errors.invalidSerialNumber} />
                 )}
                 {!this.state.userTyping && !this.state.invalid && (
                     <View style={styles.instructionsBackground}>

@@ -49,8 +49,21 @@ export function user(state = initialState.user, action = {}) {
             contactsCrewLookup: getContactsCrewLookup(firstCrew),
         });
     }
+    case types.AUTH_RESET:
+        return state.replace(state, {
+            authToken: null,
+            callScript: null,
+            profile: null,
+            crews: [],
+            crewEvents: [],
+            hasActiveFlare: false,
+            devices: [],
+            role: null,
+            hasViewedTutorial: false,
+            contactsCrewLookup: null,
+        });
 
-    /**
+        /**
          * ACCOUNT STATUS
          * We check account status on app launch after users authenticate. The intent
          * is to keep all devices in sync with each other.
@@ -192,6 +205,7 @@ export function user(state = initialState.user, action = {}) {
             registrationState: 'succeeded',
             authToken: action.data.auth_token,
             radioToken: action.data.radio_token,
+            devices: action.data.devices,
         });
 
         /**

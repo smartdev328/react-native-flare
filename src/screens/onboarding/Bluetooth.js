@@ -47,56 +47,14 @@ const styles = StyleSheet.create({
 });
 
 export default function getBluetoothPage(props) {
-    let title = null;
     let subtitle = null;
     let image = null;
     let imageSource = null;
+    let bottomComponent = null;
 
-    if (!props.bluetoothEnabled) {
-        // bluetooth is disabled
-        imageSource = require('../../assets/lotties/hmm.json');
-        ({ title, subtitle } = Strings.onboarding.noBluetooth);
-    } else if (props.deviceHasBeenClaimed) {
-        imageSource = require('../../assets/lotties/gift.json');
-        ({ title, subtitle } = Strings.onboarding.shortPress.deviceClaimed);
-    } else if (props.chosenDeviceID) {
-        image = (
-            <View style={styles.image}>
-                <JewelryLabelPreview
-                    deviceID={FlareDeviceID.getJewelryLabelFromDeviceID(props.chosenDeviceID)}
-                    circleTwoFactor
-                    containerStyle={styles.jewelryPreview}
-                />
-            </View>
-        );
-        ({ title } = Strings.onboarding.shortPress.chosenDevice);
-        subtitle = (
-            <View style={styles.bluetoothConfirm}>
-                <Text style={styles.confirmInstructions}>{Strings.onboarding.shortPress.chosenDevice.subtitle}</Text>
-                <TextInput
-                    autoCapitalize="characters"
-                    placeholder={Strings.jewelry.addNewConfirm.placeholderTwoFactor}
-                    onChangeText={v => props.changeTwoFactorText(v)}
-                    maxLength={DEVICE_TWO_FACTOR_LABEL_LENGTH}
-                    value={props.secondFactor}
-                    style={styles.secondFactorInput}
-                />
-                <Button
-                    primary
-                    rounded
-                    title={Strings.onboarding.shortPress.singleDevice.buttonLabel}
-                    onPress={() => props.claimDevice()}
-                />
-            </View>
-        );
-    } else if (props.multipleDevicesBroadcasting) {
-        // too many devices transmitting to know for sure which one belongs to user
-        imageSource = require('../../assets/lotties/hmm.json');
-        ({ title, subtitle } = Strings.onboarding.shortPress.multipleDevices);
-    } else if (props.highestPressCount.deviceID) {
+    if (props.ownedDevices.indexOf(props.highestPressCount.deviceID) !== -1) {
         // one good device transmitting
         imageSource = require('../../assets/lotties/dino-dance.json');
-        ({ title } = Strings.onboarding.shortPress.singleDevice);
         subtitle = (
             <View>
                 <Text style={styles.foundJewelryIntro}>{Strings.onboarding.shortPress.singleDevice.subtitleStart}</Text>
@@ -107,17 +65,18 @@ export default function getBluetoothPage(props) {
                 {!props.claimingDevice && (
                     <Button
                         primary
-                        rounded
                         title={Strings.onboarding.shortPress.singleDevice.buttonLabel}
                         onPress={() => props.chooseThisDevice(props.highestPressCount.deviceID)}
                     />
                 )}
             </View>
         );
+        bottomComponent = <CommonBottom right body={subtitle} />;
     } else {
         // no devices found yet
         imageSource = require('../../assets/lotties/ripple.json');
-        ({ title, subtitle } = Strings.onboarding.shortPress);
+        ({ subtitle } = Strings.onboarding.shortPress);
+        bottomComponent = <CommonBottom right bodyText={subtitle} />;
     }
 
     if (imageSource) {
@@ -147,10 +106,6 @@ export default function getBluetoothPage(props) {
                 <CommonMiddle right image={image} />
             </View>
         ),
-        subtitle: (
-            <View style={styles.subtitleContainer}>
-                <CommonBottom right bodyText={subtitle} />
-            </View>
-        ),
+        subtitle: <View style={styles.subtitleContainer}>{bottomComponent}</View>,
     };
 }
