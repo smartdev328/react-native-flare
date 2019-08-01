@@ -16,6 +16,7 @@ export default class BleProvider {
     }
 
     setStore(store) {
+        this.store = store;
         this.props = {
             dispatch: store.dispatch,
             hardware: store.getState().hardware,
