@@ -25,9 +25,10 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     bodyText: {
-        flex: 1,
         fontSize: Type.size.medium,
         color: Colors.white,
+        marginBottom: Spacing.large,
+        minHeight: 48,
     },
     bodyTextLeft: {
         textAlign: 'left',

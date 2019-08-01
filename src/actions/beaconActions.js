@@ -1,7 +1,7 @@
 import Immutable from 'seamless-immutable';
 import moment from 'moment';
 
-import { API_URL } from '../constants/';
+import { API_URL } from '../constants/index';
 import * as types from './actionTypes';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 import { BeaconTypes } from '../bits/BleConstants';

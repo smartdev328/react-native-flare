@@ -12,28 +12,12 @@ import getLocationPage from './onboarding/Location';
 import getLongPressPage from './onboarding/LongPress';
 import getLongPressCancelPage from './onboarding/LongPressCancel';
 import getContactsPage from './onboarding/Contacts';
+import getNotificationsPage from './onboarding/Notifications';
 import getWelcomePage from './onboarding/Welcome';
-import Spacing from '../bits/Spacing';
-import Strings from '../locales/en';
-import Type from '../bits/Type';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    subtitleArea: {
-        paddingHorizontal: 10,
-    },
-    subtitleText: {
-        marginBottom: Spacing.large,
-    },
-    foundJewelryIntro: {
-        textAlign: 'center',
-    },
-    foundJewelryID: {
-        margin: Spacing.large,
-        fontSize: Type.size.medium,
-        textAlign: 'center',
     },
 });
 
@@ -87,14 +71,44 @@ class OnboardingMain extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        const LOCATION_PAGE_INDEX = 1;
+        const BLUETOOTH_PAGE_INDEX = 2;
+        const NOTIFICATION_PAGE_INDEX = 4;
+
         // Go to next screen after user gives location permission
         if (
+            this.flatList &&
+            this.flatList.state.currentPage === LOCATION_PAGE_INDEX &&
             this.props.permissions &&
             this.props.permissions.location &&
-            this.props.permissions.location !== prevProps.permissions.location &&
-            this.flatList
+            this.props.permissions.location !== prevProps.permissions.location
         ) {
             this.props.dispatch(startBleListening());
+            this.flatList.goNext();
+        }
+
+        // Go to next screen after user activates flare
+        if (
+            this.flatList &&
+            this.flatList.state.currentPage === BLUETOOTH_PAGE_INDEX &&
+            this.props.latestBeacon &&
+            JSON.stringify(this.props.latestBeacon) !== JSON.stringify(prevProps.latestBeacon) &&
+            this.props.latestBeacon.type === BeaconTypes.Long.name
+        ) {
+            const found = this.props.devices.filter(d => d.id === this.props.latestBeacon.deviceID);
+            if (found.length === 1) {
+                this.flatList.goNext();
+            }
+        }
+
+        // Go to next screen after user gives notification permission
+        if (
+            this.flatList &&
+            this.flatList.state.currentPage === NOTIFICATION_PAGE_INDEX &&
+            this.props.permissions &&
+            this.props.permissions.notification &&
+            this.props.permissions.notification !== prevProps.permissions.notification
+        ) {
             this.flatList.goNext();
         }
 
@@ -135,34 +149,6 @@ class OnboardingMain extends React.Component {
         });
     }
 
-    skipOnboarding() {
-        Navigation.showModal({
-            stack: {
-                children: [
-                    {
-                        component: {
-                            name: 'com.flarejewelry.app.Confirm',
-                            passProps: {
-                                cancelLabel: Strings.generic.cancel,
-                                confirmLabel: Strings.generic.confirm,
-                                onConfirm: () => this.endOnboarding(),
-                                prompt: Strings.onboarding.skipConfirmPrompt,
-                            },
-                        },
-                    },
-                ],
-            },
-        });
-    }
-
-    requestLocationPermission() {
-        this.props.dispatch(getPermission('location', { type: 'always' }));
-    }
-
-    requestContactsPermission() {
-        this.props.dispatch(getPermission('contacts'));
-    }
-
     goToPushedView = () => {
         Navigation.push(this.props.componentId, {
             component: {
@@ -187,7 +173,7 @@ class OnboardingMain extends React.Component {
          */
         const locationPage = getLocationPage({
             permissions: this.props.permissions,
-            requestLocationPermission: () => this.requestLocationPermission(),
+            requestLocationPermission: () => this.props.dispatch(getPermission('location', { type: 'always' })),
         });
 
         const bluetoothPage = getBluetoothPage({
@@ -201,6 +187,10 @@ class OnboardingMain extends React.Component {
             receivedLongPress: this.state.receivedLongPress,
         });
 
+        const notificationsPage = getNotificationsPage({
+            requestNotificationsPermission: () => this.props.dispatch(getPermission('notification')),
+        });
+
         const longPressCancelPage = getLongPressCancelPage({
             hasSetPin: this.state.hasSetPin,
             pin: this.state.cancelPIN,
@@ -211,7 +201,7 @@ class OnboardingMain extends React.Component {
         const contactsPage = getContactsPage({
             crews: this.props.crews,
             hasContactsPermission: this.props.permissions.contacts,
-            requestContactsPermission: () => this.requestContactsPermission(),
+            requestContactsPermission: () => this.props.dispatch(getPermission('contacts')),
             chooseCrew: () => this.chooseCrew(),
             endOnboarding: () => this.endOnboarding(),
         });
@@ -231,7 +221,16 @@ class OnboardingMain extends React.Component {
                     showBack
                     showDone={false}
                     onSkip={() => this.skipOnboarding()}
-                    pages={[welcomePage, locationPage, bluetoothPage, longPressPage, longPressCancelPage, contactsPage]}
+                    /* Page order matters. @see lifecycle methods related to dynamic page switching */
+                    pages={[
+                        welcomePage,
+                        locationPage,
+                        bluetoothPage,
+                        longPressPage,
+                        notificationsPage,
+                        longPressCancelPage,
+                        contactsPage,
+                    ]}
                 />
             </KeyboardAvoidingView>
         );

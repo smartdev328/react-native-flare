@@ -8,24 +8,19 @@ import CommonMiddle from './CommonMiddle';
 import CommonTop from './CommonTop';
 import Strings from '../../locales/en';
 
-export default function getLongPressPage(args) {
+export default function getLongPressPage(props) {
     let title = null;
     let subtitle = null;
     let image = null;
     let imageSource = null;
 
-    if (!args.bluetoothEnabled) {
-        // bluetooth is disabled
-        imageSource = require('../../assets/lotties/hmm.json');
-        ({ title, subtitle } = Strings.onboarding.noBluetooth);
-    } else if (args.receivedLongPress) {
+    if (props.receivedLongPress) {
         // success -- received a long press
         imageSource = require('../../assets/lotties/chat.json');
         ({ title, subtitle } = Strings.onboarding.longPress.success);
     } else {
-        // no devices found yet
         imageSource = require('../../assets/lotties/ripple.json');
-        ({ title, subtitle } = Strings.onboarding.longPress.waiting);
+        ({ title, subtitle } = Strings.onboarding.longPress.success);
     }
 
     if (imageSource) {
@@ -52,9 +47,9 @@ export default function getLongPressPage(args) {
         ),
         title: (
             <View>
-                <CommonMiddle right body={subtitle} image={image} />
+                <CommonMiddle right title={title} image={image} />
             </View>
         ),
-        subtitle: <View />,
+        subtitle: <CommonBottom right bodyText={subtitle} />,
     };
 }

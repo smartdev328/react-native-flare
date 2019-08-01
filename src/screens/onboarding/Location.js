@@ -37,7 +37,7 @@ export default function getLocationPage(props) {
             <View style={styles.titleContainer}>
                 <CommonMiddle
                     right
-                    body={Strings.onboarding.location.subtitle}
+                    bodyText={Strings.onboarding.location.subtitle}
                     imageSource={{ uri: 'onboarding-location' }}
                 />
             </View>
@@ -48,7 +48,6 @@ export default function getLocationPage(props) {
                     <Button
                         title={Strings.onboarding.welcome.alwaysAllow}
                         primary
-                        rounded
                         onPress={() => props.requestLocationPermission()}
                     />
                 )}

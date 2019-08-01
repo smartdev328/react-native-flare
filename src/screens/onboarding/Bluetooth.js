@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 export default function getBluetoothPage(props) {
-    let subtitle = null;
+    const subtitle = null;
     let image = null;
     let imageSource = null;
     let bottomComponent = null;
@@ -55,28 +55,11 @@ export default function getBluetoothPage(props) {
     if (props.ownedDevices.indexOf(props.highestPressCount.deviceID) !== -1) {
         // one good device transmitting
         imageSource = require('../../assets/lotties/dino-dance.json');
-        subtitle = (
-            <View>
-                <Text style={styles.foundJewelryIntro}>{Strings.onboarding.shortPress.singleDevice.subtitleStart}</Text>
-                <Text style={styles.foundJewelryID}>
-                    {FlareDeviceID.getJewelryLabelFromDeviceID(props.highestPressCount.deviceID)}
-                </Text>
-                {props.claimingDevice && <ActivityIndicator />}
-                {!props.claimingDevice && (
-                    <Button
-                        primary
-                        title={Strings.onboarding.shortPress.singleDevice.buttonLabel}
-                        onPress={() => props.chooseThisDevice(props.highestPressCount.deviceID)}
-                    />
-                )}
-            </View>
-        );
-        bottomComponent = <CommonBottom right body={subtitle} />;
+        bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.singleDevice.subtitleStart} />;
     } else {
         // no devices found yet
         imageSource = require('../../assets/lotties/ripple.json');
-        ({ subtitle } = Strings.onboarding.shortPress);
-        bottomComponent = <CommonBottom right bodyText={subtitle} />;
+        bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.subtitle} />;
     }
 
     if (imageSource) {

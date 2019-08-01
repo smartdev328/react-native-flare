@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         color: Colors.white,
         marginBottom: Spacing.medium,
     },
-    body: {
+    bodyText: {
         fontSize: Type.size.medium,
         color: Colors.white,
         marginBottom: Spacing.medium,
@@ -49,7 +49,7 @@ export default function CommonMiddle(props) {
             ]}
         >
             {props.title && <Text style={styles.h1}>{props.title}</Text>}
-            {props.body && <Text style={styles.body}>{props.body}</Text>}
+            {props.bodyText && <Text style={styles.bodyText}>{props.bodyText}</Text>}
             {props.imageSource && <Image source={props.imageSource} style={styles.image} />}
             {props.image}
             {props.form}

@@ -94,7 +94,7 @@ export default function getLongPressCancelPage(props) {
         ),
         title: (
             <View>
-                {props.hasSetPin && <CommonMiddle center body={title} imageSource={imageSource} />}
+                {props.hasSetPin && <CommonMiddle center bodyText={title} imageSource={imageSource} />}
                 {!props.hasSetPin && <CommonMiddle center form={subtitle} image={image} />}
             </View>
         ),

@@ -138,24 +138,9 @@ const Strings = {
             title: 'Short Press',
             subtitle:
                 'Press the button on your jewelry\nbriefly a few times in a row. Your phone will ring. Take the call, then press Next.',
-            multipleDevices: {
-                title: 'Wait a sec',
-                subtitle: "It's noisy in here. Wait a sec and try again, or maybe move to a different room.",
-            },
             singleDevice: {
                 title: 'Short Press',
-                subtitleStart: 'OMG we heard something! Look at the label on your jewelry. Does it start with this?',
-                buttonLabel: "That's Mine",
-            },
-            chosenDevice: {
-                title: 'Confirm Jewelry',
-                subtitle: 'Check the label on your jewelry. Enter the last 3 characters in the code.',
-            },
-            deviceClaimed: {
-                title: 'All Yours',
-                subtitle:
-                    "Your new piece of jewelry is connected to your account. Next we'll show you another " +
-                    'type of button press.',
+                subtitleStart: 'Great. Now hold the button down for 3 seconds and then let go.',
             },
         },
         longPress: {
@@ -164,12 +149,9 @@ const Strings = {
                 subtitle: 'Now hold the button down for longer, about 3 seconds, and let go.',
             },
             success: {
-                title: 'Long Press 😎🎉✨',
+                title: 'Sweet!',
                 subtitle:
-                    'After a long press, we reach out to a group of your contacts that you choose. ' +
-                    'They receive a text message telling them where you are and how to reach you. ' +
-                    'You can see their group messages in the app. Press Next to learn how to cancel ' +
-                    "your flare and tell your crew that you're okay.",
+                    "Normally we'd reach out to your\nfriends now. They'd know where you\nare and how to reach you.",
             },
         },
         longPressCancel: {
@@ -183,6 +165,10 @@ const Strings = {
             },
             pinPlaceholder: 'Secret code',
             pinConfirmPlaceholder: 'Confirm secret code',
+        },
+        notifications: {
+            subtitle: 'We need permission to send you\nnotifications when you hold the button\non your jewelry.',
+            buttonLabel: 'Allow',
         },
         contacts: {
             hasCrew: {
