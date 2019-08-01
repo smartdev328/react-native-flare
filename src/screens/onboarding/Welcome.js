@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function WelcomePage() {
+export default function getWelcomePage() {
     return {
         backgroundColor: Colors.theme.purple,
         image: (

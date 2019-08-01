@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function LongPressCancelPage(props) {
+export default function getLongPressCancelPage(props) {
     let title = null;
     let subtitle = null;
     let image = null;

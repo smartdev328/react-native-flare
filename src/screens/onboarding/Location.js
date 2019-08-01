@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function LocationPage(props) {
+export default function getLocationPage(props) {
     return {
         backgroundColor: Colors.theme.purple,
         image: (

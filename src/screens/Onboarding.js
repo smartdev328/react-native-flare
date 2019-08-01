@@ -1,5 +1,5 @@
 import React from 'react';
-import { KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Onboarding from 'react-native-onboarding-swiper';
@@ -8,12 +8,12 @@ import { BeaconTypes } from '../bits/BleConstants';
 import { claimDevice } from '../actions/deviceActions';
 import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
-import BlueToothPage from './onboarding/Bluetooth';
-import LocationPage from './onboarding/Location';
-import LongPressPage from './onboarding/LongPress';
-import LongPressCancelPage from './onboarding/LongPressCancel';
-import ContactsPage from './onboarding/Contacts';
-import WelcomePage from './onboarding/Welcome';
+import getBluetoothPage from './onboarding/Bluetooth';
+import getLocationPage from './onboarding/Location';
+import getLongPressPage from './onboarding/LongPress';
+import getLongPressCancelPage from './onboarding/LongPressCancel';
+import getContactsPage from './onboarding/Contacts';
+import getWelcomePage from './onboarding/Welcome';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
@@ -191,6 +191,53 @@ class OnboardingMain extends React.Component {
     };
 
     render() {
+        const locationPage = getLocationPage({
+            permissions: this.props.permissions,
+            requestLocationPermission: () => this.requestLocationPermission(),
+        });
+
+        /**
+         * The bluetooth page has many internal states. Unfortunately, the onboarding
+         * library operates on an array of objects instead of JSX elements. That means
+         * we pass this higher order component's props and state into the complex page
+         * so that it can change dynamically without making this component messy. To
+         * improve rendering performance, consider deriving state and passing that
+         * (conditionally) to the generator function instead.
+         */
+        const bluetoothPage = getBluetoothPage({
+            bluetoothEnabled: this.props.bluetoothEnabled,
+            highestPressCount: this.state.highestPressCount,
+            ownedDevices: this.props.devices.map(d => d.id),
+        });
+
+        /**
+         * The long press page has a few internal states too.
+         */
+        const longPressPage = getLongPressPage({
+            bluetoothEnabled: this.props.bluetoothEnabled,
+            receivedLongPress: this.state.receivedLongPress,
+        });
+
+        const longPressCancelPage = getLongPressCancelPage({
+            hasSetPin: this.state.hasSetPin,
+            pin: this.state.cancelPIN,
+            changeCancelPIN: e => this.changeCancelPIN(e),
+            setCancelPIN: () => this.setCancelPIN(),
+        });
+
+        const contactsPage = getContactsPage({
+            crews: this.props.crews,
+            hasContactsPermission: this.props.permissions.contacts,
+            requestContactsPermission: () => this.requestContactsPermission(),
+            chooseCrew: () => this.chooseCrew(),
+            endOnboarding: () => this.endOnboarding(),
+        });
+
+        /**
+         * The following pages don't have dynamic states.
+         */
+        const welcomePage = getWelcomePage();
+
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <Onboarding
@@ -206,35 +253,7 @@ class OnboardingMain extends React.Component {
                     showBack
                     showDone={false}
                     onSkip={() => this.skipOnboarding()}
-                    pages={[
-                        <WelcomePage />,
-                        <LocationPage
-                            permissions={this.props.permissions}
-                            requestLocationPermission={() => this.requestLocationPermission()}
-                        />,
-                        <BlueToothPage
-                            bluetoothEnabled={this.props.bluetoothEnabled}
-                            highestPressCount={this.state.highestPressCount}
-                            ownedDevices={this.props.devices.map(d => d.id)}
-                        />,
-                        <LongPressPage
-                            bluetoothEnabled={this.props.bluetoothEnabled}
-                            receivedLongPress={this.state.receivedLongPress}
-                        />,
-                        <LongPressCancelPage
-                            hasSetPin={this.state.hasSetPin}
-                            pin={this.state.cancelPIN}
-                            changeCancelPIN={e => this.changeCancelPIN(e)}
-                            setCancelPIN={() => this.setCancelPIN()}
-                        />,
-                        <ContactsPage
-                            crews={this.props.crews}
-                            hasContactsPermission={this.props.permissions.contacts}
-                            requestContactsPermission={() => this.requestContactsPermission()}
-                            chooseCrew={() => this.chooseCrew()}
-                            endOnboarding={() => this.endOnboarding()}
-                        />,
-                    ]}
+                    pages={[welcomePage, locationPage, bluetoothPage, longPressPage, longPressCancelPage, contactsPage]}
                 />
             </KeyboardAvoidingView>
         );
