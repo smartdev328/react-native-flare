@@ -67,7 +67,7 @@ export default class BleProvider {
                 if (!forCurrentUser) {
                     dispatch({
                         type: actionTypes.BEACON_COUNTS_UPDATED,
-                        shortPressCounts: this.beaconCache.getRecentShortPressCounts(),
+                        shortPressCounts: this.bleManager.beaconCache.getRecentShortPressCounts(),
                     });
                 }
             });
