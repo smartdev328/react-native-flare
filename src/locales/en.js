@@ -136,26 +136,10 @@ const Strings = {
         },
         shortPress: {
             title: 'Short Press',
-            subtitle:
-                'Press the button on your jewelry\nbriefly a few times in a row. Your phone will ring. Take the call, then press Next.',
-            multipleDevices: {
-                title: 'Wait a sec',
-                subtitle: "It's noisy in here. Wait a sec and try again, or maybe move to a different room.",
-            },
+            subtitle: 'Press the button on your jewelry\nbriefly. Just a tap. Take the call,\nthen press Next.',
             singleDevice: {
                 title: 'Short Press',
-                subtitleStart: 'OMG we heard something! Look at the label on your jewelry. Does it start with this?',
-                buttonLabel: "That's Mine",
-            },
-            chosenDevice: {
-                title: 'Confirm Jewelry',
-                subtitle: 'Check the label on your jewelry. Enter the last 3 characters in the code.',
-            },
-            deviceClaimed: {
-                title: 'All Yours',
-                subtitle:
-                    "Your new piece of jewelry is connected to your account. Next we'll show you another " +
-                    'type of button press.',
+                subtitleStart: "Nailed it. When you're ready, hold the button down for 3 seconds and then let go.",
             },
         },
         longPress: {

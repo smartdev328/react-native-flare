@@ -8,7 +8,7 @@ import CommonMiddle from './CommonMiddle';
 import CommonTop from './CommonTop';
 import Strings from '../../locales/en';
 
-export default function getLongPressPage(args) {
+export default function LongPressPage(args) {
     let title = null;
     let subtitle = null;
     let image = null;

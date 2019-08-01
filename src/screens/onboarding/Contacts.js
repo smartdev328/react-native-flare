@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function getContactsPage(props) {
+export default function ContactsPage(props) {
     let subtitle = null;
     let image = null;
     let lottieSource = null;
