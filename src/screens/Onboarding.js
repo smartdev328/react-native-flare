@@ -1,11 +1,10 @@
 import React from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Onboarding from 'react-native-onboarding-swiper';
 
 import { BeaconTypes } from '../bits/BleConstants';
-import { claimDevice } from '../actions/deviceActions';
 import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
 import getBluetoothPage from './onboarding/Bluetooth';
@@ -82,8 +81,6 @@ class OnboardingMain extends React.Component {
         this.state = {
             highestPressCount: {},
             multipleDevicesBroadcasting: false,
-            chosenDeviceID: null,
-            secondFactor: '',
             cancelPIN: '',
             hasSetPin: props.hasSetPin,
         };
@@ -118,22 +115,6 @@ class OnboardingMain extends React.Component {
     changeCancelPIN(val) {
         this.setState({
             cancelPIN: val,
-        });
-    }
-
-    claimDevice() {
-        this.props.dispatch(claimDevice(this.props.authToken, this.state.chosenDeviceID, this.state.secondFactor));
-    }
-
-    changeTwoFactorText(val) {
-        this.setState({
-            secondFactor: val,
-        });
-    }
-
-    chooseThisDevice(deviceID) {
-        this.setState({
-            chosenDeviceID: deviceID,
         });
     }
 
@@ -191,28 +172,30 @@ class OnboardingMain extends React.Component {
     };
 
     render() {
+        /**
+         * Onboarding screens change dynamically with user and app state. The onboarding
+         * library we're using has a fixed page object format. These page "get" functions
+         * that we call below are a lot like JSX rendered pages; many are pure functions
+         * that simply render content based on state. For example, the welcome page is
+         * very simple and static.
+         */
+        const welcomePage = getWelcomePage();
+
+        /**
+         * The following pages have internal state and interact with the main onboarding
+         * flow through their "props."
+         */
         const locationPage = getLocationPage({
             permissions: this.props.permissions,
             requestLocationPermission: () => this.requestLocationPermission(),
         });
 
-        /**
-         * The bluetooth page has many internal states. Unfortunately, the onboarding
-         * library operates on an array of objects instead of JSX elements. That means
-         * we pass this higher order component's props and state into the complex page
-         * so that it can change dynamically without making this component messy. To
-         * improve rendering performance, consider deriving state and passing that
-         * (conditionally) to the generator function instead.
-         */
         const bluetoothPage = getBluetoothPage({
             bluetoothEnabled: this.props.bluetoothEnabled,
             highestPressCount: this.state.highestPressCount,
             ownedDevices: this.props.devices.map(d => d.id),
         });
 
-        /**
-         * The long press page has a few internal states too.
-         */
         const longPressPage = getLongPressPage({
             bluetoothEnabled: this.props.bluetoothEnabled,
             receivedLongPress: this.state.receivedLongPress,
@@ -232,11 +215,6 @@ class OnboardingMain extends React.Component {
             chooseCrew: () => this.chooseCrew(),
             endOnboarding: () => this.endOnboarding(),
         });
-
-        /**
-         * The following pages don't have dynamic states.
-         */
-        const welcomePage = getWelcomePage();
 
         return (
             <KeyboardAvoidingView style={styles.container}>
