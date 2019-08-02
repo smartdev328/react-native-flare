@@ -41,7 +41,6 @@
 		2DCD954D1E0B4F2C00145EB5 /* appTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* appTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		32455963B34D4975A910150F /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7BCF09062D0485E8215BE31 /* libRNBackgroundTimer.a */; };
-		44A9D4C1AE2B4808B33CEA33 /* libRNNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F3ED945B0A441A89D368C3C /* libRNNotifications.a */; };
 		456C881F416C46C5A56EBB79 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58E27E809AC94DDE8D14B7DC /* Feather.ttf */; };
 		46A5E2DE998B46568602EF20 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96F93211F4B1407B912388B6 /* Entypo.ttf */; };
 		4EAB4A571E174B5C8EACA560 /* ReactNativeNavigationTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = C08BEFBB39F34C6A970D9DD2 /* ReactNativeNavigationTests.xctest */; };
@@ -62,6 +61,7 @@
 		B72679BB3F1244D592D28214 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE3C4692F6AE456E9B7F1051 /* libRNVectorIcons.a */; };
 		BBE3D88D261A42CE967C4C94 /* libRCTContacts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6052B5C56BF478482F82488 /* libRCTContacts.a */; };
 		BE0E973F229F06B30050F45E /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		BE3DB83D22F4D99500292929 /* libRNNotifications.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE3DB83322F4D95200292929 /* libRNNotifications.a */; };
 		BE4E47E6213E47EB00F2B947 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4E47BE213E476B00F2B947 /* libRCTPushNotification.a */; };
 		BE5917CF229F0F350015E7E5 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE5917CE229F0F350015E7E5 /* JavaScriptCore.framework */; };
 		BE91694722F22B2F00A2463C /* libRNiBeacon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE91694222F2271200A2463C /* libRNiBeacon.a */; };
@@ -329,13 +329,6 @@
 			remoteGlobalIDString = 3D7682761D8E76B80014119E;
 			remoteInfo = SplashScreen;
 		};
-		BE08A5F02242DB1700F24DE5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E805A59F28FF4C5A8DDC4835 /* RNNotifications.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RNNotifications;
-		};
 		BE0E9723229F04700050F45E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -405,6 +398,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
+		};
+		BE3DB83222F4D95200292929 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE3DB7F222F4D95200292929 /* RNNotifications.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNNotifications;
+		};
+		BE3DB83422F4D95200292929 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE3DB7F222F4D95200292929 /* RNNotifications.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 50E4164622E4C98B0048367F;
+			remoteInfo = RNNotificationsTests;
 		};
 		BE4E47BD213E476B00F2B947 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -625,6 +632,7 @@
 		B95C4251D3EA4C2C923559C5 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		BCE3D80272CC44D9BBEB4A2B /* libRNBluetoothInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBluetoothInfo.a; sourceTree = "<group>"; };
 		BE08A5F22243D4D000F24DE5 /* app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = app.entitlements; path = app/app.entitlements; sourceTree = "<group>"; };
+		BE3DB7F222F4D95200292929 /* RNNotifications.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNNotifications.xcodeproj; path = "../node_modules/react-native-notifications/RNNotifications/RNNotifications.xcodeproj"; sourceTree = "<group>"; };
 		BE4E47AB213E476B00F2B947 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		BE5917CE229F0F350015E7E5 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		BE6ADC7D219F246B00750A79 /* libRNiBeacon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNiBeacon.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -637,7 +645,6 @@
 		DAAE14CB89644222A912DB05 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		E43367EEA2FD4D0AB1CD12A2 /* libSRSRadialGradien-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libSRSRadialGradien-tvOS.a"; sourceTree = "<group>"; };
 		E554C7C49C8144E69D69644C /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		E805A59F28FF4C5A8DDC4835 /* RNNotifications.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNNotifications.xcodeproj; path = "../node_modules/react-native-notifications/RNNotifications/RNNotifications.xcodeproj"; sourceTree = "<group>"; };
 		ED71BC0CB71D45BC926A87DA /* RNiBeacon.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNiBeacon.xcodeproj; path = "../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon.xcodeproj"; sourceTree = "<group>"; };
 		EDB3C72237534B21B03D90CE /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		EF92E405688946F9ACD56478 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
@@ -659,6 +666,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE3DB83D22F4D99500292929 /* libRNNotifications.a in Frameworks */,
 				BE91694722F22B2F00A2463C /* libRNiBeacon.a in Frameworks */,
 				BE5917CF229F0F350015E7E5 /* JavaScriptCore.framework in Frameworks */,
 				BE4E47E6213E47EB00F2B947 /* libRCTPushNotification.a in Frameworks */,
@@ -684,7 +692,6 @@
 				77356A91E9D645A38202A0A3 /* libReactNativeNavigation.a in Frameworks */,
 				4EAB4A571E174B5C8EACA560 /* ReactNativeNavigationTests.xctest in Frameworks */,
 				CD49E371E28F4432A1E4558C /* libRNCamera.a in Frameworks */,
-				44A9D4C1AE2B4808B33CEA33 /* libRNNotifications.a in Frameworks */,
 				6510656269AC42D2AA10A0DD /* libLottie.a in Frameworks */,
 				F4045BD393734F0D8463B7E9 /* libLottieReactNative.a in Frameworks */,
 				8C704BF062F54ECD820DF0B1 /* libRNCAsyncStorage.a in Frameworks */,
@@ -914,11 +921,11 @@
 				EF92E405688946F9ACD56478 /* RNCamera.xcodeproj */,
 				B95C4251D3EA4C2C923559C5 /* RNCAsyncStorage.xcodeproj */,
 				0A2FC39804C746DB9B5E9323 /* RNI18n.xcodeproj */,
-				E805A59F28FF4C5A8DDC4835 /* RNNotifications.xcodeproj */,
+				ED71BC0CB71D45BC926A87DA /* RNiBeacon.xcodeproj */,
+				BE3DB7F222F4D95200292929 /* RNNotifications.xcodeproj */,
 				8A9827844C954A1A94A78FE6 /* RNVectorIcons.xcodeproj */,
 				EDB3C72237534B21B03D90CE /* SplashScreen.xcodeproj */,
 				09D36DF636564AC190FF6E78 /* SRSRadialGradient.xcodeproj */,
-				ED71BC0CB71D45BC926A87DA /* RNiBeacon.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -978,14 +985,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BE08A5ED2242DB1700F24DE5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BE08A5F12242DB1700F24DE5 /* libRNNotifications.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		BE2F0A0622EF57060007E14E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1034,6 +1033,15 @@
 			children = (
 				BE34183D20BF4D3C00D25DF4 /* libRNI18n.a */,
 				BE34183F20BF4D3C00D25DF4 /* libRNI18n-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE3DB7F322F4D95200292929 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE3DB83322F4D95200292929 /* libRNNotifications.a */,
+				BE3DB83522F4D95200292929 /* RNNotificationsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1379,8 +1387,8 @@
 					ProjectRef = ED71BC0CB71D45BC926A87DA /* RNiBeacon.xcodeproj */;
 				},
 				{
-					ProductGroup = BE08A5ED2242DB1700F24DE5 /* Products */;
-					ProjectRef = E805A59F28FF4C5A8DDC4835 /* RNNotifications.xcodeproj */;
+					ProductGroup = BE3DB7F322F4D95200292929 /* Products */;
+					ProjectRef = BE3DB7F222F4D95200292929 /* RNNotifications.xcodeproj */;
 				},
 				{
 					ProductGroup = BE34182D20BF4D3B00D25DF4 /* Products */;
@@ -1644,13 +1652,6 @@
 			remoteRef = BE077A47213E2E9100087432 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BE08A5F12242DB1700F24DE5 /* libRNNotifications.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNNotifications.a;
-			remoteRef = BE08A5F02242DB1700F24DE5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		BE0E9724229F04700050F45E /* libjsi.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1719,6 +1720,20 @@
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = BE34184720BF4D3C00D25DF4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BE3DB83322F4D95200292929 /* libRNNotifications.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNNotifications.a;
+			remoteRef = BE3DB83222F4D95200292929 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BE3DB83522F4D95200292929 /* RNNotificationsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RNNotificationsTests.xctest;
+			remoteRef = BE3DB83422F4D95200292929 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		BE4E47BE213E476B00F2B947 /* libRCTPushNotification.a */ = {
@@ -2148,6 +2163,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
+					"$(SRCROOT)/../node_modules/react-native-notifications/RNNotifications",
 				);
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2199,6 +2215,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
+					"$(SRCROOT)/../node_modules/react-native-notifications/RNNotifications",
 				);
 				INFOPLIST_FILE = app/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
