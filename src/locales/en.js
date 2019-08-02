@@ -170,6 +170,16 @@ const Strings = {
             subtitle: 'We need permission to send you\nnotifications when you hold the button\non your jewelry.',
             buttonLabel: 'Allow',
         },
+        flareExample: {
+            story: {
+                flareName: 'Flare: ',
+                first: 'This is what you see when you’ve held the button down to start a Flare.',
+                second:
+                    'We reach out to your selected contacts by text message. When they respond, we show their messages here.',
+                third: 'Press the Cancel button below to end this Flare.',
+            },
+            buttonLabel: 'Cancel Flare',
+        },
         contacts: {
             hasCrew: {
                 buttonLabel: "Let's Go",

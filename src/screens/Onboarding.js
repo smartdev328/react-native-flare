@@ -10,6 +10,7 @@ import { startBleListening } from '../actions/hardwareActions';
 import getBluetoothPage from './onboarding/Bluetooth';
 import getLocationPage from './onboarding/Location';
 import getLongPressPage from './onboarding/LongPress';
+import getFlareExamplePage from './onboarding/FlareExample';
 import getLongPressCancelPage from './onboarding/LongPressCancel';
 import getContactsPage from './onboarding/Contacts';
 import getNotificationsPage from './onboarding/Notifications';
@@ -45,7 +46,11 @@ class OnboardingMain extends React.Component {
 
         // Only change state flag once after receiving a long press
         const receivedLongPress =
-            state.receivedLongPress || (props.latestBeacon && props.latestBeacon.type === BeaconTypes.Long.name);
+            state.receivedLongPress ||
+            (props.latestBeacon &&
+                props.latestBeacon.type === BeaconTypes.Long.name &&
+                props.ownedDevices &&
+                props.ownedDevices.filter(d => d.id === props.latestBeacon.deviceID).length > 0);
 
         if (multipleBroadcastChanged || highestPressCountChanged || props.updatedPIN !== state.hasSetPin) {
             return {
@@ -191,6 +196,10 @@ class OnboardingMain extends React.Component {
             requestNotificationsPermission: () => this.props.dispatch(getPermission('notification')),
         });
 
+        const flareExamplePage = getFlareExamplePage({
+            onCancelFlare: () => this.flatList.goNext(),
+        });
+
         const longPressCancelPage = getLongPressCancelPage({
             hasSetPin: this.state.hasSetPin,
             pin: this.state.cancelPIN,
@@ -228,6 +237,7 @@ class OnboardingMain extends React.Component {
                         bluetoothPage,
                         longPressPage,
                         notificationsPage,
+                        flareExamplePage,
                         longPressCancelPage,
                         contactsPage,
                     ]}
