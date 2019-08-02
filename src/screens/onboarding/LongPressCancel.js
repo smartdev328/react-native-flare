@@ -17,9 +17,13 @@ const styles = StyleSheet.create({
     subtitleArea: {
         paddingHorizontal: Spacing.medium,
     },
+    titleContainer: {
+        width: '100%',
+    },
     subtitleText: {
         marginBottom: Spacing.medium,
         color: Colors.white,
+        fontSize: Type.size.medium,
     },
     pinInputArea: {
         margin: Spacing.medium,
@@ -29,11 +33,9 @@ const styles = StyleSheet.create({
 export default function getLongPressCancelPage(props) {
     let title = null;
     let subtitle = null;
-    let image = null;
-    let imageSource = null;
+    const image = null;
 
     if (props.hasSetPin) {
-        imageSource = { uri: 'onboarding-cancelflare' };
         ({ title, subtitle } = Strings.onboarding.longPressCancel.hasSetPin);
     } else {
         ({ title } = Strings.onboarding.longPressCancel.initial);
@@ -56,32 +58,17 @@ export default function getLongPressCancelPage(props) {
                         placeholder={Strings.onboarding.longPressCancel.pinConfirmPlaceholder}
                         onChangeText={v => props.changeConfirmCancelPIN(v)}
                         maxLength={LONG_PRESS_CANCEL_PIN_LENGTH}
-                        value={props.pinConfirm}
+                        value={props.confirmPin}
                         secureTextEntry
                     />
                     <Button
                         title={Strings.onboarding.longPressCancel.initial.buttonLabel}
                         onPress={() => props.setCancelPIN()}
-                        disabled={props.pin.length < LONG_PRESS_CANCEL_PIN_LENGTH}
+                        disabled={props.pin.length < LONG_PRESS_CANCEL_PIN_LENGTH && props.pin !== props.pinConfirm}
                         primary
                     />
                 </View>
             </View>
-        );
-    }
-
-    if (imageSource && !props.hasSetPin) {
-        image = (
-            <LottieView
-                source={imageSource}
-                autoPlay
-                loop
-                resizeMode="cover"
-                style={{
-                    width: 292,
-                    height: 292,
-                }}
-            />
         );
     }
 
@@ -94,8 +81,12 @@ export default function getLongPressCancelPage(props) {
         ),
         title: (
             <View>
-                {props.hasSetPin && <CommonMiddle center bodyText={title} imageSource={imageSource} />}
-                {!props.hasSetPin && <CommonMiddle center form={subtitle} image={image} />}
+                {props.hasSetPin && (
+                    <View style={styles.titleContainer}>
+                        <CommonMiddle center imageSource={{ uri: 'onboarding-cancelflare' }} />
+                    </View>
+                )}
+                {!props.hasSetPin && <CommonMiddle center form={subtitle} />}
             </View>
         ),
         subtitle: (

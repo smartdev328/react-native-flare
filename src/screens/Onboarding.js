@@ -34,29 +34,30 @@ class OnboardingMain extends React.Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { shortPressCounts } = props;
-        const { highestPressCount, multipleDevicesBroadcasting } = state;
-        const newHighestPressCount = (shortPressCounts && shortPressCounts.length > 0 && shortPressCounts[0]) || {};
-
-        const newMultipleBroadcasting = shortPressCounts && shortPressCounts.length > 1;
-        const multipleBroadcastChanged = multipleDevicesBroadcasting !== newMultipleBroadcasting;
-        const highestPressCountChanged =
-            newHighestPressCount.deviceID !== highestPressCount.deviceID ||
-            newHighestPressCount.count !== highestPressCount.count;
+        // Only change state flag once after receiving a short press
+        const receivedShortPress =
+            state.receivedShortPress ||
+            (props.latestBeacon &&
+                props.latestBeacon.type === BeaconTypes.Short.name &&
+                props.devices &&
+                props.devices.filter(d => d.id === props.latestBeacon.deviceID).length > 0);
 
         // Only change state flag once after receiving a long press
         const receivedLongPress =
             state.receivedLongPress ||
             (props.latestBeacon &&
                 props.latestBeacon.type === BeaconTypes.Long.name &&
-                props.ownedDevices &&
-                props.ownedDevices.filter(d => d.id === props.latestBeacon.deviceID).length > 0);
+                props.devices &&
+                props.devices.filter(d => d.id === props.latestBeacon.deviceID).length > 0);
 
-        if (multipleBroadcastChanged || highestPressCountChanged || props.updatedPIN !== state.hasSetPin) {
+        if (
+            state.receivedLongPress !== receivedLongPress ||
+            state.receivedShortPress !== receivedShortPress ||
+            props.updatedPIN !== state.hasSetPin
+        ) {
             return {
-                highestPressCount: newHighestPressCount,
-                multipleDevicesBroadcasting,
                 receivedLongPress,
+                receivedShortPress,
                 hasSetPin: props.updatedPIN,
             };
         }
@@ -68,9 +69,10 @@ class OnboardingMain extends React.Component {
         super(props);
 
         this.state = {
-            highestPressCount: {},
-            multipleDevicesBroadcasting: false,
+            receivedLongPress: false,
+            receivedShortPress: false,
             cancelPIN: '',
+            confirmCancelPIN: '',
             hasSetPin: props.hasSetPin,
         };
     }
@@ -137,6 +139,12 @@ class OnboardingMain extends React.Component {
         });
     }
 
+    changeConfirmCancelPIN(val) {
+        this.setState({
+            confirmCancelPIN: val,
+        });
+    }
+    changeConfirmCancelPIN;
     endOnboarding() {
         this.props.dispatch(setOnboardingComplete(this.props.authToken));
         Navigation.push(this.props.componentId, {
@@ -182,9 +190,7 @@ class OnboardingMain extends React.Component {
         });
 
         const bluetoothPage = getBluetoothPage({
-            bluetoothEnabled: this.props.bluetoothEnabled,
-            highestPressCount: this.state.highestPressCount,
-            ownedDevices: this.props.devices.map(d => d.id),
+            receivedShortPress: this.state.receivedShortPress,
         });
 
         const longPressPage = getLongPressPage({
@@ -203,7 +209,9 @@ class OnboardingMain extends React.Component {
         const longPressCancelPage = getLongPressCancelPage({
             hasSetPin: this.state.hasSetPin,
             pin: this.state.cancelPIN,
+            confirmPin: this.state.confirmCancelPIN,
             changeCancelPIN: e => this.changeCancelPIN(e),
+            changeConfirmCancelPIN: e => this.changeConfirmCancelPIN(e),
             setCancelPIN: () => this.setCancelPIN(),
         });
 

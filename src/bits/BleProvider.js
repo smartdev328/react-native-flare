@@ -20,6 +20,7 @@ export default class BleProvider {
         this.props = {
             dispatch: store.dispatch,
             hardware: store.getState().hardware,
+            radioToken: store.getState().user && store.getState().user.radioToken,
         };
         this.observer = StoreObserver(store);
         this.unsubscribe = this.observer(

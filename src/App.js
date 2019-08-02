@@ -59,8 +59,8 @@ export default class App extends Component {
             // eslint-disable-next-line no-console
             console.debug(`NAVIGATION -- new root ${root}, current root ${this.currentRoot}`);
             this.currentRoot = root;
-            this.startApp(root);
             this.bleProvider.setStore(store);
+            this.startApp(root);
         }
     }
 

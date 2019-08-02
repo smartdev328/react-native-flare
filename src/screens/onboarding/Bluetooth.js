@@ -1,15 +1,11 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../../constants';
-import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
 import CommonBottom from './CommonBottom';
 import CommonMiddle from './CommonMiddle';
 import CommonTop from './CommonTop';
-import FlareDeviceID from '../../bits/FlareDeviceID';
-import JewelryLabelPreview from '../../bits/JewelryLabelPreview';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Type from '../../bits/Type';
@@ -47,12 +43,11 @@ const styles = StyleSheet.create({
 });
 
 export default function getBluetoothPage(props) {
-    const subtitle = null;
     let image = null;
     let imageSource = null;
     let bottomComponent = null;
 
-    if (props.ownedDevices.indexOf(props.highestPressCount.deviceID) !== -1) {
+    if (props.receivedShortPress) {
         // one good device transmitting
         imageSource = require('../../assets/lotties/dino-dance.json');
         bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.singleDevice.subtitleStart} />;
