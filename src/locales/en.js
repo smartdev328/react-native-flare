@@ -10,8 +10,12 @@ const Strings = {
         add: {
             title: 'Choose your Crew',
         },
-        chooseInstruction: 'Click on the name of a contact to add them to your Crew',
-        choosePrompt: 'Choose up to 5 contacts',
+        chooseInstruction: {
+            start: 'You have',
+            end: 'of 5 possible people in your crew. Adjust your crew by pressing names shown below.',
+        },
+        choosePrompt:
+            'Choose up to 5 contacts by touching their names. These are the people we will reach out to when you start a Flare.',
         crewNamePlaceholder: 'My Crew',
     },
     crewEventTimeline: {

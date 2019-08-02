@@ -1,26 +1,28 @@
 import React from 'react';
 import { SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
 
 import Colors from '../bits/Colors';
 import Spacing from './Spacing';
 import Type from './Type';
 
+const LIST_ITEM_HEIGHT = 50;
+
 const styles = StyleSheet.create({
     sectionHeader: {
         backgroundColor: Colors.backgrounds.blue,
         color: Colors.theme.blue,
-        fontSize: 16,
+        fontSize: Type.size.small,
         fontWeight: 'bold',
         paddingTop: Spacing.tiny,
         paddingBottom: Spacing.tiny,
         paddingLeft: Spacing.medium,
     },
     listItem: {
-        padding: Spacing.small,
+        paddingLeft: Spacing.medium,
         flex: 1,
         flexDirection: 'row',
-        height: 50,
+        height: LIST_ITEM_HEIGHT,
+        maxHeight: LIST_ITEM_HEIGHT,
     },
     listItemSelection: {
         flex: 1,
@@ -39,34 +41,47 @@ const styles = StyleSheet.create({
     },
     navigator: {
         position: 'absolute',
-        top: 0,
+        top: Spacing.large,
         right: 0,
         bottom: 0,
         width: Spacing.medium,
     },
     navigatorItem: {
-        marginVertical: Spacing.tiny,
+        marginBottom: Spacing.tiny,
     },
     navigatorItemText: {
         color: Colors.red,
-        fontSize: Type.size.small,
+        fontSize: Type.size.tiny,
     },
 });
 
-function ContactsListItem(props) {
-    return (
-        <TouchableOpacity style={styles.listItem} onPress={() => props.onPress(props.contact)}>
-            <View style={styles.listItemSelection}>
-                {props.selected && <Icon name="check" size={28} color={Colors.theme.blueDark} />}
-            </View>
-            <View style={styles.listItemDetails}>
-                <Text style={styles.displayName}>
-                    {props.contact.name} – {props.contact.label}
-                </Text>
-                <Text style={styles.phone}>{props.contact.phone}</Text>
-            </View>
-        </TouchableOpacity>
-    );
+class ContactsListItem extends React.Component {
+    shouldComponentUpdate() {
+        return false;
+    }
+    render() {
+        return (
+            <TouchableOpacity
+                style={styles.listItem}
+                onPress={() =>
+                    this.props.onPress({
+                        key: this.props.itemKey,
+                        name: this.props.name,
+                        label: this.props.label,
+                        phone: this.props.phone,
+                    })
+                }
+            >
+                <View style={styles.listItemDetails}>
+                    <Text style={styles.displayName}>
+                        {this.props.name}
+                        {this.props.label}
+                    </Text>
+                    <Text style={styles.phone}>{this.props.phone}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
 }
 
 function SectionNavigator(props) {
@@ -89,20 +104,24 @@ function ContactsList(props) {
     return (
         <View>
             <SectionList
+                stickySectionHeadersEnabled={false}
                 ref={(ref) => {
                     this.flatList = ref;
                 }}
                 renderItem={({ item }) => (
                     <ContactsListItem
-                        contact={item}
+                        itemKey={item.key}
+                        name={item.name}
+                        label={item.label && ` - ${item.label}`}
+                        phone={item.phone}
                         onPress={props.onPressContact}
-                        selected={Object.hasOwnProperty.call(props.contactsCrewLookup, item.key)}
                     />
                 )}
                 renderSectionHeader={({ section: { title } }) => <Text style={styles.sectionHeader}>{title}</Text>}
                 sections={props.contacts}
                 keyExtractor={(item, index) => `${index}_${item.key}`}
-                getItemLayout={(data, index) => ({ length: 50, offset: 50 * index, index })}
+                getItemLayout={(data, index) => ({ length: LIST_ITEM_HEIGHT, offset: LIST_ITEM_HEIGHT * index, index })}
+                contentContainerStyle={{ paddingBottom: 500 }}
             />
             <SectionNavigator sections={props.sectionList} list={this.flatList} />
         </View>

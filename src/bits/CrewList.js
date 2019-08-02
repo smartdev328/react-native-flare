@@ -1,34 +1,30 @@
 import React from 'react';
-import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
+import Type from './Type';
 
 const styles = StyleSheet.create({
-    container: {
-    },
+    container: {},
     member: {
         flex: 1,
         flexDirection: 'row',
-        height: Spacing.huge,
-        paddingLeft: Spacing.small,
+        height: 30,
+        marginHorizontal: Spacing.medium,
+        paddingLeft: Spacing.medium,
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderColor: Colors.theme.blue,
-        borderWidth: 1,
-        marginBottom: Spacing.small,
+        backgroundColor: Colors.theme.purple,
+        marginBottom: Spacing.tiny,
+        borderRadius: Spacing.small,
     },
     memberName: {
+        color: Colors.white,
         flex: 9,
-        fontSize: 18,
+        fontSize: Type.size.small,
     },
     memberAction: {
         flex: 1,
@@ -40,7 +36,7 @@ const styles = StyleSheet.create({
 const CrewList = function createCrewList(props) {
     return (
         <FlatList
-            style={props.style}
+            style={[styles.container, props.style]}
             showsVerticalScrollIndicator={false}
             overScrollMode="always"
             scrollEnabled={false}
@@ -48,13 +44,16 @@ const CrewList = function createCrewList(props) {
             renderItem={({ item }) => (
                 <View style={styles.member}>
                     <Text style={styles.memberName}>
-                        {item.name} – {item.label}
+                        {item.name}
+                        {item.label && ` - ${item.label}`}
                     </Text>
                     <TouchableOpacity
                         style={styles.memberAction}
-                        onPress={() => props.onPressContact(item)}
+                        onPress={() => {
+                            props.onPressContact(item);
+                        }}
                     >
-                        <Icon name="x" size={28} color={Colors.theme.blue} />
+                        <Icon name="x" size={Type.size.medium} color={Colors.white} />
                     </TouchableOpacity>
                 </View>
             )}
