@@ -34,12 +34,9 @@ export default class BleProvider {
     }
 
     componentDidUpdate(newState) {
-        if (this.props.hardware == newState) {
-            console.log('State has not changed');
+        if (JSON.stringify(this.props.hardware) === JSON.stringify(newState)) {
             return;
         }
-
-        console.log(`Update ${JSON.stringify(newState)}`);
 
         if (newState.radioToken) {
             this.props.radioToken = newState.radioToken;
