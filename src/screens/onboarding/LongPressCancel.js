@@ -83,7 +83,7 @@ export default function getLongPressCancelPage(props) {
             <View>
                 {props.hasSetPin && (
                     <View style={styles.titleContainer}>
-                        <CommonMiddle center imageSource={{ uri: 'onboarding-cancelflare' }} />
+                        <CommonMiddle center title={title} imageSource={{ uri: 'onboarding-cancelflare' }} />
                     </View>
                 )}
                 {!props.hasSetPin && <CommonMiddle center form={subtitle} />}
