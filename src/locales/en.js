@@ -161,7 +161,7 @@ const Strings = {
             },
             hasSetPin: {
                 title: 'Nice.',
-                subtitle: "You canceled your Flare, so your friends know that you're safe.",
+                subtitle: "You canceled your Flare, so your\nfriends know that you're safe.",
             },
             pinPlaceholder: 'Secret code',
             pinConfirmPlaceholder: 'Confirm secret code',

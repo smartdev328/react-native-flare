@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import LottieView from 'lottie-react-native';
 
 import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../../constants';
 import Button from '../../bits/Button';
@@ -33,7 +32,6 @@ const styles = StyleSheet.create({
 export default function getLongPressCancelPage(props) {
     let title = null;
     let subtitle = null;
-    const image = null;
 
     if (props.hasSetPin) {
         ({ title, subtitle } = Strings.onboarding.longPressCancel.hasSetPin);
@@ -80,11 +78,9 @@ export default function getLongPressCancelPage(props) {
             </View>
         ),
         title: (
-            <View>
+            <View style={styles.titleContainer}>
                 {props.hasSetPin && (
-                    <View style={styles.titleContainer}>
-                        <CommonMiddle center title={title} imageSource={{ uri: 'onboarding-cancelflare' }} />
-                    </View>
+                    <CommonMiddle center title={title} imageSource={{ uri: 'onboarding-cancelflare' }} />
                 )}
                 {!props.hasSetPin && <CommonMiddle center form={subtitle} />}
             </View>

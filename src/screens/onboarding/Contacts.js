@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import LottieView from 'lottie-react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
 import CommonTop from './CommonTop';
 import CommonMiddle from './CommonMiddle';
+import CommonBottom from './CommonBottom';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 
@@ -16,60 +16,34 @@ const styles = StyleSheet.create({
     subtitleText: {
         marginBottom: Spacing.medium,
     },
+    titleContainer: {
+        width: '100%',
+    },
 });
 
-export default function getContactsPage(props) {
-    let subtitle = null;
-    let image = null;
-    let lottieSource = null;
-    let imageUri = null;
-
-    if (props.hasContactsPermission) {
-        lottieSource = require('../../assets/lotties/checkmark.json');
-        subtitle = (
-            <View>
-                <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>{Strings.onboarding.contacts.hasPermission.subtitle}</Text>
-                </View>
-                <Button
-                    title={Strings.onboarding.contacts.hasPermission.chooseCrewLabel}
-                    primary
-                    onPress={() => props.endOnboarding()}
-                />
-            </View>
-        );
-        image = (
-            <LottieView
-                source={lottieSource}
-                autoPlay
-                loop
-                resizeMode="cover"
-                style={{
-                    width: 292,
-                    height: 292,
-                }}
-            />
-        );
-    } else {
-        imageUri = { uri: 'onboarding-contacts' };
-        subtitle = (
-            <View>
-                <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>{Strings.onboarding.contacts.initial.subtitle}</Text>
-                </View>
-                <Button
-                    title={Strings.onboarding.contacts.initial.buttonLabel}
-                    primary
-                    onPress={() => props.requestContactsPermission()}
-                />
-            </View>
-        );
-    }
-
+export default function getContactsage(props) {
     return {
         backgroundColor: Colors.theme.purple,
         image: <CommonTop />,
-        title: lottieSource ? <CommonMiddle right image={image} /> : <CommonMiddle right imageSource={imageUri} />,
-        subtitle,
+        title: (
+            <View style={styles.titleContainer}>
+                <CommonMiddle center imageSource={{ uri: 'onboarding-contacts' }} />
+            </View>
+        ),
+        subtitle: (
+            <View style={styles.subtitleContainer}>
+                <CommonBottom
+                    center
+                    bodyText={Strings.onboarding.contacts.initial.subtitle}
+                    body={
+                        <Button
+                            title={Strings.onboarding.contacts.initial.buttonLabel}
+                            primary
+                            onPress={() => props.requestContactsPermission()}
+                        />
+                    }
+                />
+            </View>
+        ),
     };
 }
