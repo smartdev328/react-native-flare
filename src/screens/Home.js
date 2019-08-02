@@ -526,16 +526,19 @@ class Home extends React.Component {
                     {__DEV__ && !this.props.hasActiveFlare && (
                         <View style={styles.devOnlyButtons}>
                             <Button
+                                dev
                                 secondary
                                 onPress={() => this.sendTestFlare()}
                                 title={Strings.dev.sendTestFlare}
                             />
                             <Button
+                                dev
                                 secondary
                                 onPress={() => this.sendTestCall()}
                                 title={Strings.dev.sendTestCall}
                             />
                             <Button
+                                dev
                                 secondary
                                 onPress={() => this.sendTestCheckin()}
                                 title={Strings.dev.sendTestCheckin}

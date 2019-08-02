@@ -73,6 +73,9 @@ const styles = StyleSheet.create({
     invisible: {
         display: 'none',
     },
+    dev: {
+        color: Colors.red,
+    },
 });
 
 export default class Button extends React.PureComponent {
@@ -107,6 +110,7 @@ export default class Button extends React.PureComponent {
                         this.props.dark && styles.darkForeground,
                         this.props.secondary && styles.secondaryForeground,
                         this.props.disabled && styles.disabledForeground,
+                        this.props.dev && styles.dev,
                         this.props.styleForeground,
                     ]}
                 >
