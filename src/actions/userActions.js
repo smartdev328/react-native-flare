@@ -274,7 +274,7 @@ export function setCallScript(token, script) {
         dispatch({
             type: types.USER_SET_CALL_SCRIPT_REQUEST,
         });
-        ProtectedAPICall(token, API_URL, '/sos/call/script', {
+        ProtectedAPICall(token, API_URL, '/users/call/script', {
             method: 'POST',
             data: {
                 script,
