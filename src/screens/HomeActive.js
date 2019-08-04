@@ -1,31 +1,31 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import { AppState, StyleSheet, Text, View } from 'react-native';
+import { AppState, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
 import { Navigation } from 'react-native-navigation';
-import FlareDeviceID from '../bits/FlareDeviceID';
 import {
     ACCOUNT_SYNC_INTERVAL,
     ACCOUNT_SYNC_INTERVAL_FLARE,
     ACCOUNT_SYNC_INTERVAL_DEV,
-    SHOW_ALL_BEACONS_IN_HOME_SCREEN,
+    FLARE_TIMELINE_REFRESH_INTERVAL,
 } from '../constants';
 
 import { BeaconTypes } from '../bits/BleConstants';
-import { claimDevice, syncAccountDetails, fetchContacts, changeAppRoot } from '../actions/index';
+import { syncAccountDetails, changeAppRoot } from '../actions/index';
 import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
-import { getPermission } from '../actions/userActions';
-import { iconsMap } from '../bits/AppIcons';
+import { getCrewEventTimeline, getPermission } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
+import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
-import DeviceSelector from '../bits/DeviceSelector';
+import CrewEventTimeline from '../bits/CrewEventTimeline';
 import Location from '../helpers/location';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
+import Type from '../bits/Type';
 
 const styles = StyleSheet.create({
     container: {
@@ -33,66 +33,74 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'stretch',
         justifyContent: 'space-between',
+        backgroundColor: Colors.theme.peach,
+    },
+    header: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        paddingTop: Spacing.small,
+        paddingBottom: Spacing.medium,
+    },
+    headerText: {
+        marginTop: Spacing.small,
+        marginBottom: Spacing.medium,
+        fontSize: Type.size.medium,
+        fontWeight: 'bold',
+        color: Colors.white,
+    },
+    logo: {
+        resizeMode: 'contain',
+        height: 48,
+        width: 120,
+    },
+    crewTimelineContainer: {
+        flex: 18,
+        flexGrow: 5,
+        flexBasis: 1,
         backgroundColor: Colors.theme.cream,
-        paddingBottom: Spacing.small,
     },
     footer: {
         flex: 1,
-        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 16,
-    },
-    centered: {
-        alignSelf: 'center',
-        textAlign: 'center',
-    },
-    deviceSelector: {
-        alignSelf: 'center',
-        justifyContent: 'center',
-        flex: 9,
-    },
-    bluetoothDisabledWarning: {
-        padding: Spacing.medium,
-    },
-    bluetoothDisabledWarningTitle: {
-        color: Colors.theme.cream,
-        fontSize: 22,
-        fontWeight: '700',
-    },
-    bluetoothDisabledWarningBody: {
-        color: Colors.theme.cream,
-        fontSize: 16,
+        paddingVertical: Spacing.small,
     },
     devOnlyButtons: {
+        position: 'absolute',
+        left: 0,
+        bottom: 0,
+        right: 0,
+        height: Spacing.medium,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
 });
 
-class Home extends React.Component {
+class HomeActive extends React.Component {
     constructor(props) {
         super(props);
 
         this.shuttingDown = false;
-        this.setSyncTiming();       
+        this.setSyncTiming();
         Navigation.events().bindComponent(this);
-        
+
+        this.eventTimelineRefreshTimer = null;
+        if (props.hasActiveFlare) {
+            this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
+        }
         this.state = {
             showSideMenu: false,
         };
     }
 
     componentDidMount() {
-        if (this.props.hasActiveFlare) {
-            this.props.dispatch(changeAppRoot('secure-active-event'));
-        }
-
-        // Contacts are not stored on the server. It takes a while to fetch them locally, so we
-        // start that process now before users need to view them.
-        if (this.props.permissions.contacts) {
-            this.props.dispatch(fetchContacts());
+        // We will boot into this screen if the user closed the app with an active flare.
+        // It's possible for users to cancel their flares using other devices. If we
+        // show up on this screen and the user no longer has an active flare, go back to
+        // inactive home screen.
+        if (!this.props.hasActiveFlare) {
+            this.props.dispatch(changeAppRoot('secure'));
         }
 
         if (!this.props.permissions.location) {
@@ -109,64 +117,36 @@ class Home extends React.Component {
             authToken: this.props.authToken,
         }));
 
+        // Periodically fetch account status to ensure auth and to observe account changes from other devices.
+        if (this.eventTimelineRefreshTimer) {
+            clearInterval(this.eventTimelineRefreshTimer);
+            this.eventTimelineRefreshTimer = null;
+        }
         BackgroundTimer.stopBackgroundTimer();
         BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
         AppState.addEventListener('change', newState => this.handleAppStateChange(newState));
+
+        // If the current user has an active flare, fetch the crew timeline
+        // and show it
+        this.startTimelineRefreshInterval();
     }
 
     componentDidUpdate(prevProps) {
         /**
-         * If device bluetooth state has changed and it's no longer on, show a local notification.
+         * Handle transitions from active to inactive flare
          */
-        if (
-            this.props.hardware &&
-            this.props.hardware.bluetooth !== 'on' &&
-            this.props.hardware.bluetooth !== prevProps.hardware.bluetooth &&
-            !this.props.hasActiveFlare
-        ) {
-            this.props.notificationManager.localNotify({
-                message: Strings.notifications.bluetoothDisabled,
-            });
-        }
-
-        /**
-         * Show a local notification when we're first requesting a flare
-         */
-        if (
-            prevProps.activatingFlareState !== this.props.activatingFlareState &&
-            this.props.activatingFlareState === 'request'
-        ) {
-            this.props.notificationManager.localNotify({
-                message: this.props.crewEventNotificationMessage,
-            });
-        }
-
-        /**
-         * Handle transitions in flare state: reset intervals for fetching data
-         */
-        if (this.props.hasActiveFlare !== prevProps.hasActiveFlare) {
-            this.setSyncTiming();
+        if (this.props.hasActiveFlare !== prevProps.hasActiveFlare && !this.props.hasActiveFlare) {
             BackgroundTimer.stop();
             BackgroundTimer.stopBackgroundTimer();
-
-            if (this.props.hasActiveFlare) {
-                this.props.dispatch(changeAppRoot('secure-active-event'));
-            } else {
-                BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
-            }
-        }
-
-        /**
-         * Fetch contacts if the permission changes from denied to anything else
-         */
-        if (prevProps.permissions.contacts === false && this.props.permissions.contacts) {
-            this.props.dispatch(fetchContacts());
+            this.props.dispatch(changeAppRoot('secure'));
         }
     }
 
     componentWillUnmount() {
         this.shuttingDown = true;
         BackgroundTimer.stopBackgroundTimer();
+        clearInterval(this.eventTimelineRefreshTimer);
+        this.eventTimelineRefreshTimer = null;
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
@@ -216,7 +196,7 @@ class Home extends React.Component {
     goToPushedView = () => {
         Navigation.push(this.props.componentId, {
             component: {
-                name: 'com.flarejewelry.app.Home',
+                name: 'com.flarejewelry.app.HomeActive',
             },
         });
     };
@@ -259,42 +239,23 @@ class Home extends React.Component {
         }
     }
 
-
-    handleAppStateChange(nextAppState) {
-        // eslint-disable-next-line
-        console.debug(`App went to state ${nextAppState}.`);
-        switch (nextAppState) {
-        case 'active':
-        case 'inactive':
-        case 'background':
-        default:
-            break;
-        }
+    refreshTimeline() {
+        this.props.dispatch(getCrewEventTimeline(this.props.authToken));
     }
 
-    handleContactsClick() {
+    startTimelineRefreshInterval() {
+        if (this.eventTimelineRefreshTimer !== null) {
+            console.log('Already started timeline refresh; not starting it again.');
+            return;
+        }
+        this.refreshTimeline();
+        this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
+    }
+
+    showPinCheckScreen() {
         Navigation.push(this.props.componentId, {
             component: {
-                name: 'com.flarejewelry.app.Contacts',
-                options: {
-                    topBar: {
-                        visible: true,
-                        animate: false,
-                        leftButtons: [
-                            {
-                                id: 'backButton',
-                                icon: iconsMap.back,
-                                color: Colors.theme.purple,
-                            },
-                        ],
-                        title: {
-                            component: {
-                                name: 'com.flarejewelry.app.FlareNavBar',
-                                alignment: 'center',
-                            },
-                        },
-                    },                    
-                }
+                name: 'com.flarejewelry.app.PinCheck',
             },
         });
     }
@@ -359,52 +320,25 @@ class Home extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, this.props.hasActiveFlare && styles.containerWithActiveFlare]}>
-                {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare && (
-                    <View style={styles.bluetoothDisabledWarning}>
-                        <Text style={styles.bluetoothDisabledWarningTitle}>
-                            {Strings.home.bluetoothDisabledWarning.title}
-                        </Text>
-                        <Text style={styles.bluetoothDisabledWarningBody}>
-                            {Strings.home.bluetoothDisabledWarning.body}
-                        </Text>
-                    </View>
-                )}
-
-                <View style={styles.deviceSelector}>
-                    <DeviceSelector
-                        addDevice={deviceID => this.props.dispatch(claimDevice(this.props.authToken, deviceID))}
-                        devices={this.props.devices}
-                        claimingDevice={this.props.claimingDevice}
-                        claimingDeviceFailure={this.props.claimingDeviceFailure}
-                    >
-                        <View style={styles.centered}>
-                            {!this.props.latestBeacon && <Text>{Strings.home.lastBeacon.absent}</Text>}
-                            {this.props.latestBeacon && (
-                                <View style={styles.centered}>
-                                    <Text>{Strings.home.lastBeacon.present}</Text>
-                                    <Text style={[styles.centered, styles.dimmed]}>
-                                        {moment(this.props.latestBeacon.timestamp).format('MMM D @ h:mma')}
-                                    </Text>
-                                    {SHOW_ALL_BEACONS_IN_HOME_SCREEN &&
-                                        <FlareDeviceID value={this.props.latestBeacon.deviceID} style={[styles.centered]} />
-                                    }
-                                </View>
-                            )}
-                        </View>
-                    </DeviceSelector>
+            <SafeAreaView style={styles.container}>
+                <Aura source="aura-5" />
+                <View style={styles.header}>
+                    <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
+                    <Text style={styles.headerText}>{Strings.crewEventTimeline.title}</Text>
                 </View>
-
+                <CrewEventTimeline
+                    timeline={this.props.crewEventTimeline}
+                    onRefresh={() => this.refreshTimeline()}
+                    containerStyle={styles.crewTimelineContainer}
+                />
                 <View style={styles.footer}>
-                    {!this.props.hasActiveFlare && (
-                        <Button
-                            primary
-                            dark
-                            onPress={() => this.handleContactsClick()}
-                            title={this.props.contactsLabel}
-                        />
-                    )}
-                    {__DEV__ && !this.props.hasActiveFlare && (
+                    <Button
+                        dark
+                        primary
+                        onPress={() => this.showPinCheckScreen()}
+                        title={Strings.home.cancelActiveFlare}
+                    />
+                    {__DEV__ && (
                         <View style={styles.devOnlyButtons}>
                             <Button
                                 dev
@@ -427,22 +361,20 @@ class Home extends React.Component {
                         </View>
                     )}
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const contactsLabel =
-        state.user.crews && state.user.crews.length
-            ? Strings.home.contactsButtonLabelEdit
-            : Strings.home.contactsButtonLabelAdd;
-
     return {
         activatingFlareState: state.user.activatingFlareState,
         claimingDevice: state.user.claimingDevice,
         claimingDeviceFailure: state.user.claimingDeviceFailure,
-        contactsLabel,
+        crewEventNotificationMessage: state.user.settings.promptMessage,
+        crewEvents: state.user.crewEvents,
+        crewEventTimeline: state.user.crewEventTimeline,
+        crewEventTimelineState: state.user.crewEventTimelineState,
         crews: state.user.crews,
         devices: state.user.devices,
         hardware: state.hardware,
@@ -455,4 +387,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(HomeActive);

@@ -6,6 +6,7 @@ import Confirm from './Confirm';
 import Contacts from './Contacts';
 import FlareNavBar from '../bits/FlareNavBar';
 import Home from './Home';
+import HomeActive from './HomeActive';
 import Jewelry from './Jewelry';
 import ManufacturingMain from './ManufacturingMain';
 import LeftDrawer from './LeftDrawer';
@@ -41,6 +42,7 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Contacts', () => Contacts, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.FlareNavBar', () => FlareNavBar, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Home', () => Home, Provider, store);
+    Navigation.registerComponentWithRedux('com.flarejewelry.app.HomeActive', () => HomeActive, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Jewelry', () => Jewelry, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.LeftDrawer', () => LeftDrawer, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.PinCheck', () => PinCheck, Provider, store);

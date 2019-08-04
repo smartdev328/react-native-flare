@@ -113,7 +113,7 @@ class ManufacturingMain extends React.Component {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.logoArea}>
-                        <Image source={require('../assets/logo-aura.png')} style={styles.logoImage} />
+                        <Image source={{ uri: 'logo-aura' }} style={styles.logoImage} />
                     </View>
                     <View style={styles.brandArea}>
                         <Text>{Strings.manufacturing.title}</Text>

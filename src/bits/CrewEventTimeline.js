@@ -1,23 +1,22 @@
 import React from 'react';
-import {
-    FlatList,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import Colors from './Colors';
 import CrewActionTypes from '../constants/CrewActionConstants';
 import FlareDate from './FlareDate';
 import Strings from '../locales/en';
 import Spacing from './Spacing';
+import Type from './Type';
 
 const styles = StyleSheet.create({
     commonEvent: {
         marginTop: Spacing.small,
         marginBottom: Spacing.small,
         padding: Spacing.small,
-        borderRadius: 12,
+        borderTopRightRadius: 12,
+        borderBottomRightRadius: 12,
+        borderLeftWidth: 3,
+        borderLeftColor: Colors.theme.peach,
     },
     status: {
         flex: 1,
@@ -25,43 +24,38 @@ const styles = StyleSheet.create({
     },
     message: {
         flex: 1,
+        display: 'flex',
         flexDirection: 'column',
-        fontSize: 14,
-        borderWidth: 1,
-        borderColor: Colors.backgrounds.pink,
+        fontSize: Type.size.small,
     },
     timestamp: {
         fontSize: 10,
-        color: Colors.theme.pink,
     },
     messageFrom: {
-        fontSize: 8,
-        color: Colors.theme.pink,
+        fontSize: Type.size.tiny,
     },
     messageBody: {
-        fontSize: 16,
+        fontSize: Type.size.small,
         fontWeight: 'bold',
-        color: Colors.black,
     },
 });
 
-const CrewActionConstantToStringToken = [
-    'unknown',
-    'notify',
-    'response',
-    'cancel',
-    'create',
-    'join',
+const typeSpecificColors = [
+    // See CrewActionTypes definitions, lookup by index
+    Colors.black, // unknown
+    Colors.theme.blue, // notification
+    Colors.theme.blue, // response
+    Colors.theme.purple, // cancel
+    Colors.theme.black, // create
+    Colors.theme.pink, // join
 ];
 
+const CrewActionConstantToStringToken = ['unknown', 'notify', 'response', 'cancel', 'create', 'join'];
+
 const CrewMessage = props => (
-    <View style={[styles.commonEvent, styles.message]}>
-        <Text style={styles.messageFrom}>
-            {props.event.name}
-        </Text>
-        <Text style={styles.messageBody}>
-            {props.event.message}
-        </Text>
+    <View style={[styles.commonEvent, styles.message, { borderLeftColor: typeSpecificColors[props.type] }]}>
+        <Text style={styles.messageFrom}>{props.event.name}</Text>
+        <Text style={styles.messageBody}>{props.event.message}</Text>
         <View>
             <Text style={styles.timestamp}>
                 <FlareDate timestamp={props.event.timestamp} />
@@ -71,21 +65,21 @@ const CrewMessage = props => (
 );
 
 const CrewStatus = props => (
-    <View style={[styles.commonEvent, styles.status]}>
+    <View style={[styles.commonEvent, styles.status, { borderLeftColor: typeSpecificColors[props.type] }]}>
         <View>
-            {props.type !== CrewActionTypes.Join &&
+            {props.type !== CrewActionTypes.Join && (
                 <Text style={styles.statusHeading}>
                     {Strings.crewEventTimeline.headings[CrewActionConstantToStringToken[props.type]]}
                     {props.event.name && ' '}
                     {props.event.name}
                     {props.event.name && '.'}
                 </Text>
-            }
-            {props.type === CrewActionTypes.Join &&
+            )}
+            {props.type === CrewActionTypes.Join && (
                 <Text style={styles.statusHeading}>
                     {props.event.name} {Strings.crewEventTimeline.headings.join}
                 </Text>
-            }
+            )}
         </View>
         <View>
             <Text style={styles.timestamp}>
@@ -109,27 +103,29 @@ const CrewEvent = (props) => {
     }
 };
 
-export default class CrewEventTimeline extends React.PureComponent {
-    render() {
-        return (
-            <FlatList
-                data={this.props.timeline}
-                renderItem={({ item }) => <CrewEvent event={item} />}
-                keyExtractor={event => `${event.timestamp}-${event.id}`}
-                refreshing={false}
-                onRefresh={() => this.props.onRefresh()}
-                ref={(ref) => { this.flatList = ref; }}
-                onContentSizeChange={() => {
-                    if (this.props.timeline && this.props.timeline.length > 0) {
-                        this.flatList.scrollToEnd({ animated: true });
-                    }
-                }}
-                onLayout={() => {
-                    if (this.props.timeline && this.props.timeline.length > 0) {
-                        this.flatList.scrollToEnd({ animated: true });
-                    }
-                }}
-            />
-        );
-    }
-}
+const CrewEventTimeline = props => (
+    <View style={props.containerStyle}>
+        <FlatList
+            data={props.timeline}
+            renderItem={({ item }) => <CrewEvent event={item} />}
+            keyExtractor={event => `${event.timestamp}-${event.id}`}
+            refreshing={false}
+            onRefresh={() => props.onRefresh()}
+            ref={(ref) => {
+                this.flatList = ref;
+            }}
+            onContentSizeChange={() => {
+                if (props.timeline && props.timeline.length > 0) {
+                    this.flatList.scrollToEnd({ animated: true });
+                }
+            }}
+            onLayout={() => {
+                if (props.timeline && props.timeline.length > 0) {
+                    this.flatList.scrollToEnd({ animated: true });
+                }
+            }}
+        />
+    </View>
+);
+
+export default CrewEventTimeline;

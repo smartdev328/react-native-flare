@@ -188,6 +188,27 @@ export default class App extends Component {
                 },
             });
             break;
+        case 'secure-active-event':
+            Navigation.setRoot({
+                root: {
+                    stack: {
+                        id: 'ACTIVE_EVENT_STACK',
+                        options: {
+                            topBar: {
+                                visible: false,
+                            },
+                        },
+                        children: [
+                            {
+                                component: {
+                                    name: 'com.flarejewelry.app.HomeActive',
+                                },
+                            },
+                        ],
+                    },
+                },
+            });
+            break;
         case 'secure-settings':
             Navigation.setDefaultOptions({
                 topBar: {

@@ -49,7 +49,6 @@ export function flare(token, beacon, position, forCurrentUser) {
             dispatch({
                 type: types.ACTIVATE_FLARE_REQUEST,
             });
-            dispatch();
         }
         ProtectedAPICall(token, API_URL, '/radio/beacon', {
             method: 'POST',

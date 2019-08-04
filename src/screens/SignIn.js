@@ -155,7 +155,7 @@ class SignIn extends Component {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Aura />
-                <Image source={{ uri: 'logo-aura.png' }} style={styles.logo} />
+                <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
                 {(this.state.invalid || this.props.authState === 'failed') && (
                     <View style={styles.invalid}>
                         <Text style={styles.invalidText}>{Strings.signin.invalid}</Text>
