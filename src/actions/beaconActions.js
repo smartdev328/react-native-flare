@@ -49,6 +49,7 @@ export function flare(token, beacon, position, forCurrentUser) {
             dispatch({
                 type: types.ACTIVATE_FLARE_REQUEST,
             });
+            dispatch();
         }
         ProtectedAPICall(token, API_URL, '/radio/beacon', {
             method: 'POST',
@@ -98,7 +99,7 @@ export function cancelActiveFlare(token, pin) {
         dispatch({
             type: types.CANCEL_ACTIVE_FLARE_REQUEST,
         });
-        ProtectedAPICall(token, API_URL, '/sos/flare/cancel', {
+        ProtectedAPICall(token, API_URL, '/crews/event/cancel', {
             method: 'POST',
             data: {
                 pin,

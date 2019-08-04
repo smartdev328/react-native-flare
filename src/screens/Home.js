@@ -138,11 +138,14 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
 
-        this.eventTimelineRefreshTimer = null;
         this.shuttingDown = false;
-        this.setSyncTiming();
+        this.setSyncTiming();        
         Navigation.events().bindComponent(this);
-
+        
+        this.eventTimelineRefreshTimer = null;
+        if (props.hasActiveFlare) {
+            this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
+        }
         this.state = {
             showSideMenu: false,
         };
@@ -246,10 +249,6 @@ class Home extends React.Component {
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
-    onRefreshTimeline() {
-        this.props.dispatch(getCrewEventTimeline(this.props.authToken, this.props.crewEvents[0].id));
-    }
-
     /**
      * Fetch account details and submit app status periodically. The frequency at which we sync varies with app state.
      * If a flare is active, sync frequently. If we're in dev, sync a little more than normal. Otherwise use the default
@@ -340,16 +339,12 @@ class Home extends React.Component {
     }
 
     refreshTimeline() {
-        if (this.props.crewEvents && this.props.crewEvents.length > 0) {
-            const event = this.props.crewEvents[0];
-            if (event) {
-                this.props.dispatch(getCrewEventTimeline(this.props.authToken, event.id));
-            }
-        }
+        this.props.dispatch(getCrewEventTimeline(this.props.authToken));
     }
 
     startTimelineRefreshInterval() {
         if (this.eventTimelineRefreshTimer !== null) {
+            console.log('Already started timeline refresh; not starting it again.');
             return;
         }
         this.refreshTimeline();
@@ -504,7 +499,7 @@ class Home extends React.Component {
                         <Text style={styles.timelineHeader}>{Strings.crewEventTimeline.title}</Text>
                         <CrewEventTimeline
                             timeline={this.props.crewEventTimeline}
-                            onRefresh={() => this.onRefreshTimeline()}
+                            onRefresh={() => this.refreshTimeline()}
                         />
                         <Button
                             rounded

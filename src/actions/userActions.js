@@ -97,18 +97,18 @@ export function fetchContacts() {
     };
 }
 
-export function getCrewEventTimeline(token, eventID) {
+export function getCrewEventTimeline(token) {
     return function getTimeline(dispatch) {
         dispatch({
             type: types.GET_FLARE_TIMELINE_REQUEST,
         });
-        ProtectedAPICall(token, API_URL, `/sos/flare/${eventID}`, {
+        ProtectedAPICall(token, API_URL, '/crews/event', {
             method: 'GET',
         })
             .then((response) => {
                 dispatch({
                     type: types.GET_FLARE_TIMELINE_SUCCESS,
-                    data: response.data.data,
+                    data: response.data,
                 });
             })
             .catch((error) => {
