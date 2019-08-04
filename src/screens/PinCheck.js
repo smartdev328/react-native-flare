@@ -1,36 +1,43 @@
 import React from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
+import Aura from '../bits/Aura';
 import Colors from '../bits/Colors';
+import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
+import Type from '../bits/Type';
 import { cancelActiveFlare } from '../actions/beaconActions';
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
+        flex: 1,
+        display: 'flex',
+        alignItems: 'stretch',
+        justifyContent: 'space-between',
+        backgroundColor: Colors.theme.cream,
+        paddingBottom: Spacing.small,
+    },
+    header: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        paddingTop: Spacing.small,
+        paddingBottom: Spacing.medium,
+    },
+    headerText: {
+        marginTop: Spacing.small,
+        marginBottom: Spacing.medium,
+        fontSize: Type.size.medium,
+        fontWeight: 'bold',
+        color: Colors.white,
+    },
+    footer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 0,
-        backgroundColor: Colors.backgrounds.pink,
-        color: Colors.theme.pink,
-    },
-    backgroundGradient: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        opacity: 0.7,
-    },
-    logo: {
-        width: 98,
-        resizeMode: 'contain',
+        paddingVertical: Spacing.small,
     },
 });
 
@@ -39,12 +46,9 @@ class PinCheck extends React.Component {
         return {
             topBar: {
                 visible: true,
-                animate: false,
-                leftButtons: [],
             },
         };
     }
-
     componentDidUpdate(prevProps) {
         if (prevProps.hasActiveFlare && !this.props.hasActiveFlare) {
             Navigation.pop(this.props.componentId);
@@ -58,7 +62,10 @@ class PinCheck extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container}>
-                <Text style={styles.prompt}>{Strings.pin.prompt}</Text>
+                <Aura source="aura-6" />
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>{Strings.pin.prompt}</Text>
+                </View>
                 <CodeInput
                     codeLength={4}
                     secureTextEntry
@@ -66,9 +73,11 @@ class PinCheck extends React.Component {
                     keyboardType="numeric"
                     activeColor="#000000"
                 />
-                {this.props.cancelingActiveFlare && this.props.cancelActiveFlareState === 'request' && (
-                    <ActivityIndicator />
-                )}
+                <View style={styles.footer}>
+                    {this.props.cancelingActiveFlare && this.props.cancelActiveFlareState === 'request' && (
+                        <ActivityIndicator />
+                    )}
+                </View>
             </KeyboardAvoidingView>
         );
     }
