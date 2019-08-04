@@ -21,6 +21,7 @@ export const MANUFACTURING_MODE_ENABLED = Config.MANUFACTURING_MODE_ENABLED === 
 export const ONBOARDING_ENABLED = Config.ONBOARDING_ENABLED === 'true';
 export const LONG_PRESS_CANCEL_PIN_LENGTH = parseInt(Config.LONG_PRESS_CANCEL_PIN_LENGTH, 10);
 export const LEFT_NAVIGATION_WIDTH = parseInt(Config.LEFT_NAVIGATION_WIDTH, 10);
+export const USERS_CAN_ADD_JEWELRY = Config.USERS_CAN_ADD_JEWELRY === 'true';
 
 export const summary = [
     { key: 'API', value: API_URL },

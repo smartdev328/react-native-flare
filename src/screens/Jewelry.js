@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { disclaimDevice } from '../actions/index';
+import { USERS_CAN_ADD_JEWELRY } from '../constants';
 import * as actionTypes from '../actions/actionTypes';
 import Button from '../bits/Button';
 import FlareDeviceID from '../bits/FlareDeviceID';
@@ -117,7 +118,9 @@ class Jewelry extends React.Component {
                 {(this.props.claimingDevice || this.props.disclaimingDevice) && <ActivityIndicator size={24} />}
                 <JewelryList jewelry={this.props.devices} onRemove={deviceID => this.confirmRemoveJewelry(deviceID)} />
                 <View style={styles.buttonArea}>
-                    <Button dark primary onPress={() => this.addNewJewelry()} title={Strings.jewelry.addNew} />
+                    {USERS_CAN_ADD_JEWELRY && (
+                        <Button dark primary onPress={() => this.addNewJewelry()} title={Strings.jewelry.addNew} />
+                    )}
                 </View>
             </View>
         );

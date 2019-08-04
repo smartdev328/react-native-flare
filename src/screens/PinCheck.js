@@ -4,12 +4,12 @@ import CodeInput from 'react-native-confirmation-code-input';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
+import { cancelActiveFlare } from '../actions/beaconActions';
 import Aura from '../bits/Aura';
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
-import { cancelActiveFlare } from '../actions/beaconActions';
 
 const styles = StyleSheet.create({
     container: {
