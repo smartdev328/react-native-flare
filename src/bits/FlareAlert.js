@@ -20,12 +20,21 @@ const styles = StyleSheet.create({
         color: Colors.white,
         fontSize: Type.size.small,
     },
+    large: {
+        fontWeight: 'bold',
+        padding: Spacing.small,
+    },
+    centered: {
+        textAlign: 'center',
+    },
 });
 
 export default function FlareAlert(props) {
     return (
         <View style={[styles.container, styles[`${props.variant}Background`]]}>
-            <Text style={styles.foreground}>{props.message}</Text>
+            <Text style={[styles.foreground, props.large && styles.large, props.centered && styles.centered]}>
+                {props.message}
+            </Text>
         </View>
     );
 }

@@ -44,10 +44,7 @@ const Strings = {
         cancel: 'Cancel',
     },
     home: {
-        bluetoothDisabledWarning: {
-            body: 'Please enable Bluetooth on this device so that Flare can work.',
-            title: 'OMG Bluetooth is off!!',
-        },
+        bluetoothDisabledWarning: 'Turn bluetooth on in your phone settings',
         cancelActiveFlare: 'Cancel Flare',
         chooseLanguage: 'Choose language',
         contactsButtonLabelAdd: 'Choose Your Crew',

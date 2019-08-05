@@ -2,18 +2,18 @@
 /* eslint global-require: "off" */
 import React from 'react';
 import { AppState, PushNotificationIOS, StyleSheet, Text, View } from 'react-native';
-import moment from 'moment';
 import { connect } from 'react-redux';
-import BackgroundTimer from 'react-native-background-timer';
 import { Navigation } from 'react-native-navigation';
-import FlareDeviceID from '../bits/FlareDeviceID';
+import moment from 'moment';
+import BackgroundTimer from 'react-native-background-timer';
+import RNBluetoothInfo from 'react-native-bluetooth-info';
+
 import {
     ACCOUNT_SYNC_INTERVAL,
     ACCOUNT_SYNC_INTERVAL_FLARE,
     ACCOUNT_SYNC_INTERVAL_DEV,
     SHOW_ALL_BEACONS_IN_HOME_SCREEN,
 } from '../constants';
-
 import { BeaconTypes } from '../bits/BleConstants';
 import { claimDevice, syncAccountDetails, fetchContacts, changeAppRoot } from '../actions/index';
 import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
@@ -23,9 +23,12 @@ import { startBleListening } from '../actions/hardwareActions';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
+import FlareAlert from '../bits/FlareAlert';
+import FlareDeviceID from '../bits/FlareDeviceID';
 import Location from '../helpers/location';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
+import Type from '../bits/Type';
 
 const styles = StyleSheet.create({
     container: {
@@ -53,16 +56,13 @@ const styles = StyleSheet.create({
         flex: 9,
     },
     bluetoothDisabledWarning: {
-        padding: Spacing.medium,
+        margin: Spacing.medium,
     },
     bluetoothDisabledWarningTitle: {
-        color: Colors.theme.cream,
-        fontSize: 22,
+        paddingHorizontal: Spacing.large,
+        textAlign: 'center',
+        fontSize: Type.size.medium,
         fontWeight: '700',
-    },
-    bluetoothDisabledWarningBody: {
-        color: Colors.theme.cream,
-        fontSize: 16,
     },
     devOnlyButtons: {
         display: 'flex',
@@ -76,18 +76,26 @@ class Home extends React.Component {
         super(props);
 
         this.shuttingDown = false;
-        this.setSyncTiming();       
+        this.setSyncTiming();
         Navigation.events().bindComponent(this);
-        
+
         this.state = {
             showSideMenu: false,
+            bluetoothEnabled: true,
         };
+    }
+
+    componentWillMount() {
+        RNBluetoothInfo.addEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
     }
 
     componentDidMount() {
         if (this.props.hasActiveFlare) {
             this.props.dispatch(changeAppRoot('secure-active-event'));
         }
+
+        // Update bluetooth state after first boot
+        RNBluetoothInfo.getCurrentState().then(bleState => this.handleBluetoothStateChange(bleState));
 
         // Contacts are not stored on the server. It takes a while to fetch them locally, so we
         // start that process now before users need to view them.
@@ -116,20 +124,6 @@ class Home extends React.Component {
 
     componentDidUpdate(prevProps) {
         /**
-         * If device bluetooth state has changed and it's no longer on, show a local notification.
-         */
-        // if (
-        //     this.props.hardware &&
-        //     this.props.hardware.bluetooth !== 'on' &&
-        //     this.props.hardware.bluetooth !== prevProps.hardware.bluetooth &&
-        //     !this.props.hasActiveFlare
-        // ) {
-        //     this.props.notificationManager.localNotify({
-        //         message: Strings.notifications.bluetoothDisabled,
-        //     });
-        // }
-
-        /**
          * Handle transitions in flare state: reset intervals for fetching data
          */
         if (this.props.hasActiveFlare !== prevProps.hasActiveFlare) {
@@ -156,6 +150,7 @@ class Home extends React.Component {
     componentWillUnmount() {
         this.shuttingDown = true;
         BackgroundTimer.stopBackgroundTimer();
+        RNBluetoothInfo.removeEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
         AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
@@ -248,7 +243,6 @@ class Home extends React.Component {
         }
     }
 
-
     handleAppStateChange(nextAppState) {
         // eslint-disable-next-line
         console.debug(`App went to state ${nextAppState}.`);
@@ -259,6 +253,13 @@ class Home extends React.Component {
         default:
             break;
         }
+    }
+
+    handleBluetoothStateChange(bleState) {
+        const { connectionState } = bleState.type;
+        this.setState({
+            bluetoothEnabled: connectionState === 'on',
+        });
     }
 
     handleContactsClick() {
@@ -282,8 +283,8 @@ class Home extends React.Component {
                                 alignment: 'center',
                             },
                         },
-                    },                    
-                }
+                    },
+                },
             },
         });
     }
@@ -348,18 +349,10 @@ class Home extends React.Component {
 
     render() {
         return (
-            <View style={[styles.container, this.props.hasActiveFlare && styles.containerWithActiveFlare]}>
-                {this.props.hardware && this.props.hardware.bluetooth !== 'on' && !this.props.hasActiveFlare && (
-                    <View style={styles.bluetoothDisabledWarning}>
-                        <Text style={styles.bluetoothDisabledWarningTitle}>
-                            {Strings.home.bluetoothDisabledWarning.title}
-                        </Text>
-                        <Text style={styles.bluetoothDisabledWarningBody}>
-                            {Strings.home.bluetoothDisabledWarning.body}
-                        </Text>
-                    </View>
+            <View style={styles.container}>
+                {!this.state.bluetoothEnabled && (
+                    <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
                 )}
-
                 <View style={styles.deviceSelector}>
                     <DeviceSelector
                         addDevice={deviceID => this.props.dispatch(claimDevice(this.props.authToken, deviceID))}
@@ -375,9 +368,12 @@ class Home extends React.Component {
                                     <Text style={[styles.centered, styles.dimmed]}>
                                         {moment(this.props.latestBeacon.timestamp).format('MMM D @ h:mma')}
                                     </Text>
-                                    {SHOW_ALL_BEACONS_IN_HOME_SCREEN &&
-                                        <FlareDeviceID value={this.props.latestBeacon.deviceID} style={[styles.centered]} />
-                                    }
+                                    {SHOW_ALL_BEACONS_IN_HOME_SCREEN && (
+                                        <FlareDeviceID
+                                            value={this.props.latestBeacon.deviceID}
+                                            style={[styles.centered]}
+                                        />
+                                    )}
                                 </View>
                             )}
                         </View>
