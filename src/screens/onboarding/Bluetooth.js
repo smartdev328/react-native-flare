@@ -6,6 +6,7 @@ import Colors from '../../bits/Colors';
 import CommonBottom from './CommonBottom';
 import CommonMiddle from './CommonMiddle';
 import CommonTop from './CommonTop';
+import FlareAlert from '../../bits/FlareAlert';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Type from '../../bits/Type';
@@ -51,7 +52,7 @@ export default function getBluetoothPage(props) {
         // one good device transmitting
         imageSource = require('../../assets/lotties/dino-dance.json');
         bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.singleDevice.subtitleStart} />;
-    } else {
+    } else if (props.bluetoothEnabled) {
         // no devices found yet
         imageSource = require('../../assets/lotties/ripple.json');
         bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.subtitle} />;
@@ -80,8 +81,15 @@ export default function getBluetoothPage(props) {
             </View>
         ),
         title: (
-            <View style={styles.titleContainer}>
-                <CommonMiddle right image={image} />
+            <View>
+                {!props.bluetoothEnabled && (
+                    <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
+                )}
+                {props.bluetoothEnabled && (
+                    <View style={styles.titleContainer}>
+                        <CommonMiddle right image={image} />
+                    </View>
+                )}
             </View>
         ),
         subtitle: <View style={styles.subtitleContainer}>{bottomComponent}</View>,

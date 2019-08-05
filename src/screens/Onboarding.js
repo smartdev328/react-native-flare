@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Onboarding from 'react-native-onboarding-swiper';
+import RNBluetoothInfo from 'react-native-bluetooth-info';
 
 import { BeaconTypes } from '../bits/BleConstants';
 import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
@@ -74,7 +75,14 @@ class OnboardingMain extends React.Component {
             cancelPIN: '',
             confirmCancelPIN: '',
             hasSetPin: props.hasSetPin,
+            bluetoothEnabled: true,
         };
+        RNBluetoothInfo.addEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
+    }
+
+    componentDidMount() {
+        // Update bluetooth state after first boot
+        RNBluetoothInfo.getCurrentState().then(bleState => this.handleBluetoothStateChange(bleState));
     }
 
     componentDidUpdate(prevProps) {
@@ -129,8 +137,19 @@ class OnboardingMain extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        RNBluetoothInfo.removeEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
+    }
+
     setCancelPIN() {
         this.props.dispatch(setCancelPIN(this.props.authToken, this.state.cancelPIN));
+    }
+
+    handleBluetoothStateChange(bleState) {
+        const { connectionState } = bleState.type;
+        this.setState({
+            bluetoothEnabled: connectionState === 'on',
+        });
     }
 
     changeCancelPIN(val) {
@@ -144,7 +163,7 @@ class OnboardingMain extends React.Component {
             confirmCancelPIN: val,
         });
     }
-    changeConfirmCancelPIN;
+
     endOnboarding() {
         this.props.dispatch(setOnboardingComplete(this.props.authToken));
         Navigation.push(this.props.componentId, {
@@ -191,11 +210,12 @@ class OnboardingMain extends React.Component {
 
         const bluetoothPage = getBluetoothPage({
             receivedShortPress: this.state.receivedShortPress,
+            bluetoothEnabled: this.state.bluetoothEnabled,
         });
 
         const longPressPage = getLongPressPage({
-            bluetoothEnabled: this.props.bluetoothEnabled,
             receivedLongPress: this.state.receivedLongPress,
+            bluetoothEnabled: this.state.bluetoothEnabled,
         });
 
         const notificationsPage = getNotificationsPage({

@@ -6,6 +6,7 @@ import Colors from '../../bits/Colors';
 import CommonBottom from './CommonBottom';
 import CommonMiddle from './CommonMiddle';
 import CommonTop from './CommonTop';
+import FlareAlert from '../../bits/FlareAlert';
 import Strings from '../../locales/en';
 
 export default function getLongPressPage(props) {
@@ -18,7 +19,7 @@ export default function getLongPressPage(props) {
         // success -- received a long press
         imageSource = require('../../assets/lotties/chat.json');
         ({ title, subtitle } = Strings.onboarding.longPress.success);
-    } else {
+    } else if (props.bluetoothEnabled) {
         imageSource = require('../../assets/lotties/ripple.json');
         ({ title, subtitle } = Strings.onboarding.longPress.success);
     }
@@ -47,9 +48,16 @@ export default function getLongPressPage(props) {
         ),
         title: (
             <View>
-                <CommonMiddle right title={title} image={image} />
+                {!props.bluetoothEnabled && (
+                    <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
+                )}
+                {props.bluetoothEnabled && (
+                    <View>
+                        <CommonMiddle right title={title} image={image} />
+                    </View>
+                )}
             </View>
         ),
-        subtitle: <CommonBottom right bodyText={subtitle} />,
+        subtitle: <View>{props.bluetoothEnabled && <CommonBottom right bodyText={subtitle} />}</View>,
     };
 }
