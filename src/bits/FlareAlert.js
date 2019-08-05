@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         borderRadius: 7,
     },
     warningBackground: {
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.theme.peach,
     },
     infoBackground: {
         backgroundColor: Colors.theme.blue,
