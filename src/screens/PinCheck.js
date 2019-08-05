@@ -70,8 +70,8 @@ class PinCheck extends React.Component {
                     codeLength={4}
                     secureTextEntry
                     onFulfill={code => this.checkCode(code)}
-                    keyboardType="numeric"
                     activeColor="#000000"
+                    keyboardType="ascii-capable"
                 />
                 <View style={styles.footer}>
                     {this.props.cancelingActiveFlare && this.props.cancelActiveFlareState === 'request' && (

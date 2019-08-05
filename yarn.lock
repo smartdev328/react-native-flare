@@ -6474,13 +6474,6 @@ react-native-navigation@^2.2.5:
     react-lifecycles-compat "2.0.0"
     tslib "1.9.3"
 
-"react-native-notifications@https://github.com/mgaron/react-native-notifications.git":
-  version "2.0.3"
-  resolved "https://github.com/mgaron/react-native-notifications.git#58fb3390e9d26f9c3418664c9fd58c0aba033690"
-  dependencies:
-    core-js "^1.0.0"
-    uuid "^2.0.3"
-
 "react-native-onboarding-swiper@https://github.com/mgaron/react-native-onboarding-swiper.git":
   version "1.0.1"
   resolved "https://github.com/mgaron/react-native-onboarding-swiper.git#b475fe072ca55f99ddb48fb7dfae26935ba087f7"
@@ -7773,11 +7766,6 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
-
-uuid@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
-  integrity sha1-Z+LoY3lyFVMN/zGOW/nc6/1Hsho=
 
 uuid@^3.3.2:
   version "3.3.2"

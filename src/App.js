@@ -14,7 +14,6 @@ import Colors from './bits/Colors';
 import FlareNavBar from './bits/FlareNavBar';
 import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
-import NotificationManager from './bits/NotificationManager';
 
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
@@ -27,7 +26,6 @@ export default class App extends Component {
         this.currentRoot = 'uninitialized';
         Navigation.registerComponent('com.flarejewelry.FlareNavBar', () => FlareNavBar);
         store = configureStore(initialState);
-        this.notificationManager = new NotificationManager();
         this.bleProvider = new BleProvider({ store });
 
         axios.interceptors.response.use(
@@ -109,9 +107,6 @@ export default class App extends Component {
                                     {
                                         component: {
                                             name: 'com.flarejewelry.app.Home',
-                                            passProps: {
-                                                notificationManager: this.notificationManager,
-                                            },
                                         },
                                     },
                                 ],
@@ -323,9 +318,6 @@ export default class App extends Component {
                                             visible: false,
                                             animate: false,
                                         },
-                                    },
-                                    passProps: {
-                                        notificationManager: this.notificationManager,
                                     },
                                 },
                             },

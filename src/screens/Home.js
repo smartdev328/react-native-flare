@@ -1,7 +1,7 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import { AppState, StyleSheet, Text, View } from 'react-native';
+import { AppState, PushNotificationIOS, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
@@ -118,28 +118,16 @@ class Home extends React.Component {
         /**
          * If device bluetooth state has changed and it's no longer on, show a local notification.
          */
-        if (
-            this.props.hardware &&
-            this.props.hardware.bluetooth !== 'on' &&
-            this.props.hardware.bluetooth !== prevProps.hardware.bluetooth &&
-            !this.props.hasActiveFlare
-        ) {
-            this.props.notificationManager.localNotify({
-                message: Strings.notifications.bluetoothDisabled,
-            });
-        }
-
-        /**
-         * Show a local notification when we're first requesting a flare
-         */
-        if (
-            prevProps.activatingFlareState !== this.props.activatingFlareState &&
-            this.props.activatingFlareState === 'request'
-        ) {
-            this.props.notificationManager.localNotify({
-                message: this.props.crewEventNotificationMessage,
-            });
-        }
+        // if (
+        //     this.props.hardware &&
+        //     this.props.hardware.bluetooth !== 'on' &&
+        //     this.props.hardware.bluetooth !== prevProps.hardware.bluetooth &&
+        //     !this.props.hasActiveFlare
+        // ) {
+        //     this.props.notificationManager.localNotify({
+        //         message: Strings.notifications.bluetoothDisabled,
+        //     });
+        // }
 
         /**
          * Handle transitions in flare state: reset intervals for fetching data
@@ -153,6 +141,7 @@ class Home extends React.Component {
                 this.props.dispatch(changeAppRoot('secure-active-event'));
             } else {
                 BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
+                PushNotificationIOS.removeAllDeliveredNotifications();
             }
         }
 
@@ -442,6 +431,7 @@ function mapStateToProps(state) {
         activatingFlareState: state.user.activatingFlareState,
         claimingDevice: state.user.claimingDevice,
         claimingDeviceFailure: state.user.claimingDeviceFailure,
+        crewEventNotificationMessage: state.user.settings.promptMessage,
         contactsLabel,
         crews: state.user.crews,
         devices: state.user.devices,

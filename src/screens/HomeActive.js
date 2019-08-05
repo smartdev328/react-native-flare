@@ -1,7 +1,7 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import { AppState, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Image, PushNotificationIOS, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
@@ -124,7 +124,6 @@ class HomeActive extends React.Component {
         }
         BackgroundTimer.stopBackgroundTimer();
         BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
-        AppState.addEventListener('change', newState => this.handleAppStateChange(newState));
 
         // If the current user has an active flare, fetch the crew timeline
         // and show it
@@ -140,6 +139,21 @@ class HomeActive extends React.Component {
             BackgroundTimer.stopBackgroundTimer();
             this.props.dispatch(changeAppRoot('secure'));
         }
+
+        /**
+         * Show a local notification when we're first requesting a flare
+         */
+        if (
+            this.props.activatingFlareState !== prevProps.activatingFlareState &&
+            this.props.activatingFlareState === 'request'
+        ) {
+            console.log('>>>>> Local notify!');
+            PushNotificationIOS.requestPermissions();
+            PushNotificationIOS.presentLocalNotification({
+                alertBody: this.props.crewEventNotificationMessage,
+                alertTitle: Strings.notifications.title,
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -147,7 +161,6 @@ class HomeActive extends React.Component {
         BackgroundTimer.stopBackgroundTimer();
         clearInterval(this.eventTimelineRefreshTimer);
         this.eventTimelineRefreshTimer = null;
-        AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
     }
 
     /**

@@ -118,6 +118,7 @@ const Strings = {
     },
     notifications: {
         bluetoothDisabled: 'Please turn on bluetooth so that Flare can work! 💔',
+        title: 'Reminder',
         events: {
             flare: {
                 defaultMessage: 'Get that thing done',
