@@ -45,7 +45,7 @@ const CrewList = function createCrewList(props) {
                 <View style={styles.member}>
                     <Text style={styles.memberName}>
                         {item.name}
-                        {item.label && ` - ${item.label}`}
+                        {item.label && item.label.length && item.label}
                     </Text>
                     <TouchableOpacity
                         style={styles.memberAction}

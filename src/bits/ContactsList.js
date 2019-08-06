@@ -112,7 +112,7 @@ function ContactsList(props) {
                     <ContactsListItem
                         itemKey={item.key}
                         name={item.name}
-                        label={item.label && ` - ${item.label}`}
+                        label={item.label && item.label.length && ` - ${item.label}`}
                         phone={item.phone}
                         onPress={props.onPressContact}
                     />
