@@ -130,7 +130,7 @@ const Strings = {
             alwaysAllow: 'Always allow',
         },
         location: {
-            subtitle: 'Flare needs permission to\naccess your location.',
+            subtitle: 'Flare needs permission to access your location.',
         },
         noBluetooth: {
             title: 'Enable Bluetooth',
@@ -139,7 +139,7 @@ const Strings = {
         shortPress: {
             title: 'Short Press',
             subtitle:
-                'Press the button on your jewelry\nbriefly a few times in a row. Your phone will ring. Take the call, then press Next.',
+                'Press the button on your jewelry briefly a few times in a row. Your phone will ring. Take the call, then press Next.',
             singleDevice: {
                 title: 'Short Press',
                 subtitleStart: 'Great. Now hold the button down for 3 seconds and then let go.',
@@ -153,7 +153,7 @@ const Strings = {
             success: {
                 title: 'Sweet!',
                 subtitle:
-                    "Normally we'd reach out to your\nfriends now. They'd know where you\nare and how to reach you.",
+                    "Normally we'd reach out to your friends now. They'd know where you are and how to reach you.",
             },
         },
         longPressCancel: {
@@ -163,13 +163,13 @@ const Strings = {
             },
             hasSetPin: {
                 title: 'Nice.',
-                subtitle: "You canceled your Flare, so your\nfriends know that you're safe.",
+                subtitle: "You canceled your Flare, so your friends know that you're safe.",
             },
             pinPlaceholder: 'Secret code',
             pinConfirmPlaceholder: 'Confirm secret code',
         },
         notifications: {
-            subtitle: 'We need permission to send you\nnotifications when you hold the button\non your jewelry.',
+            subtitle: 'We need permission to send you notifications when you hold the button on your jewelry.',
             buttonLabel: 'Allow',
         },
         flareExample: {
@@ -201,7 +201,7 @@ const Strings = {
                 title: 'Contacts',
             },
             overlay: {
-                instructions: 'Click on the name of a contact to\nadd them to your crew.',
+                instructions: 'Click on the name of a contact to add them to your crew.',
                 title: 'Choose up to 5 contacts.',
                 closeButtonLabel: 'Save Crew',
             },

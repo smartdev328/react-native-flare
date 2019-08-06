@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         fontWeight: '900',
         lineHeight: 60,
         height: 60,
-        fontSize: Type.size.small,
+        fontSize: Type.size.smallCaps,
     },
     fullWidth: {
         width: '100%',
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.transparent,
         borderColor: Colors.white,
         borderWidth: 2,
-        padding: Spacing.medium,
+        padding: Spacing.small,
     },
     outlineForeground: {
         margin: 0,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         borderColor: Colors.white,
         borderRadius: 0,
         borderBottomWidth: 2,
-        padding: Spacing.medium,
+        padding: Spacing.small,
     },
     primaryForeground: {
         textTransform: 'uppercase',

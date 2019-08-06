@@ -1,10 +1,11 @@
 const Type = {
     size: {
         tiny: 9,
-        small: 14,
-        medium: 20,
-        large: 24,
-        huge: 36,
+        small: 12,
+        smallCaps: 14,
+        medium: 18,
+        large: 22,
+        huge: 32,
     },
 };
 
