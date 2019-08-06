@@ -170,6 +170,11 @@ class Contacts extends React.Component {
                         </View>
                         {this.props.hasCrew && (
                             <View style={styles.tutorialButtons}>
+                                <CrewList
+                                    style={{ height: this.state.crewListHeight }}
+                                    crew={this.props.crew}
+                                    onPressContact={contact => this.removeCrewMember(contact)}
+                                />
                                 <Button
                                     title={Strings.onboarding.contacts.overlay.closeButtonLabel}
                                     onPress={() => this.props.dispatch(changeAppRoot('secure'))}
