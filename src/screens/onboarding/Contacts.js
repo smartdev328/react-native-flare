@@ -10,14 +10,12 @@ import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 
 const styles = StyleSheet.create({
-    subtitleArea: {
-        paddingHorizontal: Spacing.medium,
-    },
-    subtitleText: {
-        marginBottom: Spacing.medium,
-    },
     titleContainer: {
         width: '100%',
+        paddingHorizontal: Spacing.medium,
+    },
+    subtitleContainer: {
+        paddingHorizontal: Spacing.medium,
     },
 });
 

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     memberName: {
         color: Colors.white,
         flex: 9,
-        fontSize: Type.size.small,
+        fontSize: Type.size.smallCaps,
     },
     memberAction: {
         flex: 1,

@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const CREW_LIST_ITEM_HEIGHT = 36;
+const CREW_LIST_ITEM_HEIGHT = 46;
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Contacts extends React.Component {
