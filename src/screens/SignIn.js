@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, View } from 'react-native';
+import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -13,6 +13,13 @@ import FlareTextInput from '../bits/FlareTextInput';
 
 const styles = {
     container: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+    },
+    scroller: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -55,7 +62,7 @@ const styles = {
         width: '100%',
         padding: Spacing.large,
         alignItems: 'stretch',
-        marginBottom: Spacing.huge,
+        marginBottom: Spacing.large,
     },
     loadingContainer: {
         flex: 1,
@@ -155,65 +162,67 @@ class SignIn extends Component {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Aura />
-                <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
-                {(this.state.invalid || this.props.authState === 'failed') && (
-                    <View style={styles.invalid}>
-                        <Text style={styles.invalidText}>{Strings.signin.invalid}</Text>
-                    </View>
-                )}
-                <View style={styles.inputs}>
-                    <FlareTextInput
-                        autoCapitalize="none"
-                        placeholder={Strings.signin.usernamePrompt}
-                        value={this.state.username}
-                        onChangeText={v => this.changeUserName(v)}
-                        onFocus={() => this.userNameFocused(true)}
-                        onBlur={() => this.userNameFocused(false)}
-                        keyboardType="email-address"
-                        returnKeyType="next"
-                    />
-                    <FlareTextInput
-                        autoCapitalize="none"
-                        placeholder={Strings.signin.passwordPrompt}
-                        secureTextEntry
-                        value={this.state.password}
-                        onChangeText={v => this.changePassword(v)}
-                        onFocus={() => this.passwordFocused(true)}
-                        onBlur={() => this.passwordFocused(false)}
-                        returnKeyType="done"
-                        onSubmitEditing={() => this.startSignIn()}
-                    />
-                    <Button
-                        secondary
-                        title={Strings.signin.forgotPassword}
-                        onPress={() => Linking.openURL('https://app.flarejewelry.co/reset')}
-                        invisible={this.state.userNameFocused || this.state.passwordFocused}
-                    />
-                    <Button
-                        primary
-                        onPress={() => this.startSignIn()}
-                        title={Strings.signin.signInLabel}
-                        styleBackground={styles.signinButton}
-                        invisible={this.props.authState === 'requested'}
-                    />
-                </View>
-                <View style={styles.loadingContainer}>
-                    {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
-                </View>
-                {this.props.authState !== 'requested' && (
-                    <View style={styles.buttons}>
+                <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroller}>
+                    <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
+                    {(this.state.invalid || this.props.authState === 'failed') && (
+                        <View style={styles.invalid}>
+                            <Text style={styles.invalidText}>{Strings.signin.invalid}</Text>
+                        </View>
+                    )}
+                    <View style={styles.inputs}>
+                        <FlareTextInput
+                            autoCapitalize="none"
+                            placeholder={Strings.signin.usernamePrompt}
+                            value={this.state.username}
+                            onChangeText={v => this.changeUserName(v)}
+                            onFocus={() => this.userNameFocused(true)}
+                            onBlur={() => this.userNameFocused(false)}
+                            keyboardType="email-address"
+                            returnKeyType="next"
+                        />
+                        <FlareTextInput
+                            autoCapitalize="none"
+                            placeholder={Strings.signin.passwordPrompt}
+                            secureTextEntry
+                            value={this.state.password}
+                            onChangeText={v => this.changePassword(v)}
+                            onFocus={() => this.passwordFocused(true)}
+                            onBlur={() => this.passwordFocused(false)}
+                            returnKeyType="done"
+                            onSubmitEditing={() => this.startSignIn()}
+                        />
                         <Button
                             secondary
-                            title={Strings.signin.register}
-                            onPress={() => this.register()}
-                            invisible={
-                                this.props.authState === 'requested' ||
-                                this.state.userNameFocused ||
-                                this.state.passwordFocused
-                            }
+                            title={Strings.signin.forgotPassword}
+                            onPress={() => Linking.openURL('https://app.flarejewelry.co/reset')}
+                            invisible={this.state.userNameFocused || this.state.passwordFocused}
+                        />
+                        <Button
+                            primary
+                            onPress={() => this.startSignIn()}
+                            title={Strings.signin.signInLabel}
+                            styleBackground={styles.signinButton}
+                            invisible={this.props.authState === 'requested'}
                         />
                     </View>
-                )}
+                    <View style={styles.loadingContainer}>
+                        {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
+                    </View>
+                    {this.props.authState !== 'requested' && (
+                        <View style={styles.buttons}>
+                            <Button
+                                secondary
+                                title={Strings.signin.register}
+                                onPress={() => this.register()}
+                                invisible={
+                                    this.props.authState === 'requested' ||
+                                    this.state.userNameFocused ||
+                                    this.state.passwordFocused
+                                }
+                            />
+                        </View>
+                    )}
+                </ScrollView>
             </KeyboardAvoidingView>
         );
     }
