@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { iconsMap } from '../../bits/AppIcons';
-import { setAnalyticsEnabled } from '../../actions/userActions';
+import { setPrivacyConfig } from '../../actions/userActions';
 import Colors from '../../bits/Colors';
 import SettingsToggle from '../../bits/SettingsToggle';
 import Spacing from '../../bits/Spacing';
@@ -56,7 +56,7 @@ class SettingsPrivacy extends React.PureComponent {
     }
 
     enableAnalytics(enabled) {
-        this.props.dispatch(setAnalyticsEnabled(this.props.authToken, enabled));
+        this.props.dispatch(setPrivacyConfig(this.props.authToken, { analytics: enabled }));
     }
 
     render() {
@@ -83,7 +83,7 @@ class SettingsPrivacy extends React.PureComponent {
 function mapStateToProps(state) {
     return {
         authToken: state.user.authToken,
-        analyticsEnabled: state.user.analyticsEnabled,
+        analyticsEnabled: state.user.settings.analyticsEnabled,
     };
 }
 

@@ -335,6 +335,9 @@ export function user(state = initialState.user, action = {}) {
             pinUpdateError: action.error,
         });
 
+        /**
+         * SET USER ONBOARDING COMPLETE
+         */
     case types.USER_SET_ONBOARDING_COMPLETE_REQUEST:
         return state.merge({
             settingOnboardingComplete: true,
@@ -351,18 +354,21 @@ export function user(state = initialState.user, action = {}) {
             settingOnboardingComplete: false,
         });
 
-    case types.USER_SET_ANALYTICS_ENABLED_REQUEST:
+        /**
+         * SET USER PRIVACY CONFIG
+         */
+    case types.USER_SET_PRIVACY_CONFIG_REQUEST:
         return state.merge({
             savingSetting: true,
         });
 
-    case types.USER_SET_ANALYTICS_ENABLED_SUCCESS:
+    case types.USER_SET_PRIVACY_CONFIG_SUCCESS:
         return state.merge({
             savingSetting: false,
-            analyticsEnabled: action.analyticsEnabled,
+            settings: Immutable.setIn(state.settings, ['analyticsEnabled'], action.analyticsEnabled),
         });
 
-    case types.USER_SET_ANALYTICS_ENABLED_FAILURE:
+    case types.USER_SET_PRIVACY_CONFIG_FAILURE:
         return state.merge({
             savingSetting: false,
         });

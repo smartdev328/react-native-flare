@@ -211,7 +211,7 @@ class Home extends React.Component {
     syncAccount() {
         // Don't kick off a new async request if we're shutting down. This prevents an infinite loop of syncing
         // status -> auth fail -> sign out.
-        if (this.shuttingDown) {
+        if (this.shuttingDown || !this.props.analyticsEnabled) {
             return;
         }
 
@@ -425,6 +425,7 @@ function mapStateToProps(state) {
 
     return {
         activatingFlareState: state.user.activatingFlareState,
+        analyticsEnabled: state.user.settings.analyticsEnabled,
         claimingDevice: state.user.claimingDevice,
         claimingDeviceFailure: state.user.claimingDeviceFailure,
         crewEventNotificationMessage: state.user.settings.promptMessage,

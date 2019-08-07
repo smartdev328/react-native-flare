@@ -243,26 +243,27 @@ export function setUserDetails(token, firstName, lastName, password) {
     };
 }
 
-export function setAnalyticsEnabled(token, enabled) {
-    return function setEnabled(dispatch) {
+export function setPrivacyConfig(token, config) {
+    return function doSetPrivacyConfig(dispatch) {
         dispatch({
-            type: types.USER_SET_ANALYTICS_ENABLED_REQUEST,
+            type: types.USER_SET_PRIVACY_CONFIG_REQUEST,
         });
-        ProtectedAPICall(token, API_URL, '/ua/privacy', {
-            method: 'PUT',
+        const { analytics } = config;
+        ProtectedAPICall(token, API_URL, '/users/privacy', {
+            method: 'POST',
             data: {
-                enabled,
+                analytics,
             },
         })
             .then((response) => {
                 dispatch({
-                    type: types.USER_SET_ANALYTICS_ENABLED_SUCCESS,
-                    analyticsEnabled: response.data.privacy.analytics_enabled,
+                    type: types.USER_SET_PRIVACY_CONFIG_SUCCESS,
+                    analyticsEnabled: response.data.privacy.analytics,
                 });
             })
             .catch((error) => {
                 dispatch({
-                    type: types.USER_SET_ANALYTICS_ENABLED_FAILURE,
+                    type: types.USER_SET_PRIVACY_CONFIG_FAILURE,
                     error,
                 });
             });
