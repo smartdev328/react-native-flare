@@ -4,7 +4,7 @@ const Strings = {
     },
     beacons: {
         lastReceived: 'Latest beacon',
-        notYetReceived: 'Waiting for beacons',
+        notYetReceived: 'Ready for beacons',
     },
     contacts: {
         add: {
@@ -15,13 +15,14 @@ const Strings = {
             end: 'of 5 possible people in your crew. Adjust your crew by pressing names shown below.',
         },
         choosePrompt:
-            'Choose up to 5 contacts by touching their names. These are the people we will reach out to when you start a Flare.',
+            'Choose up to 5 contacts by pressing their names. These are the people we will reach out to when you ' +
+            'send a message.',
         crewNamePlaceholder: 'My Crew',
     },
     crewEventTimeline: {
         headings: {
-            cancel: '🚫 You canceled the Flare.',
-            create: '📣 You started the Flare.',
+            cancel: '🚫 You canceled the message.',
+            create: '📣 You started a message.',
             join: 'is available.',
             notify: '💌 We reached out to',
             unknown: '🤮 Something got mixed up on our end',
@@ -50,7 +51,7 @@ const Strings = {
         contactsButtonLabelAdd: 'Choose Your Crew',
         contactsButtonLabelEdit: 'Edit Your Crew',
         lastBeacon: {
-            absent: 'Waiting for beacons',
+            absent: 'Ready for beacons',
             present: 'Last beacon received',
         },
         title: 'Welcome',
@@ -84,7 +85,7 @@ const Strings = {
         cuffV2: {
             name: 'Flare Cuff',
         },
-        emptyList: "You don't have any jewelry. Press the Add New button to add some jewelry to your account",
+        emptyList: "You don't have any jewelry. Press the Add New button to add jewelry to your account",
         remove: 'Remove from account',
         removeConfirm: {
             cancelLabel: 'No, keep it',
@@ -92,7 +93,7 @@ const Strings = {
             promptBegin: 'After you remove the jewelry with label ',
             promptEnd:
                 ", pressing its button won't do anything. " +
-                ' You will not get calls and your crew will not receive alerts.\n\n' +
+                ' You will not get calls and your crew will not receive messages.\n\n' +
                 'Are you sure you want to remove it?',
         },
     },
@@ -126,11 +127,15 @@ const Strings = {
         skipConfirmPrompt: "Are you sure you want to skip onboarding? The app basically won't work",
         welcome: {
             title: 'Welcome!',
-            subtitle: "We're so excited that you're using Flare.",
+            subtitle:
+                "We're so excited that you've joined. Flare exists so that you don't have to make compromises " +
+                'for your safety.',
             alwaysAllow: 'Always allow',
         },
         location: {
-            subtitle: 'Flare needs permission to access your location.',
+            subtitle:
+                'Flare needs permission to access your location so that we can let your friends know when and ' +
+                'where you need backup. Select "Always Allow" so it will work even when the app isn\'t open.',
         },
         noBluetooth: {
             title: 'Enable Bluetooth',
@@ -139,10 +144,11 @@ const Strings = {
         shortPress: {
             title: 'Short Press',
             subtitle:
-                'Press the button on your jewelry briefly a few times in a row. Your phone will ring. Take the call, then press Next.',
+                "Press once and release the button on your bracelet to activate the phone call feature. You'll " +
+                'feel a click. Answer the call!',
             singleDevice: {
                 title: 'Short Press',
-                subtitleStart: 'Great. Now hold the button down for 3 seconds and then let go.',
+                subtitleStart: 'Great. You can use the call as an excuse to exit gracefully.',
             },
         },
         longPress: {
@@ -158,29 +164,32 @@ const Strings = {
         },
         longPressCancel: {
             initial: {
-                subtitle: "Choose the pin code that you'll enter when canceling Flares in the future.",
+                subtitle: "Choose a 4 digit pin code that you'll enter to cancel messages in the future.",
                 buttonLabel: 'Save Secret',
             },
             hasSetPin: {
                 title: 'Nice.',
-                subtitle: "You canceled your Flare, so your friends know that you're safe.",
+                subtitle: 'You canceled your message, so your friends know the situation is resolved.',
             },
-            pinPlaceholder: 'Secret code',
-            pinConfirmPlaceholder: 'Confirm secret code',
+            pinPlaceholder: 'Secret pin',
+            pinConfirmPlaceholder: 'Confirm secret pin',
         },
         notifications: {
-            subtitle: 'We need permission to send you notifications when you hold the button on your jewelry.',
+            subtitle:
+                "When you hold the button, how will you know that your message went out? We'll send you a coded " +
+                'pop-up notification with a secret phrase. We need permission to send you the notification.',
             buttonLabel: 'Allow',
         },
         flareExample: {
             story: {
                 flareName: 'Flare: ',
-                first: 'This is what you see when you’ve held the button down to start a Flare.',
-                second:
-                    'We reach out to your selected contacts by text message. When they respond, we show their messages here.',
-                third: 'Press the Cancel button below to end this Flare.',
+                first:
+                    'Your selected contacts will get a group text message with your location. We ask them to give ' +
+                    'you a call and check-in.',
+                second: "You'll be able to see a transcript of their conversation in the app.",
+                third: 'Press the Cancel button below to end this message.',
             },
-            buttonLabel: 'Cancel Flare',
+            buttonLabel: 'Cancel',
         },
         contacts: {
             hasCrew: {
@@ -195,9 +204,7 @@ const Strings = {
             },
             initial: {
                 buttonLabel: 'Give Access',
-                subtitle:
-                    "Please give us permission to access your contacts. You'll choose which contacts we reach " +
-                    'out to when you hold the button.',
+                subtitle: 'We need permission to access your contacts so that you can select the friends we message.',
                 title: 'Contacts',
             },
             overlay: {
@@ -234,7 +241,7 @@ const Strings = {
     },
     settings: {
         call: {
-            details: 'Choose what you hear when you press the jewelry button and we call you.',
+            details: 'Choose the message that you hear when you press the button and we call you.',
             title: 'Phone call script',
             saveButtonLabel: 'Use script',
             scripts: {
@@ -263,24 +270,24 @@ const Strings = {
         },
         notifications: {
             customOption: 'Custom',
-            customPromptPlaceholder: 'Your custom popup text',
-            defaultMessage: 'Reminder: 8am appt tomorrow',
+            customPromptPlaceholder: 'Your code phrase',
+            defaultMessage: '8am appt tomorrow',
             defaultOption: 'Default',
             promptSelectionBody:
-                "You'll see this notification when you press and hold the button on your jewelry. " +
-                'When it pops up you know that we reached out to your crew.',
-            promptSelectionTitle: 'Custom popup message',
+                "You'll get a notification with this message when you press and hold the button on your jewelry." +
+                'When it pops up, you know that we messaged your crew.',
+            promptSelectionTitle: 'Custom notification',
             saveButtonLabel: 'Save popup',
-            title: 'Notifications',
+            title: 'Notification',
         },
         privacy: {
             title: 'Privacy',
             analytics: {
                 prompt: 'Send analytics data to Flare',
                 details:
-                    'Cupcake ipsum dolor sit amet. Cookie powder caramels powder apple pie. Chocolate macaroon ' +
-                    'sesame snaps tiramisu jujubes brownie tootsie roll. Tootsie roll wafer biscuit lollipop topping ' +
-                    'danish jelly chupa chups candy.',
+                    'Flare uses analytics to improve and develop new features to help our members navigate the world ' +
+                    'around them with more confidence and control. We take privacy seriously and will not share ' +
+                    'identifying data.',
             },
         },
         title: 'Settings',
@@ -288,11 +295,12 @@ const Strings = {
     },
     register: {
         instructions:
-            'Hey, congrats on getting your Flare! Fill this out to create your account. You need the code written on the sticker we put on your jewelry.',
+            'Hey, congrats on getting your Flare! Fill this out to create your account. You need the code written ' +
+            'on the sticker we put on your jewelry.',
         phonePrompt: 'Phone number – no dashes',
-        emailPrompt: 'Email – you@domain.com',
+        emailPrompt: 'Email – you@domain.com',
         confirmPasswordPrompt: 'Confirm Password',
-        serialNumber: 'Jewelry Serial Number – XXXYYYZZZ',
+        serialNumber: 'Jewelry Serial Number – XXXYYYZZZ',
         needToBuy: 'I need to buy jewelry',
         submitLabel: 'Create New Account',
         errors: {
@@ -302,7 +310,7 @@ const Strings = {
         },
     },
     register2: {
-        instructions: 'Almost done! Please set your name and password so you can start using your jewelry.',
+        instructions: 'Almost done! Please enter your name and password to start using your jewelry.',
         firstNamePrompt: 'First name',
         lastNamePrompt: 'Last name',
         passwordPrompt: 'Password',
