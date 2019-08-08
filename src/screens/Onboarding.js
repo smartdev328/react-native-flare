@@ -8,6 +8,7 @@ import RNBluetoothInfo from 'react-native-bluetooth-info';
 import { BeaconTypes } from '../bits/BleConstants';
 import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
+import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants';
 import getBluetoothPage from './onboarding/Bluetooth';
 import getLocationPage from './onboarding/Location';
 import getLongPressPage from './onboarding/LongPress';
@@ -16,6 +17,7 @@ import getLongPressCancelPage from './onboarding/LongPressCancel';
 import getContactsPage from './onboarding/Contacts';
 import getNotificationsPage from './onboarding/Notifications';
 import getWelcomePage from './onboarding/Welcome';
+import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
     container: {
@@ -76,6 +78,7 @@ class OnboardingMain extends React.Component {
             confirmCancelPIN: '',
             hasSetPin: props.hasSetPin,
             bluetoothEnabled: true,
+            setPinErrorMessage: null,
         };
         RNBluetoothInfo.addEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
     }
@@ -142,7 +145,20 @@ class OnboardingMain extends React.Component {
     }
 
     setCancelPIN() {
-        this.props.dispatch(setCancelPIN(this.props.authToken, this.state.cancelPIN));
+        if (this.state.cancelPIN.length < LONG_PRESS_CANCEL_PIN_LENGTH) {
+            this.setState({
+                setPinErrorMessage: Strings.onboarding.longPressCancel.errors.tooShort,
+            });
+        } else if (this.state.cancelPIN !== this.state.confirmCancelPIN) {
+            this.setState({
+                setPinErrorMessage: Strings.onboarding.longPressCancel.errors.mismatch,
+            });
+        } else {
+            this.setState({
+                setPinErrorMessage: null,
+            });
+            this.props.dispatch(setCancelPIN(this.props.authToken, this.state.cancelPIN));
+        }
     }
 
     handleBluetoothStateChange(bleState) {
@@ -233,6 +249,7 @@ class OnboardingMain extends React.Component {
             changeCancelPIN: e => this.changeCancelPIN(e),
             changeConfirmCancelPIN: e => this.changeConfirmCancelPIN(e),
             setCancelPIN: () => this.setCancelPIN(),
+            setPinErrorMessage: this.state.setPinErrorMessage,
         });
 
         const contactsPage = getContactsPage({

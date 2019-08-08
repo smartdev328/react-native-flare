@@ -7,6 +7,7 @@ import Colors from '../../bits/Colors';
 import CommonBottom from './CommonBottom';
 import CommonTop from './CommonTop';
 import CommonMiddle from './CommonMiddle';
+import FlareAlert from '../../bits/FlareAlert';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import FlareTextInput from '../../bits/FlareTextInput';
@@ -42,6 +43,7 @@ export default function getLongPressCancelPage(props) {
                 <View style={styles.subtitleArea}>
                     <Text style={styles.subtitleText}>{Strings.onboarding.longPressCancel.initial.subtitle}</Text>
                 </View>
+                {props.setPinErrorMessage && <FlareAlert variant="info" message={props.setPinErrorMessage} />}
                 <View style={styles.pinInputArea}>
                     <FlareTextInput
                         autoCapitalize="characters"
@@ -50,6 +52,7 @@ export default function getLongPressCancelPage(props) {
                         maxLength={LONG_PRESS_CANCEL_PIN_LENGTH}
                         value={props.pin}
                         secureTextEntry
+                        keyboardType="phone-pad"
                     />
                     <FlareTextInput
                         autoCapitalize="characters"
@@ -58,11 +61,12 @@ export default function getLongPressCancelPage(props) {
                         maxLength={LONG_PRESS_CANCEL_PIN_LENGTH}
                         value={props.confirmPin}
                         secureTextEntry
+                        keyboardType="phone-pad"
                     />
                     <Button
                         title={Strings.onboarding.longPressCancel.initial.buttonLabel}
                         onPress={() => props.setCancelPIN()}
-                        disabled={props.pin.length < LONG_PRESS_CANCEL_PIN_LENGTH && props.pin !== props.pinConfirm}
+                        disabled={props.setPinButtonEnabled}
                         primary
                     />
                 </View>

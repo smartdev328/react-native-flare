@@ -173,6 +173,10 @@ const Strings = {
             },
             pinPlaceholder: 'Secret pin',
             pinConfirmPlaceholder: 'Confirm secret pin',
+            errors: {
+                tooShort: 'PIN must be 4 digits',
+                mismatch: 'PIN and confirmation must match',
+            },
         },
         notifications: {
             subtitle:
