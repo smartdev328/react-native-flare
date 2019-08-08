@@ -88,7 +88,7 @@ class OnboardingMain extends React.Component {
     componentDidUpdate(prevProps) {
         const LOCATION_PAGE_INDEX = 1;
         const BLUETOOTH_PAGE_INDEX = 2;
-        const NOTIFICATION_PAGE_INDEX = 4;
+        const NOTIFICATION_PAGE_INDEX = 6;
 
         // Go to next screen after user gives location permission
         if (
@@ -264,9 +264,9 @@ class OnboardingMain extends React.Component {
                         locationPage,
                         bluetoothPage,
                         longPressPage,
-                        notificationsPage,
                         flareExamplePage,
                         longPressCancelPage,
+                        notificationsPage,
                         contactsPage,
                     ]}
                 />
