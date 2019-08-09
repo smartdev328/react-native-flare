@@ -46,6 +46,7 @@ const Strings = {
     },
     home: {
         bluetoothDisabledWarning: 'Turn bluetooth on in your phone settings',
+        locationDisabledWarning: 'Set location permission to Always in phone settings',
         cancelActiveFlare: 'Cancel Flare',
         chooseLanguage: 'Choose language',
         contactsButtonLabelAdd: 'Choose Your Crew',
@@ -131,6 +132,7 @@ const Strings = {
                 "We're so excited that you've joined. Flare exists so that you don't have to make compromises " +
                 'for your safety.',
             alwaysAllow: 'Always allow',
+            buttonLabel: 'Get Started',
         },
         location: {
             subtitle:

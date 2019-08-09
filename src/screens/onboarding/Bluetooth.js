@@ -52,7 +52,7 @@ export default function getBluetoothPage(props) {
         // one good device transmitting
         imageSource = require('../../assets/lotties/dino-dance.json');
         bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.singleDevice.subtitleStart} />;
-    } else if (props.bluetoothEnabled) {
+    } else if (props.bluetoothEnabled && props.locationEnabled) {
         // no devices found yet
         imageSource = require('../../assets/lotties/ripple.json');
         bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.subtitle} />;
@@ -85,7 +85,10 @@ export default function getBluetoothPage(props) {
                 {!props.bluetoothEnabled && (
                     <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
                 )}
-                {props.bluetoothEnabled && (
+                {!props.locationEnabled && (
+                    <FlareAlert message={Strings.home.locationDisabledWarning} variant="warning" large centered />
+                )}
+                {props.bluetoothEnabled && props.locationEnabled && (
                     <View style={styles.titleContainer}>
                         <CommonMiddle right image={image} />
                     </View>

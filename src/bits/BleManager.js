@@ -83,6 +83,11 @@ export default class BleManager {
     }
 
     startListening() {
+        if (this.listening) {
+            console.log('BLE manager already running; not starting again.');
+            return;
+        }
+
         console.debug('Starting BLE listening.');
         this.beaconCache = new BeaconCache();
         this.listening = true;

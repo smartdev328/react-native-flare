@@ -6476,7 +6476,7 @@ react-native-navigation@^2.2.5:
 
 "react-native-onboarding-swiper@https://github.com/mgaron/react-native-onboarding-swiper.git":
   version "1.0.1"
-  resolved "https://github.com/mgaron/react-native-onboarding-swiper.git#b475fe072ca55f99ddb48fb7dfae26935ba087f7"
+  resolved "https://github.com/mgaron/react-native-onboarding-swiper.git#7d5cc18c8a67bdecc10a3ac830fb7e3e7b918740"
   dependencies:
     tinycolor2 "^1.4.1"
 

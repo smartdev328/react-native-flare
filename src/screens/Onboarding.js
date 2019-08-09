@@ -6,7 +6,7 @@ import Onboarding from 'react-native-onboarding-swiper';
 import RNBluetoothInfo from 'react-native-bluetooth-info';
 
 import { BeaconTypes } from '../bits/BleConstants';
-import { getPermission, setCancelPIN, setOnboardingComplete } from '../actions/userActions';
+import { getPermission, setCancelPIN, setOnboardingComplete, checkLocationsPermission } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
 import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants';
 import getBluetoothPage from './onboarding/Bluetooth';
@@ -71,6 +71,8 @@ class OnboardingMain extends React.Component {
     constructor(props) {
         super(props);
 
+        this.permissionCheckInterval = setInterval(() => this.checkPermissions(), 15000);
+
         this.state = {
             receivedLongPress: false,
             receivedShortPress: false,
@@ -96,13 +98,19 @@ class OnboardingMain extends React.Component {
         // Go to next screen after user gives location permission
         if (
             this.flatList &&
-            this.flatList.state.currentPage === LOCATION_PAGE_INDEX &&
             this.props.permissions &&
             this.props.permissions.location &&
             this.props.permissions.location !== prevProps.permissions.location
         ) {
-            this.props.dispatch(startBleListening());
-            this.flatList.goNext();
+            if (this.flatList.state.currentPage === LOCATION_PAGE_INDEX) {
+                // automatically progress from location page if user gives always on access
+                this.flatList.goNext();
+            }
+
+            if (this.props.permissions.location && this.flatList.state.currentPage > LOCATION_PAGE_INDEX) {
+                console.log('Onboarding is starting ble listening');
+                this.props.dispatch(startBleListening());
+            }
         }
 
         // Go to next screen after user activates flare
@@ -142,6 +150,9 @@ class OnboardingMain extends React.Component {
 
     componentWillUnmount() {
         RNBluetoothInfo.removeEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
+        if (this.permissionCheckInterval !== null) {
+            clearInterval(this.permissionCheckInterval);
+        }
     }
 
     setCancelPIN() {
@@ -161,6 +172,10 @@ class OnboardingMain extends React.Component {
         }
     }
 
+    checkPermissions() {
+        this.props.dispatch(checkLocationsPermission());
+    }
+
     handleBluetoothStateChange(bleState) {
         const { connectionState } = bleState.type;
         this.setState({
@@ -178,6 +193,10 @@ class OnboardingMain extends React.Component {
         this.setState({
             confirmCancelPIN: val,
         });
+    }
+
+    handleNextButtonPress() {
+        this.flatList.goNext();
     }
 
     endOnboarding() {
@@ -213,25 +232,29 @@ class OnboardingMain extends React.Component {
          * that simply render content based on state. For example, the welcome page is
          * very simple and static.
          */
-        const welcomePage = getWelcomePage();
+        const welcomePage = getWelcomePage({
+            onPressNext: () => this.handleNextButtonPress(),
+        });
 
         /**
          * The following pages have internal state and interact with the main onboarding
          * flow through their "props."
          */
         const locationPage = getLocationPage({
-            permissions: this.props.permissions,
+            locationPermission: this.props.permissions.location,
             requestLocationPermission: () => this.props.dispatch(getPermission('location', { type: 'always' })),
         });
 
         const bluetoothPage = getBluetoothPage({
             receivedShortPress: this.state.receivedShortPress,
             bluetoothEnabled: this.state.bluetoothEnabled,
+            locationEnabled: this.props.permissions && this.props.permissions.location,
         });
 
         const longPressPage = getLongPressPage({
             receivedLongPress: this.state.receivedLongPress,
             bluetoothEnabled: this.state.bluetoothEnabled,
+            locationEnabled: this.props.permissions && this.props.permissions.location,
         });
 
         const notificationsPage = getNotificationsPage({
@@ -270,11 +293,7 @@ class OnboardingMain extends React.Component {
                         justifyContent: 'flex-start',
                         alignItems: 'center',
                     }}
-                    givePage
-                    showSkip={false}
-                    showBack
-                    showDone={false}
-                    onSkip={() => this.skipOnboarding()}
+                    scrollingLocked
                     /* Page order matters. @see lifecycle methods related to dynamic page switching */
                     pages={[
                         welcomePage,

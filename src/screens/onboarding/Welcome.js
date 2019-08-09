@@ -6,6 +6,7 @@ import Strings from '../../locales/en';
 import CommonTop from './CommonTop';
 import CommonMiddle from './CommonMiddle';
 import CommonBottom from './CommonBottom';
+import Button from '../../bits/Button';
 
 const styles = StyleSheet.create({
     imageContainer: {
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function getWelcomePage() {
+export default function getWelcomePage(props) {
     return {
         backgroundColor: Colors.theme.purple,
         image: (
@@ -41,7 +42,19 @@ export default function getWelcomePage() {
         ),
         subtitle: (
             <View style={styles.subtitleContainer}>
-                <CommonBottom left bodyText={Strings.onboarding.welcome.subtitle} />
+                <CommonBottom
+                    left
+                    bodyText={Strings.onboarding.welcome.subtitle}
+                    body={
+                        <View>
+                            <Button
+                                title={Strings.onboarding.welcome.buttonLabel}
+                                primary
+                                onPress={() => props.onPressNext()}
+                            />
+                        </View>
+                    }
+                />
             </View>
         ),
     };

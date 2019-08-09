@@ -44,14 +44,16 @@ export default function getLocationPage(props) {
         ),
         subtitle: (
             <View style={styles.subtitleContainer}>
-                {(!props.permissions || !props.permissions.location) && (
-                    <Button
-                        title={Strings.onboarding.welcome.alwaysAllow}
-                        primary
-                        onPress={() => props.requestLocationPermission()}
-                    />
+                {!props.locationPermission && (
+                    <View>
+                        <Button
+                            title={Strings.onboarding.welcome.alwaysAllow}
+                            primary
+                            onPress={() => props.requestLocationPermission()}
+                        />
+                    </View>
                 )}
-                {props.permissions.location && (
+                {props.locationPermission && (
                     <LottieView
                         source={require('../../assets/lotties/checkmark.json')}
                         autoPlay
