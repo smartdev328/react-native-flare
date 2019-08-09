@@ -101,6 +101,8 @@ class Home extends React.Component {
         // start that process now before users need to view them.
         if (this.props.permissions.contacts) {
             this.props.dispatch(fetchContacts());
+        } else {
+            this.props.dispatch(getPermission('contacts'));
         }
 
         if (!this.props.permissions.location) {
@@ -389,9 +391,7 @@ class Home extends React.Component {
                             title={this.props.contactsLabel}
                         />
                     )}
-                    {!this.props.permissions.contacts && (
-                        <Text>{Strings.home.contactsNeedPermission}</Text>
-                    )}
+                    {!this.props.permissions.contacts && <Text>{Strings.home.contactsNeedPermission}</Text>}
                     {__DEV__ && !this.props.hasActiveFlare && (
                         <View style={styles.devOnlyButtons}>
                             <Button
