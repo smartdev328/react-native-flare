@@ -3,7 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
-import LottieView from 'lottie-react-native';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import CommonTop from './CommonTop';
@@ -30,6 +29,9 @@ const styles = StyleSheet.create({
         fontSize: Type.size.medium,
         color: Colors.white,
     },
+    proceedAnywayArea: {
+        textAlign: 'center',
+    },
 });
 
 export default function getLocationPage(props) {
@@ -51,7 +53,7 @@ export default function getLocationPage(props) {
         ),
         subtitle: (
             <View style={styles.subtitleContainer}>
-                {!props.locationPermission && !props.locationPrompted && (
+                {(!props.locationPrompted || props.locationPermission) && (
                     <View>
                         <Button
                             title={Strings.onboarding.welcome.alwaysAllow}
@@ -61,7 +63,7 @@ export default function getLocationPage(props) {
                     </View>
                 )}
                 {!props.locationPermission && props.locationPrompted && (
-                    <View>
+                    <View style={styles.proceedAnywayArea}>
                         <Text style={styles.warningText}>{Strings.onboarding.welcome.locationAlreadyPrompted}</Text>
                         <Button
                             secondary
@@ -69,18 +71,6 @@ export default function getLocationPage(props) {
                             onPress={() => props.onPressNext()}
                         />
                     </View>
-                )}
-                {props.locationPermission && (
-                    <LottieView
-                        source={require('../../assets/lotties/checkmark.json')}
-                        autoPlay
-                        loop={false}
-                        resizeMode="center"
-                        style={{
-                            alignSelf: 'center',
-                            height: 96,
-                        }}
-                    />
                 )}
             </View>
         ),

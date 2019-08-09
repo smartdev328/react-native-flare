@@ -184,6 +184,7 @@ const Strings = {
             hasSetPin: {
                 title: 'Nice.',
                 subtitle: 'You canceled your message, so your friends know the situation is resolved.',
+                buttonLabel: 'Keep going',
             },
             pinPlaceholder: 'Secret pin',
             pinConfirmPlaceholder: 'Confirm secret pin',

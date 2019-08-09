@@ -94,6 +94,11 @@ export default function getLongPressCancelPage(props) {
                 {props.hasSetPin && (
                     <View>
                         <CommonBottom center bodyText={subtitle} />
+                        <Button
+                            title={Strings.onboarding.longPressCancel.hasSetPin.buttonLabel}
+                            primary
+                            onPress={() => props.onPressNext()}
+                        />
                     </View>
                 )}
             </View>

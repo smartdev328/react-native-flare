@@ -42,6 +42,15 @@ const styles = StyleSheet.create({
         maxHeight: 75,
         borderRadius: 16,
     },
+    nextButtonArea: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
+    right: {
+        textAlign: 'right',
+        alignSelf: 'flex-end',
+        marginRight: Spacing.huge,
+    },
 });
 
 export default function getShortPressPage(props) {
@@ -51,7 +60,7 @@ export default function getShortPressPage(props) {
 
     function next(title, onPress) {
         return (
-            <View>
+            <View style={[styles.nextButtonArea, styles.right]}>
                 <Button secondary title={title} onPress={() => onPress()} />
             </View>
         );

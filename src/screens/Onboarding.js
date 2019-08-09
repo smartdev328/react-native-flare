@@ -281,6 +281,7 @@ class OnboardingMain extends React.Component {
             changeConfirmCancelPIN: e => this.changeConfirmCancelPIN(e),
             setCancelPIN: () => this.setCancelPIN(),
             setPinErrorMessage: this.state.setPinErrorMessage,
+            onPressNext: () => this.handleNextButtonPress(),
         });
 
         const contactsPage = getContactsPage({

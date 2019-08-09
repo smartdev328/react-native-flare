@@ -22,7 +22,7 @@ export default function getLongPressPage(props) {
         ({ title, subtitle } = Strings.onboarding.longPress.success);
     } else if (props.bluetoothEnabled && props.locationEnabled) {
         imageSource = require('../../assets/lotties/ripple.json');
-        ({ title, subtitle } = Strings.onboarding.longPress.success);
+        ({ title, subtitle } = Strings.onboarding.longPress.waiting);
     } else if (!props.locationEnabled && props.locationPrompted) {
         imageSource = require('../../assets/lotties/ripple.json');
         ({ subtitle } = Strings.onboarding.longPress.disabled);
@@ -71,16 +71,14 @@ export default function getLongPressPage(props) {
         subtitle: (
             <View>
                 {props.bluetoothEnabled && props.locationEnabled && <CommonBottom right bodyText={subtitle} />}
-                {!props.locationEnabled && props.locationPrompted && (
-                    <View>
-                        <CommonBottom center bodyText={subtitle} />
-                        <Button
-                            secondary
-                            title={Strings.onboarding.welcome.proceedAnywayButtonLabel}
-                            onPress={() => props.onPressNext()}
-                        />
-                    </View>
-                )}
+                {!props.locationEnabled && props.locationPrompted && <CommonBottom center bodyText={subtitle} />}
+                <View>
+                    <Button
+                        secondary
+                        title={Strings.onboarding.welcome.proceedAnywayButtonLabel}
+                        onPress={() => props.onPressNext()}
+                    />
+                </View>
             </View>
         ),
     };
