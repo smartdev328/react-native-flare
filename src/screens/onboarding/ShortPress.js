@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
+import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
 import CommonBottom from './CommonBottom';
 import CommonMiddle from './CommonMiddle';
@@ -43,19 +44,56 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function getBluetoothPage(props) {
+export default function getShortPressPage(props) {
     let image = null;
     let imageSource = null;
     let bottomComponent = null;
 
+    function next(title, onPress) {
+        return (
+            <View>
+                <Button secondary title={title} onPress={() => onPress()} />
+            </View>
+        );
+    }
+
     if (props.receivedShortPress) {
         // one good device transmitting
         imageSource = require('../../assets/lotties/dino-dance.json');
-        bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.singleDevice.subtitleStart} />;
+        bottomComponent = (
+            <CommonBottom
+                right
+                bodyText={Strings.onboarding.shortPress.singleDevice.subtitleStart}
+                body={next(Strings.onboarding.longPress.proceedAnywayButtonLabel, props.onPressNext)}
+            />
+        );
     } else if (props.bluetoothEnabled && props.locationEnabled) {
         // no devices found yet
         imageSource = require('../../assets/lotties/ripple.json');
-        bottomComponent = <CommonBottom right bodyText={Strings.onboarding.shortPress.subtitle} />;
+        bottomComponent = (
+            <CommonBottom
+                right
+                bodyText={Strings.onboarding.shortPress.subtitle}
+                body={next(Strings.onboarding.shortPress.proceedAnywayButtonLabel, props.onPressNext)}
+            />
+        );
+    } else if (!props.locationEnabled && props.locationPrompted) {
+        imageSource = require('../../assets/lotties/ripple.json');
+        bottomComponent = (
+            <CommonBottom
+                center
+                bodyText={Strings.onboarding.shortPress.disabled.subtitle}
+                body={
+                    <View>
+                        <Button
+                            secondary
+                            title={Strings.onboarding.welcome.proceedAnywayButtonLabel}
+                            onPress={() => props.onPressNext()}
+                        />
+                    </View>
+                }
+            />
+        );
     }
 
     if (imageSource) {
@@ -88,7 +126,7 @@ export default function getBluetoothPage(props) {
                 {!props.locationEnabled && props.locationPrompted && (
                     <FlareAlert message={Strings.home.locationDisabledWarning} variant="warning" large centered />
                 )}
-                {props.bluetoothEnabled && props.locationEnabled && (
+                {props.bluetoothEnabled && (
                     <View style={styles.titleContainer}>
                         <CommonMiddle right image={image} />
                     </View>

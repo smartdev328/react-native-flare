@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
     warningText: {
         marginLeft: Spacing.huge,
-        marginBottom: Spacing.small,
+        marginBottom: Spacing.medium,
         fontSize: Type.size.medium,
         color: Colors.white,
     },

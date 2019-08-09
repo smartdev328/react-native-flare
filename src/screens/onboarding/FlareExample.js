@@ -42,6 +42,11 @@ export default function getFlareExamplePage(props) {
         <View style={styles.outerContainer}>
             <Aura source="aura-5" />
             <View style={styles.innerContainer}>
+                {!props.locationEnabled && props.locationPrompted && (
+                    <View>
+                        <Text>{Strings.onboarding.flareExample.locationDisabled}</Text>
+                    </View>
+                )}
                 <View>
                     <Text style={styles.p}>
                         <Text style={styles.b}>{flareName}</Text>

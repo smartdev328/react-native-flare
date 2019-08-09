@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import LottieView from 'lottie-react-native';
 
+import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
 import CommonBottom from './CommonBottom';
 import CommonMiddle from './CommonMiddle';
@@ -19,9 +20,12 @@ export default function getLongPressPage(props) {
         // success -- received a long press
         imageSource = require('../../assets/lotties/chat.json');
         ({ title, subtitle } = Strings.onboarding.longPress.success);
-    } else if (props.bluetoothEnabled) {
+    } else if (props.bluetoothEnabled && props.locationEnabled) {
         imageSource = require('../../assets/lotties/ripple.json');
         ({ title, subtitle } = Strings.onboarding.longPress.success);
+    } else if (!props.locationEnabled && props.locationPrompted) {
+        imageSource = require('../../assets/lotties/ripple.json');
+        ({ subtitle } = Strings.onboarding.longPress.disabled);
     }
 
     if (imageSource) {
@@ -51,13 +55,33 @@ export default function getLongPressPage(props) {
                 {!props.bluetoothEnabled && (
                     <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
                 )}
-                {props.bluetoothEnabled && (
+                {!props.locationEnabled && props.locationPrompted && (
+                    <View>
+                        <FlareAlert message={Strings.home.locationDisabledWarning} variant="warning" large centered />
+                        <CommonMiddle center image={image} />
+                    </View>
+                )}
+                {props.bluetoothEnabled && props.locationEnabled && (
                     <View>
                         <CommonMiddle right title={title} image={image} />
                     </View>
                 )}
             </View>
         ),
-        subtitle: <View>{props.bluetoothEnabled && <CommonBottom right bodyText={subtitle} />}</View>,
+        subtitle: (
+            <View>
+                {props.bluetoothEnabled && props.locationEnabled && <CommonBottom right bodyText={subtitle} />}
+                {!props.locationEnabled && props.locationPrompted && (
+                    <View>
+                        <CommonBottom center bodyText={subtitle} />
+                        <Button
+                            secondary
+                            title={Strings.onboarding.welcome.proceedAnywayButtonLabel}
+                            onPress={() => props.onPressNext()}
+                        />
+                    </View>
+                )}
+            </View>
+        ),
     };
 }

@@ -134,7 +134,7 @@ const Strings = {
             alwaysAllow: 'Always allow',
             buttonLabel: 'Get Started',
             locationAlreadyPrompted: 'Set location permission to Always in phone settings so your jewelry can work.',
-            proceedAnywayButtonLabel: 'Proceed Anyway',
+            proceedAnywayButtonLabel: 'No thanks, proceed anyway',
         },
         location: {
             subtitle:
@@ -154,6 +154,10 @@ const Strings = {
                 title: 'Short Press',
                 subtitleStart: 'Great. You can use the call as an excuse to exit gracefully.',
             },
+            disabled: {
+                subtitle: 'Give us location permission so you can use your jewelry.',
+            },
+            proceedAnywayButtonLabel: "I don't want a call right now",
         },
         longPress: {
             waiting: {
@@ -165,6 +169,12 @@ const Strings = {
                 subtitle:
                     "Normally we'd reach out to your friends now. They'd know where you are and how to reach you.",
             },
+            disabled: {
+                subtitle:
+                    'Without location privileges you will not be able to use your jewelry. Please go to ' +
+                    'your phone settings and set location access to Always.',
+            },
+            proceedAnywayButtonLabel: 'No thanks, proceed anyway',
         },
         longPressCancel: {
             initial: {
@@ -198,6 +208,7 @@ const Strings = {
                 third: 'Press the Cancel button below to end this message.',
             },
             buttonLabel: 'Cancel',
+            locationDisabled: 'This is the screen you see after you hold the button on your jewelry to send a message.',
         },
         contacts: {
             hasCrew: {

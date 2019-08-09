@@ -9,7 +9,7 @@ import { BeaconTypes } from '../bits/BleConstants';
 import { getPermission, setCancelPIN, setOnboardingComplete, checkLocationsPermission } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
 import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants';
-import getBluetoothPage from './onboarding/Bluetooth';
+import getShortPressPage from './onboarding/ShortPress';
 import getLocationPage from './onboarding/Location';
 import getLongPressPage from './onboarding/LongPress';
 import getFlareExamplePage from './onboarding/FlareExample';
@@ -247,11 +247,12 @@ class OnboardingMain extends React.Component {
             onPressNext: () => this.handleNextButtonPress(),
         });
 
-        const bluetoothPage = getBluetoothPage({
+        const shortPressPage = getShortPressPage({
             receivedShortPress: this.state.receivedShortPress,
             bluetoothEnabled: this.state.bluetoothEnabled,
             locationEnabled: this.props.permissions && this.props.permissions.location,
             locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
+            onPressNext: () => this.handleNextButtonPress(),
         });
 
         const longPressPage = getLongPressPage({
@@ -259,6 +260,7 @@ class OnboardingMain extends React.Component {
             bluetoothEnabled: this.state.bluetoothEnabled,
             locationEnabled: this.props.permissions && this.props.permissions.location,
             locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
+            onPressNext: () => this.handleNextButtonPress(),
         });
 
         const notificationsPage = getNotificationsPage({
@@ -267,6 +269,8 @@ class OnboardingMain extends React.Component {
 
         const flareExamplePage = getFlareExamplePage({
             onCancelFlare: () => this.flatList.goNext(),
+            locationEnabled: this.props.permissions && this.props.permissions.location,
+            locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
         });
 
         const longPressCancelPage = getLongPressCancelPage({
@@ -302,7 +306,7 @@ class OnboardingMain extends React.Component {
                     pages={[
                         welcomePage,
                         locationPage,
-                        bluetoothPage,
+                        shortPressPage,
                         longPressPage,
                         flareExamplePage,
                         longPressCancelPage,
