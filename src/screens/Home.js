@@ -381,13 +381,16 @@ class Home extends React.Component {
                 </View>
 
                 <View style={styles.footer}>
-                    {!this.props.hasActiveFlare && (
+                    {!this.props.hasActiveFlare && this.props.permissions.contacts && (
                         <Button
                             primary
                             dark
                             onPress={() => this.handleContactsClick()}
                             title={this.props.contactsLabel}
                         />
+                    )}
+                    {!this.props.permissions.contacts && (
+                        <Text>{Strings.home.contactsNeedPermission}</Text>
                     )}
                     {__DEV__ && !this.props.hasActiveFlare && (
                         <View style={styles.devOnlyButtons}>

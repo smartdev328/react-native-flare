@@ -51,6 +51,7 @@ const Strings = {
         chooseLanguage: 'Choose language',
         contactsButtonLabelAdd: 'Choose Your Crew',
         contactsButtonLabelEdit: 'Edit Your Crew',
+        contactsNeedPermission: 'Enable contacts access in phone settings',
         lastBeacon: {
             absent: 'Ready for beacons',
             present: 'Last beacon received',
@@ -235,6 +236,10 @@ const Strings = {
                 instructions: 'Click on the name of a contact to add them to your crew.',
                 title: 'Choose up to 5 contacts.',
                 closeButtonLabel: 'Save Crew',
+            },
+            disabled: {
+                subtitle: 'Turn contacts on in your phone settings',
+                buttonLabel: 'Proceed anyway',
             },
         },
     },

@@ -7,6 +7,7 @@ import RNBluetoothInfo from 'react-native-bluetooth-info';
 
 import { BeaconTypes } from '../bits/BleConstants';
 import { getPermission, setCancelPIN, setOnboardingComplete, checkLocationsPermission } from '../actions/userActions';
+import { changeAppRoot } from '../actions/navActions';
 import { startBleListening } from '../actions/hardwareActions';
 import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants';
 import getShortPressPage from './onboarding/ShortPress';
@@ -201,19 +202,23 @@ class OnboardingMain extends React.Component {
 
     endOnboarding() {
         this.props.dispatch(setOnboardingComplete(this.props.authToken));
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.Contacts',
-                options: {
-                    topBar: {
-                        visible: false,
+        if (this.props.permissions.contactsPrompted && this.props.permissions.contacts) {
+            Navigation.push(this.props.componentId, {
+                component: {
+                    name: 'com.flarejewelry.app.Contacts',
+                    options: {
+                        topBar: {
+                            visible: false,
+                        },
+                    },
+                    passProps: {
+                        fromOnboarding: true,
                     },
                 },
-                passProps: {
-                    fromOnboarding: true,
-                },
-            },
-        });
+            });
+        } else {
+            this.props.dispatch(changeAppRoot('secure'));
+        }
     }
 
     goToPushedView = () => {
@@ -288,11 +293,10 @@ class OnboardingMain extends React.Component {
         });
 
         const contactsPage = getContactsPage({
-            crews: this.props.crews,
-            hasContactsPermission: this.props.permissions.contacts,
             requestContactsPermission: () => this.props.dispatch(getPermission('contacts')),
-            chooseCrew: () => this.chooseCrew(),
             endOnboarding: () => this.endOnboarding(),
+            contactsEnabled: this.props.permissions && this.props.permissions.contacts,
+            contactsPrompted: this.props.permissions && this.props.permissions.contactsPrompted,
         });
 
         return (

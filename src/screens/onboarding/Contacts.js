@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function getContactsage(props) {
+export default function getContactsPage(props) {
     return {
         backgroundColor: Colors.theme.purple,
         image: <CommonTop />,
@@ -30,17 +30,32 @@ export default function getContactsage(props) {
         ),
         subtitle: (
             <View style={styles.subtitleContainer}>
-                <CommonBottom
-                    center
-                    bodyText={Strings.onboarding.contacts.initial.subtitle}
-                    body={
-                        <Button
-                            title={Strings.onboarding.contacts.initial.buttonLabel}
-                            primary
-                            onPress={() => props.requestContactsPermission()}
-                        />
-                    }
-                />
+                {!props.contactsPrompted && (
+                    <CommonBottom
+                        center
+                        bodyText={Strings.onboarding.contacts.initial.subtitle}
+                        body={
+                            <Button
+                                title={Strings.onboarding.contacts.initial.buttonLabel}
+                                primary
+                                onPress={() => props.requestContactsPermission()}
+                            />
+                        }
+                    />
+                )}
+                {props.contactsPrompted && !props.contactsEnabled && (
+                    <CommonBottom
+                        center
+                        bodyText={Strings.onboarding.contacts.disabled.subtitle}
+                        body={
+                            <Button
+                                title={Strings.onboarding.contacts.disabled.buttonLabel}
+                                primary
+                                onPress={() => props.endOnboarding()}
+                            />
+                        }
+                    />
+                )}
             </View>
         ),
     };
