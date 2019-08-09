@@ -28,17 +28,32 @@ export default function getNotificationsPage(props) {
         ),
         subtitle: (
             <View style={styles.subtitleContainer}>
-                <CommonBottom
-                    center
-                    bodyText={Strings.onboarding.notifications.subtitle}
-                    body={
-                        <Button
-                            title={Strings.onboarding.notifications.buttonLabel}
-                            primary
-                            onPress={() => props.requestNotificationsPermission()}
-                        />
-                    }
-                />
+                {!props.notificationPrompted && (
+                    <CommonBottom
+                        center
+                        bodyText={Strings.onboarding.notifications.subtitle}
+                        body={
+                            <Button
+                                title={Strings.onboarding.notifications.buttonLabel}
+                                primary
+                                onPress={() => props.requestNotificationsPermission()}
+                            />
+                        }
+                    />
+                )}
+                {props.notificationPrompted && !props.notificationEnabled && (
+                    <CommonBottom
+                        center
+                        bodyText={Strings.onboarding.notifications.disabled.subtitle}
+                        body={
+                            <Button
+                                title={Strings.onboarding.notifications.disabled.buttonLabel}
+                                secondary
+                                onPress={() => props.onPressNext()}
+                            />
+                        }
+                    />
+                )}
             </View>
         ),
     };

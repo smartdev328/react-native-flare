@@ -198,6 +198,10 @@ const Strings = {
                 "When you hold the button, how will you know that your message went out? We'll send you a coded " +
                 'pop-up notification with a secret phrase. We need permission to send you the notification.',
             buttonLabel: 'Allow',
+            disabled: {
+                subtitle: 'Turn notifications on in your phone settings',
+                buttonLabel: 'Proceed anyway',
+            },
         },
         flareExample: {
             story: {

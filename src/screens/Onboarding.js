@@ -265,6 +265,9 @@ class OnboardingMain extends React.Component {
 
         const notificationsPage = getNotificationsPage({
             requestNotificationsPermission: () => this.props.dispatch(getPermission('notification')),
+            notificationEnabled: this.props.permissions && this.props.permissions.notification,
+            notificationPrompted: this.props.permissions && this.props.permissions.notificationPrompted,
+            onPressNext: () => this.handleNextButtonPress(),
         });
 
         const flareExamplePage = getFlareExamplePage({
