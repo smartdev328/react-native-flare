@@ -242,19 +242,23 @@ class OnboardingMain extends React.Component {
          */
         const locationPage = getLocationPage({
             locationPermission: this.props.permissions.location,
+            locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
             requestLocationPermission: () => this.props.dispatch(getPermission('location', { type: 'always' })),
+            onPressNext: () => this.handleNextButtonPress(),
         });
 
         const bluetoothPage = getBluetoothPage({
             receivedShortPress: this.state.receivedShortPress,
             bluetoothEnabled: this.state.bluetoothEnabled,
             locationEnabled: this.props.permissions && this.props.permissions.location,
+            locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
         });
 
         const longPressPage = getLongPressPage({
             receivedLongPress: this.state.receivedLongPress,
             bluetoothEnabled: this.state.bluetoothEnabled,
             locationEnabled: this.props.permissions && this.props.permissions.location,
+            locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
         });
 
         const notificationsPage = getNotificationsPage({

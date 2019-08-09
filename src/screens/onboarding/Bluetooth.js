@@ -85,7 +85,7 @@ export default function getBluetoothPage(props) {
                 {!props.bluetoothEnabled && (
                     <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
                 )}
-                {!props.locationEnabled && (
+                {!props.locationEnabled && props.locationPrompted && (
                     <FlareAlert message={Strings.home.locationDisabledWarning} variant="warning" large centered />
                 )}
                 {props.bluetoothEnabled && props.locationEnabled && (

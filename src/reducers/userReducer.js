@@ -181,7 +181,8 @@ export function user(state = initialState.user, action = {}) {
             requestingPermissionsFailed: true,
         });
     case types.PERMISSIONS_SUCCESS: {
-        const updatedPermissions = Immutable.setIn(state.permissions, [action.permission], action.granted);
+        const grantUpdate = Immutable.setIn(state.permissions, [action.permission], action.granted);
+        const updatedPermissions = Immutable.setIn(grantUpdate, [`${action.permission}Prompted`], true);
         return state.merge({
             permissions: updatedPermissions,
             requestingPermissions: false,

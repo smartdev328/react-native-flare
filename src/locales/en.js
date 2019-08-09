@@ -133,6 +133,8 @@ const Strings = {
                 'for your safety.',
             alwaysAllow: 'Always allow',
             buttonLabel: 'Get Started',
+            locationAlreadyPrompted: 'Set location permission to Always in phone settings so your jewelry can work.',
+            proceedAnywayButtonLabel: 'Proceed Anyway',
         },
         location: {
             subtitle:

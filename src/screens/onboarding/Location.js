@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
@@ -8,6 +8,7 @@ import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import CommonTop from './CommonTop';
 import CommonMiddle from './CommonMiddle';
+import Type from '../../bits/Type';
 
 const styles = StyleSheet.create({
     imageContainer: {
@@ -22,6 +23,12 @@ const styles = StyleSheet.create({
     subtitleContainer: {
         width: '100%',
         marginTop: Spacing.large,
+    },
+    warningText: {
+        marginLeft: Spacing.huge,
+        marginBottom: Spacing.small,
+        fontSize: Type.size.medium,
+        color: Colors.white,
     },
 });
 
@@ -44,12 +51,22 @@ export default function getLocationPage(props) {
         ),
         subtitle: (
             <View style={styles.subtitleContainer}>
-                {!props.locationPermission && (
+                {!props.locationPermission && !props.locationPrompted && (
                     <View>
                         <Button
                             title={Strings.onboarding.welcome.alwaysAllow}
                             primary
                             onPress={() => props.requestLocationPermission()}
+                        />
+                    </View>
+                )}
+                {!props.locationPermission && props.locationPrompted && (
+                    <View>
+                        <Text style={styles.warningText}>{Strings.onboarding.welcome.locationAlreadyPrompted}</Text>
+                        <Button
+                            secondary
+                            title={Strings.onboarding.welcome.proceedAnywayButtonLabel}
+                            onPress={() => props.onPressNext()}
                         />
                     </View>
                 )}

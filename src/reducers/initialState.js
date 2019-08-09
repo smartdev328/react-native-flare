@@ -19,6 +19,7 @@ export const initialState = Immutable({
             bluetooth: false,
             contacts: false,
             location: false,
+            locationPrompted: false,
             notification: false,
         },
         profile: {},

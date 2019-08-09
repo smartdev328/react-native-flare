@@ -136,6 +136,10 @@ export function getCrewEventTimeline(token) {
 export function getPermission(name, options) {
     return async function doCheck(dispatch) {
         Permissions.check(name, options).then((checkResponse) => {
+            dispatch({
+                type: types.PERMISSIONS_REQUEST,
+                name,
+            });
             if (checkResponse !== 'authorized') {
                 Permissions.request(name, options).then((response) => {
                     dispatch({
