@@ -69,7 +69,7 @@ class PinCheck extends React.Component {
     }
 
     async submitPIN(code) {
-        this.props.dispatch(cancelActiveFlare(this.props.authToken, code));
+        this.props.dispatch(cancelActiveFlare(this.props.authToken, this.state.pin));
     }
 
     changePinText(val) {
