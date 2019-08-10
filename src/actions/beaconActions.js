@@ -121,6 +121,13 @@ export function cancelActiveFlare(token, pin) {
     };
 }
 
+export function resetCancelFlareState() {
+    return dispatch =>
+        dispatch({
+            type: types.CANCEL_ACTIVE_FLARE_RESET,
+        });
+}
+
 export function checkin(token, beacon, position, forCurrentUser) {
     return async function doCheckin(dispatch) {
         ProtectedAPICall(token, API_URL, '/radio/beacon', {

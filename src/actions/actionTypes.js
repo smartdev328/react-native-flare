@@ -31,6 +31,7 @@ export const ACTIVATE_FLARE_SUCCESS = 'flare.app.activate.SUCCESS';
 export const CANCEL_ACTIVE_FLARE_FAILURE = 'flare.app.CANCEL_ACTIVE_FLARE_FAILURE';
 export const CANCEL_ACTIVE_FLARE_REQUEST = 'flare.app.CANCEL_ACTIVE_FLARE_REQUEST';
 export const CANCEL_ACTIVE_FLARE_SUCCESS = 'flare.app.CANCEL_ACTIVE_FLARE_SUCCESS';
+export const CANCEL_ACTIVE_FLARE_RESET = 'flare.app.CANCEL_ACTIVE_FLARE_RESET';
 
 export const CONTACTS_FAILURE = 'flare.app.contacts.FAILURE';
 export const CONTACTS_REQUEST = 'flare.app.contacts.REQUEST';

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 
 export default function FlareAlert(props) {
     return (
-        <View style={[styles.container, styles[`${props.variant}Background`]]}>
+        <View style={[styles.container, styles[`${props.variant}Background`], props.containerStyle]}>
             <Text style={[styles.foreground, props.large && styles.large, props.centered && styles.centered]}>
                 {props.message}
             </Text>

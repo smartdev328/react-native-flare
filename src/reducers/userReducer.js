@@ -125,6 +125,12 @@ export function user(state = initialState.user, action = {}) {
             cancelActiveFlareState: 'failure',
         });
 
+    case types.CANCEL_ACTIVE_FLARE_RESET:
+        return state.merge({
+            cancelingActiveFlare: false,
+            cancelActiveFlareState: null,
+        });
+
         /**
          * CONTACTS
          */

@@ -267,6 +267,8 @@ const Strings = {
         failure: 'Invalid PIN',
         prompt: 'Enter your Flare PIN',
         title: 'Cancel Flare',
+        neverMind: 'Never Mind',
+        error: 'Invalid PIN code',
     },
     settings: {
         call: {
