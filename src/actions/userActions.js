@@ -66,17 +66,16 @@ export function syncAccountDetails(args) {
         });
 
         const status = { args };
-        let requestOptions = null;
+        const requestOptions = {
+            method: 'POST',
+        };
         if (status) {
-            requestOptions = {
-                method: 'POST',
-                data: {
-                    status: args.status,
-                },
+            requestOptions.data = {
+                status: args.status,
             };
         }
 
-        ProtectedAPICall(args.authToken, API_URL, '/auth/status', requestOptions)
+        ProtectedAPICall(args.analyticsToken, API_URL, '/auth/status', requestOptions)
             .then((response) => {
                 dispatch({
                     type: types.ACCOUNT_DETAILS_SUCCESS,

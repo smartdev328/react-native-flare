@@ -114,7 +114,7 @@ class HomeActive extends React.Component {
         // Users may have modified their accounts on other devices or on the web. Keep this device
         // in sync by fetching server-stored data.
         this.props.dispatch(syncAccountDetails({
-            authToken: this.props.authToken,
+            analyticsToken: this.props.analyticsToken,
         }));
 
         // Periodically fetch account status to ensure auth and to observe account changes from other devices.
@@ -230,7 +230,7 @@ class HomeActive extends React.Component {
             timeout: ACCOUNT_SYNC_INTERVAL,
         }).then((position) => {
             this.props.dispatch(syncAccountDetails({
-                authToken: this.props.authToken,
+                analyticsToken: this.props.analyticsToken,
                 status: {
                     timestamp: moment()
                         .utc()
@@ -395,6 +395,7 @@ function mapStateToProps(state) {
         latestBeacon: state.beacons.latest,
         permissions: state.user.permissions,
         problemBeacons: state.beacons.problems,
+        analyticsToken: state.user.analyticsToken,
         authToken: state.user.authToken,
         radioToken: state.user.radioToken,
     };

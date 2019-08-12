@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
 
 import { signIn, resetAuth } from '../actions/authActions';
+import { syncAccountDetails } from '../actions/index';
+import { ACCOUNT_SYNC_INTERVAL } from '../constants';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
+import Location from '../helpers/location';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import FlareTextInput from '../bits/FlareTextInput';
@@ -109,6 +113,16 @@ class SignIn extends Component {
         });
     };
 
+    componentDidMount() {
+        this.accountSyncInterval = setInterval(() => this.syncAccount(), ACCOUNT_SYNC_INTERVAL);
+    }
+
+    componentWillUnmount() {
+        if (this.accountSyncInterval) {
+            clearInterval(this.accountSyncInterval);
+        }
+    }
+
     changeUserName(newValue) {
         this.setState({
             username: newValue,
@@ -138,6 +152,38 @@ class SignIn extends Component {
     passwordFocused(hasFocus) {
         this.setState({
             passwordFocused: hasFocus,
+        });
+    }
+
+    /**
+     * Submit user location and fetch any account updates.
+     */
+    syncAccount() {
+        // Only submit app status for users who have signed in at least once.
+        if (!this.props.analyticsToken) {
+            return;
+        }
+
+        // Transmit the current state and retrieve any updates from the server.
+        Location.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        }).then((position) => {
+            this.props.dispatch(syncAccountDetails({
+                analyticsToken: this.props.analyticsToken,
+                status: {
+                    timestamp: moment()
+                        .utc()
+                        .format('YYYY-MM-DD HH:mm:ss'),
+                    latitude: position.latitude,
+                    longitude: position.longitude,
+                    details: {
+                        permissions: this.props.permissions,
+                        hardware: this.props.hardware,
+                        position,
+                    },
+                },
+            }));
         });
     }
 
@@ -231,6 +277,7 @@ function mapStateToProps(state) {
     return {
         authState: state.user.authState,
         devices: state.user.devices,
+        analyticsToken: state.user.analyticsToken,
     };
 }
 

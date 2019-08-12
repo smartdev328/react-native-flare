@@ -56,11 +56,7 @@ export function user(state = initialState.user, action = {}) {
             callScript: null,
             profile: null,
             crews: [],
-            crewEvents: [],
-            hasActiveFlare: false,
-            devices: [],
             role: null,
-            hasViewedTutorial: false,
             contactsCrewLookup: null,
         });
 
