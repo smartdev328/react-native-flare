@@ -91,17 +91,17 @@ class SettingsCall extends React.PureComponent {
                         })
                     }
                 >
-                    <Picker.Item label={Strings.settings.call.scripts.roomMate} value={CallScripts.Default} />
+                    <Picker.Item label={Strings.settings.call.scripts.roomMateFemale} value={CallScripts.Default} />
                     <Picker.Item
-                        label={Strings.settings.call.scripts.littleSisterKitchen}
-                        value={CallScripts.LittleSisterInKitchen}
+                        label={Strings.settings.call.scripts.roomMateMale}
+                        value={CallScripts.RoommateNeedsHelpMale}
                     />
                 </Picker>
                 {this.props.savingSetting && <ActivityIndicator />}
                 {this.state.dirty && (
                     <Button
-                        rounded
                         primary
+                        dark
                         onPress={() => this.saveCallScript()}
                         title={Strings.settings.call.saveButtonLabel}
                     />

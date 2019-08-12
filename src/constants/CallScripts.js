@@ -1,4 +1,4 @@
 export default {
     Default: 1,
-    LittleSisterInKitchen: 2,
+    RoommateNeedsHelpMale: 2,
 };

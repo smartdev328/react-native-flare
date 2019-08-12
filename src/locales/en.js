@@ -276,8 +276,8 @@ const Strings = {
             title: 'Phone call script',
             saveButtonLabel: 'Use script',
             scripts: {
-                roomMate: 'Roommate needs help',
-                littleSisterKitchen: 'Younger sister in kitchen',
+                roomMateFemale: 'Roommate needs help (female)',
+                roomMateMale: 'Roommate needs help (male)',
             },
         },
         config: {
