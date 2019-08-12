@@ -36,6 +36,7 @@ export function user(state = initialState.user, action = {}) {
                     : { id: 0, members: [] };
 
         return state.merge({
+            analyticsToken: action.data.analytics_token,
             authToken: action.data.auth_token,
             radioToken: action.data.radio_token,
             profile: action.data.profile,
