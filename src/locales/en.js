@@ -159,6 +159,7 @@ const Strings = {
                 subtitle: 'Give us location permission so you can use your jewelry.',
             },
             proceedAnywayButtonLabel: "I don't want a call right now",
+            proceedLabel: 'Show me more!',
         },
         longPress: {
             waiting: {
@@ -176,6 +177,7 @@ const Strings = {
                     'your phone settings and set location access to Always.',
             },
             proceedAnywayButtonLabel: 'No thanks, proceed anyway',
+            proceedButtonLabel: "Awesome. What's next?",
         },
         longPressCancel: {
             initial: {

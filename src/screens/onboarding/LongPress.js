@@ -75,7 +75,11 @@ export default function getLongPressPage(props) {
                 <View>
                     <Button
                         secondary
-                        title={Strings.onboarding.welcome.proceedAnywayButtonLabel}
+                        title={
+                            props.receivedLongPress
+                                ? Strings.onboarding.longPress.proceedButtonLabel
+                                : Strings.onboarding.longPress.proceedAnywayButtonLabel
+                        }
                         onPress={() => props.onPressNext()}
                     />
                 </View>

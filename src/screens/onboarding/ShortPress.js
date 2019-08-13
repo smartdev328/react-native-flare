@@ -73,7 +73,7 @@ export default function getShortPressPage(props) {
             <CommonBottom
                 right
                 bodyText={Strings.onboarding.shortPress.singleDevice.subtitleStart}
-                body={next(Strings.onboarding.longPress.proceedAnywayButtonLabel, props.onPressNext)}
+                body={next(Strings.onboarding.shortPress.proceedLabel, props.onPressNext)}
             />
         );
     } else if (props.bluetoothEnabled && props.locationEnabled) {
