@@ -108,7 +108,7 @@ class OnboardingMain extends React.Component {
                 this.flatList.goNext();
             }
 
-            if (this.props.permissions.location && this.flatList.state.currentPage > LOCATION_PAGE_INDEX) {
+            if (this.props.permissions.location && !prevProps.permissions.location) {
                 console.log('Onboarding is starting ble listening');
                 this.props.dispatch(startBleListening());
             }
