@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
         height: 240,
         resizeMode: 'cover',
     },
+    imageContain: {
+        resizeMode: 'contain',
+    },
 });
 
 export default function CommonMiddle(props) {
@@ -50,7 +53,9 @@ export default function CommonMiddle(props) {
         >
             {props.title && <Text style={styles.h1}>{props.title}</Text>}
             {props.bodyText && <Text style={styles.bodyText}>{props.bodyText}</Text>}
-            {props.imageSource && <Image source={props.imageSource} style={styles.image} />}
+            {props.imageSource && (
+                <Image source={props.imageSource} style={[styles.image, props.imageContain && styles.imageContain]} />
+            )}
             {props.image}
             {props.form}
         </View>

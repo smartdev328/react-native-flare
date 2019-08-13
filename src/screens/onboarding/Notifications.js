@@ -23,7 +23,7 @@ export default function getNotificationsPage(props) {
         image: <CommonTop />,
         title: (
             <View style={styles.titleContainer}>
-                <CommonMiddle center imageSource={{ uri: 'onboarding-notification' }} />
+                <CommonMiddle center imageContain imageSource={{ uri: 'onboarding-notification' }} />
             </View>
         ),
         subtitle: (
