@@ -49,11 +49,13 @@ export function checkContactsPermission() {
 export function checkLocationsPermission() {
     return async function checkPermsLoc(dispatch) {
         Permissions.check('location', { type: 'always' }).then((response) => {
-            dispatch({
-                type: types.PERMISSIONS_SUCCESS,
-                permission: 'location',
-                granted: response === 'authorized',
-            });
+            if (response === 'authorized') {
+                dispatch({
+                    type: types.PERMISSIONS_SUCCESS,
+                    permission: 'location',
+                    granted: true,
+                });
+            }
         });
     };
 }
