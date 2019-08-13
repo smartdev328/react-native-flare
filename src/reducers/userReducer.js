@@ -51,7 +51,7 @@ export function user(state = initialState.user, action = {}) {
         });
     }
     case types.AUTH_RESET:
-        return state.replace(state, {
+        return state.merge({
             authToken: null,
             callScript: null,
             profile: null,
