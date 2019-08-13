@@ -48,7 +48,6 @@ export function checkContactsPermission() {
 
 export function checkLocationsPermission() {
     return async function checkPermsLoc(dispatch) {
-        console.log('Checking location perms');
         Permissions.check('location', { type: 'always' }).then((response) => {
             dispatch({
                 type: types.PERMISSIONS_SUCCESS,
