@@ -55,6 +55,7 @@ export default class BleProvider {
 
     handleBeacon(beacon, position) {
         const userDevices = (this.store && this.store.getState().user.devices) || [];
+        const hasCompletedOnboarding = this.store && this.store.getState().user.hasViewedTutorial;
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser = userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
         const { dispatch, radioToken } = this.props;
@@ -73,7 +74,11 @@ export default class BleProvider {
             break;
 
         case BeaconTypes.Long.name:
-            dispatch(flare(radioToken, beacon, position, forCurrentUser));
+            if (hasCompletedOnboarding) {
+                dispatch(flare(radioToken, beacon, position, forCurrentUser));
+            } else {
+                console.log('Suppressing long press beacon during onboarding.');
+            }
             break;
 
         case BeaconTypes.Sleep.name:
