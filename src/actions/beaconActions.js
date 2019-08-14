@@ -104,11 +104,11 @@ export function cancelActiveFlare(token, pin) {
                 pin,
             },
         })
-            .then(() => {
+            .then((response) => {
                 dispatch({
                     type: types.CANCEL_ACTIVE_FLARE_SUCCESS,
                     data: {
-                        crewEvents: [],
+                        crewEvents: response.crew_events,
                     },
                 });
             })

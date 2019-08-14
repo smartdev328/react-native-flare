@@ -59,7 +59,7 @@ class PinCheck extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.hasActiveFlare && !this.props.hasActiveFlare) {
+        if (prevProps.hasActiveFlare && !this.props.hasActiveFlare && this.props.cancelActiveFlareState === 'success') {
             Navigation.pop(this.props.componentId);
         }
     }
@@ -68,7 +68,7 @@ class PinCheck extends React.Component {
         this.props.dispatch(resetCancelFlareState());
     }
 
-    async submitPIN(code) {
+    async submitPIN() {
         this.props.dispatch(cancelActiveFlare(this.props.authToken, this.state.pin));
     }
 

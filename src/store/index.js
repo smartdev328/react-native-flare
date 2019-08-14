@@ -31,6 +31,7 @@ const transformerConfig = {
             'radioToken',
             'settings',
             'hasActiveFlare',
+            'hasViewedTutorial',
             'role',
         ],
         beacons: ['latest', 'problems'],
