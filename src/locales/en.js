@@ -47,7 +47,7 @@ const Strings = {
     home: {
         bluetoothDisabledWarning: 'Turn bluetooth on in your phone settings',
         locationDisabledWarning: 'Set location permission to Always in phone settings',
-        cancelActiveFlare: 'Cancel Flare',
+        cancelActiveFlare: 'Cancel Message',
         chooseLanguage: 'Choose language',
         contactsButtonLabelAdd: 'Choose Your Crew',
         contactsButtonLabelEdit: 'Edit Your Crew',
@@ -267,8 +267,8 @@ const Strings = {
     },
     pin: {
         failure: 'Invalid PIN',
-        prompt: 'Enter your Flare PIN',
-        title: 'Cancel Flare',
+        prompt: 'Enter your PIN',
+        title: 'Cancel Message',
         neverMind: 'Never Mind',
         error: 'Invalid PIN code',
     },
