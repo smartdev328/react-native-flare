@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, ScrollView, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Image,
+    KeyboardAvoidingView,
+    Linking,
+    PushNotificationIOS,
+    Text,
+    ScrollView,
+    View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
@@ -115,6 +124,22 @@ class SignIn extends Component {
 
     componentDidMount() {
         this.accountSyncInterval = setInterval(() => this.syncAccount(), ACCOUNT_SYNC_INTERVAL);
+    }
+
+    componentDidUpdate(prevProps) {
+        /**
+         * Show a local notification when we're first requesting a flare
+         */
+        if (
+            this.props.activatingFlareState !== prevProps.activatingFlareState &&
+            this.props.activatingFlareState === 'request'
+        ) {
+            PushNotificationIOS.requestPermissions();
+            PushNotificationIOS.presentLocalNotification({
+                alertBody: this.props.crewEventNotificationMessage,
+                alertTitle: Strings.notifications.title,
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -275,9 +300,12 @@ class SignIn extends Component {
 }
 function mapStateToProps(state) {
     return {
-        authState: state.user.authState,
-        devices: state.user.devices,
+        activatingFlareState: state.user.activatingFlareState,
         analyticsToken: state.user.analyticsToken,
+        authState: state.user.authState,
+        crewEventNotificationMessage: state.user.settings.promptMessage,
+        devices: state.user.devices,
+        permissions: state.user.permissions,
     };
 }
 
