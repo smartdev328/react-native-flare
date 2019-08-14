@@ -307,7 +307,7 @@ const Strings = {
             defaultMessage: '8am appt tomorrow',
             defaultOption: 'Default',
             promptSelectionBody:
-                "You'll get a notification with this message when you press and hold the button on your jewelry." +
+                "You'll get a notification with this message when you press and hold the button on your jewelry. " +
                 'When it pops up, you know that we messaged your crew.',
             promptSelectionTitle: 'Custom notification',
             saveButtonLabel: 'Save popup',
