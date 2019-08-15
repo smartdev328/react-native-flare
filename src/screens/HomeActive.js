@@ -139,21 +139,6 @@ class HomeActive extends React.Component {
             BackgroundTimer.stopBackgroundTimer();
             this.props.dispatch(changeAppRoot('secure'));
         }
-
-        /**
-         * Show a local notification when we're first requesting a flare
-         */
-        if (
-            this.props.activatingFlareState !== prevProps.activatingFlareState &&
-            this.props.activatingFlareState === 'request'
-        ) {
-            console.log('>>>>> Local notify!');
-            PushNotificationIOS.requestPermissions();
-            PushNotificationIOS.presentLocalNotification({
-                alertBody: this.props.crewEventNotificationMessage,
-                alertTitle: Strings.notifications.title,
-            });
-        }
     }
 
     componentWillUnmount() {

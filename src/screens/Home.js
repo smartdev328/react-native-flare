@@ -134,6 +134,12 @@ class Home extends React.Component {
             BackgroundTimer.stopBackgroundTimer();
 
             if (this.props.hasActiveFlare) {
+                console.log('>>>>> Local notify!');
+                PushNotificationIOS.requestPermissions();
+                PushNotificationIOS.presentLocalNotification({
+                    alertBody: this.props.crewEventNotificationMessage,
+                    alertTitle: Strings.notifications.title,
+                });          
                 this.props.dispatch(changeAppRoot('secure-active-event'));
             } else {
                 BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);

@@ -130,10 +130,7 @@ class SignIn extends Component {
         /**
          * Show a local notification when we're first requesting a flare
          */
-        if (
-            this.props.activatingFlareState !== prevProps.activatingFlareState &&
-            this.props.activatingFlareState === 'request'
-        ) {
+        if (this.props.hasActiveFlare && !prevProps.hasActiveFlare) {
             PushNotificationIOS.requestPermissions();
             PushNotificationIOS.presentLocalNotification({
                 alertBody: this.props.crewEventNotificationMessage,
@@ -301,6 +298,7 @@ class SignIn extends Component {
 function mapStateToProps(state) {
     return {
         activatingFlareState: state.user.activatingFlareState,
+        hasActiveFlare: state.user.hasActiveFlare,
         analyticsToken: state.user.analyticsToken,
         authState: state.user.authState,
         crewEventNotificationMessage: state.user.settings.promptMessage,
