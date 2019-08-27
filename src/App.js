@@ -4,10 +4,12 @@ import { Navigation } from 'react-native-navigation';
 import { persistStore } from 'redux-persist';
 import SplashScreen from 'react-native-splash-screen';
 import axios from 'axios';
+import { Client } from 'bugsnag-react-native';
 
 import { LEFT_NAVIGATION_WIDTH } from './constants';
 import { configureStore } from './store/index';
 import { iconsMap } from './bits/AppIcons';
+
 import BleProvider from './bits/BleProvider';
 import * as actions from './actions/index';
 import Colors from './bits/Colors';
@@ -18,7 +20,7 @@ import registerScreens from './screens/index';
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
 let store = null;
-
+export const bugsnag = new Client('a48fda6bc569b8e593d7cf2fe3b6a49c');
 export default class App extends Component {
     constructor(props) {
         super(props);

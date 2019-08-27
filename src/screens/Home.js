@@ -7,6 +7,7 @@ import { Navigation } from 'react-native-navigation';
 import moment from 'moment';
 import BackgroundTimer from 'react-native-background-timer';
 import RNBluetoothInfo from 'react-native-bluetooth-info';
+import { bugsnag } from '../App';
 
 import {
     ACCOUNT_SYNC_INTERVAL,
@@ -94,6 +95,8 @@ class Home extends React.Component {
             this.props.dispatch(changeAppRoot('secure-active-event'));
         }
 
+        bugsnag.notify(new Error('Test error'));
+
         // Update bluetooth state after first boot
         RNBluetoothInfo.getCurrentState().then(bleState => this.handleBluetoothStateChange(bleState));
 
@@ -139,7 +142,7 @@ class Home extends React.Component {
                 PushNotificationIOS.presentLocalNotification({
                     alertBody: this.props.crewEventNotificationMessage,
                     alertTitle: Strings.notifications.title,
-                });          
+                });
                 this.props.dispatch(changeAppRoot('secure-active-event'));
             } else {
                 BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
