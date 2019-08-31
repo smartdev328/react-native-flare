@@ -1,5 +1,5 @@
 app_identifier("com.flarejewelry.app") # The bundle identifier of your app
-apple_id("info@flarejewelry.co") # Your Apple email address
+apple_id("dev@getflare.com") # Your Apple email address
 
 itc_team_id("118605383") # App Store Connect Team ID
 team_id("M8SR977JX7") # Developer Portal Team ID
