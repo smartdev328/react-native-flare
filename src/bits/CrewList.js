@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Entypo';
 
 import Colors from '../bits/Colors';
 import Spacing from '../bits/Spacing';
@@ -53,7 +53,7 @@ const CrewList = function createCrewList(props) {
                             props.onPressContact(item);
                         }}
                     >
-                        <Icon name="x" size={Type.size.medium} color={Colors.white} />
+                        <Icon name="cross" size={Type.size.medium} color={Colors.white} />
                     </TouchableOpacity>
                 </View>
             )}
