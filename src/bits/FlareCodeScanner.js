@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
-import RNCamera from 'react-native-camera';
+// import RNCamera from 'react-native-camera';
 import Strings from '../locales/en';
 
 const styles = StyleSheet.create({
@@ -20,14 +20,14 @@ export default class FlareCodeScanner extends React.PureComponent {
     render() {
         return (
             <View style={this.props.containerStyle}>
-                <RNCamera
+                {/* <RNCamera
                     onBarCodeRead={e => this.props.onBarCodeRead(e)}
                     style={styles.preview}
                     permissionDialogTitle={Strings.jewelry.addNewManual.cameraPermissionTitle}
                     permissionDialogMessage={Strings.jewelry.addNewManual.cameraPermissionMessage}
                 >
                     <View style={styles.preview} />
-                </RNCamera>
+                </RNCamera> */}
             </View>
         );
     }

@@ -6735,13 +6735,6 @@ react-native-bluetooth-info@^1.0.3:
   resolved "https://registry.yarnpkg.com/react-native-bluetooth-info/-/react-native-bluetooth-info-1.0.3.tgz#bcb6a06818ea0aeea6f986e5c98719ae2303a615"
   integrity sha512-pYmsf+h7Skgk2POphKuqmgqNRSXUwvqVtFOF0u4q6+EBpdK1vkn9gBHFT3kASna1S0KAr7ByFIVZi4olueN9Yg==
 
-react-native-camera@2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-2.9.0.tgz#5ef94a535dbbfd215d672deef8d0c45bf06b1f3a"
-  integrity sha512-S1vtsmCx2upnLK/4xYALHKB1itbujHemAIhQ+R0qxxEjb/8TYP7AJUjlxmBJ57tjYR3IaNCAeiashCCnEvGe5Q==
-  dependencies:
-    prop-types "^15.6.2"
-
 react-native-config@^0.11.5:
   version "0.11.7"
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.7.tgz#a2b323f2ecd76a4df88cbb6bc86eaa2ef9febee7"

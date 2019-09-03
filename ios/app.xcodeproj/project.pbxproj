@@ -57,7 +57,6 @@
 		BED132D3231A27830022B13B /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96F93211F4B1407B912388B6 /* Entypo.ttf */; };
 		BED132D4231A27830022B13B /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E554C7C49C8144E69D69644C /* MaterialCommunityIcons.ttf */; };
 		BED132D5231A27830022B13B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3E63395FEC14D91A1C93EEF /* MaterialIcons.ttf */; };
-		CD49E371E28F4432A1E4558C /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1568792E5ED743DB942EE2DF /* libRNCamera.a */; };
 		F01C5B25EF59422AA7315E67 /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4C3F0B28714AFF979BA90A /* libReactNativeConfig.a */; };
 		F3A08BCB23B745F49530E973 /* libBugsnagReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 669C017060924A5BBD266B09 /* libBugsnagReactNative.a */; };
 		F4045BD393734F0D8463B7E9 /* libLottieReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76E751617AAD41F2AE4797FC /* libLottieReactNative.a */; };
@@ -492,13 +491,6 @@
 			remoteGlobalIDString = 7B49FEBB1E95090800DEB3EA;
 			remoteInfo = ReactNativeNavigationTests;
 		};
-		BECC8AB921E947570009B10F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EF92E405688946F9ACD56478 /* RNCamera.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
-			remoteInfo = RNCamera;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -594,7 +586,6 @@
 		E554C7C49C8144E69D69644C /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		ED71BC0CB71D45BC926A87DA /* RNiBeacon.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNiBeacon.xcodeproj; path = "../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon.xcodeproj"; sourceTree = "<group>"; };
 		EDB3C72237534B21B03D90CE /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
-		EF92E405688946F9ACD56478 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		F3D66D1FED7E43DE859F1EAF /* LottieReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = LottieReactNative.xcodeproj; path = "../node_modules/lottie-react-native/src/ios/LottieReactNative.xcodeproj"; sourceTree = "<group>"; };
 		FE3C4692F6AE456E9B7F1051 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -633,7 +624,6 @@
 				7B0D6E7FA1DC44AF90DF15C8 /* libSplashScreen.a in Frameworks */,
 				32455963B34D4975A910150F /* libRNBackgroundTimer.a in Frameworks */,
 				78228B619B41472193678E0E /* libRNBluetoothInfo.a in Frameworks */,
-				CD49E371E28F4432A1E4558C /* libRNCamera.a in Frameworks */,
 				6510656269AC42D2AA10A0DD /* libLottie.a in Frameworks */,
 				F4045BD393734F0D8463B7E9 /* libLottieReactNative.a in Frameworks */,
 				8C704BF062F54ECD820DF0B1 /* libRNCAsyncStorage.a in Frameworks */,
@@ -856,7 +846,6 @@
 				9BC790D871D34CA4BDAB4991 /* ReactNativePermissions.xcodeproj */,
 				6571A74E912D4ABDBCB1B470 /* RNBackgroundTimer.xcodeproj */,
 				7B0BD8BA604044FC917CD755 /* RNBluetoothInfo.xcodeproj */,
-				EF92E405688946F9ACD56478 /* RNCamera.xcodeproj */,
 				B95C4251D3EA4C2C923559C5 /* RNCAsyncStorage.xcodeproj */,
 				0A2FC39804C746DB9B5E9323 /* RNI18n.xcodeproj */,
 				ED71BC0CB71D45BC926A87DA /* RNiBeacon.xcodeproj */,
@@ -1065,14 +1054,6 @@
 			children = (
 				BECC0436231EC091001EEA2F /* libReactNativeNavigation.a */,
 				BECC0438231EC091001EEA2F /* ReactNativeNavigationTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		BECC8AB621E947570009B10F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BECC8ABA21E947570009B10F /* libRNCamera.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1295,10 +1276,6 @@
 				{
 					ProductGroup = BE9049D8219F415500DF9D85 /* Products */;
 					ProjectRef = 7B0BD8BA604044FC917CD755 /* RNBluetoothInfo.xcodeproj */;
-				},
-				{
-					ProductGroup = BECC8AB621E947570009B10F /* Products */;
-					ProjectRef = EF92E405688946F9ACD56478 /* RNCamera.xcodeproj */;
 				},
 				{
 					ProductGroup = BEC81B1122EA2279007CD749 /* Products */;
@@ -1745,13 +1722,6 @@
 			remoteRef = BECC0437231EC091001EEA2F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		BECC8ABA21E947570009B10F /* libRNCamera.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCamera.a;
-			remoteRef = BECC8AB921E947570009B10F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -2023,7 +1993,6 @@
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-background-timer/ios",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-info/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-notifications/RNNotifications",
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
@@ -2076,7 +2045,6 @@
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-background-timer/ios",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-info/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
 					"$(SRCROOT)/../node_modules/react-native-notifications/RNNotifications",
 					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
