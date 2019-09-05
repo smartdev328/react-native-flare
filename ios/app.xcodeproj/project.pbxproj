@@ -485,13 +485,6 @@
 			remoteGlobalIDString = D8AFADBD1BEE6F3F00A4592D;
 			remoteInfo = ReactNativeNavigation;
 		};
-		BECC0437231EC091001EEA2F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1931C6BAC2684FDAA06CCE29 /* ReactNativeNavigation.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7B49FEBB1E95090800DEB3EA;
-			remoteInfo = ReactNativeNavigationTests;
-		};
 		BEE9C51C23208E5600640ECD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A8DE370AE88C4BC7B3EA128A /* RNLocation.xcodeproj */;
@@ -1066,7 +1059,6 @@
 			isa = PBXGroup;
 			children = (
 				BECC0436231EC091001EEA2F /* libReactNativeNavigation.a */,
-				BECC0438231EC091001EEA2F /* ReactNativeNavigationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1738,13 +1730,6 @@
 			fileType = archive.ar;
 			path = libReactNativeNavigation.a;
 			remoteRef = BECC0435231EC091001EEA2F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BECC0438231EC091001EEA2F /* ReactNativeNavigationTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ReactNativeNavigationTests.xctest;
-			remoteRef = BECC0437231EC091001EEA2F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		BEE9C51D23208E5600640ECD /* libRNLocation.a */ = {
