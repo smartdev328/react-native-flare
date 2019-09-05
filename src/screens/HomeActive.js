@@ -22,7 +22,7 @@ import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import CrewEventTimeline from '../bits/CrewEventTimeline';
-import Location from '../helpers/location';
+import getCurrentPosition from '../helpers/location';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
@@ -210,7 +210,7 @@ class HomeActive extends React.Component {
         }
 
         // Transmit the current state and retrieve any updates from the server.
-        Location.getCurrentPosition({
+        getCurrentPosition({
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,
         }).then((position) => {

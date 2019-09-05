@@ -25,7 +25,7 @@ import Colors from '../bits/Colors';
 import DeviceSelector from '../bits/DeviceSelector';
 import FlareAlert from '../bits/FlareAlert';
 import FlareDeviceID from '../bits/FlareDeviceID';
-import Location from '../helpers/location';
+import getCurrentPosition from '../helpers/location';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
@@ -224,7 +224,7 @@ class Home extends React.Component {
         }
 
         // Transmit the current state and retrieve any updates from the server.
-        Location.getCurrentPosition({
+        getCurrentPosition({
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,
         }).then((position) => {

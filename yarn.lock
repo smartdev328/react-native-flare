@@ -6760,6 +6760,11 @@ react-native-i18n@^2.0.15:
   dependencies:
     i18n-js "3.0.11"
 
+react-native-location@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-location/-/react-native-location-2.5.0.tgz#b6d2f7e9c3dbe13fbe87587f9533b8bf943b6a35"
+  integrity sha512-myT54tZuFmN6d5RruMVfoa8eY+voJWkSd73xUVhjzJDnQr5uu5MFoH7hMg3trHF1CAkaY/2gIneOspUdGxv59Q==
+
 react-native-navigation@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-3.1.2.tgz#1b32e8b42e780ff769611e0bcfa3a7c4d491995c"

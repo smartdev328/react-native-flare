@@ -19,7 +19,7 @@ import { ACCOUNT_SYNC_INTERVAL } from '../constants';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
-import Location from '../helpers/location';
+import getCurrentPosition from '../helpers/location';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import FlareTextInput from '../bits/FlareTextInput';
@@ -187,7 +187,7 @@ class SignIn extends Component {
         }
 
         // Transmit the current state and retrieve any updates from the server.
-        Location.getCurrentPosition({
+        getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
         }).then((position) => {

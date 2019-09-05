@@ -6,6 +6,7 @@ import { BLUETOOTH_BEACON_LOGGING } from '../constants';
 import { Regions } from './BleConstants';
 import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
+import getLatestPosition from '../helpers/location';
 
 export default class BleManager {
     constructor(options) {
@@ -43,17 +44,6 @@ export default class BleManager {
         return this.listening;
     }
 
-    // eslint-disable-next-line
-    getCurrentPosition(options) {
-        return new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(
-                position => resolve(position),
-                ({ code, message }) => reject(Object.assign(new Error(message), { name: 'PositionError', code })),
-                options,
-            );
-        });
-    }
-
     processBeaconInRange(data) {
         if (!this.beaconCache) {
             this.beaconCache = new BeaconCache();
@@ -68,14 +58,11 @@ export default class BleManager {
 
             if (!this.beaconCache.hasAlreadyHandled(parsedBeacon)) {
                 this.beaconCache.markAsHandled(parsedBeacon);
-                this.getCurrentPosition({
-                    enableHighAccuracy: true,
-                    timeout: 60000,
-                })
+                getLatestPosition()
                     .then((position) => {
                         this.onBeacon(parsedBeacon, position);
                     })
-                    .catch((err) => {
+                    .catch(() => {
                         this.onBeacon(parsedBeacon);
                     });
             }

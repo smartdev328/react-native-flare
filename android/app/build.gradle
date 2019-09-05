@@ -162,6 +162,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-location')
     implementation project(':bugsnag-react-native')
     implementation project(':react-native-beacons-manager')
     implementation project(':@react-native-community_async-storage')

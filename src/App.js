@@ -5,6 +5,7 @@ import { persistStore } from 'redux-persist';
 import SplashScreen from 'react-native-splash-screen';
 import axios from 'axios';
 import { Client } from 'bugsnag-react-native';
+import RNLocation from 'react-native-location';
 
 import { LEFT_NAVIGATION_WIDTH } from './constants';
 import { configureStore } from './store/index';
@@ -21,6 +22,11 @@ import registerScreens from './screens/index';
 console.disableYellowBox = true;
 let store = null;
 export const bugsnag = new Client('a48fda6bc569b8e593d7cf2fe3b6a49c');
+
+RNLocation.configure({
+    allowsBackgroundLocationUpdates: true,
+});
+
 export default class App extends Component {
     constructor(props) {
         super(props);

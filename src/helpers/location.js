@@ -1,15 +1,17 @@
-/* global navigator */
-// eslint-disable-next-line
-function getCurrentPosition(options) {
+import RNLocation from 'react-native-location';
+
+export default function getCurrentPosition() {
     return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-            position => resolve(position),
-            ({ code, message }) => reject(Object.assign(new Error(message), { name: 'PositionError', code })),
-            options,
-        );
+        RNLocation.requestPermission({
+            ios: 'always',
+        }).then((granted) => {
+            if (granted) {
+                RNLocation.configure({ disatnceFilter: 5 });
+                RNLocation.getLatestLocation({ timeout: 60000 }).then(
+                    position => resolve(position),
+                    ({ code, message }) => reject(Object.assign(new Error(message), { name: 'PositionError', code })),
+                );
+            }
+        });
     });
 }
-
-export default {
-    getCurrentPosition,
-};

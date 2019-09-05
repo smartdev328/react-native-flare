@@ -47,6 +47,7 @@
         "react-native-confirmation-code-input": "^1.0.4",
         "react-native-contacts": "5.0.2",
         "react-native-i18n": "^2.0.15",
+        "react-native-location": "^2.5.0",
         "react-native-navigation": "^3.1.2",
         "react-native-onboarding-swiper": "https://github.com/mgaron/react-native-onboarding-swiper.git",
         "react-native-permissions": "^1.2.0",
