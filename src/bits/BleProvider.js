@@ -1,5 +1,9 @@
 import { BeaconTypes } from './BleConstants';
-import { BLUETOOTH_BEACON_LOGGING, SHOW_ALL_BEACONS_IN_HOME_SCREEN, MANUFACTURING_MODE_ENABLED } from '../constants';
+import {
+    BLUETOOTH_BEACON_LOGGING,
+    SHOW_ALL_BEACONS_IN_HOME_SCREEN,
+    MANUFACTURING_MODE_ENABLED,
+} from '../constants/Config';
 import { call, flare, checkin, manufacturingCheckin } from '../actions/beaconActions';
 import * as actionTypes from '../actions/actionTypes';
 import BleManager from './BleManager';
@@ -61,43 +65,51 @@ export default class BleProvider {
         const { dispatch, radioToken } = this.props;
 
         switch (beacon.type) {
-        case BeaconTypes.Short.name:
-            dispatch(call(radioToken, beacon, position, forCurrentUser)).then(() => {
-                // Track short presses for all nearby devices so we can know when users are adding jewelry
-                if (!forCurrentUser) {
-                    dispatch({
-                        type: actionTypes.BEACON_COUNTS_UPDATED,
-                        shortPressCounts: this.bleManager.beaconCache.getRecentShortPressCounts(),
-                    });
+            case BeaconTypes.Short.name:
+                dispatch(call(radioToken, beacon, position, forCurrentUser)).then(() => {
+                    // Track short presses for all nearby devices so we can know when users are adding jewelry
+                    if (!forCurrentUser) {
+                        dispatch({
+                            type: actionTypes.BEACON_COUNTS_UPDATED,
+                            shortPressCounts: this.bleManager.beaconCache.getRecentShortPressCounts(),
+                        });
+                    }
+                });
+                break;
+
+            case BeaconTypes.Long.name:
+                if (hasCompletedOnboarding) {
+                    dispatch(flare(radioToken, beacon, position, forCurrentUser));
+                } else {
+                    console.log('Suppressing long press beacon during onboarding.');
                 }
-            });
-            break;
+                break;
 
-        case BeaconTypes.Long.name:
-            if (hasCompletedOnboarding) {
-                dispatch(flare(radioToken, beacon, position, forCurrentUser));
-            } else {
-                console.log('Suppressing long press beacon during onboarding.');
-            }
-            break;
+            case BeaconTypes.Sleep.name:
+                console.log('TODO: handle device going to sleep');
+                break;
 
-        case BeaconTypes.Sleep.name:
-            console.log('TODO: handle device going to sleep');
-            break;
-
-        case BeaconTypes.BurnIn.name:
-            if (MANUFACTURING_MODE_ENABLED) {
-                const hasManufacturingRole = this.store.getState().user.role === UserRoleTypes.Manufacturing;
-                if (hasManufacturingRole) {
-                    dispatch(manufacturingCheckin(radioToken, beacon, position, ManufacturingStages.indexOf('BurnIn')));
+            case BeaconTypes.BurnIn.name:
+                if (MANUFACTURING_MODE_ENABLED) {
+                    const hasManufacturingRole =
+                        this.store.getState().user.role === UserRoleTypes.Manufacturing;
+                    if (hasManufacturingRole) {
+                        dispatch(
+                            manufacturingCheckin(
+                                radioToken,
+                                beacon,
+                                position,
+                                ManufacturingStages.indexOf('BurnIn'),
+                            ),
+                        );
+                    }
                 }
-            }
-            break;
+                break;
 
-        case BeaconTypes.Checkin.name:
-        default:
-            dispatch(checkin(radioToken, beacon, position, forCurrentUser));
-            break;
+            case BeaconTypes.Checkin.name:
+            default:
+                dispatch(checkin(radioToken, beacon, position, forCurrentUser));
+                break;
         }
 
         // Inform the UI if the beacon is for the current user
@@ -112,7 +124,9 @@ export default class BleProvider {
 
         if (BLUETOOTH_BEACON_LOGGING === 'enabled' || BLUETOOTH_BEACON_LOGGING === 'verbose') {
             const short = beacon.uuid.substr(0, 8);
-            console.debug(`Beacon type ${beacon.type}: device ${beacon.deviceID}, uuid ${short}, rssi ${beacon.rssi}`);
+            console.debug(
+                `Beacon type ${beacon.type}: device ${beacon.deviceID}, uuid ${short}, rssi ${beacon.rssi}`,
+            );
             if (position) {
                 console.debug(`@ ${position.coords.latitude}, ${position.coords.longitude}`);
             } else {

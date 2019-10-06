@@ -1,4 +1,4 @@
-import { API_URL } from '../constants/';
+import { API_URL } from '../constants/Config';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 import * as types from './actionTypes';
 
@@ -8,27 +8,25 @@ export function claimDevice(token, deviceID, secondFactor) {
         dispatch({
             type: types.DEVICE_CLAIM_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            `/device/${deviceID}/claim`, {
-                method: 'POST',
-                data: {
-                    second_factor: secondFactor,
-                },
+        ProtectedAPICall(token, API_URL, `/device/${deviceID}/claim`, {
+            method: 'POST',
+            data: {
+                second_factor: secondFactor,
             },
-        ).then((response) => {
-            dispatch({
-                type: types.DEVICE_CLAIM_SUCCESS,
-                devices: response.data.devices,
-                claimedDevice: deviceID,
+        })
+            .then(response => {
+                dispatch({
+                    type: types.DEVICE_CLAIM_SUCCESS,
+                    devices: response.data.devices,
+                    claimedDevice: deviceID,
+                });
+            })
+            .catch(status => {
+                dispatch({
+                    type: types.DEVICE_CLAIM_FAILURE,
+                    status,
+                });
             });
-        }).catch((status) => {
-            dispatch({
-                type: types.DEVICE_CLAIM_FAILURE,
-                status,
-            });
-        });
     };
 }
 
@@ -37,22 +35,20 @@ export function disclaimDevice(token, deviceID) {
         dispatch({
             type: types.DEVICE_DISCLAIM_REQUEST,
         });
-        ProtectedAPICall(
-            token,
-            API_URL,
-            `/device/${deviceID}/disclaim`, {
-                method: 'POST',
-            },
-        ).then((response) => {
-            dispatch({
-                type: types.DEVICE_DISCLAIM_SUCCESS,
-                devices: response.data.devices,
+        ProtectedAPICall(token, API_URL, `/device/${deviceID}/disclaim`, {
+            method: 'POST',
+        })
+            .then(response => {
+                dispatch({
+                    type: types.DEVICE_DISCLAIM_SUCCESS,
+                    devices: response.data.devices,
+                });
+            })
+            .catch(status => {
+                dispatch({
+                    type: types.DEVICE_DISCLAIM_FAILURE,
+                    status,
+                });
             });
-        }).catch((status) => {
-            dispatch({
-                type: types.DEVICE_DISCLAIM_FAILURE,
-                status,
-            });
-        });
     };
 }

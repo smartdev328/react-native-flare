@@ -1,4 +1,4 @@
-import { API_URL } from '../constants/index';
+import { API_URL } from '../constants/Config';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 import * as types from './actionTypes';
 
@@ -18,7 +18,7 @@ export default function sendEvents(token, events) {
                     type: types.ANALYTICS_SEND_EVENTS_SUCCESS,
                 });
             })
-            .catch((status) => {
+            .catch(status => {
                 dispatch({
                     type: types.ANALYTICS_SEND_EVENTS_FAILURE,
                     status,

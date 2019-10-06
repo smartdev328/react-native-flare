@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-    KeyboardAvoidingView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
-import { DEVICE_ID_LABEL_LENGTH } from '../constants';
+import { DEVICE_ID_LABEL_LENGTH } from '../constants/Config';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import FlareCodeScanner from '../bits/FlareCodeScanner';
@@ -115,7 +109,7 @@ export default class AddJewelryManual extends React.Component {
                 name: 'com.flarejewelry.app.AddJewelryManual',
             },
         });
-    }
+    };
 
     changeManualDeviceID(newDeviceID) {
         this.setState({
@@ -127,9 +121,7 @@ export default class AddJewelryManual extends React.Component {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <View style={styles.promptBackground}>
-                    <Text style={styles.promptForeground}>
-                        {Strings.jewelry.addNewManual.prompt}
-                    </Text>
+                    <Text style={styles.promptForeground}>{Strings.jewelry.addNewManual.prompt}</Text>
                 </View>
                 <FlareCodeScanner
                     containerStyle={styles.scanCodeArea}

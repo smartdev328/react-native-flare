@@ -1,7 +1,7 @@
 import Immutable from 'seamless-immutable';
 import moment from 'moment';
 
-import { API_URL } from '../constants/index';
+import { API_URL } from '../constants/Config';
 import * as types from './actionTypes';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 import { BeaconTypes } from '../bits/BleConstants';
@@ -27,7 +27,7 @@ export function call(token, beacon, position, forCurrentUser) {
                     });
                 }
             })
-            .catch((status) => {
+            .catch(status => {
                 if (forCurrentUser) {
                     dispatch({
                         type: types.BEACON_HANDLING_FAILED,
@@ -60,7 +60,7 @@ export function flare(token, beacon, position, forCurrentUser) {
                 position,
             },
         })
-            .then((response) => {
+            .then(response => {
                 if (forCurrentUser) {
                     dispatch({
                         type: types.ACTIVATE_FLARE_SUCCESS,
@@ -72,7 +72,7 @@ export function flare(token, beacon, position, forCurrentUser) {
                     });
                 }
             })
-            .catch((status) => {
+            .catch(status => {
                 if (forCurrentUser) {
                     dispatch({
                         type: types.ACTIVATE_FLARE_FAILURE,
@@ -104,7 +104,7 @@ export function cancelActiveFlare(token, pin) {
                 pin,
             },
         })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.CANCEL_ACTIVE_FLARE_SUCCESS,
                     data: {
@@ -112,7 +112,7 @@ export function cancelActiveFlare(token, pin) {
                     },
                 });
             })
-            .catch((status) => {
+            .catch(status => {
                 dispatch({
                     type: types.CANCEL_ACTIVE_FLARE_FAILURE,
                     status,
@@ -155,7 +155,7 @@ export function checkin(token, beacon, position, forCurrentUser) {
                     });
                 }
             })
-            .catch((status) => {
+            .catch(status => {
                 if (forCurrentUser) {
                     dispatch({
                         type: types.BEACON_HANDLING_FAILED,
@@ -190,14 +190,14 @@ export function manufacturingCheckin(token, beacon, position, stage) {
                 stage,
             },
         })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.MANUFACTURING_BEACON_SUCCESS,
                     beacon,
                     latestDeviceUpdate: response.data.manufacturing_event,
                 });
             })
-            .catch((status) => {
+            .catch(status => {
                 dispatch({
                     type: types.MANUFACTURING_BEACON_FAILURE,
                     beacon,
@@ -219,7 +219,7 @@ export function manufacturingCheckin(token, beacon, position, stage) {
 export function processQueuedBeacons(handleBeacon, token, problemBeacons) {
     return async function doProcessQueuedBeacons(dispatch) {
         const beaconsToClear = [];
-        problemBeacons.forEach((problem) => {
+        problemBeacons.forEach(problem => {
             // increment the retry counter
             let retry = Immutable.getIn(problem.beacon, ['retry']);
             if (typeof retry === 'undefined') {

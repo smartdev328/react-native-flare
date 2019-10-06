@@ -1,0 +1,6 @@
+module Pods_GetFlare {
+  umbrella header "Pods-GetFlare-umbrella.h"
+
+  export *
+  module * { export * }
+}

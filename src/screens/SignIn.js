@@ -15,7 +15,7 @@ import { Navigation } from 'react-native-navigation';
 
 import { signIn, resetAuth } from '../actions/authActions';
 import { syncAccountDetails } from '../actions/index';
-import { ACCOUNT_SYNC_INTERVAL } from '../constants';
+import { ACCOUNT_SYNC_INTERVAL } from '../constants/Config';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -190,22 +190,24 @@ class SignIn extends Component {
         getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
-        }).then((position) => {
-            this.props.dispatch(syncAccountDetails({
-                analyticsToken: this.props.analyticsToken,
-                status: {
-                    timestamp: moment()
-                        .utc()
-                        .format('YYYY-MM-DD HH:mm:ss'),
-                    latitude: position.latitude,
-                    longitude: position.longitude,
-                    details: {
-                        permissions: this.props.permissions,
-                        hardware: this.props.hardware,
-                        position,
+        }).then(position => {
+            this.props.dispatch(
+                syncAccountDetails({
+                    analyticsToken: this.props.analyticsToken,
+                    status: {
+                        timestamp: moment()
+                            .utc()
+                            .format('YYYY-MM-DD HH:mm:ss'),
+                        latitude: position.latitude,
+                        longitude: position.longitude,
+                        details: {
+                            permissions: this.props.permissions,
+                            hardware: this.props.hardware,
+                            position,
+                        },
                     },
-                },
-            }));
+                }),
+            );
         });
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { iconsMap } from '../../bits/AppIcons';
-import { summary as configSummary } from '../../constants';
+import { summary as configSummary } from '../../constants/Config';
 import Colors from '../../bits/Colors';
 import EnvironmentListing from '../../bits/EnvironmentListing';
 import Spacing from '../../bits/Spacing';

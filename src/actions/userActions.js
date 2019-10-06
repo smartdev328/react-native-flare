@@ -3,7 +3,7 @@ import Contacts from 'react-native-contacts';
 import Permissions from 'react-native-permissions';
 
 import * as types from './actionTypes';
-import { API_URL } from '../constants/';
+import { API_URL } from '../constants/Config';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 
 export function setCrewMembers(token, crewId, members) {
@@ -17,13 +17,13 @@ export function setCrewMembers(token, crewId, members) {
                 members,
             },
         })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.CREW_SET_SUCCESS,
                     crew: response.data.data.crew,
                 });
             })
-            .catch((status) => {
+            .catch(status => {
                 dispatch({
                     type: types.CREW_SET_FAILURE,
                     status,
@@ -37,7 +37,7 @@ export function checkContactsPermission() {
         if (Platform.OS === 'ios') {
             Contacts.checkPermission((checkErr, permission) => {
                 if (permission !== 'authorized') {
-                    Contacts.requestPermission((reqErr) => {
+                    Contacts.requestPermission(reqErr => {
                         if (reqErr) throw reqErr;
                     });
                 }
@@ -48,7 +48,7 @@ export function checkContactsPermission() {
 
 export function checkLocationsPermission() {
     return async function checkPermsLoc(dispatch) {
-        Permissions.check('location', { type: 'always' }).then((response) => {
+        Permissions.check('location', { type: 'always' }).then(response => {
             if (response === 'authorized') {
                 dispatch({
                     type: types.PERMISSIONS_SUCCESS,
@@ -77,13 +77,13 @@ export function syncAccountDetails(args) {
         }
 
         ProtectedAPICall(args.analyticsToken, API_URL, '/auth/status', requestOptions)
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.ACCOUNT_DETAILS_SUCCESS,
                     data: response.data,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch({
                     type: types.ACCOUNT_DETAILS_FAILURE,
                     status: error,
@@ -118,13 +118,13 @@ export function getCrewEventTimeline(token) {
         ProtectedAPICall(token, API_URL, '/crews/event', {
             method: 'GET',
         })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.GET_FLARE_TIMELINE_SUCCESS,
                     data: response.data,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch({
                     type: types.GET_FLARE_TIMELINE_FAILURE,
                     error,
@@ -135,13 +135,13 @@ export function getCrewEventTimeline(token) {
 
 export function getPermission(name, options) {
     return async function doCheck(dispatch) {
-        Permissions.check(name, options).then((checkResponse) => {
+        Permissions.check(name, options).then(checkResponse => {
             dispatch({
                 type: types.PERMISSIONS_REQUEST,
                 name,
             });
             if (checkResponse !== 'authorized') {
-                Permissions.request(name, options).then((response) => {
+                Permissions.request(name, options).then(response => {
                     dispatch({
                         type: types.PERMISSIONS_SUCCESS,
                         permission: name,
@@ -170,14 +170,14 @@ export function setNotificationMessage(token, message, custom) {
                 message,
             },
         })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.SETTINGS_SET_POPUP_MESSAGE_SUCCESS,
                     data: response.data.data,
                     custom,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch({
                     type: types.SETTINGS_SET_POPUP_MESSAGE_FAILURE,
                     error,
@@ -202,7 +202,7 @@ export function setCancelPIN(token, pin) {
                     type: types.USER_SET_PIN_SUCCESS,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch({
                     type: types.USER_SET_PIN_FAILURE,
                     error,
@@ -224,7 +224,7 @@ export function setOnboardingComplete(token) {
                     type: types.USER_SET_ONBOARDING_COMPLETE_SUCCESS,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch({
                     type: types.USER_SET_ONBOARDING_COMPLETE_FAILURE,
                     error,
@@ -251,7 +251,7 @@ export function setUserDetails(token, firstName, lastName, password) {
                     type: types.SET_USER_DETAILS_SUCCESS,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch({
                     type: types.SET_USER_DETAILS_FAILURE,
                     error,
@@ -272,13 +272,13 @@ export function setPrivacyConfig(token, config) {
                 analytics,
             },
         })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.USER_SET_PRIVACY_CONFIG_SUCCESS,
                     analyticsEnabled: response.data.privacy.analytics,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch({
                     type: types.USER_SET_PRIVACY_CONFIG_FAILURE,
                     error,
@@ -298,13 +298,13 @@ export function setCallScript(token, script) {
                 script,
             },
         })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.USER_SET_CALL_SCRIPT_SUCCESS,
                     script: response.data.script,
                 });
             })
-            .catch((error) => {
+            .catch(error => {
                 dispatch({
                     type: types.USER_SET_CALL_SCRIPT_FAILURE,
                     error,

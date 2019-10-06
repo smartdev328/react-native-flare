@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ANALYTICS_TRANSMIT_INTERVAL, ANALYTICS_TRANSMIT_BATCH_SIZE } from '../constants';
+import { ANALYTICS_TRANSMIT_INTERVAL, ANALYTICS_TRANSMIT_BATCH_SIZE } from '../constants/Config';
 import sendAnalyticsEvents from '../actions/analyticsActions';
 
 export default class Analytics {
@@ -8,10 +8,7 @@ export default class Analytics {
          * Maintain two queues for events so that we can simultaneously receive new
          * events while submitting old events to the server.
          */
-        this.eventQueues = [
-            [],
-            [],
-        ];
+        this.eventQueues = [[], []];
         this.receiveQueueIndex = 0;
         this.transmitQueueIndex = 1;
 

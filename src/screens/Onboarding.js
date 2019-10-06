@@ -3,13 +3,18 @@ import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Onboarding from 'react-native-onboarding-swiper';
-import RNBluetoothInfo from 'react-native-bluetooth-info';
+// import RNBluetoothInfo from 'react-native-bluetooth-info';
 
 import { BeaconTypes } from '../bits/BleConstants';
-import { getPermission, setCancelPIN, setOnboardingComplete, checkLocationsPermission } from '../actions/userActions';
+import {
+    getPermission,
+    setCancelPIN,
+    setOnboardingComplete,
+    checkLocationsPermission,
+} from '../actions/userActions';
 import { changeAppRoot } from '../actions/navActions';
 import { startBleListening } from '../actions/hardwareActions';
-import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants';
+import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants/Config';
 import getShortPressPage from './onboarding/ShortPress';
 import getLocationPage from './onboarding/Location';
 import getLongPressPage from './onboarding/LongPress';
@@ -83,12 +88,12 @@ class OnboardingMain extends React.Component {
             bluetoothEnabled: true,
             setPinErrorMessage: null,
         };
-        RNBluetoothInfo.addEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
+        // RNBluetoothInfo.addEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
     }
 
     componentDidMount() {
         // Update bluetooth state after first boot
-        RNBluetoothInfo.getCurrentState().then(bleState => this.handleBluetoothStateChange(bleState));
+        // RNBluetoothInfo.getCurrentState().then(bleState => this.handleBluetoothStateChange(bleState));
     }
 
     componentDidUpdate(prevProps) {
@@ -248,7 +253,8 @@ class OnboardingMain extends React.Component {
         const locationPage = getLocationPage({
             locationPermission: this.props.permissions.location,
             locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
-            requestLocationPermission: () => this.props.dispatch(getPermission('location', { type: 'always' })),
+            requestLocationPermission: () =>
+                this.props.dispatch(getPermission('location', { type: 'always' })),
             onPressNext: () => this.handleNextButtonPress(),
         });
 
@@ -302,7 +308,7 @@ class OnboardingMain extends React.Component {
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <Onboarding
-                    ref={(ref) => {
+                    ref={ref => {
                         this.flatList = ref;
                     }}
                     containerStyles={{

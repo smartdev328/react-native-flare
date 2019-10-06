@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { cancelActiveFlare, resetCancelFlareState } from '../actions/beaconActions';
-import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants';
+import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants/Config';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -59,7 +59,11 @@ class PinCheck extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.hasActiveFlare && !this.props.hasActiveFlare && this.props.cancelActiveFlareState === 'success') {
+        if (
+            prevProps.hasActiveFlare &&
+            !this.props.hasActiveFlare &&
+            this.props.cancelActiveFlareState === 'success'
+        ) {
             Navigation.pop(this.props.componentId);
         }
     }

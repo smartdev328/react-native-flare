@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import * as actionTypes from '../actions/actionTypes';
-import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../constants';
+import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../constants/Config';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
 import FlareDeviceID from '../bits/FlareDeviceID';
@@ -136,21 +136,21 @@ class AddJewelry extends React.Component {
         let image = '';
         let haveEnoughBeacons = false;
         switch (this.state.highestPressCount.count) {
-        case undefined:
-        case 0:
-            image = require('../assets/add-device-scanning-0.png');
-            break;
-        case 1:
-            image = require('../assets/add-device-scanning-1.png');
-            break;
-        case 2:
-            image = require('../assets/add-device-scanning-2.png');
-            break;
-        case 3:
-        default:
-            image = require('../assets/add-device-scanning-3.png');
-            haveEnoughBeacons = true;
-            break;
+            case undefined:
+            case 0:
+                image = require('../assets/add-device-scanning-0.png');
+                break;
+            case 1:
+                image = require('../assets/add-device-scanning-1.png');
+                break;
+            case 2:
+                image = require('../assets/add-device-scanning-2.png');
+                break;
+            case 3:
+            default:
+                image = require('../assets/add-device-scanning-3.png');
+                haveEnoughBeacons = true;
+                break;
         }
         return (
             <View style={styles.container}>
@@ -160,11 +160,18 @@ class AddJewelry extends React.Component {
                 <View style={styles.scanningArea}>
                     <Image source={image} style={styles.scanningImage} resizeMode="stretch" />
                     {haveEnoughBeacons && (
-                        <Image source={require('../assets/dope.png')} style={styles.dopeImage} resizeMode="stretch" />
+                        <Image
+                            source={require('../assets/dope.png')}
+                            style={styles.dopeImage}
+                            resizeMode="stretch"
+                        />
                     )}
                 </View>
                 <View style={styles.buttonArea}>
-                    <Button onPress={() => this.onPressManual()} title={Strings.jewelry.addNewManual.buttonLabel} />
+                    <Button
+                        onPress={() => this.onPressManual()}
+                        title={Strings.jewelry.addNewManual.buttonLabel}
+                    />
                 </View>
             </View>
         );

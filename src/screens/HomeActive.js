@@ -11,7 +11,7 @@ import {
     ACCOUNT_SYNC_INTERVAL_FLARE,
     ACCOUNT_SYNC_INTERVAL_DEV,
     FLARE_TIMELINE_REFRESH_INTERVAL,
-} from '../constants';
+} from '../constants/Config';
 
 import { BeaconTypes } from '../bits/BleConstants';
 import { syncAccountDetails, changeAppRoot } from '../actions/index';
@@ -87,7 +87,10 @@ class HomeActive extends React.Component {
 
         this.eventTimelineRefreshTimer = null;
         if (props.hasActiveFlare) {
-            this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
+            this.eventTimelineRefreshTimer = setInterval(
+                () => this.refreshTimeline(),
+                FLARE_TIMELINE_REFRESH_INTERVAL,
+            );
         }
         this.state = {
             showSideMenu: false,
@@ -113,9 +116,11 @@ class HomeActive extends React.Component {
 
         // Users may have modified their accounts on other devices or on the web. Keep this device
         // in sync by fetching server-stored data.
-        this.props.dispatch(syncAccountDetails({
-            analyticsToken: this.props.analyticsToken,
-        }));
+        this.props.dispatch(
+            syncAccountDetails({
+                analyticsToken: this.props.analyticsToken,
+            }),
+        );
 
         // Periodically fetch account status to ensure auth and to observe account changes from other devices.
         if (this.eventTimelineRefreshTimer) {
@@ -182,12 +187,12 @@ class HomeActive extends React.Component {
 
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
-        case 'menuButton':
-            this.toggleSideMenu();
-            break;
-        default:
-            console.warn('Unhandled button press in home screen.');
-            break;
+            case 'menuButton':
+                this.toggleSideMenu();
+                break;
+            default:
+                console.warn('Unhandled button press in home screen.');
+                break;
         }
     }
 
@@ -213,27 +218,35 @@ class HomeActive extends React.Component {
         getCurrentPosition({
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,
-        }).then((position) => {
-            this.props.dispatch(syncAccountDetails({
-                analyticsToken: this.props.analyticsToken,
-                status: {
-                    timestamp: moment()
-                        .utc()
-                        .format('YYYY-MM-DD HH:mm:ss'),
-                    latitude: position.latitude,
-                    longitude: position.longitude,
-                    details: {
-                        permissions: this.props.permissions,
-                        hardware: this.props.hardware,
-                        position,
+        }).then(position => {
+            this.props.dispatch(
+                syncAccountDetails({
+                    analyticsToken: this.props.analyticsToken,
+                    status: {
+                        timestamp: moment()
+                            .utc()
+                            .format('YYYY-MM-DD HH:mm:ss'),
+                        latitude: position.latitude,
+                        longitude: position.longitude,
+                        details: {
+                            permissions: this.props.permissions,
+                            hardware: this.props.hardware,
+                            position,
+                        },
                     },
-                },
-            }));
+                }),
+            );
         });
 
         // Process any beacon events that we tried (and failed) to submit earlier.
         if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
-            this.props.dispatch(processQueuedBeacons(this.props.handleBeacon, this.props.authToken, this.props.problemBeacons));
+            this.props.dispatch(
+                processQueuedBeacons(
+                    this.props.handleBeacon,
+                    this.props.authToken,
+                    this.props.problemBeacons,
+                ),
+            );
         }
     }
 
@@ -247,7 +260,10 @@ class HomeActive extends React.Component {
             return;
         }
         this.refreshTimeline();
-        this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
+        this.eventTimelineRefreshTimer = setInterval(
+            () => this.refreshTimeline(),
+            FLARE_TIMELINE_REFRESH_INTERVAL,
+        );
     }
 
     showPinCheckScreen() {
@@ -296,7 +312,9 @@ class HomeActive extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(call(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true));
+        this.props.dispatch(
+            call(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true),
+        );
     }
 
     sendTestCheckin() {
@@ -313,7 +331,9 @@ class HomeActive extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(checkin(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true));
+        this.props.dispatch(
+            checkin(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true),
+        );
     }
 
     render() {

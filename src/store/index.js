@@ -4,9 +4,12 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { persistCombineReducers } from 'redux-persist';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+import {
+    seamlessImmutableReconciler,
+    seamlessImmutableTransformCreator,
+} from 'redux-persist-seamless-immutable';
 import * as reducers from '../reducers/index';
-import { seamlessImmutableReconciler, seamlessImmutableTransformCreator } from 'redux-persist-seamless-immutable';
-import { REDUX_LOGGING, summary } from '../constants';
+import { REDUX_LOGGING, summary } from '../constants/Config';
 import AsyncStorage from '@react-native-community/async-storage';
 
 let middleware = [thunk];

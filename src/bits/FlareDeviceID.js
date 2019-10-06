@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { DEVICE_ID_LABEL_LENGTH, MAX_DEVICE_ID } from '../constants';
+import { DEVICE_ID_LABEL_LENGTH, MAX_DEVICE_ID } from '../constants/Config';
 
 export default class FlareDeviceID extends React.PureComponent {
     static getJewelryLabelFromDeviceID(deviceID) {
@@ -30,13 +30,10 @@ export default class FlareDeviceID extends React.PureComponent {
     render() {
         const { value } = this.props;
         const display = FlareDeviceID.getJewelryLabelFromDeviceID(value);
-        return (
-            <Text {...this.props}>{display}</Text>
-        );
+        return <Text {...this.props}>{display}</Text>;
     }
 }
 
 FlareDeviceID.propTypes = {
     value: PropTypes.number.isRequired,
 };
-

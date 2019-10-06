@@ -1,0 +1,1 @@
+../../../ReactNativeNavigation/lib/ios/RNNSideMenu/TheSidebarController/Animations/SidebarFeedlyAnimation.h

@@ -1,5 +1,5 @@
 import React from 'react';
-import CodeInput from 'react-native-confirmation-code-input';
+// import CodeInput from 'react-native-confirmation-code-input';
 import Icon from 'react-native-vector-icons/Entypo';
 import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -97,18 +97,23 @@ export default class DeviceSelector extends React.Component {
         return (
             <View style={styles.container}>
                 <View
-                    style={[styles.target, this.state.currentDevice ? styles.targetNoDevice : styles.targetHasDevice]}
+                    style={[
+                        styles.target,
+                        this.state.currentDevice ? styles.targetNoDevice : styles.targetHasDevice,
+                    ]}
                 >
                     {!this.state.currentDevice && (
                         <TouchableOpacity style={styles.fullSize} onPressOut={() => this.onPressAddDevice()}>
-                            {!this.state.addingDevice && <Icon name="plus" size={30} color={Colors.theme.cream} />}
+                            {!this.state.addingDevice && (
+                                <Icon name="plus" size={30} color={Colors.theme.cream} />
+                            )}
                             {this.state.addingDevice && (
                                 <View style={styles.fullSize}>
                                     <Text>{Strings.deviceSelector.enterDeviceCodePrompt}</Text>
                                     {this.state.errorAddingDevice && (
                                         <Text>{Strings.deviceSelector.errorAddingDevice}</Text>
                                     )}
-                                    <CodeInput
+                                    {/* <CodeInput
                                         ref={(c) => {
                                             this.deviceInputField = c;
                                         }}
@@ -117,7 +122,7 @@ export default class DeviceSelector extends React.Component {
                                         secureTextEntry={false}
                                         codeLength={6}
                                         onFulfill={deviceID => this.props.addDevice(deviceID)}
-                                    />
+                                    /> */}
                                     {this.props.claimingDevice && <ActivityIndicator color={Colors.white} />}
                                     {this.props.claimingDeviceFailure && (
                                         <Text>{this.props.claimingDeviceFailure}</Text>

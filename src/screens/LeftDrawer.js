@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { changeAppRoot } from '../actions';
-import { AMBASSADOR_SIGNUP_URL, LEFT_NAVIGATION_WIDTH } from '../constants';
+import { AMBASSADOR_SIGNUP_URL, LEFT_NAVIGATION_WIDTH } from '../constants/Config';
 import Aura from '../bits/Aura';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
@@ -107,7 +107,9 @@ class LeftDrawer extends React.Component {
                         <Text style={styles.menuItem}>{Strings.generic.signOut}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => Linking.openURL(AMBASSADOR_SIGNUP_URL)}>
-                        <Text style={[styles.menuItem, styles.specialMenuItem]}>{Strings.leftDrawer.ambassador}</Text>
+                        <Text style={[styles.menuItem, styles.specialMenuItem]}>
+                            {Strings.leftDrawer.ambassador}
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>

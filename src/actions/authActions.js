@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 
 import { changeAppRoot } from './navActions';
-import { API_URL, MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants/index';
+import { API_URL, MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants/Config';
 import * as types from './actionTypes';
 import Roles from '../constants/Roles';
 
@@ -16,7 +16,7 @@ export function signIn(email, password) {
                 email,
                 password,
             })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.AUTH_SUCCESS,
                     data: response.data,
@@ -33,7 +33,8 @@ export function signIn(email, password) {
                 dispatch({
                     type: types.AUTH_FAILURE,
                     res,
-                }));
+                }),
+            );
     };
 }
 
@@ -48,7 +49,7 @@ export function registerNewAccount(email, phone, serial) {
                 phone,
                 serial,
             })
-            .then((response) => {
+            .then(response => {
                 dispatch({
                     type: types.REGISTER_USER_SUCCESS,
                     data: response.data,
@@ -58,7 +59,8 @@ export function registerNewAccount(email, phone, serial) {
                 dispatch({
                     type: types.REGISTER_USER_FAILURE,
                     res,
-                }));
+                }),
+            );
     };
 }
 

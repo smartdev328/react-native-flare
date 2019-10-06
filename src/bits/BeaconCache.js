@@ -5,7 +5,7 @@ import {
     BLUETOOTH_BEACON_LOGGING,
     DEVICE_ADDITION_THREE_PRESS_MAX_TIME,
     UNIQUE_BEACON_TIMING_IN_MS,
-} from '../constants';
+} from '../constants/Config';
 import { BeaconTypes } from './BleConstants';
 
 export default class BeaconCache {
@@ -35,15 +35,11 @@ export default class BeaconCache {
     }
 
     hasAlreadyHandled(beacon) {
-        const {
-            type,
-            deviceID,
-            timestamp,
-            uuid,
-        } = beacon;
+        const { type, deviceID, timestamp, uuid } = beacon;
 
         let handled = false;
-        const lastTimestampForUUID = this.beaconCache[type] &&
+        const lastTimestampForUUID =
+            this.beaconCache[type] &&
             this.beaconCache[type][deviceID] &&
             this.beaconCache[type][deviceID][uuid];
 
@@ -66,12 +62,7 @@ export default class BeaconCache {
     }
 
     markAsHandled(beacon) {
-        const {
-            type,
-            deviceID,
-            timestamp,
-            uuid,
-        } = beacon;
+        const { type, deviceID, timestamp, uuid } = beacon;
 
         if (!this.beaconCache[type]) {
             this.beaconCache[type] = {};
@@ -90,7 +81,9 @@ export default class BeaconCache {
     }
 
     prune() {
-        const maxAge = moment().subtract(this.maxAgeInMinutes, 'minutes').toDate();
+        const maxAge = moment()
+            .subtract(this.maxAgeInMinutes, 'minutes')
+            .toDate();
         const maxAgeTime = maxAge.getTime();
         console.debug('<< Pruning cache >>');
         const totals = {
@@ -99,16 +92,16 @@ export default class BeaconCache {
             uuids: 0,
             kept: 0,
         };
-        Object.keys(this.beaconCache).forEach((beaconType) => {
+        Object.keys(this.beaconCache).forEach(beaconType => {
             if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
                 totals.types += 1;
             }
-            Object.keys(this.beaconCache[beaconType]).forEach((deviceID) => {
+            Object.keys(this.beaconCache[beaconType]).forEach(deviceID => {
                 if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
                     totals.types += 1;
                 }
                 const toKeep = {};
-                Object.keys(this.beaconCache[beaconType][deviceID]).forEach((uuid) => {
+                Object.keys(this.beaconCache[beaconType][deviceID]).forEach(uuid => {
                     if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
                         totals.uuids += 1;
                     }
@@ -135,22 +128,26 @@ export default class BeaconCache {
      */
     getRecentShortPressCounts() {
         const oldestTimeToConsider = new Date().getTime() - DEVICE_ADDITION_THREE_PRESS_MAX_TIME;
-        const relevantCounts = Object.keys(this.beaconCache[BeaconTypes.Short.name]).map((deviceID) => {
-            const beacons =
-                Object.keys(this.beaconCache[BeaconTypes.Short.name][deviceID])
-                    .filter(uuid => this.beaconCache[BeaconTypes.Short.name][deviceID][uuid].getTime() >= oldestTimeToConsider);
-            return {
-                deviceID: parseInt(deviceID, 10),
-                count: beacons.length,
-            };
-        }).sort((a, b) => {
-            if (a.count < b.count) {
-                return -1;
-            } else if (a.count > b.count) {
-                return 1;
-            }
-            return 0;
-        });
+        const relevantCounts = Object.keys(this.beaconCache[BeaconTypes.Short.name])
+            .map(deviceID => {
+                const beacons = Object.keys(this.beaconCache[BeaconTypes.Short.name][deviceID]).filter(
+                    uuid =>
+                        this.beaconCache[BeaconTypes.Short.name][deviceID][uuid].getTime() >=
+                        oldestTimeToConsider,
+                );
+                return {
+                    deviceID: parseInt(deviceID, 10),
+                    count: beacons.length,
+                };
+            })
+            .sort((a, b) => {
+                if (a.count < b.count) {
+                    return -1;
+                } if (a.count > b.count) {
+                    return 1;
+                }
+                return 0;
+            });
         return relevantCounts;
     }
 }

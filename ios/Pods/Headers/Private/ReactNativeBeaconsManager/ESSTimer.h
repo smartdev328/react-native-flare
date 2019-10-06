@@ -1,0 +1,1 @@
+../../../../../node_modules/@x-guard/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon/ESSTimer.h

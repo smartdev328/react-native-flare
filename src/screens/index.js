@@ -22,10 +22,15 @@ import SetttingsNotifications from './settings/Notifications';
 import SettingsPrivacy from './settings/Privacy';
 import SignIn from './SignIn';
 
-import { MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants';
+import { MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants/Config';
 
 export default (store, Provider) => {
-    Navigation.registerComponentWithRedux('com.flarejewelry.app.AddJewelry', () => AddJewelry, Provider, store);
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.AddJewelry',
+        () => AddJewelry,
+        Provider,
+        store,
+    );
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.AddJewelryConfirm',
         () => AddJewelryConfirm,
@@ -40,17 +45,37 @@ export default (store, Provider) => {
     );
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Confirm', () => Confirm, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Contacts', () => Contacts, Provider, store);
-    Navigation.registerComponentWithRedux('com.flarejewelry.app.FlareNavBar', () => FlareNavBar, Provider, store);
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.FlareNavBar',
+        () => FlareNavBar,
+        Provider,
+        store,
+    );
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Home', () => Home, Provider, store);
-    Navigation.registerComponentWithRedux('com.flarejewelry.app.HomeActive', () => HomeActive, Provider, store);
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.HomeActive',
+        () => HomeActive,
+        Provider,
+        store,
+    );
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Jewelry', () => Jewelry, Provider, store);
-    Navigation.registerComponentWithRedux('com.flarejewelry.app.LeftDrawer', () => LeftDrawer, Provider, store);
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.LeftDrawer',
+        () => LeftDrawer,
+        Provider,
+        store,
+    );
     Navigation.registerComponentWithRedux('com.flarejewelry.app.PinCheck', () => PinCheck, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Register', () => Register, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Register2', () => Register2, Provider, store);
     Navigation.registerComponentWithRedux('com.flarejewelry.app.Root', () => Root, Provider, store);
     Navigation.registerComponent('com.flarejewelry.app.Settings', () => Settings);
-    Navigation.registerComponentWithRedux('com.flarejewelry.app.settings.Call', () => SettingsCall, Provider, store);
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.settings.Call',
+        () => SettingsCall,
+        Provider,
+        store,
+    );
     Navigation.registerComponent('com.flarejewelry.app.settings.Config', () => SettingsConfig);
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.settings.Notifications',
@@ -66,7 +91,12 @@ export default (store, Provider) => {
     );
     Navigation.registerComponentWithRedux('com.flarejewelry.app.SignIn', () => SignIn, Provider, store);
     if (ONBOARDING_ENABLED) {
-        Navigation.registerComponentWithRedux('com.flarejewelry.onboarding.main', () => Onboarding, Provider, store);
+        Navigation.registerComponentWithRedux(
+            'com.flarejewelry.onboarding.main',
+            () => Onboarding,
+            Provider,
+            store,
+        );
     }
 
     if (MANUFACTURING_MODE_ENABLED) {

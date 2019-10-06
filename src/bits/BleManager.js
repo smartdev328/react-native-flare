@@ -1,8 +1,8 @@
 /* global navigator */
 import { Platform } from 'react-native';
-import Beacons from 'react-native-beacons-manager';
+import Beacons from '@x-guard/react-native-beacons-manager';
 
-import { BLUETOOTH_BEACON_LOGGING } from '../constants';
+import { BLUETOOTH_BEACON_LOGGING } from '../constants/Config';
 import { Regions } from './BleConstants';
 import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
@@ -22,15 +22,15 @@ export default class BleManager {
         Regions.forEach(region => Beacons.stopMonitoringForRegion(region));
         Beacons.stopUpdatingLocation();
 
-        Beacons.BeaconsEventEmitter.removeListener('beaconsDidRange', (data) => {
+        Beacons.BeaconsEventEmitter.removeListener('beaconsDidRange', data => {
             this.processBeaconInRange(data);
         });
 
-        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.removeListener('regionDidEnter', (region) => {
+        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.removeListener('regionDidEnter', region => {
             Beacons.startRangingBeaconsInRegion(region);
         });
 
-        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.removeListener('regionDidExit', (region) => {
+        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.removeListener('regionDidExit', region => {
             Beacons.stopRangingBeaconsInRegion(region);
         });
 
@@ -49,7 +49,7 @@ export default class BleManager {
             this.beaconCache = new BeaconCache();
         }
 
-        data.beacons.forEach((beacon) => {
+        data.beacons.forEach(beacon => {
             const parsedBeacon = BleUtils.parseBeacon(beacon);
 
             if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
@@ -59,7 +59,7 @@ export default class BleManager {
             if (!this.beaconCache.hasAlreadyHandled(parsedBeacon)) {
                 this.beaconCache.markAsHandled(parsedBeacon);
                 getLatestPosition()
-                    .then((position) => {
+                    .then(position => {
                         this.onBeacon(parsedBeacon, position);
                     })
                     .catch(() => {
@@ -88,20 +88,20 @@ export default class BleManager {
         } else {
             // ANDROID BLE SETUP
             Beacons.detectIBeacons();
-            Regions.forEach((region) => {
+            Regions.forEach(region => {
                 Beacons.startMonitoringForRegion(region);
             });
         }
 
-        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange', (data) => {
+        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange', data => {
             this.processBeaconInRange(data);
         });
 
-        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener('regionDidEnter', (region) => {
+        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener('regionDidEnter', region => {
             Beacons.startRangingBeaconsInRegion(region);
         });
 
-        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener('regionDidExit', (region) => {
+        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener('regionDidExit', region => {
             Beacons.stopRangingBeaconsInRegion(region);
         });
     }

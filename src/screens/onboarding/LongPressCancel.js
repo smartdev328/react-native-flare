@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../../constants';
+import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../../constants/Config';
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
 import CommonBottom from './CommonBottom';
@@ -41,7 +41,9 @@ export default function getLongPressCancelPage(props) {
         subtitle = (
             <View>
                 <View style={styles.subtitleArea}>
-                    <Text style={styles.subtitleText}>{Strings.onboarding.longPressCancel.initial.subtitle}</Text>
+                    <Text style={styles.subtitleText}>
+                        {Strings.onboarding.longPressCancel.initial.subtitle}
+                    </Text>
                 </View>
                 {props.setPinErrorMessage && <FlareAlert variant="info" message={props.setPinErrorMessage} />}
                 <View style={styles.pinInputArea}>

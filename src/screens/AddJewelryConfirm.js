@@ -1,10 +1,18 @@
 import React from 'react';
-import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Image,
+    KeyboardAvoidingView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../constants';
+import { DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../constants/Config';
 import { claimDevice } from '../actions/index';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -145,8 +153,17 @@ class AddJewelryConfirm extends React.Component {
                     <Text style={styles.promptForeground}>{Strings.jewelry.addNewConfirm.prompt}</Text>
                 </View>
                 <View style={styles.preview}>
-                    <Image source={require('../assets/cuff-v2.png')} style={styles.previewImage} resizeMode="contain" />
-                    <Icon name="arrow-long-up" size={30} color={Colors.theme.cream} style={styles.pointAtJewelry} />
+                    <Image
+                        source={require('../assets/cuff-v2.png')}
+                        style={styles.previewImage}
+                        resizeMode="contain"
+                    />
+                    <Icon
+                        name="arrow-long-up"
+                        size={30}
+                        color={Colors.theme.cream}
+                        style={styles.pointAtJewelry}
+                    />
                     <JewelryLabelPreview
                         deviceID={this.props.deviceID}
                         containerStyle={styles.previewLabel}

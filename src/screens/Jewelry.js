@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { disclaimDevice } from '../actions/index';
-import { USERS_CAN_ADD_JEWELRY } from '../constants';
+import { USERS_CAN_ADD_JEWELRY } from '../constants/Config';
 import * as actionTypes from '../actions/actionTypes';
 import Button from '../bits/Button';
 import FlareDeviceID from '../bits/FlareDeviceID';
@@ -62,9 +62,7 @@ class Jewelry extends React.Component {
 
     confirmRemoveJewelry(deviceID) {
         const jewelryLabel = FlareDeviceID.getJewelryLabelFromDeviceID(deviceID);
-        const prompt = `${Strings.jewelry.removeConfirm.promptBegin}${jewelryLabel}${
-            Strings.jewelry.removeConfirm.promptEnd
-        }`;
+        const prompt = `${Strings.jewelry.removeConfirm.promptBegin}${jewelryLabel}${Strings.jewelry.removeConfirm.promptEnd}`;
         Navigation.showModal({
             stack: {
                 children: [
@@ -103,23 +101,33 @@ class Jewelry extends React.Component {
 
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
-        case 'menuButton':
-            this.toggleSideMenu();
-            break;
-        default:
-            console.warn('Unhandled button press in home screen.');
-            break;
+            case 'menuButton':
+                this.toggleSideMenu();
+                break;
+            default:
+                console.warn('Unhandled button press in home screen.');
+                break;
         }
     }
 
     render() {
         return (
             <View style={styles.container}>
-                {(this.props.claimingDevice || this.props.disclaimingDevice) && <ActivityIndicator size={24} />}
-                <JewelryList jewelry={this.props.devices} onRemove={deviceID => this.confirmRemoveJewelry(deviceID)} />
+                {(this.props.claimingDevice || this.props.disclaimingDevice) && (
+                    <ActivityIndicator size={24} />
+                )}
+                <JewelryList
+                    jewelry={this.props.devices}
+                    onRemove={deviceID => this.confirmRemoveJewelry(deviceID)}
+                />
                 <View style={styles.buttonArea}>
                     {USERS_CAN_ADD_JEWELRY && (
-                        <Button dark primary onPress={() => this.addNewJewelry()} title={Strings.jewelry.addNew} />
+                        <Button
+                            dark
+                            primary
+                            onPress={() => this.addNewJewelry()}
+                            title={Strings.jewelry.addNew}
+                        />
                     )}
                 </View>
             </View>

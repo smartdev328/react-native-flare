@@ -5,7 +5,7 @@ import { Navigation } from 'react-native-navigation';
 
 import { iconsMap } from '../bits/AppIcons';
 import { registerNewAccount, resetAuth } from '../actions/authActions';
-import { DEVICE_ID_LABEL_LENGTH, DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../constants';
+import { DEVICE_ID_LABEL_LENGTH, DEVICE_TWO_FACTOR_LABEL_LENGTH } from '../constants/Config';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
@@ -197,8 +197,8 @@ class Register extends Component {
                     hasEmail &&
                     hasPhone &&
                     !hasSerialNumber && (
-                    <FlareAlert variant="info" message={Strings.register.errors.invalidSerialNumber} />
-                )}
+                        <FlareAlert variant="info" message={Strings.register.errors.invalidSerialNumber} />
+                    )}
                 {!this.state.userTyping && !this.state.invalid && (
                     <View style={styles.instructionsBackground}>
                         <Text style={styles.instructionsForeground}>{Strings.register.instructions}</Text>
