@@ -41,6 +41,8 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>We do not want access to your music. Required by supporting library.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn't open.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>We do not want access to your bluetooth peripherals. Required by supporting library.</string>
 	<key>NSCalendarsUsageDescription</key>
@@ -50,13 +52,13 @@
 	<key>NSContactsUsageDescription</key>
 	<string>Choose which friends to contact when you need backup</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isnâ€™t open.</string>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn't open.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isnâ€™t open.</string>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn't open.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isnâ€™t open.</string>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn't open.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isnâ€™t open.</string>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn't open.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We don't want to access your microphone. Required by supporting library.</string>
 	<key>NSMotionUsageDescription</key>
