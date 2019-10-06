@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSContactsUsageDescription</key>
-	<string>Choose which friends to contact when you need backup</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -39,6 +37,30 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Choose which friends to contact when you need backup</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Entypo.ttf</string>
+		<string>Feather.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>processing</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -53,27 +75,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Entypo.ttf</string>
-		<string>Feather.ttf</string>
-		<string>MaterialIcons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
-	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
-	<key>NSLocationUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
-		<string>processing</string>
-	</array>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Choose Always Allow so we can send your location to your friends when you activate a message even if the app isn’t open.</string>
 </dict>
 </plist>
