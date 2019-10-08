@@ -1,0 +1,25 @@
+{
+  "name": "RNBluetoothInfo",
+  "version": "1.0.0",
+  "summary": "RNBluetoothInfo",
+  "description": "RNBluetoothInfo",
+  "homepage": "https://github.com/bitfly-dev/react-native-bluetooth-info",
+  "license": "MIT",
+  "authors": {
+    "author": "author@domain.cn"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/author/RNBluetoothInfo.git",
+    "tag": "master"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

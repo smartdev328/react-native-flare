@@ -248,6 +248,8 @@ PODS:
     - React
   - ReactNativeNavigation (2.27.9):
     - React
+  - RNBluetoothInfo (1.0.0):
+    - React
   - RNCAsyncStorage (1.6.2):
     - React
   - RNPermissions (2.0.0):
@@ -297,6 +299,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeBeaconsManager (from `../node_modules/@x-guard/react-native-beacons-manager`)"
   - ReactNativeNavigation (from `../node_modules/react-native-navigation/ReactNativeNavigation.podspec`)
+  - "RNBluetoothInfo (from `../node_modules/@bitfly/react-native-bluetooth-info`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -382,6 +385,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@x-guard/react-native-beacons-manager"
   ReactNativeNavigation:
     :podspec: "../node_modules/react-native-navigation/ReactNativeNavigation.podspec"
+  RNBluetoothInfo:
+    :path: "../node_modules/@bitfly/react-native-bluetooth-info"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNPermissions:
@@ -431,11 +436,12 @@ SPEC CHECKSUMS:
   ReactCommon: 4fba5be89efdf0b5720e0adb3d8d7edf6e532db0
   ReactNativeBeaconsManager: dd0b01841445881989af5be9ab83153d1cdaa6b7
   ReactNativeNavigation: 00bfacb7d93b4d87464872cf6b9e4cd480ba0981
+  RNBluetoothInfo: 74190dc3e5241b051d4559fa7fcb71267d954202
   RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
   RNPermissions: 0954178834810a675efad2a26041ffa5380e663f
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: d8c572ddec8d05b7dba08e4e5f1924004a177078
 
-PODFILE CHECKSUM: fca6a55e245f1c1eb1d2380cd3fbc5a8a1a82ad2
+PODFILE CHECKSUM: 7a4071171e9870818d31bec0a7bec1df307585d7
 
 COCOAPODS: 1.7.5

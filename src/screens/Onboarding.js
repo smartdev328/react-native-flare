@@ -3,14 +3,11 @@ import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Onboarding from 'react-native-onboarding-swiper';
-// import RNBluetoothInfo from 'react-native-bluetooth-info';
+import RNBluetoothInfo from '@bitfly/react-native-bluetooth-info';
 
 import { BeaconTypes } from '../bits/BleConstants';
 import {
-    getPermission,
-    setCancelPIN,
-    setOnboardingComplete,
-    checkLocationsPermission,
+ getPermission, setCancelPIN, setOnboardingComplete, checkLocationsPermission 
 } from '../actions/userActions';
 import { changeAppRoot } from '../actions/navActions';
 import { startBleListening } from '../actions/hardwareActions';
@@ -44,25 +41,23 @@ class OnboardingMain extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         // Only change state flag once after receiving a short press
-        const receivedShortPress =
-            state.receivedShortPress ||
-            (props.latestBeacon &&
-                props.latestBeacon.type === BeaconTypes.Short.name &&
-                props.devices &&
-                props.devices.filter(d => d.id === props.latestBeacon.deviceID).length > 0);
+        const receivedShortPress =            state.receivedShortPress
+            || (props.latestBeacon
+                && props.latestBeacon.type === BeaconTypes.Short.name
+                && props.devices
+                && props.devices.filter((d) => d.id === props.latestBeacon.deviceID).length > 0);
 
         // Only change state flag once after receiving a long press
-        const receivedLongPress =
-            state.receivedLongPress ||
-            (props.latestBeacon &&
-                props.latestBeacon.type === BeaconTypes.Long.name &&
-                props.devices &&
-                props.devices.filter(d => d.id === props.latestBeacon.deviceID).length > 0);
+        const receivedLongPress =            state.receivedLongPress
+            || (props.latestBeacon
+                && props.latestBeacon.type === BeaconTypes.Long.name
+                && props.devices
+                && props.devices.filter((d) => d.id === props.latestBeacon.deviceID).length > 0);
 
         if (
-            state.receivedLongPress !== receivedLongPress ||
-            state.receivedShortPress !== receivedShortPress ||
-            props.updatedPIN !== state.hasSetPin
+            state.receivedLongPress !== receivedLongPress
+            || state.receivedShortPress !== receivedShortPress
+            || props.updatedPIN !== state.hasSetPin
         ) {
             return {
                 receivedLongPress,
@@ -88,12 +83,13 @@ class OnboardingMain extends React.Component {
             bluetoothEnabled: true,
             setPinErrorMessage: null,
         };
-        // RNBluetoothInfo.addEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
     }
 
     componentDidMount() {
+        RNBluetoothInfo.addEventListener('change', (bleState) => this.handleBluetoothStateChange(bleState));
+
         // Update bluetooth state after first boot
-        // RNBluetoothInfo.getCurrentState().then(bleState => this.handleBluetoothStateChange(bleState));
+        RNBluetoothInfo.getCurrentState().then((bleState) => this.handleBluetoothStateChange(bleState));
     }
 
     componentDidUpdate(prevProps) {
@@ -103,10 +99,10 @@ class OnboardingMain extends React.Component {
 
         // Go to next screen after user gives location permission
         if (
-            this.flatList &&
-            this.props.permissions &&
-            this.props.permissions.location &&
-            this.props.permissions.location !== prevProps.permissions.location
+            this.flatList
+            && this.props.permissions
+            && this.props.permissions.location
+            && this.props.permissions.location !== prevProps.permissions.location
         ) {
             if (this.flatList.state.currentPage === LOCATION_PAGE_INDEX) {
                 // automatically progress from location page if user gives always on access
@@ -121,13 +117,13 @@ class OnboardingMain extends React.Component {
 
         // Go to next screen after user activates flare
         if (
-            this.flatList &&
-            this.flatList.state.currentPage === BLUETOOTH_PAGE_INDEX &&
-            this.props.latestBeacon &&
-            JSON.stringify(this.props.latestBeacon) !== JSON.stringify(prevProps.latestBeacon) &&
-            this.props.latestBeacon.type === BeaconTypes.Long.name
+            this.flatList
+            && this.flatList.state.currentPage === BLUETOOTH_PAGE_INDEX
+            && this.props.latestBeacon
+            && JSON.stringify(this.props.latestBeacon) !== JSON.stringify(prevProps.latestBeacon)
+            && this.props.latestBeacon.type === BeaconTypes.Long.name
         ) {
-            const found = this.props.devices.filter(d => d.id === this.props.latestBeacon.deviceID);
+            const found = this.props.devices.filter((d) => d.id === this.props.latestBeacon.deviceID);
             if (found.length === 1) {
                 this.flatList.goNext();
             }
@@ -135,27 +131,27 @@ class OnboardingMain extends React.Component {
 
         // Go to next screen after user gives notification permission
         if (
-            this.flatList &&
-            this.flatList.state.currentPage === NOTIFICATION_PAGE_INDEX &&
-            this.props.permissions &&
-            this.props.permissions.notification &&
-            this.props.permissions.notification !== prevProps.permissions.notification
+            this.flatList
+            && this.flatList.state.currentPage === NOTIFICATION_PAGE_INDEX
+            && this.props.permissions
+            && this.props.permissions.notification
+            && this.props.permissions.notification !== prevProps.permissions.notification
         ) {
             this.flatList.goNext();
         }
 
         // End onboarding if user gave contacts permission
         if (
-            this.props.permissions &&
-            this.props.permissions.contacts &&
-            this.props.permissions.contacts !== prevProps.permissions.contacts
+            this.props.permissions
+            && this.props.permissions.contacts
+            && this.props.permissions.contacts !== prevProps.permissions.contacts
         ) {
             this.endOnboarding();
         }
     }
 
     componentWillUnmount() {
-        RNBluetoothInfo.removeEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
+        RNBluetoothInfo.removeEventListener('change', (bleState) => this.handleBluetoothStateChange(bleState));
         if (this.permissionCheckInterval !== null) {
             clearInterval(this.permissionCheckInterval);
         }
@@ -253,8 +249,7 @@ class OnboardingMain extends React.Component {
         const locationPage = getLocationPage({
             locationPermission: this.props.permissions.location,
             locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
-            requestLocationPermission: () =>
-                this.props.dispatch(getPermission('location', { type: 'always' })),
+            requestLocationPermission: () => this.props.dispatch(getPermission('location', { type: 'always' })),
             onPressNext: () => this.handleNextButtonPress(),
         });
 
@@ -291,8 +286,8 @@ class OnboardingMain extends React.Component {
             hasSetPin: this.state.hasSetPin,
             pin: this.state.cancelPIN,
             confirmPin: this.state.confirmCancelPIN,
-            changeCancelPIN: e => this.changeCancelPIN(e),
-            changeConfirmCancelPIN: e => this.changeConfirmCancelPIN(e),
+            changeCancelPIN: (e) => this.changeCancelPIN(e),
+            changeConfirmCancelPIN: (e) => this.changeConfirmCancelPIN(e),
             setCancelPIN: () => this.setCancelPIN(),
             setPinErrorMessage: this.state.setPinErrorMessage,
             onPressNext: () => this.handleNextButtonPress(),
@@ -308,7 +303,7 @@ class OnboardingMain extends React.Component {
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <Onboarding
-                    ref={ref => {
+                    ref={(ref) => {
                         this.flatList = ref;
                     }}
                     containerStyles={{

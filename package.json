@@ -9,6 +9,7 @@
         "test": "jest"
     },
     "dependencies": {
+        "@bitfly/react-native-bluetooth-info": "https://github.com/bitfly-dev/react-native-bluetooth-info.git",
         "@react-native-community/async-storage": "^1.6.2",
         "@react-native-community/geolocation": "^2.0.2",
         "@x-guard/react-native-beacons-manager": "https://github.com/X-Guard/react-native-beacons-manager.git",

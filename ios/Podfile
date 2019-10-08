@@ -44,6 +44,8 @@ target 'GetFlare' do
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways.podspec"
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse.podspec"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
+  pod 'RNBluetoothInfo', :path => "../node_modules/@bitfly/react-native-bluetooth-info"
+
 
   target 'GetFlareTests' do
     inherit! :search_paths

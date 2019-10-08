@@ -1,13 +1,15 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import { AppState, PushNotificationIOS, StyleSheet, Text, View } from 'react-native';
+import {
+ AppState, PushNotificationIOS, StyleSheet, Text, View 
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import moment from 'moment';
 import BackgroundTimer from 'react-native-background-timer';
 import { PERMISSIONS } from 'react-native-permissions';
-// import RNBluetoothInfo from 'react-native-bluetooth-info';
+import RNBluetoothInfo from '@bitfly/react-native-bluetooth-info';
 
 import {
     ACCOUNT_SYNC_INTERVAL,
@@ -16,8 +18,12 @@ import {
     SHOW_ALL_BEACONS_IN_HOME_SCREEN,
 } from '../constants/Config';
 import { BeaconTypes } from '../bits/BleConstants';
-import { claimDevice, syncAccountDetails, fetchContacts, changeAppRoot } from '../actions/index';
-import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
+import {
+ claimDevice, syncAccountDetails, fetchContacts, changeAppRoot 
+} from '../actions/index';
+import {
+ flare, processQueuedBeacons, call, checkin 
+} from '../actions/beaconActions';
 import { getPermission } from '../actions/userActions';
 import { iconsMap } from '../bits/AppIcons';
 import { startBleListening } from '../actions/hardwareActions';
@@ -86,17 +92,14 @@ class Home extends React.Component {
         };
     }
 
-    componentWillMount() {
-        // RNBluetoothInfo.addEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
-    }
-
     componentDidMount() {
         if (this.props.hasActiveFlare) {
             this.props.dispatch(changeAppRoot('secure-active-event'));
         }
 
         // Update bluetooth state after first boot
-        // RNBluetoothInfo.getCurrentState().then(bleState => this.handleBluetoothStateChange(bleState));
+        RNBluetoothInfo.getCurrentState().then((bleState) => this.handleBluetoothStateChange(bleState));
+        RNBluetoothInfo.addEventListener('change', (bleState) => this.handleBluetoothStateChange(bleState));
 
         // Contacts are not stored on the server. It takes a while to fetch them locally, so we
         // start that process now before users need to view them.
@@ -124,7 +127,7 @@ class Home extends React.Component {
 
         BackgroundTimer.stopBackgroundTimer();
         BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
-        AppState.addEventListener('change', newState => this.handleAppStateChange(newState));
+        AppState.addEventListener('change', (newState) => this.handleAppStateChange(newState));
     }
 
     componentDidUpdate(prevProps) {
@@ -161,8 +164,8 @@ class Home extends React.Component {
     componentWillUnmount() {
         this.shuttingDown = true;
         BackgroundTimer.stopBackgroundTimer();
-        // RNBluetoothInfo.removeEventListener('change', bleState => this.handleBluetoothStateChange(bleState));
-        AppState.removeEventListener('change', newState => this.handleAppStateChange(newState));
+        RNBluetoothInfo.removeEventListener('change', (bleState) => this.handleBluetoothStateChange(bleState));
+        AppState.removeEventListener('change', (newState) => this.handleAppStateChange(newState));
     }
 
     /**
@@ -199,12 +202,12 @@ class Home extends React.Component {
 
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
-            case 'menuButton':
-                this.toggleSideMenu();
-                break;
-            default:
-                console.warn('Unhandled button press in home screen.');
-                break;
+        case 'menuButton':
+            this.toggleSideMenu();
+            break;
+        default:
+            console.warn('Unhandled button press in home screen.');
+            break;
         }
     }
 
@@ -230,7 +233,7 @@ class Home extends React.Component {
         getCurrentPosition({
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,
-        }).then(position => {
+        }).then((position) => {
             this.props.dispatch(
                 syncAccountDetails({
                     analyticsToken: this.props.analyticsToken,
@@ -253,11 +256,7 @@ class Home extends React.Component {
         // Process any beacon events that we tried (and failed) to submit earlier.
         if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
             this.props.dispatch(
-                processQueuedBeacons(
-                    this.props.handleBeacon,
-                    this.props.authToken,
-                    this.props.problemBeacons,
-                ),
+                processQueuedBeacons(this.props.handleBeacon, this.props.authToken, this.props.problemBeacons),
             );
         }
     }
@@ -266,11 +265,11 @@ class Home extends React.Component {
         // eslint-disable-next-line
         console.debug(`App went to state ${nextAppState}.`);
         switch (nextAppState) {
-            case 'active':
-            case 'inactive':
-            case 'background':
-            default:
-                break;
+        case 'active':
+        case 'inactive':
+        case 'background':
+        default:
+            break;
         }
     }
 
@@ -346,9 +345,7 @@ class Home extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(
-            call(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true),
-        );
+        this.props.dispatch(call(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true));
     }
 
     sendTestCheckin() {
@@ -374,18 +371,11 @@ class Home extends React.Component {
         return (
             <View style={styles.container}>
                 {!this.state.bluetoothEnabled && (
-                    <FlareAlert
-                        message={Strings.home.bluetoothDisabledWarning}
-                        variant="warning"
-                        large
-                        centered
-                    />
+                    <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
                 )}
                 <View style={styles.deviceSelector}>
                     <DeviceSelector
-                        addDevice={deviceID =>
-                            this.props.dispatch(claimDevice(this.props.authToken, deviceID))
-                        }
+                        addDevice={(deviceID) => this.props.dispatch(claimDevice(this.props.authToken, deviceID))}
                         devices={this.props.devices}
                         claimingDevice={this.props.claimingDevice}
                         claimingDeviceFailure={this.props.claimingDeviceFailure}
@@ -449,8 +439,7 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const contactsLabel =
-        state.user.crews && state.user.crews.length
+    const contactsLabel =        state.user.crews && state.user.crews.length
             ? Strings.home.contactsButtonLabelEdit
             : Strings.home.contactsButtonLabelAdd;
 
