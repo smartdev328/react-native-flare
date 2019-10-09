@@ -252,6 +252,8 @@ PODS:
     - React
   - RNCAsyncStorage (1.6.2):
     - React
+  - RNCPushNotificationIOS (1.0.2):
+    - React
   - RNPermissions (2.0.0):
     - React
   - RNVectorIcons (6.6.0):
@@ -301,6 +303,7 @@ DEPENDENCIES:
   - ReactNativeNavigation (from `../node_modules/react-native-navigation/ReactNativeNavigation.podspec`)
   - "RNBluetoothInfo (from `../node_modules/@bitfly/react-native-bluetooth-info`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -389,6 +392,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@bitfly/react-native-bluetooth-info"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCPushNotificationIOS:
+    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNVectorIcons:
@@ -438,10 +443,11 @@ SPEC CHECKSUMS:
   ReactNativeNavigation: 00bfacb7d93b4d87464872cf6b9e4cd480ba0981
   RNBluetoothInfo: 74190dc3e5241b051d4559fa7fcb71267d954202
   RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
+  RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNPermissions: 0954178834810a675efad2a26041ffa5380e663f
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: d8c572ddec8d05b7dba08e4e5f1924004a177078
 
-PODFILE CHECKSUM: 7a4071171e9870818d31bec0a7bec1df307585d7
+PODFILE CHECKSUM: 903d2be846d13304fcb1e54ce63e56ab55e2acaa
 
 COCOAPODS: 1.7.5

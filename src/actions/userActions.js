@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import Contacts from 'react-native-contacts';
-import Permissions from 'react-native-permissions';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 import * as types from './actionTypes';
 import { API_URL } from '../constants/Config';
@@ -35,8 +35,8 @@ export function setCrewMembers(token, crewId, members) {
 export function checkContactsPermission() {
     return async function checkPerms() {
         if (Platform.OS === 'ios') {
-            Contacts.checkPermission((checkErr, permission) => {
-                if (permission !== 'authorized') {
+            check(PERMISSIONS.IOS.CONTACTS).then(response => {
+                if (response !== RESULTS.GRANTED) {
                     Contacts.requestPermission(reqErr => {
                         if (reqErr) throw reqErr;
                     });
@@ -48,8 +48,8 @@ export function checkContactsPermission() {
 
 export function checkLocationsPermission() {
     return async function checkPermsLoc(dispatch) {
-        Permissions.check('location', { type: 'always' }).then(response => {
-            if (response === 'authorized') {
+        check(PERMISSIONS.IOS.LOCATION_ALWAYS).then(response => {
+            if (response === RESULTS.GRANTED) {
                 dispatch({
                     type: types.PERMISSIONS_SUCCESS,
                     permission: 'location',
@@ -133,25 +133,30 @@ export function getCrewEventTimeline(token) {
     };
 }
 
-export function getPermission(name, options) {
+export function getPermission(name) {
+    const friendlyNames = {
+        'ios.permission.CONTACTS': 'contacts',
+        'ios.permission.LOCATION_ALWAYS': 'location',
+    };
+
     return async function doCheck(dispatch) {
-        Permissions.check(name, options).then(checkResponse => {
+        check(name).then(checkResponse => {
             dispatch({
                 type: types.PERMISSIONS_REQUEST,
                 name,
             });
-            if (checkResponse !== 'authorized') {
-                Permissions.request(name, options).then(response => {
+            if (checkResponse !== RESULTS.GRANTED) {
+                request(name).then(response => {
                     dispatch({
                         type: types.PERMISSIONS_SUCCESS,
-                        permission: name,
-                        granted: response === 'authorized',
+                        permission: friendlyNames[name],
+                        granted: response === RESULTS.GRANTED,
                     });
                 });
             } else {
                 dispatch({
                     type: types.PERMISSIONS_SUCCESS,
-                    permission: name,
+                    permission: friendlyNames[name],
                     granted: true,
                 });
             }

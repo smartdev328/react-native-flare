@@ -2,8 +2,10 @@
 /* eslint global-require: "off" */
 import React from 'react';
 import {
- AppState, PushNotificationIOS, StyleSheet, Text, View 
+ AppState, StyleSheet, Text, View 
 } from 'react-native';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import moment from 'moment';
@@ -93,8 +95,11 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.hasActiveFlare) {
-            this.props.dispatch(changeAppRoot('secure-active-event'));
+        const {
+ hasActiveFlare, dispatch, hardware, permissions, analyticsToken 
+} = this.props;
+        if (hasActiveFlare) {
+            dispatch(changeAppRoot('secure-active-event'));
         }
 
         // Update bluetooth state after first boot
@@ -103,25 +108,25 @@ class Home extends React.Component {
 
         // Contacts are not stored on the server. It takes a while to fetch them locally, so we
         // start that process now before users need to view them.
-        if (this.props.permissions.contacts) {
-            this.props.dispatch(fetchContacts());
+        if (permissions.contacts) {
+            dispatch(fetchContacts());
         } else {
-            this.props.dispatch(getPermission(PERMISSIONS.IOS.CONTACTS));
+            dispatch(getPermission(PERMISSIONS.IOS.CONTACTS));
         }
 
-        if (!this.props.permissions.location) {
-            this.props.dispatch(getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS));
+        if (!permissions.location) {
+            dispatch(getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS));
         }
 
-        if (!this.props.hardware || !this.props.hardware.bleListening) {
-            this.props.dispatch(startBleListening());
+        if (!hardware || !hardware.bleListening) {
+            dispatch(startBleListening());
         }
 
         // Users may have modified their accounts on other devices or on the web. Keep this device
         // in sync by fetching server-stored data.
-        this.props.dispatch(
+        dispatch(
             syncAccountDetails({
-                analyticsToken: this.props.analyticsToken,
+                analyticsToken,
             }),
         );
 
@@ -368,31 +373,40 @@ class Home extends React.Component {
     }
 
     render() {
+        const { bluetoothEnabled } = this.state;
+        const {
+            devices,
+            claimingDevice,
+            claimingDeviceFailure,
+            dispatch,
+            authToken,
+            latestBeacon,
+            hasActiveFlare,
+            permissions,
+            contactsLabel,
+        } = this.props;
         return (
             <View style={styles.container}>
-                {!this.state.bluetoothEnabled && (
+                {!bluetoothEnabled && (
                     <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
                 )}
                 <View style={styles.deviceSelector}>
                     <DeviceSelector
-                        addDevice={(deviceID) => this.props.dispatch(claimDevice(this.props.authToken, deviceID))}
-                        devices={this.props.devices}
-                        claimingDevice={this.props.claimingDevice}
-                        claimingDeviceFailure={this.props.claimingDeviceFailure}
+                        addDevice={(deviceID) => dispatch(claimDevice(authToken, deviceID))}
+                        devices={devices}
+                        claimingDevice={claimingDevice}
+                        claimingDeviceFailure={claimingDeviceFailure}
                     >
                         <View style={styles.centered}>
-                            {!this.props.latestBeacon && <Text>{Strings.home.lastBeacon.absent}</Text>}
-                            {this.props.latestBeacon && (
+                            {!latestBeacon && <Text>{Strings.home.lastBeacon.absent}</Text>}
+                            {latestBeacon && (
                                 <View style={styles.centered}>
                                     <Text>{Strings.home.lastBeacon.present}</Text>
                                     <Text style={[styles.centered, styles.dimmed]}>
-                                        {moment(this.props.latestBeacon.timestamp).format('MMM D @ h:mma')}
+                                        {moment(latestBeacon.timestamp).format('MMM D @ h:mma')}
                                     </Text>
                                     {SHOW_ALL_BEACONS_IN_HOME_SCREEN && (
-                                        <FlareDeviceID
-                                            value={this.props.latestBeacon.deviceID}
-                                            style={[styles.centered]}
-                                        />
+                                        <FlareDeviceID value={latestBeacon.deviceID} style={[styles.centered]} />
                                     )}
                                 </View>
                             )}
@@ -401,16 +415,11 @@ class Home extends React.Component {
                 </View>
 
                 <View style={styles.footer}>
-                    {!this.props.hasActiveFlare && this.props.permissions.contacts && (
-                        <Button
-                            primary
-                            dark
-                            onPress={() => this.handleContactsClick()}
-                            title={this.props.contactsLabel}
-                        />
+                    {!hasActiveFlare && permissions.contacts && (
+                        <Button primary dark onPress={() => this.handleContactsClick()} title={contactsLabel} />
                     )}
-                    {!this.props.permissions.contacts && <Text>{Strings.home.contactsNeedPermission}</Text>}
-                    {__DEV__ && !this.props.hasActiveFlare && (
+                    {!permissions.contacts && <Text>{Strings.home.contactsNeedPermission}</Text>}
+                    {__DEV__ && !hasActiveFlare && (
                         <View style={styles.devOnlyButtons}>
                             <Button
                                 dev

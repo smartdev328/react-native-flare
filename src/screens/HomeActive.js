@@ -1,11 +1,14 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import { Image, PushNotificationIOS, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {
+ Image, SafeAreaView, StyleSheet, Text, View 
+} from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
 import { Navigation } from 'react-native-navigation';
+import { PERMISSIONS } from 'react-native-permissions';
 import {
     ACCOUNT_SYNC_INTERVAL,
     ACCOUNT_SYNC_INTERVAL_FLARE,
@@ -15,7 +18,9 @@ import {
 
 import { BeaconTypes } from '../bits/BleConstants';
 import { syncAccountDetails, changeAppRoot } from '../actions/index';
-import { flare, processQueuedBeacons, call, checkin } from '../actions/beaconActions';
+import {
+ flare, processQueuedBeacons, call, checkin 
+} from '../actions/beaconActions';
 import { getCrewEventTimeline, getPermission } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
 import Aura from '../bits/Aura';
@@ -87,10 +92,7 @@ class HomeActive extends React.Component {
 
         this.eventTimelineRefreshTimer = null;
         if (props.hasActiveFlare) {
-            this.eventTimelineRefreshTimer = setInterval(
-                () => this.refreshTimeline(),
-                FLARE_TIMELINE_REFRESH_INTERVAL,
-            );
+            this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
         }
         this.state = {
             showSideMenu: false,
@@ -107,7 +109,7 @@ class HomeActive extends React.Component {
         }
 
         if (!this.props.permissions.location) {
-            this.props.dispatch(getPermission('location', { type: 'always' }));
+            this.props.dispatch(getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS));
         }
 
         if (!this.props.hardware || !this.props.hardware.bleListening) {
@@ -187,12 +189,12 @@ class HomeActive extends React.Component {
 
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
-            case 'menuButton':
-                this.toggleSideMenu();
-                break;
-            default:
-                console.warn('Unhandled button press in home screen.');
-                break;
+        case 'menuButton':
+            this.toggleSideMenu();
+            break;
+        default:
+            console.warn('Unhandled button press in home screen.');
+            break;
         }
     }
 
@@ -218,7 +220,7 @@ class HomeActive extends React.Component {
         getCurrentPosition({
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,
-        }).then(position => {
+        }).then((position) => {
             this.props.dispatch(
                 syncAccountDetails({
                     analyticsToken: this.props.analyticsToken,
@@ -241,11 +243,7 @@ class HomeActive extends React.Component {
         // Process any beacon events that we tried (and failed) to submit earlier.
         if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
             this.props.dispatch(
-                processQueuedBeacons(
-                    this.props.handleBeacon,
-                    this.props.authToken,
-                    this.props.problemBeacons,
-                ),
+                processQueuedBeacons(this.props.handleBeacon, this.props.authToken, this.props.problemBeacons),
             );
         }
     }
@@ -260,10 +258,7 @@ class HomeActive extends React.Component {
             return;
         }
         this.refreshTimeline();
-        this.eventTimelineRefreshTimer = setInterval(
-            () => this.refreshTimeline(),
-            FLARE_TIMELINE_REFRESH_INTERVAL,
-        );
+        this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
     }
 
     showPinCheckScreen() {
@@ -312,9 +307,7 @@ class HomeActive extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(
-            call(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true),
-        );
+        this.props.dispatch(call(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true));
     }
 
     sendTestCheckin() {

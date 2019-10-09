@@ -1,7 +1,9 @@
 import React from 'react';
 // import CodeInput from 'react-native-confirmation-code-input';
 import Icon from 'react-native-vector-icons/Entypo';
-import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+ ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View 
+} from 'react-native';
 
 import Colors from './Colors';
 import { DeviceTypes } from './DeviceConstants';
@@ -72,20 +74,6 @@ export default class DeviceSelector extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        const availableDevices = nextProps.devices || [];
-        const currentDevice = availableDevices.length > 0 ? availableDevices[0] : null;
-        const addingDevice =
-            nextProps.claimingDevice === false &&
-            nextProps.claimingDeviceFailure === false &&
-            nextProps.availableDevices.length > 0;
-
-        this.setState({
-            currentDevice,
-            addingDevice,
-        });
-    }
-
     onPressAddDevice() {
         this.setState({
             addingDevice: true,
@@ -97,16 +85,11 @@ export default class DeviceSelector extends React.Component {
         return (
             <View style={styles.container}>
                 <View
-                    style={[
-                        styles.target,
-                        this.state.currentDevice ? styles.targetNoDevice : styles.targetHasDevice,
-                    ]}
+                    style={[styles.target, this.state.currentDevice ? styles.targetNoDevice : styles.targetHasDevice]}
                 >
                     {!this.state.currentDevice && (
                         <TouchableOpacity style={styles.fullSize} onPressOut={() => this.onPressAddDevice()}>
-                            {!this.state.addingDevice && (
-                                <Icon name="plus" size={30} color={Colors.theme.cream} />
-                            )}
+                            {!this.state.addingDevice && <Icon name="plus" size={30} color={Colors.theme.cream} />}
                             {this.state.addingDevice && (
                                 <View style={styles.fullSize}>
                                     <Text>{Strings.deviceSelector.enterDeviceCodePrompt}</Text>

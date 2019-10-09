@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import {
-    ActivityIndicator,
-    Image,
-    KeyboardAvoidingView,
-    Linking,
-    PushNotificationIOS,
-    Text,
-    ScrollView,
-    View,
+ ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, ScrollView, View 
 } from 'react-native';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Navigation } from 'react-native-navigation';
@@ -190,7 +185,7 @@ class SignIn extends Component {
         getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
-        }).then(position => {
+        }).then((position) => {
             this.props.dispatch(
                 syncAccountDetails({
                     analyticsToken: this.props.analyticsToken,
@@ -244,7 +239,7 @@ class SignIn extends Component {
                             autoCapitalize="none"
                             placeholder={Strings.signin.usernamePrompt}
                             value={this.state.username}
-                            onChangeText={v => this.changeUserName(v)}
+                            onChangeText={(v) => this.changeUserName(v)}
                             onFocus={() => this.userNameFocused(true)}
                             onBlur={() => this.userNameFocused(false)}
                             keyboardType="email-address"
@@ -255,7 +250,7 @@ class SignIn extends Component {
                             placeholder={Strings.signin.passwordPrompt}
                             secureTextEntry
                             value={this.state.password}
-                            onChangeText={v => this.changePassword(v)}
+                            onChangeText={(v) => this.changePassword(v)}
                             onFocus={() => this.passwordFocused(true)}
                             onBlur={() => this.passwordFocused(false)}
                             returnKeyType="done"
@@ -285,9 +280,9 @@ class SignIn extends Component {
                                 title={Strings.signin.register}
                                 onPress={() => this.register()}
                                 invisible={
-                                    this.props.authState === 'requested' ||
-                                    this.state.userNameFocused ||
-                                    this.state.passwordFocused
+                                    this.props.authState === 'requested'
+                                    || this.state.userNameFocused
+                                    || this.state.passwordFocused
                                 }
                             />
                         </View>
