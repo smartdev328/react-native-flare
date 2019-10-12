@@ -1,13 +1,10 @@
 import React from 'react';
-// import CodeInput from 'react-native-confirmation-code-input';
-import Icon from 'react-native-vector-icons/Entypo';
 import {
- ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View 
+ Image, StyleSheet, Text, View 
 } from 'react-native';
 
 import Colors from './Colors';
 import { DeviceTypes } from './DeviceConstants';
-import Strings from '../locales/en';
 import Type from './Type';
 import Spacing from './Spacing';
 
@@ -61,73 +58,21 @@ const styles = StyleSheet.create({
     },
 });
 
-export default class DeviceSelector extends React.Component {
-    constructor(props) {
-        super(props);
+const DEFAULT_DEVICE_TYPE = 1;
 
-        const availableDevices = props.devices || [];
-        const currentDevice = availableDevices.length > 0 ? availableDevices[0] : null;
-
-        this.state = {
-            currentDevice,
-            addingDevice: false,
-        };
-    }
-
-    onPressAddDevice() {
-        this.setState({
-            addingDevice: true,
-        });
-        console.log(`Current device: ${this.state.currentDevice}`);
-    }
-
+export default class DeviceSelector extends React.PureComponent {
     render() {
+        const { children } = this.props;
         return (
             <View style={styles.container}>
-                <View
-                    style={[styles.target, this.state.currentDevice ? styles.targetNoDevice : styles.targetHasDevice]}
-                >
-                    {!this.state.currentDevice && (
-                        <TouchableOpacity style={styles.fullSize} onPressOut={() => this.onPressAddDevice()}>
-                            {!this.state.addingDevice && <Icon name="plus" size={30} color={Colors.theme.cream} />}
-                            {this.state.addingDevice && (
-                                <View style={styles.fullSize}>
-                                    <Text>{Strings.deviceSelector.enterDeviceCodePrompt}</Text>
-                                    {this.state.errorAddingDevice && (
-                                        <Text>{Strings.deviceSelector.errorAddingDevice}</Text>
-                                    )}
-                                    {/* <CodeInput
-                                        ref={(c) => {
-                                            this.deviceInputField = c;
-                                        }}
-                                        inputPosition="full-width"
-                                        containerStyle={{ height: '100%' }}
-                                        secureTextEntry={false}
-                                        codeLength={6}
-                                        onFulfill={deviceID => this.props.addDevice(deviceID)}
-                                    /> */}
-                                    {this.props.claimingDevice && <ActivityIndicator color={Colors.white} />}
-                                    {this.props.claimingDeviceFailure && (
-                                        <Text>{this.props.claimingDeviceFailure}</Text>
-                                    )}
-                                </View>
-                            )}
-                        </TouchableOpacity>
-                    )}
-                    {this.state.currentDevice && !this.state.addingDevice && (
-                        <View>
-                            <Image
-                                source={DeviceTypes[this.state.currentDevice.type - 1].image}
-                                style={styles.deviceImage}
-                            />
-                            <View style={styles.children}>
-                                <Text style={styles.deviceName}>
-                                    {DeviceTypes[this.state.currentDevice.type - 1].name}
-                                </Text>
-                                {this.props.children}
-                            </View>
+                <View style={[styles.target, styles.targetHasDevice]}>
+                    <View>
+                        <Image source={DeviceTypes[DEFAULT_DEVICE_TYPE].image} style={styles.deviceImage} />
+                        <View style={styles.children}>
+                            <Text style={styles.deviceName}>{DeviceTypes[DEFAULT_DEVICE_TYPE].name}</Text>
+                            {children}
                         </View>
-                    )}
+                    </View>
                 </View>
             </View>
         );
