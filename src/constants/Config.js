@@ -31,7 +31,7 @@ export const REDUX_LOGGING = false;
 /**
  * Toggle bluetooth listening. This may be useful when testing in emulator.
  */
-export const BLUETOOTH_LISTENING = true;
+export const BLUETOOTH_LISTENING = false;
 
 /**
  * Interval in ms for syncing account details with server.

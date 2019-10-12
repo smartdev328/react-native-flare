@@ -3,10 +3,9 @@
 #import <React/RCTConvert.h>
 #import "RCTHelpers.h"
 #import "UIImage+tint.h"
-#import "RNNRootViewController.h"
+#import "RNNComponentViewController.h"
 #import "UIImage+insets.h"
 #import "UIViewController+LayoutProtocol.h"
-#import "RNNFontAttributesCreator.h"
 
 @interface RNNNavigationButtons()
 
@@ -127,8 +126,8 @@
 	BOOL enabledBool = enabled ? [enabled boolValue] : YES;
 	[barButtonItem setEnabled:enabledBool];
 	
-	NSMutableDictionary* textAttributes = [NSMutableDictionary dictionaryWithDictionary:[RNNFontAttributesCreator createWithFontFamily:dictionary[@"fontFamily"] ?: [defaultStyle.fontFamily getWithDefaultValue:nil] fontSize:dictionary[@"fontSize"] defaultFontSize:[defaultStyle.fontSize getWithDefaultValue:@(17)] fontWeight:dictionary[@"fontWeight"] color:nil defaultColor:nil]];
-	NSMutableDictionary* disabledTextAttributes = [NSMutableDictionary dictionaryWithDictionary:[RNNFontAttributesCreator createWithFontFamily:dictionary[@"fontFamily"] ?: [defaultStyle.fontFamily getWithDefaultValue:nil] fontSize:dictionary[@"fontSize"] defaultFontSize:[defaultStyle.fontSize getWithDefaultValue:@(17)] fontWeight:dictionary[@"fontWeight"] color:nil defaultColor:nil]];
+	NSMutableDictionary* textAttributes = [[NSMutableDictionary alloc] init];
+	NSMutableDictionary* disabledTextAttributes = [[NSMutableDictionary alloc] init];
 	
 	if (!enabledBool && disabledColor) {
 		color = disabledColor;
@@ -140,7 +139,18 @@
 		[barButtonItem setImage:[[iconImage withTintColor:color] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
 		barButtonItem.tintColor = color;
 	}
-
+	
+	NSNumber* fontSize = [self fontSize:dictionary[@"fontSize"] defaultFontSize:[defaultStyle.fontSize getWithDefaultValue:nil]];
+	NSString* fontFamily = [self fontFamily:dictionary[@"fontFamily"] defaultFontFamily:[defaultStyle.fontFamily getWithDefaultValue:nil]];
+	UIFont *font = nil;
+	if (fontFamily) {
+		font = [UIFont fontWithName:fontFamily size:[fontSize floatValue]];
+	} else {
+		font = [UIFont systemFontOfSize:[fontSize floatValue]];
+	}
+	[textAttributes setObject:font forKey:NSFontAttributeName];
+	[disabledTextAttributes setObject:font forKey:NSFontAttributeName];
+	
 	[barButtonItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
 	[barButtonItem setTitleTextAttributes:textAttributes forState:UIControlStateHighlighted];
 	[barButtonItem setTitleTextAttributes:disabledTextAttributes forState:UIControlStateDisabled];
@@ -162,6 +172,24 @@
 	}
 	
 	return nil;
+}
+
+- (NSNumber *)fontSize:(NSNumber *)fontSize defaultFontSize:(NSNumber *)defaultFontSize {
+	if (fontSize) {
+		return fontSize;
+	} else if (defaultFontSize) {
+		return defaultFontSize;
+	}
+	
+	return @(17);
+}
+
+- (NSString *)fontFamily:(NSString *)fontFamily defaultFontFamily:(NSString *)defaultFontFamily {
+	if (fontFamily) {
+		return fontFamily;
+	} else {
+		return defaultFontFamily;
+	}
 }
 
 - (id)getValue:(id)value withDefault:(id)defaultValue {

@@ -5428,10 +5428,10 @@ react-native-location@^2.5.0:
   resolved "https://registry.yarnpkg.com/react-native-location/-/react-native-location-2.5.0.tgz#b6d2f7e9c3dbe13fbe87587f9533b8bf943b6a35"
   integrity sha512-myT54tZuFmN6d5RruMVfoa8eY+voJWkSd73xUVhjzJDnQr5uu5MFoH7hMg3trHF1CAkaY/2gIneOspUdGxv59Q==
 
-react-native-navigation@^2.27.9:
-  version "2.27.9"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-2.27.9.tgz#3836fbc441304428442cca3e2d9c75101eab3a74"
-  integrity sha512-B81M6QwvwKj+PTGlW8ougaQBmfRE559vjKieIqB5Lb20ozqxoqeaJV6Z/aeAf01CSSuT373es8QEuseiFcmq5w==
+react-native-navigation@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-3.2.0.tgz#3ed6cb82062959ba3b6c0ca6937e17575ac4d948"
+  integrity sha512-HfdLkwiEEIBGyg0cspSzL/gk+tQ1bfbiF5VvzGcB5t0ym1RRUpkfcf+Uv0P0SoKNDQ6UlUTGCUrjnqfVivwK9w==
   dependencies:
     hoist-non-react-statics "3.x.x"
     lodash "4.17.x"

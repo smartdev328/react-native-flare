@@ -9,12 +9,10 @@ import RNLocation from 'react-native-location';
 
 import { LEFT_NAVIGATION_WIDTH } from './constants/Config';
 import { configureStore } from './store/index';
-import { iconsMap } from './bits/AppIcons';
 
 import BleProvider from './bits/BleProvider';
 import * as actions from './actions/index';
 import Colors from './bits/Colors';
-import FlareNavBar from './bits/FlareNavBar';
 import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
 
@@ -77,28 +75,6 @@ export default class App extends Component {
         case 'secure':
             // eslint-disable-next-line no-console
             console.debug('Starting secure root.');
-            Navigation.setDefaultOptions({
-                topBar: {
-                    background: {
-                        color: Colors.theme.cream,
-                        translucent: false,
-                    },
-                    noBorder: true,
-                    leftButtons: [
-                        {
-                            id: 'menuButton',
-                            icon: iconsMap.menu,
-                            color: Colors.black,
-                        },
-                    ],
-                    title: {
-                        component: {
-                            name: 'com.flarejewelry.app.FlareNavBar',
-                            alignment: 'center',
-                        },
-                    },
-                },
-            });
             Navigation.setRoot({
                 root: {
                     sideMenu: {
@@ -114,6 +90,27 @@ export default class App extends Component {
                                     {
                                         component: {
                                             name: 'com.flarejewelry.app.Home',
+                                            options: {
+                                                topBar: {
+                                                    background: {
+                                                        color: Colors.theme.cream,
+                                                    },
+                                                    noBorder: true,
+                                                    leftButtons: [
+                                                        {
+                                                            id: 'menuButton',
+                                                            // eslint-disable-next-line
+                                                                icon: require('./assets/menu-icon.png'),
+                                                        },
+                                                    ],
+                                                    title: {
+                                                        component: {
+                                                            name: 'com.flarejewelry.app.FlareNavBar',
+                                                            alignment: 'center',
+                                                        },
+                                                    },
+                                                },
+                                            },
                                         },
                                     },
                                 ],
@@ -143,7 +140,7 @@ export default class App extends Component {
                     leftButtons: [
                         {
                             id: 'menuButton',
-                            icon: iconsMap.menu,
+                            icon: require('./assets/menu-icon.png'),
                             color: Colors.black,
                         },
                     ],
@@ -221,7 +218,7 @@ export default class App extends Component {
                     leftButtons: [
                         {
                             id: 'menuButton',
-                            icon: iconsMap.menu,
+                            icon: require('./assets/menu-icon.png'),
                             color: Colors.black,
                         },
                     ],

@@ -10,7 +10,6 @@
 @property(nonatomic, strong) Color *badgeColor;
 @property(nonatomic, strong) DotIndicatorOptions *dotIndicator;
 @property(nonatomic, strong) Text *fontFamily;
-@property(nonatomic, strong) Text *fontWeight;
 @property(nonatomic, strong) Text *testID;
 @property(nonatomic, strong) Image *icon;
 @property(nonatomic, strong) Image *selectedIcon;

@@ -7,6 +7,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 #import <RNCPushNotificationIOS.h>
+#import <BugsnagReactNative/BugsnagReactNative.h>
 
 @implementation AppDelegate
 
@@ -22,6 +23,8 @@
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   self.window.backgroundColor = UIColorFromRGB(0xF0F7FF);
   [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
+
+  [BugsnagReactNative startWithAPIKey:@"a48fda6bc569b8e593d7cf2fe3b6a49c"];
 
   return YES;
 }
