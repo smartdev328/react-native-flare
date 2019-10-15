@@ -15,4 +15,8 @@ export const DeviceTypes = [
         name: Strings.jewelry.cuffV2.name,
         image: DeviceImages.cuffV2,
     },
+    {
+        name: Strings.jewelry.cuffV3.name,
+        image: DeviceImages.cuffV2,
+    },
 ];

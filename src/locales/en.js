@@ -87,6 +87,9 @@ const Strings = {
         cuffV2: {
             name: 'Flare Cuff',
         },
+        cuffV3: {
+            name: 'Flare Cuff',
+        },
         emptyList: "You don't have any jewelry. Press the Add New button to add jewelry to your account",
         remove: 'Remove from account',
         removeConfirm: {
