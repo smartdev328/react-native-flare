@@ -63,6 +63,7 @@
 		879A59CBCEC1A90361598F24 /* Pods-GetFlareTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetFlareTests.debug.xcconfig"; path = "Target Support Files/Pods-GetFlareTests/Pods-GetFlareTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AB02F8301BD00D6BD18AD4C9 /* Pods-GetFlare-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetFlare-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-GetFlare-tvOSTests/Pods-GetFlare-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ADE74B254C68192F3BDDA0C1 /* Pods-GetFlare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetFlare.debug.xcconfig"; path = "Target Support Files/Pods-GetFlare/Pods-GetFlare.debug.xcconfig"; sourceTree = "<group>"; };
+		BEA650362360ECB70061F405 /* Get Flare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Get Flare.entitlements"; path = "GetFlare/Get Flare.entitlements"; sourceTree = "<group>"; };
 		BECF1CA42346895B0010B9BC /* GetFlare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GetFlare-Bridging-Header.h"; sourceTree = "<group>"; };
 		BECF1CA52346895C0010B9BC /* swift-bridge-hack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "swift-bridge-hack.swift"; sourceTree = "<group>"; };
 		CC7BA7151C8A8D6379E37B87 /* Pods-GetFlare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GetFlare.release.xcconfig"; path = "Target Support Files/Pods-GetFlare/Pods-GetFlare.release.xcconfig"; sourceTree = "<group>"; };
@@ -128,6 +129,7 @@
 		13B07FAE1A68108700A75B9A /* GetFlare */ = {
 			isa = PBXGroup;
 			children = (
+				BEA650362360ECB70061F405 /* Get Flare.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -693,7 +695,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CODE_SIGN_ENTITLEMENTS = "GetFlare/Get Flare.entitlements";
+				CURRENT_PROJECT_VERSION = 8;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = M8SR977JX7;
 				INFOPLIST_FILE = GetFlare/Info.plist;
@@ -721,7 +724,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CODE_SIGN_ENTITLEMENTS = "GetFlare/Get Flare.entitlements";
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = M8SR977JX7;
 				INFOPLIST_FILE = GetFlare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
