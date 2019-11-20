@@ -7,7 +7,7 @@ import RNBluetoothInfo from '@bitfly/react-native-bluetooth-info';
 
 import { BeaconTypes } from '../bits/BleConstants';
 import {
- getPermission, setCancelPIN, setOnboardingComplete, checkLocationsPermission 
+ getPermission, setCancelPIN, setOnboardingComplete, checkLocationsPermission, getNotificationsPermission
 } from '../actions/userActions';
 import { changeAppRoot } from '../actions/navActions';
 import { startBleListening } from '../actions/hardwareActions';
@@ -249,7 +249,7 @@ class OnboardingMain extends React.Component {
         const locationPage = getLocationPage({
             locationPermission: this.props.permissions.location,
             locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
-            requestLocationPermission: () => this.props.dispatch(getPermission('location', { type: 'always' })),
+            requestLocationPermission: () => this.props.dispatch(getPermission('ios.permission.LOCATION_ALWAYS', { type: 'always' })),
             onPressNext: () => this.handleNextButtonPress(),
         });
 
@@ -270,7 +270,7 @@ class OnboardingMain extends React.Component {
         });
 
         const notificationsPage = getNotificationsPage({
-            requestNotificationsPermission: () => this.props.dispatch(getPermission('notification')),
+            requestNotificationsPermission: () => this.props.dispatch(getNotificationsPermission),
             notificationEnabled: this.props.permissions && this.props.permissions.notification,
             notificationPrompted: this.props.permissions && this.props.permissions.notificationPrompted,
             onPressNext: () => this.handleNextButtonPress(),
@@ -294,7 +294,7 @@ class OnboardingMain extends React.Component {
         });
 
         const contactsPage = getContactsPage({
-            requestContactsPermission: () => this.props.dispatch(getPermission('contacts')),
+            requestContactsPermission: () => this.props.dispatch(getPermission('ios.permission.CONTACTS')),
             endOnboarding: () => this.endOnboarding(),
             contactsEnabled: this.props.permissions && this.props.permissions.contacts,
             contactsPrompted: this.props.permissions && this.props.permissions.contactsPrompted,

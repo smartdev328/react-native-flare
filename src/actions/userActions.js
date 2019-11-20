@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import Contacts from 'react-native-contacts';
 import {
- check, request, PERMISSIONS, RESULTS 
+    check, checkNotifications, request, requestNotifications, PERMISSIONS, RESULTS,
 } from 'react-native-permissions';
 
 import * as types from './actionTypes';
@@ -135,6 +135,24 @@ export function getCrewEventTimeline(token) {
     };
 }
 
+export const getNotificationsPermission = async (dispatch) => {
+    const { status } = await checkNotifications();
+    if (status === RESULTS.GRANTED) {
+        dispatch({
+            type: types.PERMISSIONS_SUCCESS,
+            permission: 'notification',
+            granted: true,
+        });
+    } else {
+        const finalResult = await requestNotifications(['alert', 'badge', 'sound', 'lockScreen']);
+        dispatch({
+            type: types.PERMISSIONS_SUCCESS,
+            permission: 'notification',
+            granted: finalResult === RESULTS.GRANTED,
+        });
+    }
+};
+
 export function getPermission(name) {
     const friendlyNames = {
         'ios.permission.CONTACTS': 'contacts',
@@ -147,6 +165,7 @@ export function getPermission(name) {
                 type: types.PERMISSIONS_REQUEST,
                 name,
             });
+            console.log("check", {checkResponse});
             if (checkResponse !== RESULTS.GRANTED) {
                 request(name).then((response) => {
                     dispatch({
