@@ -70,7 +70,7 @@ class AddJewelry extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         const { shortPressCounts } = props;
-        const latestShortPress = shortPressCounts[0] || {};
+        const latestShortPress = (shortPressCounts && shortPressCounts[0]) || {};
         const { highestPressCount } = state;
 
         if (
