@@ -120,7 +120,7 @@ export const LEFT_NAVIGATION_WIDTH = 223;
 /**
  * Toggle visibility of Add New Jewelry feature
  */
-export const USERS_CAN_ADD_JEWELRY = false;
+export const USERS_CAN_ADD_JEWELRY = true;
 
 /**
  * Summary object from legacy implementation used to present
