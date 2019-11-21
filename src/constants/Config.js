@@ -123,6 +123,11 @@ export const LEFT_NAVIGATION_WIDTH = 223;
 export const USERS_CAN_ADD_JEWELRY = true;
 
 /**
+ * Toggle logging of network calls
+ */
+export const VERBOSE_NETWORK_LOGGING = true;
+
+/**
  * Summary object from legacy implementation used to present
  * customer service data in UI.
  */

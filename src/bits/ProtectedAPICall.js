@@ -1,5 +1,6 @@
 /* global __DEV__ */
 import axios from 'axios';
+import { VERBOSE_NETWORK_LOGGING } from '../constants/Config';
 
 async function getAuthorizationHeader(userToken) {
     const headers = {
@@ -27,10 +28,19 @@ export default async function request(token, serverUrl, route, options) {
         url: `${serverUrl}${route}`,
     });
 
-    if (__DEV__ && false) {
+    if (VERBOSE_NETWORK_LOGGING) {
         // eslint-disable-next-line
         console.debug(JSON.stringify(optionsWithHeaders));
     }
 
-    return axios(optionsWithHeaders);
+    const response = await axios(optionsWithHeaders);
+    if (VERBOSE_NETWORK_LOGGING) {
+        const { data, status } = response;
+        console.debug({
+            route,
+            data,
+            status,
+        });
+    }
+    return response;
 }
