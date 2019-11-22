@@ -3,6 +3,7 @@ import {
     ActivityIndicator,
     Image,
     KeyboardAvoidingView,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -20,13 +21,20 @@ import Spacing from '../bits/Spacing';
 import Type from '../bits/Type';
 import Strings from '../locales/en';
 import JewelryLabelPreview from '../bits/JewelryLabelPreview';
+import { keyboardOffset } from '../helpers/screen';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'space-between',
         backgroundColor: Colors.backgrounds.blue,
+    },
+    scroller: {
+        flex: 1,
+    },
+    scrollContainer: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
         padding: Spacing.medium,
     },
     manualInputArea: {
@@ -51,7 +59,6 @@ const styles = StyleSheet.create({
         paddingTop: Spacing.medium,
     },
     preview: {
-        flex: 4,
         flexDirection: 'column',
         marginBottom: Spacing.medium,
     },
@@ -73,7 +80,6 @@ const styles = StyleSheet.create({
         right: '5%',
     },
     buttonArea: {
-        flex: 1,
         marginBottom: Spacing.small,
     },
     secondFactorErrorBg: {
@@ -111,7 +117,11 @@ class AddJewelryConfirm extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (!this.props.claimingDevice && prevProps.claimingDevice && this.props.claimedDevice) {
+        if (
+            !this.props.claimingDevice &&
+            prevProps.claimingDevice &&
+            this.props.claimedDevice
+        ) {
             Navigation.popToRoot('JEWELRY_STACK');
         }
     }
@@ -134,7 +144,9 @@ class AddJewelryConfirm extends React.Component {
         });
         if (newCode.length === DEVICE_TWO_FACTOR_LABEL_LENGTH) {
             const numericDeviceID = parseInt(this.props.deviceID, 16);
-            this.props.dispatch(claimDevice(this.props.authToken, numericDeviceID, newCode));
+            this.props.dispatch(
+                claimDevice(this.props.authToken, numericDeviceID, newCode)
+            );
         }
     }
 
@@ -148,54 +160,73 @@ class AddJewelryConfirm extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container}>
-                <View style={styles.promptBackground}>
-                    <Text style={styles.promptForeground}>{Strings.jewelry.addNewConfirm.prompt}</Text>
-                </View>
-                <View style={styles.preview}>
-                    <Image
-                        source={require('../assets/cuff-v2.png')}
-                        style={styles.previewImage}
-                        resizeMode="contain"
-                    />
-                    <Icon
-                        name="arrow-long-up"
-                        size={30}
-                        color={Colors.theme.cream}
-                        style={styles.pointAtJewelry}
-                    />
-                    <JewelryLabelPreview
-                        deviceID={this.props.deviceID}
-                        containerStyle={styles.previewLabel}
-                        circleTwoFactor
-                    />
-                </View>
-                {!this.props.claimingDevice && this.props.claimingDeviceFailure && (
-                    <View style={styles.secondFactorErrorBg}>
-                        <Text style={styles.secondFactorErrorFg}>
-                            {Strings.jewelry.addNewConfirm.secondFactorError}
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior="padding"
+                keyboardVerticalOffset={keyboardOffset()}
+            >
+                <ScrollView
+                    style={styles.scroller}
+                    alwaysBounceVertical={false}
+                    contentContainerStyle={styles.scrollContainer}
+                >
+                    <View style={styles.promptBackground}>
+                        <Text style={styles.promptForeground}>
+                            {Strings.jewelry.addNewConfirm.prompt}
                         </Text>
                     </View>
-                )}
-                <View style={styles.manualInputArea}>
-                    {this.props.claimingDevice && <ActivityIndicator />}
-                    {!this.props.claimingDevice && (
-                        <TextInput
-                            autoCapitalize="characters"
-                            placeholder={Strings.jewelry.addNewConfirm.placeholderTwoFactor}
-                            style={styles.manualInputField}
-                            value={this.state.twoFactor}
-                            onChangeText={v => this.changeTwoFactor(v)}
-                            maxLength={DEVICE_TWO_FACTOR_LABEL_LENGTH}
+                    <View style={styles.preview}>
+                        <Image
+                            source={require('../assets/cuff-v2.png')}
+                            style={styles.previewImage}
+                            resizeMode="contain"
                         />
-                    )}
-                </View>
-                <View style={styles.buttonArea}>
-                    <Button
-                        onPress={() => AddJewelryConfirm.onPressTryAgain()}
-                        title={Strings.jewelry.addNewTryAgain}
-                    />
-                </View>
+                        <Icon
+                            name="arrow-long-up"
+                            size={30}
+                            color={Colors.theme.cream}
+                            style={styles.pointAtJewelry}
+                        />
+                        <JewelryLabelPreview
+                            deviceID={this.props.deviceID}
+                            containerStyle={styles.previewLabel}
+                            circleTwoFactor
+                        />
+                    </View>
+                    {!this.props.claimingDevice &&
+                        this.props.claimingDeviceFailure && (
+                            <View style={styles.secondFactorErrorBg}>
+                                <Text style={styles.secondFactorErrorFg}>
+                                    {
+                                        Strings.jewelry.addNewConfirm
+                                            .secondFactorError
+                                    }
+                                </Text>
+                            </View>
+                        )}
+                    <View style={styles.manualInputArea}>
+                        {this.props.claimingDevice && <ActivityIndicator />}
+                        {!this.props.claimingDevice && (
+                            <TextInput
+                                autoCapitalize="characters"
+                                placeholder={
+                                    Strings.jewelry.addNewConfirm
+                                        .placeholderTwoFactor
+                                }
+                                style={styles.manualInputField}
+                                value={this.state.twoFactor}
+                                onChangeText={v => this.changeTwoFactor(v)}
+                                maxLength={DEVICE_TWO_FACTOR_LABEL_LENGTH}
+                            />
+                        )}
+                    </View>
+                    <View style={styles.buttonArea}>
+                        <Button
+                            onPress={() => AddJewelryConfirm.onPressTryAgain()}
+                            title={Strings.jewelry.addNewTryAgain}
+                        />
+                    </View>
+                </ScrollView>
             </KeyboardAvoidingView>
         );
     }
