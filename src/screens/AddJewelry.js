@@ -70,6 +70,7 @@ class AddJewelry extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         const { shortPressCounts } = props;
+        console.log('getDerivedStateFromProps', { shortPressCounts, state });
         const latestShortPress = (shortPressCounts && shortPressCounts[0]) || {};
         const { highestPressCount } = state;
 
@@ -86,7 +87,7 @@ class AddJewelry extends React.Component {
 
     componentDidUpdate() {
         const { listening, highestPressCount } = this.state;
-        if (listening && highestPressCount.count > DEVICE_ADDITION_MIN_PRESS_COUNT) {
+        if (listening && highestPressCount.count >= DEVICE_ADDITION_MIN_PRESS_COUNT) {
             Navigation.push('JEWELRY_STACK', {
                 component: {
                     name: 'com.flarejewelry.app.AddJewelryConfirm',

@@ -90,7 +90,7 @@ export const MAX_DEVICE_ID = 16777216;
 /**
  * Max time in which to observe three button presses for device addtiion
  */
-export const DEVICE_ADDITION_THREE_PRESS_MAX_TIME = 2500;
+export const DEVICE_ADDITION_THREE_PRESS_MAX_TIME = 5000;
 
 /**
  * Minimum number of times users press button to add device
@@ -126,6 +126,12 @@ export const USERS_CAN_ADD_JEWELRY = true;
  * Toggle logging of network calls
  */
 export const VERBOSE_NETWORK_LOGGING = true;
+
+/**
+ * Time after which a second beacon press will not be considered identical
+ * to the first
+ */
+export const BEACON_DEBOUNCE_TIME = 30000;
 
 /**
  * Summary object from legacy implementation used to present

@@ -2,6 +2,7 @@ import moment from 'moment';
 import {
     BEACON_CACHE_MAX_AGE_IN_MINS,
     BEACON_CACHE_PRUNE_INTERVAL_IN_MS,
+    BEACON_DEBOUNCE_TIME,
     BLUETOOTH_BEACON_LOGGING,
     DEVICE_ADDITION_THREE_PRESS_MAX_TIME,
     UNIQUE_BEACON_TIMING_IN_MS,
@@ -27,13 +28,6 @@ export default class BeaconCache {
         clearInterval(this.backgroundTimer);
     }
 
-    static getRoundedTimestamp(timestamp) {
-        const accuracy = 30000;
-        const rounded = accuracy * Math.round(timestamp / accuracy);
-        const roundedTimestamp = new Date(rounded);
-        return roundedTimestamp;
-    }
-
     hasAlreadyHandled(beacon) {
         const { type, deviceID, timestamp, uuid } = beacon;
 
@@ -43,13 +37,13 @@ export default class BeaconCache {
             this.beaconCache[type][deviceID] &&
             this.beaconCache[type][deviceID][uuid];
 
-        const roundedTimestamp = BeaconCache.getRoundedTimestamp(timestamp);
-
         // Putting nonce under the deviceID lets us compare timestamps across hour/day boundaries.
         // We consider beacons to be the same if they have the same nonce and were received within
         // UNIQUE_BEACON_TIMING_IN_MS milliseconds of each other.
         if (lastTimestampForUUID) {
-            const diff = Math.abs(moment(lastTimestampForUUID).diff(roundedTimestamp));
+            const diff = Math.abs(
+                moment(lastTimestampForUUID).diff(timestamp)
+            );
             handled = diff < UNIQUE_BEACON_TIMING_IN_MS;
         }
 
@@ -72,12 +66,10 @@ export default class BeaconCache {
             this.beaconCache[type][deviceID] = {};
         }
 
-        if (!this.beaconCache[type][deviceID][uuid]) {
-            this.beaconCache[type][deviceID][uuid] = null;
+        const oldTimestamp = this.beaconCache[type][deviceID][uuid];
+        if (typeof oldTimestamp !== 'object' || timestamp - oldTimestamp.getTime() > BEACON_DEBOUNCE_TIME) {
+            this.beaconCache[type][deviceID][uuid] = new Date(timestamp);
         }
-
-        const roundedTimestamp = BeaconCache.getRoundedTimestamp(timestamp);
-        this.beaconCache[type][deviceID][uuid] = roundedTimestamp;
     }
 
     prune() {
@@ -101,19 +93,23 @@ export default class BeaconCache {
                     totals.types += 1;
                 }
                 const toKeep = {};
-                Object.keys(this.beaconCache[beaconType][deviceID]).forEach(uuid => {
-                    if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
-                        totals.uuids += 1;
-                    }
-                    const beaconDate = this.beaconCache[beaconType][deviceID][uuid];
-                    const timestamp = beaconDate.getTime();
-                    if (maxAgeTime < timestamp) {
-                        toKeep[uuid] = beaconDate;
+                Object.keys(this.beaconCache[beaconType][deviceID]).forEach(
+                    uuid => {
                         if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
-                            totals.kept += 1;
+                            totals.uuids += 1;
+                        }
+                        const beaconDate = this.beaconCache[beaconType][
+                            deviceID
+                        ][uuid];
+                        const timestamp = beaconDate.getTime();
+                        if (maxAgeTime < timestamp) {
+                            toKeep[uuid] = beaconDate;
+                            if (BLUETOOTH_BEACON_LOGGING === 'verbose') {
+                                totals.kept += 1;
+                            }
                         }
                     }
-                });
+                );
                 this.beaconCache[beaconType][deviceID] = toKeep;
             });
         });
@@ -127,13 +123,15 @@ export default class BeaconCache {
      * by descending number of presses.
      */
     getRecentShortPressCounts() {
-        const oldestTimeToConsider = new Date().getTime() - DEVICE_ADDITION_THREE_PRESS_MAX_TIME;
-        const relevantCounts = Object.keys(this.beaconCache[BeaconTypes.Short.name])
-            .map(deviceID => {
-                const beacons = Object.keys(this.beaconCache[BeaconTypes.Short.name][deviceID]).filter(
-                    uuid =>
-                        this.beaconCache[BeaconTypes.Short.name][deviceID][uuid].getTime() >=
-                        oldestTimeToConsider,
+        console.log(this.beaconCache);
+        const oldestTimeToConsider =
+            new Date().getTime() - DEVICE_ADDITION_THREE_PRESS_MAX_TIME;
+        const relevantCounts = Object.entries(
+            this.beaconCache[BeaconTypes.Short.name]
+        )
+            .map(([deviceID, allBeacons]) => {
+                const beacons = Object.values(allBeacons).filter(
+                    t => t.getTime() >= oldestTimeToConsider
                 );
                 return {
                     deviceID: parseInt(deviceID, 10),
@@ -143,7 +141,8 @@ export default class BeaconCache {
             .sort((a, b) => {
                 if (a.count < b.count) {
                     return -1;
-                } if (a.count > b.count) {
+                }
+                if (a.count > b.count) {
                     return 1;
                 }
                 return 0;
