@@ -31,13 +31,18 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function FlareTextInput(props) {
-    return (
-        <TextInput
-            {...props}
-            editable={!props.disabled}
-            placeholderTextColor={Colors.grey}
-            style={[styles.input, props.disabled && styles.disabled, props.error && styles.error]}
-        />
-    );
-}
+const FlareTextInput = ({ disabled, error, inputRef, ...rest }) => (
+    <TextInput
+        {...rest}
+        ref={inputRef}
+        editable={!disabled}
+        placeholderTextColor={Colors.grey}
+        style={[
+            styles.input,
+            disabled && styles.disabled,
+            error && styles.error,
+        ]}
+    />
+);
+
+export default FlareTextInput;

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import {
- ActivityIndicator, Image, KeyboardAvoidingView, Linking, Text, ScrollView, View 
+    ActivityIndicator,
+    Image,
+    KeyboardAvoidingView,
+    Linking,
+    Text,
+    ScrollView,
+    View,
 } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
@@ -18,6 +24,8 @@ import getCurrentPosition from '../helpers/location';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import FlareTextInput from '../bits/FlareTextInput';
+import { keyboardOffset } from '../helpers/screen';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 const styles = {
     container: {
@@ -28,6 +36,7 @@ const styles = {
         right: 0,
     },
     scroller: {
+        flex: 1,
         position: 'absolute',
         top: 0,
         left: 0,
@@ -118,7 +127,10 @@ class SignIn extends Component {
     };
 
     componentDidMount() {
-        this.accountSyncInterval = setInterval(() => this.syncAccount(), ACCOUNT_SYNC_INTERVAL);
+        this.accountSyncInterval = setInterval(
+            () => this.syncAccount(),
+            ACCOUNT_SYNC_INTERVAL
+        );
     }
 
     componentDidUpdate(prevProps) {
@@ -185,7 +197,7 @@ class SignIn extends Component {
         getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
-        }).then((position) => {
+        }).then(position => {
             this.props.dispatch(
                 syncAccountDetails({
                     analyticsToken: this.props.analyticsToken,
@@ -201,7 +213,7 @@ class SignIn extends Component {
                             position,
                         },
                     },
-                }),
+                })
             );
         });
     }
@@ -209,7 +221,12 @@ class SignIn extends Component {
     async startSignIn() {
         const { dispatch } = this.props;
         const { username, password } = this.state;
-        if (username === null || username.length === 0 || password === null || password.length === 0) {
+        if (
+            username === null ||
+            username.length === 0 ||
+            password === null ||
+            password.length === 0
+        ) {
             this.setState({
                 invalid: true,
             });
@@ -223,15 +240,27 @@ class SignIn extends Component {
         dispatch(signIn(username, password));
     }
 
+    onSubmitUsernameEditing = () => {
+        if (this.passwordRef) {
+            this.passwordRef.focus();
+        }
+    };
+
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <Aura />
-                <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroller}>
+                <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={styles.scroller}
+                >
                     <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
-                    {(this.state.invalid || this.props.authState === 'failed') && (
+                    {(this.state.invalid ||
+                        this.props.authState === 'failed') && (
                         <View style={styles.invalid}>
-                            <Text style={styles.invalidText}>{Strings.signin.invalid}</Text>
+                            <Text style={styles.invalidText}>
+                                {Strings.signin.invalid}
+                            </Text>
                         </View>
                     )}
                     <View style={styles.inputs}>
@@ -239,18 +268,22 @@ class SignIn extends Component {
                             autoCapitalize="none"
                             placeholder={Strings.signin.usernamePrompt}
                             value={this.state.username}
-                            onChangeText={(v) => this.changeUserName(v)}
+                            onChangeText={v => this.changeUserName(v)}
                             onFocus={() => this.userNameFocused(true)}
                             onBlur={() => this.userNameFocused(false)}
+                            onSubmitEditing={this.onSubmitUsernameEditing}
                             keyboardType="email-address"
                             returnKeyType="next"
                         />
                         <FlareTextInput
+                            inputRef={ref => {
+                                this.passwordRef = ref;
+                            }}
                             autoCapitalize="none"
                             placeholder={Strings.signin.passwordPrompt}
                             secureTextEntry
                             value={this.state.password}
-                            onChangeText={(v) => this.changePassword(v)}
+                            onChangeText={v => this.changePassword(v)}
                             onFocus={() => this.passwordFocused(true)}
                             onBlur={() => this.passwordFocused(false)}
                             returnKeyType="done"
@@ -259,8 +292,15 @@ class SignIn extends Component {
                         <Button
                             secondary
                             title={Strings.signin.forgotPassword}
-                            onPress={() => Linking.openURL('https://app.flarejewelry.co/reset')}
-                            invisible={this.state.userNameFocused || this.state.passwordFocused}
+                            onPress={() =>
+                                Linking.openURL(
+                                    'https://app.flarejewelry.co/reset'
+                                )
+                            }
+                            invisible={
+                                this.state.userNameFocused ||
+                                this.state.passwordFocused
+                            }
                         />
                         <Button
                             primary
@@ -271,7 +311,9 @@ class SignIn extends Component {
                         />
                     </View>
                     <View style={styles.loadingContainer}>
-                        {this.props.authState === 'requested' && <ActivityIndicator color={Colors.white} />}
+                        {this.props.authState === 'requested' && (
+                            <ActivityIndicator color={Colors.white} />
+                        )}
                     </View>
                     {this.props.authState !== 'requested' && (
                         <View style={styles.buttons}>
@@ -280,9 +322,9 @@ class SignIn extends Component {
                                 title={Strings.signin.register}
                                 onPress={() => this.register()}
                                 invisible={
-                                    this.props.authState === 'requested'
-                                    || this.state.userNameFocused
-                                    || this.state.passwordFocused
+                                    this.props.authState === 'requested' ||
+                                    this.state.userNameFocused ||
+                                    this.state.passwordFocused
                                 }
                             />
                         </View>
