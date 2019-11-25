@@ -1,13 +1,10 @@
 {
-    "extends": "airbnb",
+    "extends": ["airbnb", "prettier"],
     "parser": "babel-eslint",
     "rules": {
-        "indent": ["error", 4],
-        "max-len": ["error", { "code": 120 }],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "react/jsx-indent": [2, 4],
-        "react/jsx-indent-props": [2, 4],
-        "react/prop-types": [0]
+        "react/prop-types": "off",
+        "import/prefer-default-export": "off"
     },
     "globals": { "fetch": false }
 }
