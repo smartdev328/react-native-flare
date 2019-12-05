@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
-import CommonTop from './CommonTop';
+import CommonTop from '../CommonTop';
 import CommonMiddle from './CommonMiddle';
 import CommonBottom from './CommonBottom';
 import Spacing from '../../bits/Spacing';
@@ -25,7 +25,10 @@ export default function getContactsPage(props) {
         image: <CommonTop />,
         title: (
             <View style={styles.titleContainer}>
-                <CommonMiddle center imageSource={{ uri: 'onboarding-contacts' }} />
+                <CommonMiddle
+                    center
+                    imageSource={{ uri: 'onboarding-contacts' }}
+                />
             </View>
         ),
         subtitle: (
@@ -36,9 +39,14 @@ export default function getContactsPage(props) {
                         bodyText={Strings.onboarding.contacts.initial.subtitle}
                         body={
                             <Button
-                                title={Strings.onboarding.contacts.initial.buttonLabel}
+                                title={
+                                    Strings.onboarding.contacts.initial
+                                        .buttonLabel
+                                }
                                 primary
-                                onPress={() => props.requestContactsPermission()}
+                                onPress={() =>
+                                    props.requestContactsPermission()
+                                }
                             />
                         }
                     />
@@ -49,7 +57,10 @@ export default function getContactsPage(props) {
                         bodyText={Strings.onboarding.contacts.disabled.subtitle}
                         body={
                             <Button
-                                title={Strings.onboarding.contacts.disabled.buttonLabel}
+                                title={
+                                    Strings.onboarding.contacts.disabled
+                                        .buttonLabel
+                                }
                                 primary
                                 onPress={() => props.endOnboarding()}
                             />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import Spacing from '../../bits/Spacing';
+import Spacing from '../bits/Spacing';
 
 const styles = StyleSheet.create({
     container: {

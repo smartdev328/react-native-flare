@@ -6,7 +6,7 @@ import { setCrewMembers, fetchContacts } from '../actions/userActions';
 import Button from '../bits/Button';
 import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
-import CommonTop from './onboarding/CommonTop';
+import CommonTop from './CommonTop';
 import CrewList from '../bits/CrewList';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
@@ -97,7 +97,8 @@ class Contacts extends React.Component {
         let needsUpdate = false;
         if (JSON.stringify(crew) !== JSON.stringify(state.crew)) {
             newState.crew = props.crew;
-            newState.crewListHeight = props.crew.members.length * CREW_LIST_ITEM_HEIGHT;
+            newState.crewListHeight =
+                props.crew.members.length * CREW_LIST_ITEM_HEIGHT;
             needsUpdate = true;
         }
 
@@ -138,7 +139,9 @@ class Contacts extends React.Component {
         });
 
         const crewId = (this.state.crew && this.state.crew.id) || 0;
-        this.props.dispatch(setCrewMembers(this.props.authToken, crewId, newMembers));
+        this.props.dispatch(
+            setCrewMembers(this.props.authToken, crewId, newMembers)
+        );
     }
 
     removeCrewMember(contact) {
@@ -155,7 +158,9 @@ class Contacts extends React.Component {
         });
 
         const crewId = (this.state.crew && this.state.crew.id) || 0;
-        this.props.dispatch(setCrewMembers(this.props.authToken, crewId, newMembers));
+        this.props.dispatch(
+            setCrewMembers(this.props.authToken, crewId, newMembers)
+        );
     }
 
     render() {
@@ -165,19 +170,37 @@ class Contacts extends React.Component {
                     <View style={styles.onboardingHeader}>
                         <View style={styles.tutorialOverlay}>
                             <CommonTop />
-                            <Text style={styles.tutorialTitle}>{Strings.onboarding.contacts.overlay.title}</Text>
-                            <Text style={styles.tutorialText}>{Strings.onboarding.contacts.overlay.instructions}</Text>
+                            <Text style={styles.tutorialTitle}>
+                                {Strings.onboarding.contacts.overlay.title}
+                            </Text>
+                            <Text style={styles.tutorialText}>
+                                {
+                                    Strings.onboarding.contacts.overlay
+                                        .instructions
+                                }
+                            </Text>
                         </View>
                         {this.props.hasCrew && (
                             <View style={styles.tutorialButtons}>
                                 <CrewList
-                                    style={{ height: this.state.crewListHeight }}
+                                    style={{
+                                        height: this.state.crewListHeight,
+                                    }}
                                     crew={this.props.crew}
-                                    onPressContact={contact => this.removeCrewMember(contact)}
+                                    onPressContact={contact =>
+                                        this.removeCrewMember(contact)
+                                    }
                                 />
                                 <Button
-                                    title={Strings.onboarding.contacts.overlay.closeButtonLabel}
-                                    onPress={() => this.props.dispatch(changeAppRoot('secure'))}
+                                    title={
+                                        Strings.onboarding.contacts.overlay
+                                            .closeButtonLabel
+                                    }
+                                    onPress={() =>
+                                        this.props.dispatch(
+                                            changeAppRoot('secure')
+                                        )
+                                    }
                                     primary
                                 />
                             </View>
@@ -188,19 +211,26 @@ class Contacts extends React.Component {
                     <View>
                         {!this.props.hasCrew && (
                             <View>
-                                <Text style={styles.prompt}>{Strings.contacts.choosePrompt}</Text>
+                                <Text style={styles.prompt}>
+                                    {Strings.contacts.choosePrompt}
+                                </Text>
                             </View>
                         )}
                         {this.props.hasCrew && (
                             <View>
                                 <Text style={styles.prompt}>
-                                    {Strings.contacts.chooseInstruction.start} {this.props.crew.members.length}{' '}
+                                    {Strings.contacts.chooseInstruction.start}{' '}
+                                    {this.props.crew.members.length}{' '}
                                     {Strings.contacts.chooseInstruction.end}
                                 </Text>
                                 <CrewList
-                                    style={{ height: this.state.crewListHeight }}
+                                    style={{
+                                        height: this.state.crewListHeight,
+                                    }}
                                     crew={this.props.crew}
-                                    onPressContact={contact => this.removeCrewMember(contact)}
+                                    onPressContact={contact =>
+                                        this.removeCrewMember(contact)
+                                    }
                                 />
                             </View>
                         )}

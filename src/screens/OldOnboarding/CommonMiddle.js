@@ -52,9 +52,17 @@ export default function CommonMiddle(props) {
             ]}
         >
             {props.title && <Text style={styles.h1}>{props.title}</Text>}
-            {props.bodyText && <Text style={styles.bodyText}>{props.bodyText}</Text>}
+            {props.bodyText && (
+                <Text style={styles.bodyText}>{props.bodyText}</Text>
+            )}
             {props.imageSource && (
-                <Image source={props.imageSource} style={[styles.image, props.imageContain && styles.imageContain]} />
+                <Image
+                    source={props.imageSource}
+                    style={[
+                        styles.image,
+                        props.imageContain && styles.imageContain,
+                    ]}
+                />
             )}
             {props.image}
             {props.form}

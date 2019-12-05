@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import Colors from '../../bits/Colors';
 import Strings from '../../locales/en';
-import CommonTop from './CommonTop';
+import CommonTop from '../CommonTop';
 import CommonMiddle from './CommonMiddle';
 import CommonBottom from './CommonBottom';
 import Button from '../../bits/Button';

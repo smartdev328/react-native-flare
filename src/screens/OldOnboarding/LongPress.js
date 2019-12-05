@@ -6,7 +6,7 @@ import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
 import CommonBottom from './CommonBottom';
 import CommonMiddle from './CommonMiddle';
-import CommonTop from './CommonTop';
+import CommonTop from '../CommonTop';
 import FlareAlert from '../../bits/FlareAlert';
 import Strings from '../../locales/en';
 
@@ -53,11 +53,21 @@ export default function getLongPressPage(props) {
         title: (
             <View>
                 {!props.bluetoothEnabled && (
-                    <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
+                    <FlareAlert
+                        message={Strings.home.bluetoothDisabledWarning}
+                        variant="warning"
+                        large
+                        centered
+                    />
                 )}
                 {!props.locationEnabled && props.locationPrompted && (
                     <View>
-                        <FlareAlert message={Strings.home.locationDisabledWarning} variant="warning" large centered />
+                        <FlareAlert
+                            message={Strings.home.locationDisabledWarning}
+                            variant="warning"
+                            large
+                            centered
+                        />
                         <CommonMiddle center image={image} />
                     </View>
                 )}
@@ -70,15 +80,21 @@ export default function getLongPressPage(props) {
         ),
         subtitle: (
             <View>
-                {props.bluetoothEnabled && props.locationEnabled && <CommonBottom right bodyText={subtitle} />}
-                {!props.locationEnabled && props.locationPrompted && <CommonBottom center bodyText={subtitle} />}
+                {props.bluetoothEnabled && props.locationEnabled && (
+                    <CommonBottom right bodyText={subtitle} />
+                )}
+                {!props.locationEnabled && props.locationPrompted && (
+                    <CommonBottom center bodyText={subtitle} />
+                )}
                 <View>
                     <Button
                         secondary
                         title={
                             props.receivedLongPress
-                                ? Strings.onboarding.longPress.proceedButtonLabel
-                                : Strings.onboarding.longPress.proceedAnywayButtonLabel
+                                ? Strings.onboarding.longPress
+                                      .proceedButtonLabel
+                                : Strings.onboarding.longPress
+                                      .proceedAnywayButtonLabel
                         }
                         onPress={() => props.onPressNext()}
                     />

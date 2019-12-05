@@ -5,7 +5,7 @@ import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
-import CommonTop from './CommonTop';
+import CommonTop from '../CommonTop';
 import CommonMiddle from './CommonMiddle';
 import Type from '../../bits/Type';
 
@@ -64,10 +64,15 @@ export default function getLocationPage(props) {
                 )}
                 {!props.locationPermission && props.locationPrompted && (
                     <View style={styles.proceedAnywayArea}>
-                        <Text style={styles.warningText}>{Strings.onboarding.welcome.locationAlreadyPrompted}</Text>
+                        <Text style={styles.warningText}>
+                            {Strings.onboarding.welcome.locationAlreadyPrompted}
+                        </Text>
                         <Button
                             secondary
-                            title={Strings.onboarding.welcome.proceedAnywayButtonLabel}
+                            title={
+                                Strings.onboarding.welcome
+                                    .proceedAnywayButtonLabel
+                            }
                             onPress={() => props.onPressNext()}
                         />
                     </View>

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Aura from '../../bits/Aura';
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
-import CommonTop from './CommonTop';
+import CommonTop from '../CommonTop';
 import CommonMiddle from './CommonMiddle';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
@@ -36,7 +36,10 @@ const styles = StyleSheet.create({
 export default function getFlareExamplePage(props) {
     let subtitle = null;
     const {
-        flareName, first, second, third,
+        flareName,
+        first,
+        second,
+        third,
     } = Strings.onboarding.flareExample.story;
     subtitle = (
         <View style={styles.outerContainer}>
@@ -44,7 +47,9 @@ export default function getFlareExamplePage(props) {
             <View style={styles.innerContainer}>
                 {!props.locationEnabled && props.locationPrompted && (
                     <View>
-                        <Text>{Strings.onboarding.flareExample.locationDisabled}</Text>
+                        <Text>
+                            {Strings.onboarding.flareExample.locationDisabled}
+                        </Text>
                     </View>
                 )}
                 <View>

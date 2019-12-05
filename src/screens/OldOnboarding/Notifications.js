@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
 import Strings from '../../locales/en';
-import CommonTop from './CommonTop';
+import CommonTop from '../CommonTop';
 import CommonMiddle from './CommonMiddle';
 import CommonBottom from './CommonBottom';
 
@@ -23,7 +23,11 @@ export default function getNotificationsPage(props) {
         image: <CommonTop />,
         title: (
             <View style={styles.titleContainer}>
-                <CommonMiddle center imageContain imageSource={{ uri: 'onboarding-notification' }} />
+                <CommonMiddle
+                    center
+                    imageContain
+                    imageSource={{ uri: 'onboarding-notification' }}
+                />
             </View>
         ),
         subtitle: (
@@ -34,9 +38,13 @@ export default function getNotificationsPage(props) {
                         bodyText={Strings.onboarding.notifications.subtitle}
                         body={
                             <Button
-                                title={Strings.onboarding.notifications.buttonLabel}
+                                title={
+                                    Strings.onboarding.notifications.buttonLabel
+                                }
                                 primary
-                                onPress={() => props.requestNotificationsPermission()}
+                                onPress={() =>
+                                    props.requestNotificationsPermission()
+                                }
                             />
                         }
                     />
@@ -44,10 +52,15 @@ export default function getNotificationsPage(props) {
                 {props.notificationPrompted && !props.notificationEnabled && (
                     <CommonBottom
                         center
-                        bodyText={Strings.onboarding.notifications.disabled.subtitle}
+                        bodyText={
+                            Strings.onboarding.notifications.disabled.subtitle
+                        }
                         body={
                             <Button
-                                title={Strings.onboarding.notifications.disabled.buttonLabel}
+                                title={
+                                    Strings.onboarding.notifications.disabled
+                                        .buttonLabel
+                                }
                                 secondary
                                 onPress={() => props.onPressNext()}
                             />

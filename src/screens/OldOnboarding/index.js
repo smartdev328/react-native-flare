@@ -5,22 +5,26 @@ import { Navigation } from 'react-native-navigation';
 import Onboarding from 'react-native-onboarding-swiper';
 import RNBluetoothInfo from '@bitfly/react-native-bluetooth-info';
 
-import { BeaconTypes } from '../bits/BleConstants';
+import { BeaconTypes } from '../../bits/BleConstants';
 import {
- getPermission, setCancelPIN, setOnboardingComplete, checkLocationsPermission, getNotificationsPermission
-} from '../actions/userActions';
-import { changeAppRoot } from '../actions/navActions';
-import { startBleListening } from '../actions/hardwareActions';
-import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants/Config';
-import getShortPressPage from './onboarding/ShortPress';
-import getLocationPage from './onboarding/Location';
-import getLongPressPage from './onboarding/LongPress';
-import getFlareExamplePage from './onboarding/FlareExample';
-import getLongPressCancelPage from './onboarding/LongPressCancel';
-import getContactsPage from './onboarding/Contacts';
-import getNotificationsPage from './onboarding/Notifications';
-import getWelcomePage from './onboarding/Welcome';
-import Strings from '../locales/en';
+    getPermission,
+    setCancelPIN,
+    setOnboardingComplete,
+    checkLocationsPermission,
+    getNotificationsPermission,
+} from '../../actions/userActions';
+import { changeAppRoot } from '../../actions/navActions';
+import { startBleListening } from '../../actions/hardwareActions';
+import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../../constants/Config';
+import getShortPressPage from './ShortPress';
+import getLocationPage from './Location';
+import getLongPressPage from './LongPress';
+import getFlareExamplePage from './FlareExample';
+import getLongPressCancelPage from './LongPressCancel';
+import getContactsPage from './Contacts';
+import getNotificationsPage from './Notifications';
+import getWelcomePage from './Welcome';
+import Strings from '../../locales/en';
 
 const styles = StyleSheet.create({
     container: {
@@ -41,23 +45,27 @@ class OnboardingMain extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         // Only change state flag once after receiving a short press
-        const receivedShortPress =            state.receivedShortPress
-            || (props.latestBeacon
-                && props.latestBeacon.type === BeaconTypes.Short.name
-                && props.devices
-                && props.devices.filter((d) => d.id === props.latestBeacon.deviceID).length > 0);
+        const receivedShortPress =
+            state.receivedShortPress ||
+            (props.latestBeacon &&
+                props.latestBeacon.type === BeaconTypes.Short.name &&
+                props.devices &&
+                props.devices.filter(d => d.id === props.latestBeacon.deviceID)
+                    .length > 0);
 
         // Only change state flag once after receiving a long press
-        const receivedLongPress =            state.receivedLongPress
-            || (props.latestBeacon
-                && props.latestBeacon.type === BeaconTypes.Long.name
-                && props.devices
-                && props.devices.filter((d) => d.id === props.latestBeacon.deviceID).length > 0);
+        const receivedLongPress =
+            state.receivedLongPress ||
+            (props.latestBeacon &&
+                props.latestBeacon.type === BeaconTypes.Long.name &&
+                props.devices &&
+                props.devices.filter(d => d.id === props.latestBeacon.deviceID)
+                    .length > 0);
 
         if (
-            state.receivedLongPress !== receivedLongPress
-            || state.receivedShortPress !== receivedShortPress
-            || props.updatedPIN !== state.hasSetPin
+            state.receivedLongPress !== receivedLongPress ||
+            state.receivedShortPress !== receivedShortPress ||
+            props.updatedPIN !== state.hasSetPin
         ) {
             return {
                 receivedLongPress,
@@ -72,7 +80,10 @@ class OnboardingMain extends React.Component {
     constructor(props) {
         super(props);
 
-        this.permissionCheckInterval = setInterval(() => this.checkPermissions(), 15000);
+        this.permissionCheckInterval = setInterval(
+            () => this.checkPermissions(),
+            15000
+        );
 
         this.state = {
             receivedLongPress: false,
@@ -86,10 +97,14 @@ class OnboardingMain extends React.Component {
     }
 
     componentDidMount() {
-        RNBluetoothInfo.addEventListener('change', (bleState) => this.handleBluetoothStateChange(bleState));
+        RNBluetoothInfo.addEventListener('change', bleState =>
+            this.handleBluetoothStateChange(bleState)
+        );
 
         // Update bluetooth state after first boot
-        RNBluetoothInfo.getCurrentState().then((bleState) => this.handleBluetoothStateChange(bleState));
+        RNBluetoothInfo.getCurrentState().then(bleState =>
+            this.handleBluetoothStateChange(bleState)
+        );
     }
 
     componentDidUpdate(prevProps) {
@@ -99,17 +114,20 @@ class OnboardingMain extends React.Component {
 
         // Go to next screen after user gives location permission
         if (
-            this.flatList
-            && this.props.permissions
-            && this.props.permissions.location
-            && this.props.permissions.location !== prevProps.permissions.location
+            this.flatList &&
+            this.props.permissions &&
+            this.props.permissions.location &&
+            this.props.permissions.location !== prevProps.permissions.location
         ) {
             if (this.flatList.state.currentPage === LOCATION_PAGE_INDEX) {
                 // automatically progress from location page if user gives always on access
                 this.flatList.goNext();
             }
 
-            if (this.props.permissions.location && !prevProps.permissions.location) {
+            if (
+                this.props.permissions.location &&
+                !prevProps.permissions.location
+            ) {
                 console.log('Onboarding is starting ble listening');
                 this.props.dispatch(startBleListening());
             }
@@ -117,13 +135,16 @@ class OnboardingMain extends React.Component {
 
         // Go to next screen after user activates flare
         if (
-            this.flatList
-            && this.flatList.state.currentPage === BLUETOOTH_PAGE_INDEX
-            && this.props.latestBeacon
-            && JSON.stringify(this.props.latestBeacon) !== JSON.stringify(prevProps.latestBeacon)
-            && this.props.latestBeacon.type === BeaconTypes.Long.name
+            this.flatList &&
+            this.flatList.state.currentPage === BLUETOOTH_PAGE_INDEX &&
+            this.props.latestBeacon &&
+            JSON.stringify(this.props.latestBeacon) !==
+                JSON.stringify(prevProps.latestBeacon) &&
+            this.props.latestBeacon.type === BeaconTypes.Long.name
         ) {
-            const found = this.props.devices.filter((d) => d.id === this.props.latestBeacon.deviceID);
+            const found = this.props.devices.filter(
+                d => d.id === this.props.latestBeacon.deviceID
+            );
             if (found.length === 1) {
                 this.flatList.goNext();
             }
@@ -131,27 +152,30 @@ class OnboardingMain extends React.Component {
 
         // Go to next screen after user gives notification permission
         if (
-            this.flatList
-            && this.flatList.state.currentPage === NOTIFICATION_PAGE_INDEX
-            && this.props.permissions
-            && this.props.permissions.notification
-            && this.props.permissions.notification !== prevProps.permissions.notification
+            this.flatList &&
+            this.flatList.state.currentPage === NOTIFICATION_PAGE_INDEX &&
+            this.props.permissions &&
+            this.props.permissions.notification &&
+            this.props.permissions.notification !==
+                prevProps.permissions.notification
         ) {
             this.flatList.goNext();
         }
 
         // End onboarding if user gave contacts permission
         if (
-            this.props.permissions
-            && this.props.permissions.contacts
-            && this.props.permissions.contacts !== prevProps.permissions.contacts
+            this.props.permissions &&
+            this.props.permissions.contacts &&
+            this.props.permissions.contacts !== prevProps.permissions.contacts
         ) {
             this.endOnboarding();
         }
     }
 
     componentWillUnmount() {
-        RNBluetoothInfo.removeEventListener('change', (bleState) => this.handleBluetoothStateChange(bleState));
+        RNBluetoothInfo.removeEventListener('change', bleState =>
+            this.handleBluetoothStateChange(bleState)
+        );
         if (this.permissionCheckInterval !== null) {
             clearInterval(this.permissionCheckInterval);
         }
@@ -160,17 +184,21 @@ class OnboardingMain extends React.Component {
     setCancelPIN() {
         if (this.state.cancelPIN.length < LONG_PRESS_CANCEL_PIN_LENGTH) {
             this.setState({
-                setPinErrorMessage: Strings.onboarding.longPressCancel.errors.tooShort,
+                setPinErrorMessage:
+                    Strings.onboarding.longPressCancel.errors.tooShort,
             });
         } else if (this.state.cancelPIN !== this.state.confirmCancelPIN) {
             this.setState({
-                setPinErrorMessage: Strings.onboarding.longPressCancel.errors.mismatch,
+                setPinErrorMessage:
+                    Strings.onboarding.longPressCancel.errors.mismatch,
             });
         } else {
             this.setState({
                 setPinErrorMessage: null,
             });
-            this.props.dispatch(setCancelPIN(this.props.authToken, this.state.cancelPIN));
+            this.props.dispatch(
+                setCancelPIN(this.props.authToken, this.state.cancelPIN)
+            );
         }
     }
 
@@ -203,7 +231,10 @@ class OnboardingMain extends React.Component {
 
     endOnboarding() {
         this.props.dispatch(setOnboardingComplete(this.props.authToken));
-        if (this.props.permissions.contactsPrompted && this.props.permissions.contacts) {
+        if (
+            this.props.permissions.contactsPrompted &&
+            this.props.permissions.contacts
+        ) {
             Navigation.push(this.props.componentId, {
                 component: {
                     name: 'com.flarejewelry.app.Contacts',
@@ -248,62 +279,86 @@ class OnboardingMain extends React.Component {
          */
         const locationPage = getLocationPage({
             locationPermission: this.props.permissions.location,
-            locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
-            requestLocationPermission: () => this.props.dispatch(getPermission('ios.permission.LOCATION_ALWAYS', { type: 'always' })),
+            locationPrompted:
+                this.props.permissions &&
+                this.props.permissions.locationPrompted,
+            requestLocationPermission: () =>
+                this.props.dispatch(
+                    getPermission('ios.permission.LOCATION_ALWAYS', {
+                        type: 'always',
+                    })
+                ),
             onPressNext: () => this.handleNextButtonPress(),
         });
 
         const shortPressPage = getShortPressPage({
             receivedShortPress: this.state.receivedShortPress,
             bluetoothEnabled: this.state.bluetoothEnabled,
-            locationEnabled: this.props.permissions && this.props.permissions.location,
-            locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
+            locationEnabled:
+                this.props.permissions && this.props.permissions.location,
+            locationPrompted:
+                this.props.permissions &&
+                this.props.permissions.locationPrompted,
             onPressNext: () => this.handleNextButtonPress(),
         });
 
         const longPressPage = getLongPressPage({
             receivedLongPress: this.state.receivedLongPress,
             bluetoothEnabled: this.state.bluetoothEnabled,
-            locationEnabled: this.props.permissions && this.props.permissions.location,
-            locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
+            locationEnabled:
+                this.props.permissions && this.props.permissions.location,
+            locationPrompted:
+                this.props.permissions &&
+                this.props.permissions.locationPrompted,
             onPressNext: () => this.handleNextButtonPress(),
         });
 
         const notificationsPage = getNotificationsPage({
-            requestNotificationsPermission: () => this.props.dispatch(getNotificationsPermission),
-            notificationEnabled: this.props.permissions && this.props.permissions.notification,
-            notificationPrompted: this.props.permissions && this.props.permissions.notificationPrompted,
+            requestNotificationsPermission: () =>
+                this.props.dispatch(getNotificationsPermission),
+            notificationEnabled:
+                this.props.permissions && this.props.permissions.notification,
+            notificationPrompted:
+                this.props.permissions &&
+                this.props.permissions.notificationPrompted,
             onPressNext: () => this.handleNextButtonPress(),
         });
 
         const flareExamplePage = getFlareExamplePage({
             onCancelFlare: () => this.flatList.goNext(),
-            locationEnabled: this.props.permissions && this.props.permissions.location,
-            locationPrompted: this.props.permissions && this.props.permissions.locationPrompted,
+            locationEnabled:
+                this.props.permissions && this.props.permissions.location,
+            locationPrompted:
+                this.props.permissions &&
+                this.props.permissions.locationPrompted,
         });
 
         const longPressCancelPage = getLongPressCancelPage({
             hasSetPin: this.state.hasSetPin,
             pin: this.state.cancelPIN,
             confirmPin: this.state.confirmCancelPIN,
-            changeCancelPIN: (e) => this.changeCancelPIN(e),
-            changeConfirmCancelPIN: (e) => this.changeConfirmCancelPIN(e),
+            changeCancelPIN: e => this.changeCancelPIN(e),
+            changeConfirmCancelPIN: e => this.changeConfirmCancelPIN(e),
             setCancelPIN: () => this.setCancelPIN(),
             setPinErrorMessage: this.state.setPinErrorMessage,
             onPressNext: () => this.handleNextButtonPress(),
         });
 
         const contactsPage = getContactsPage({
-            requestContactsPermission: () => this.props.dispatch(getPermission('ios.permission.CONTACTS')),
+            requestContactsPermission: () =>
+                this.props.dispatch(getPermission('ios.permission.CONTACTS')),
             endOnboarding: () => this.endOnboarding(),
-            contactsEnabled: this.props.permissions && this.props.permissions.contacts,
-            contactsPrompted: this.props.permissions && this.props.permissions.contactsPrompted,
+            contactsEnabled:
+                this.props.permissions && this.props.permissions.contacts,
+            contactsPrompted:
+                this.props.permissions &&
+                this.props.permissions.contactsPrompted,
         });
 
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <Onboarding
-                    ref={(ref) => {
+                    ref={ref => {
                         this.flatList = ref;
                     }}
                     containerStyles={{
