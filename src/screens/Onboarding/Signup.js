@@ -7,11 +7,14 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import ViewPager from '@react-native-community/viewpager';
+
 import Colors from '../../bits/Colors';
 import Aura from '../../bits/Aura';
 
 import backwardArrow from '../../assets/backward-arrow.png';
 import smallestWhiteArrow from '../../assets/smallest-white-logo.png';
+import FlowScreen from './FlowScreen';
 
 const styles = StyleSheet.create({
     container: {
@@ -43,12 +46,38 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: 'center',
     },
+    flex: { flex: 1 },
 });
 
 const Signup = ({ close }) => {
     const [page, setPage] = React.useState(0);
+    const pagerRef = React.createRef();
+    const fieldRefs = [
+        React.createRef(),
+        React.createRef(),
+        React.createRef(),
+        React.createRef(),
+    ];
 
-    const goBack = page === 0 ? close : () => setPage(page - 1);
+    const goBack =
+        page === 0
+            ? close
+            : () => {
+                  setPage(page - 1);
+                  pagerRef.current.setPage(page - 1);
+              };
+
+    const goForward = () => {
+        setPage(page + 1);
+        pagerRef.current.setPage(page + 1);
+    };
+
+    const onPageSelected = ({ nativeEvent: { position } }) => {
+        const field = fieldRefs[position];
+        if (field && field.current) {
+            field.current.focus();
+        }
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -63,6 +92,52 @@ const Signup = ({ close }) => {
                 </TouchableOpacity>
                 <Image source={smallestWhiteArrow} style={styles.logo} />
             </View>
+            <ViewPager
+                style={styles.flex}
+                scrollEnabled={false}
+                keyboardDismissMode="none"
+                transitionStyle="scroll"
+                ref={pagerRef}
+                onPageSelected={onPageSelected}
+            >
+                <View key="name">
+                    <FlowScreen
+                        headline="We’re so glad you’re here! What’s your name?"
+                        onNext={goForward}
+                        label="Your name"
+                        textFieldRef={fieldRefs[0]}
+                        textContentType="name"
+                    />
+                </View>
+                <View key="email">
+                    <FlowScreen
+                        headline="Welcome! And what’s your email?"
+                        onNext={goForward}
+                        label="Your email"
+                        textFieldRef={fieldRefs[1]}
+                        keyboardType="email-address"
+                    />
+                </View>
+                <View key="phone">
+                    <FlowScreen
+                        headline="And what about your phone number?"
+                        onNext={goForward}
+                        label="Your phone number"
+                        textFieldRef={fieldRefs[2]}
+                        keyboardType="phone-pad"
+                    />
+                </View>
+                <View key="password">
+                    <FlowScreen
+                        headline={'Last thing:\nEnter a password!'}
+                        onNext={goForward}
+                        label="Your password"
+                        textFieldRef={fieldRefs[3]}
+                        password
+                        textContentType="password"
+                    />
+                </View>
+            </ViewPager>
         </SafeAreaView>
     );
 };
