@@ -29,18 +29,21 @@ const styles = StyleSheet.create({
     },
 });
 
-const Home = () => (
+const Home = ({ onSignUpPressed, onSignInPressed }) => (
     <SafeAreaView style={styles.wrapper}>
         <Image source={logoWhite} style={styles.logo} />
         <View style={styles.spacer} />
         <RoundedButton
+            useGradient
             text={Strings.onboarding.signupButton}
             wrapperStyle={styles.signupButton}
+            onPress={onSignUpPressed}
         />
         <RoundedButton
             useGradient={false}
             text={Strings.signin.signInLabel}
             wrapperStyle={styles.signinButton}
+            onPress={onSignInPressed}
         />
     </SafeAreaView>
 );
