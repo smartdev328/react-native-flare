@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/Entypo';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
@@ -43,95 +43,114 @@ const styles = StyleSheet.create({
     },
 });
 
-const FlowScreen = ({
-    headline,
-    onNext,
-    label,
-    textFieldRef,
-    keyboardType = 'default',
-    textContentType,
-    password = false,
-    actionCreator,
-    value,
-    validator,
-}) => {
-    const dispatch = useDispatch();
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [error, setError] = React.useState();
-    const currentValue = useSelector(store => store.user.reg[value] || '');
+class FlowScreen extends React.Component {
+    constructor() {
+        super();
 
-    const renderAccessory = React.useMemo(
-        () =>
-            password
-                ? () => (
-                      <TouchableOpacity
-                          onPress={() => setShowPassword(!showPassword)}
-                      >
-                          <Icon
-                              style={styles.accessory}
-                              name={showPassword ? 'eye-with-line' : 'eye'}
-                          />
-                      </TouchableOpacity>
-                  )
-                : undefined,
-        [password, showPassword, setShowPassword]
-    );
+        this.state = {
+            showPassword: false,
+            error: null,
+        };
+    }
 
-    const onChangeText = React.useMemo(
-        () => text => {
-            dispatch(actionCreator(text));
-            setError(undefined);
-        },
-        [dispatch, actionCreator, setError]
-    );
+    togglePassword = () =>
+        this.setState(({ showPassword }) => ({ showPassword: !showPassword }));
 
-    const onSubmit = () => {
+    renderAccessory = () => {
+        const { showPassword } = this.state;
+        return (
+            <TouchableOpacity onPress={this.togglePassword}>
+                <Icon
+                    style={styles.accessory}
+                    name={showPassword ? 'eye-with-line' : 'eye'}
+                />
+            </TouchableOpacity>
+        );
+    };
+
+    onChangeText = text => {
+        const { action } = this.props;
+        action(text);
+        this.setState({ error: undefined });
+    };
+
+    onSubmit = () => {
+        const { validator, onNext, currentValue } = this.props;
         const result = validator(currentValue);
         if (result) {
-            setError(result);
+            this.setState({ error: result });
         } else {
             onNext();
         }
     };
 
-    const autoCapitalize =
-        password || keyboardType === 'email-address' ? 'none' : undefined;
+    render() {
+        const {
+            headline,
+            label,
+            textFieldRef,
+            keyboardType = 'default',
+            textContentType,
+            password = false,
+            currentValue,
+        } = this.props;
+        const { showPassword, error } = this.state;
 
-    return (
-        <KeyboardAvoidingView
-            behavior="padding"
-            keyboardVerticalOffset={72}
-            style={[styles.container]}
-        >
-            <Text style={styles.headline}>{headline}</Text>
-            <TextField
-                ref={textFieldRef}
-                label={label}
-                textColor={Colors.white}
-                tintColor={Colors.white}
-                baseColor={Colors.white}
-                secureTextEntry={password && !showPassword}
-                autoCapitalize={autoCapitalize}
-                autoCorrect={!password}
-                onSubmitEditing={onSubmit}
-                returnKeyType="next"
-                keyboardType={keyboardType}
-                textContentType={textContentType}
-                enablesReturnKeyAutomatically
-                renderRightAccessory={renderAccessory}
-                onChangeText={onChangeText}
-                value={currentValue}
-                error={error}
-            />
-            <View style={styles.spacer} />
-            <RoundedButton
-                onPress={onSubmit}
-                useGradient
-                text="Continue"
-                wrapperStyle={styles.buttonWrapper}
-            />
-        </KeyboardAvoidingView>
-    );
+        const renderAccessory = password ? this.renderAccessory : undefined;
+
+        const autoCapitalize =
+            password || keyboardType === 'email-address' ? 'none' : undefined;
+
+        return (
+            <KeyboardAvoidingView
+                behavior="padding"
+                keyboardVerticalOffset={72}
+                style={[styles.container]}
+            >
+                <Text style={styles.headline}>{headline}</Text>
+                <TextField
+                    ref={textFieldRef}
+                    label={label}
+                    textColor={Colors.white}
+                    tintColor={Colors.white}
+                    baseColor={Colors.white}
+                    secureTextEntry={password && !showPassword}
+                    autoCapitalize={autoCapitalize}
+                    autoCorrect={!password}
+                    onSubmitEditing={this.onSubmit}
+                    returnKeyType="next"
+                    keyboardType={keyboardType}
+                    textContentType={textContentType}
+                    enablesReturnKeyAutomatically
+                    renderRightAccessory={renderAccessory}
+                    onChangeText={this.onChangeText}
+                    value={currentValue}
+                    error={error}
+                />
+                <View style={styles.spacer} />
+                <RoundedButton
+                    onPress={this.onSubmit}
+                    useGradient
+                    text="Continue"
+                    wrapperStyle={styles.buttonWrapper}
+                />
+            </KeyboardAvoidingView>
+        );
+    }
+}
+
+const mapStateToProps = (state, ownProps) => ({
+    currentValue: state.user.reg[ownProps.value],
+});
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    const { actionCreator } = ownProps;
+    return {
+        action: text => dispatch(actionCreator(text)),
+    };
 };
 
-export default FlowScreen;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FlowScreen);

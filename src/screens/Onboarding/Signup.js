@@ -8,6 +8,7 @@ import {
     View,
 } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
+import { useSelector } from 'react-redux';
 
 import Colors from '../../bits/Colors';
 import Aura from '../../bits/Aura';
@@ -61,6 +62,14 @@ const styles = StyleSheet.create({
     flex: { flex: 1 },
 });
 
+const extractGreeting = name => {
+    if (typeof name === 'string' && name.length > 1) {
+        return `Welcome, ${name.split(' ')[0]}!`;
+    } else {
+        return 'Welcome!';
+    }
+};
+
 const Signup = ({ close }) => {
     const [page, setPage] = React.useState(0);
     const pagerRef = React.createRef();
@@ -70,6 +79,8 @@ const Signup = ({ close }) => {
         React.createRef(),
         React.createRef(),
     ];
+    const name = useSelector(({ user: { reg } }) => reg.name);
+    const greeting = extractGreeting(name);
 
     const goBack =
         page === 0
@@ -126,7 +137,7 @@ const Signup = ({ close }) => {
                 </View>
                 <View key="email">
                     <FlowScreen
-                        headline="Welcome! And what’s your email?"
+                        headline={`${greeting} And what’s your email?`}
                         onNext={goForward}
                         label="Your email"
                         textFieldRef={fieldRefs[1]}
