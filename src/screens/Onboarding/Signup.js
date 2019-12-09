@@ -1,20 +1,9 @@
 import * as React from 'react';
-import {
-    Image,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import { connect } from 'react-redux';
 
-import Colors from '../../bits/Colors';
 import Aura from '../../bits/Aura';
-
-import backwardArrow from '../../assets/backward-arrow.png';
-import smallestWhiteArrow from '../../assets/smallest-white-logo.png';
 import FlowScreen from './FlowScreen';
 import {
     regSetEmail,
@@ -28,36 +17,13 @@ import {
     validatePassword,
     validatePhone,
 } from './validators';
+import WhiteBar from './WhiteBar';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.theme.purple,
         flex: 1,
         flexDirection: 'column',
         alignItems: 'stretch',
-    },
-    bar: {
-        flexDirection: 'row',
-        height: 30,
-        marginTop: 16,
-        marginBottom: 26,
-        paddingRight: 34,
-        marginLeft: 32,
-        marginRight: 32,
-        alignItems: 'stretch',
-    },
-    backArrowWrapper: {
-        width: 34,
-        flexDirection: 'column',
-    },
-    backArrow: {
-        width: 34,
-        resizeMode: 'center',
-        flex: 1,
-    },
-    logo: {
-        flex: 1,
-        resizeMode: 'center',
     },
     flex: { flex: 1 },
 });
@@ -118,18 +84,7 @@ class Signup extends React.Component {
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle="light-content" />
                 <Aura />
-                <View style={styles.bar}>
-                    <TouchableOpacity
-                        style={styles.backArrowWrapper}
-                        onPress={this.goBack}
-                    >
-                        <Image
-                            source={backwardArrow}
-                            style={styles.backArrow}
-                        />
-                    </TouchableOpacity>
-                    <Image source={smallestWhiteArrow} style={styles.logo} />
-                </View>
+                <WhiteBar goBack={this.goBack} />
                 <ViewPager
                     style={styles.flex}
                     scrollEnabled={false}
