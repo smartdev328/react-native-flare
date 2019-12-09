@@ -53,9 +53,11 @@ const FlowScreen = ({
     password = false,
     actionCreator,
     value,
+    validator,
 }) => {
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = React.useState(false);
+    const [error, setError] = React.useState();
     const currentValue = useSelector(store => store.user.reg[value] || '');
 
     const renderAccessory = React.useMemo(
@@ -76,9 +78,21 @@ const FlowScreen = ({
     );
 
     const onChangeText = React.useMemo(
-        () => text => dispatch(actionCreator(text)),
-        [dispatch, actionCreator]
+        () => text => {
+            dispatch(actionCreator(text));
+            setError(undefined);
+        },
+        [dispatch, actionCreator, setError]
     );
+
+    const onSubmit = () => {
+        const result = validator(currentValue);
+        if (result) {
+            setError(result);
+        } else {
+            onNext();
+        }
+    };
 
     const autoCapitalize =
         password || keyboardType === 'email-address' ? 'none' : undefined;
@@ -99,7 +113,7 @@ const FlowScreen = ({
                 secureTextEntry={password && !showPassword}
                 autoCapitalize={autoCapitalize}
                 autoCorrect={!password}
-                onSubmitEditing={onNext}
+                onSubmitEditing={onSubmit}
                 returnKeyType="next"
                 keyboardType={keyboardType}
                 textContentType={textContentType}
@@ -107,10 +121,11 @@ const FlowScreen = ({
                 renderRightAccessory={renderAccessory}
                 onChangeText={onChangeText}
                 value={currentValue}
+                error={error}
             />
             <View style={styles.spacer} />
             <RoundedButton
-                onPress={onNext}
+                onPress={onSubmit}
                 useGradient
                 text="Continue"
                 wrapperStyle={styles.buttonWrapper}

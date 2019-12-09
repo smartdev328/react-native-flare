@@ -21,6 +21,12 @@ import {
     regSetPassword,
     regSetPhone,
 } from '../../actions/regActions';
+import {
+    validateEmail,
+    validateName,
+    validatePassword,
+    validatePhone,
+} from './validators';
 
 const styles = StyleSheet.create({
     container: {
@@ -115,6 +121,7 @@ const Signup = ({ close }) => {
                         textContentType="name"
                         actionCreator={regSetName}
                         value="name"
+                        validator={validateName}
                     />
                 </View>
                 <View key="email">
@@ -127,6 +134,7 @@ const Signup = ({ close }) => {
                         textContentType="emailAddress"
                         actionCreator={regSetEmail}
                         value="email"
+                        validator={validateEmail}
                     />
                 </View>
                 <View key="phone">
@@ -139,6 +147,7 @@ const Signup = ({ close }) => {
                         textContentType="telephoneNumber"
                         actionCreator={regSetPhone}
                         value="phone"
+                        validator={validatePhone}
                     />
                 </View>
                 <View key="password">
@@ -151,6 +160,7 @@ const Signup = ({ close }) => {
                         textContentType="password"
                         actionCreator={regSetPassword}
                         value="password"
+                        validator={validatePassword}
                     />
                 </View>
             </ViewPager>

@@ -48,6 +48,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.5.0",
+        "@babel/plugin-proposal-unicode-property-regex": "^7.7.4",
         "@babel/runtime": "^7.5.0",
         "@react-native-community/eslint-config": "^0.0.3",
         "babel-eslint": "^10.0.3",
