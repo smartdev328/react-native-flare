@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable no-undef */
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { persistCombineReducers } from 'redux-persist';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -8,9 +8,11 @@ import {
     seamlessImmutableReconciler,
     seamlessImmutableTransformCreator,
 } from 'redux-persist-seamless-immutable';
+import AsyncStorage from '@react-native-community/async-storage';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
 import * as reducers from '../reducers/index';
 import { REDUX_LOGGING, summary } from '../constants/Config';
-import AsyncStorage from '@react-native-community/async-storage';
 
 let middleware = [thunk];
 
@@ -53,6 +55,6 @@ const combinedReducer = persistCombineReducers(persistConfig, reducers);
 
 // eslint-disable-next-line
 export function configureStore(initialState) {
-    const enhancer = compose(applyMiddleware(...middleware));
+    const enhancer = composeWithDevTools(applyMiddleware(...middleware));
     return createStore(combinedReducer, initialState, enhancer);
 }

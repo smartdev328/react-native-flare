@@ -1,13 +1,5 @@
-import { beacons } from './beaconReducer';
-import { hardware } from './hardwareReducer';
-import { manufacturing } from './manufacturingReducer';
-import { nav } from './navReducer';
-import { user } from './userReducer';
-
-export {
-    beacons,
-    hardware,
-    manufacturing,
-    nav,
-    user,
-};
+export { beacons } from './beaconReducer';
+export { hardware } from './hardwareReducer';
+export { manufacturing } from './manufacturingReducer';
+export { nav } from './navReducer';
+export { user } from './userReducer';

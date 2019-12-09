@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/Entypo';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
@@ -50,19 +51,37 @@ const FlowScreen = ({
     keyboardType = 'default',
     textContentType,
     password = false,
+    actionCreator,
+    value,
 }) => {
+    const dispatch = useDispatch();
     const [showPassword, setShowPassword] = React.useState(false);
+    const currentValue = useSelector(store => store.user.reg[value] || '');
 
-    const renderAccessory = password
-        ? () => (
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                  <Icon
-                      style={styles.accessory}
-                      name={showPassword ? 'eye-with-line' : 'eye'}
-                  />
-              </TouchableOpacity>
-          )
-        : undefined;
+    const renderAccessory = React.useMemo(
+        () =>
+            password
+                ? () => (
+                      <TouchableOpacity
+                          onPress={() => setShowPassword(!showPassword)}
+                      >
+                          <Icon
+                              style={styles.accessory}
+                              name={showPassword ? 'eye-with-line' : 'eye'}
+                          />
+                      </TouchableOpacity>
+                  )
+                : undefined,
+        [password, showPassword, setShowPassword]
+    );
+
+    const onChangeText = React.useMemo(
+        () => text => dispatch(actionCreator(text)),
+        [dispatch, actionCreator]
+    );
+
+    const autoCapitalize =
+        password || keyboardType === 'email-address' ? 'none' : undefined;
 
     return (
         <KeyboardAvoidingView
@@ -78,7 +97,7 @@ const FlowScreen = ({
                 tintColor={Colors.white}
                 baseColor={Colors.white}
                 secureTextEntry={password && !showPassword}
-                autoCapitalize={password ? 'none' : undefined}
+                autoCapitalize={autoCapitalize}
                 autoCorrect={!password}
                 onSubmitEditing={onNext}
                 returnKeyType="next"
@@ -86,6 +105,8 @@ const FlowScreen = ({
                 textContentType={textContentType}
                 enablesReturnKeyAutomatically
                 renderRightAccessory={renderAccessory}
+                onChangeText={onChangeText}
+                value={currentValue}
             />
             <View style={styles.spacer} />
             <RoundedButton

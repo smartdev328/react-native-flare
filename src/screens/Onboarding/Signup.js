@@ -15,6 +15,12 @@ import Aura from '../../bits/Aura';
 import backwardArrow from '../../assets/backward-arrow.png';
 import smallestWhiteArrow from '../../assets/smallest-white-logo.png';
 import FlowScreen from './FlowScreen';
+import {
+    regSetEmail,
+    regSetName,
+    regSetPassword,
+    regSetPhone,
+} from '../../actions/regActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -107,6 +113,8 @@ const Signup = ({ close }) => {
                         label="Your name"
                         textFieldRef={fieldRefs[0]}
                         textContentType="name"
+                        actionCreator={regSetName}
+                        value="name"
                     />
                 </View>
                 <View key="email">
@@ -116,6 +124,9 @@ const Signup = ({ close }) => {
                         label="Your email"
                         textFieldRef={fieldRefs[1]}
                         keyboardType="email-address"
+                        textContentType="emailAddress"
+                        actionCreator={regSetEmail}
+                        value="email"
                     />
                 </View>
                 <View key="phone">
@@ -125,6 +136,9 @@ const Signup = ({ close }) => {
                         label="Your phone number"
                         textFieldRef={fieldRefs[2]}
                         keyboardType="phone-pad"
+                        textContentType="telephoneNumber"
+                        actionCreator={regSetPhone}
+                        value="phone"
                     />
                 </View>
                 <View key="password">
@@ -135,6 +149,8 @@ const Signup = ({ close }) => {
                         textFieldRef={fieldRefs[3]}
                         password
                         textContentType="password"
+                        actionCreator={regSetPassword}
+                        value="password"
                     />
                 </View>
             </ViewPager>
