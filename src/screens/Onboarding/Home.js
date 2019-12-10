@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Image, SafeAreaView, StyleSheet, View } from 'react-native';
 
+import Voguing from './Voguing';
 import RoundedButton from '../../bits/RoundedButton';
 import Strings from '../../locales/en';
 
@@ -11,7 +12,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: '#A8A8A8',
     },
     logo: {
         width: 144,
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 
 const Home = ({ onSignUpPressed, onSignInPressed }) => (
     <SafeAreaView style={styles.wrapper}>
+        <Voguing />
         <Image source={logoWhite} style={styles.logo} />
         <View style={styles.spacer} />
         <RoundedButton
