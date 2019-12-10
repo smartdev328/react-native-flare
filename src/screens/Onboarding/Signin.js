@@ -147,8 +147,8 @@ const Signin = ({ close, authState, signIn, resetAuth }) => {
     );
 };
 
-const mapStateToProps = state => ({
-    authState: state.user.authState,
+const mapStateToProps = ({ user: { authState } }) => ({
+    authState,
 });
 
 const mapDispatchToProps = {
