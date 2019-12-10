@@ -1,8 +1,11 @@
 import axios from 'axios';
-import { AsyncStorage } from 'react-native';
 
 import { changeAppRoot } from './navActions';
-import { API_URL, MANUFACTURING_MODE_ENABLED, ONBOARDING_ENABLED } from '../constants/Config';
+import {
+    API_URL,
+    MANUFACTURING_MODE_ENABLED,
+    ONBOARDING_ENABLED,
+} from '../constants/Config';
 import * as types from './actionTypes';
 import Roles from '../constants/Roles';
 
@@ -21,9 +24,15 @@ export function signIn(email, password) {
                     type: types.AUTH_SUCCESS,
                     data: response.data,
                 });
-                if (MANUFACTURING_MODE_ENABLED && response.data.role === Roles.Manufacturing) {
+                if (
+                    MANUFACTURING_MODE_ENABLED &&
+                    response.data.role === Roles.Manufacturing
+                ) {
                     dispatch(changeAppRoot('secure-manufacturing'));
-                } else if (ONBOARDING_ENABLED && !response.data.viewed_tutorial) {
+                } else if (
+                    ONBOARDING_ENABLED &&
+                    !response.data.viewed_tutorial
+                ) {
                     dispatch(changeAppRoot('secure-onboarding'));
                 } else {
                     dispatch(changeAppRoot('secure'));
@@ -33,7 +42,7 @@ export function signIn(email, password) {
                 dispatch({
                     type: types.AUTH_FAILURE,
                     res,
-                }),
+                })
             );
     };
 }
@@ -59,7 +68,7 @@ export function registerNewAccount(email, phone, serial) {
                 dispatch({
                     type: types.REGISTER_USER_FAILURE,
                     res,
-                }),
+                })
             );
     };
 }

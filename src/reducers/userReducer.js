@@ -63,6 +63,7 @@ export function user(state = initialState.user, action = {}) {
                 crews: [],
                 role: null,
                 contactsCrewLookup: null,
+                authState: null,
             });
 
         /**

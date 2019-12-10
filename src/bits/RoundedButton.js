@@ -1,6 +1,14 @@
 import * as React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    ActivityIndicator,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+
+const textColor = '#F5F2ED';
 
 const styles = StyleSheet.create({
     base: {
@@ -13,7 +21,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        color: '#F5F2ED',
+        color: textColor,
         fontWeight: 'bold',
         textAlign: 'center',
         textTransform: 'uppercase',
@@ -40,12 +48,26 @@ const GradientButton = ({ children }) => (
     </LinearGradient>
 );
 
-const RoundedButton = ({ text, onPress, useGradient = true, wrapperStyle }) => {
+const RoundedButton = ({
+    text,
+    onPress,
+    useGradient = true,
+    wrapperStyle,
+    busy,
+}) => {
     const ButtonComponent = useGradient ? GradientButton : ColorButton;
     return (
-        <TouchableOpacity onPress={onPress} style={wrapperStyle}>
+        <TouchableOpacity
+            onPress={onPress}
+            style={wrapperStyle}
+            disabled={busy}
+        >
             <ButtonComponent>
-                <Text style={styles.text}>{text}</Text>
+                {busy ? (
+                    <ActivityIndicator size="small" color={textColor} />
+                ) : (
+                    <Text style={styles.text}>{text}</Text>
+                )}
             </ButtonComponent>
         </TouchableOpacity>
     );

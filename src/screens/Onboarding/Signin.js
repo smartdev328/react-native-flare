@@ -5,16 +5,17 @@ import {
     StatusBar,
     StyleSheet,
     TouchableOpacity,
-    View,
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/Entypo';
+import { connect } from 'react-redux';
 
 import Aura from '../../bits/Aura';
 import WhiteBar from './WhiteBar';
 import Headline from './Headline';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
+import * as actions from '../../actions';
 
 const styles = StyleSheet.create({
     container: {
@@ -40,9 +41,11 @@ const styles = StyleSheet.create({
     },
 });
 
-const Signin = ({ close }) => {
+const Signin = ({ close, authState, signIn, resetAuth }) => {
     const emailRef = React.useRef(null);
     const passwordRef = React.useRef(null);
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
     const [showPassword, setShowPassword] = React.useState(false);
 
     const goToPassword = React.useMemo(
@@ -66,6 +69,27 @@ const Signin = ({ close }) => {
         [togglePassword, showPassword]
     );
 
+    const emailChange = text => {
+        setEmail(text);
+        resetAuth();
+    };
+
+    const passwordChange = text => {
+        setPassword(text);
+        resetAuth();
+    };
+
+    const submit = () => {
+        if (
+            typeof email === 'string' &&
+            typeof password === 'string' &&
+            email.length > 0 &&
+            password.length > 0
+        ) {
+            signIn(email, password);
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" />
@@ -88,6 +112,7 @@ const Signin = ({ close }) => {
                     keyboardType="email-address"
                     textContentType="emailAddress"
                     enablesReturnKeyAutomatically
+                    onChangeText={emailChange}
                     autoFocus
                 />
                 <TextField
@@ -103,15 +128,35 @@ const Signin = ({ close }) => {
                     textContentType="password"
                     renderRightAccessory={renderAccessory}
                     enablesReturnKeyAutomatically
+                    onChangeText={passwordChange}
+                    error={
+                        authState === 'failed'
+                            ? 'Please make sure your email address and password are correct'
+                            : undefined
+                    }
                 />
                 <RoundedButton
                     useGradient
                     text="Sign In"
                     wrapperStyle={styles.buttonWrapper}
+                    busy={authState === 'requested'}
+                    onPress={submit}
                 />
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
 };
 
-export default Signin;
+const mapStateToProps = state => ({
+    authState: state.user.authState,
+});
+
+const mapDispatchToProps = {
+    signIn: actions.signIn,
+    resetAuth: actions.resetAuth,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Signin);
