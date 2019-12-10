@@ -41,45 +41,60 @@ const styles = StyleSheet.create({
     },
 });
 
-const Signin = ({ close, authState, signIn, resetAuth }) => {
-    const emailRef = React.useRef(null);
-    const passwordRef = React.useRef(null);
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [showPassword, setShowPassword] = React.useState(false);
+class Signin extends React.Component {
+    constructor() {
+        super();
 
-    const goToPassword = React.useMemo(
-        () => () => passwordRef.current.focus(),
-        [passwordRef]
-    );
+        this.state = {
+            email: '',
+            password: '',
+            showPassword: false,
+        };
+        this.emailRef = React.createRef();
+        this.passwordRef = React.createRef();
+    }
 
-    const togglePassword = React.useMemo(() => () => setShowPassword(b => !b), [
-        setShowPassword,
-    ]);
+    componentDidMount() {
+        const { resetAuth } = this.props;
+        resetAuth();
+    }
 
-    const renderAccessory = React.useMemo(
-        () => () => (
-            <TouchableOpacity onPress={togglePassword}>
+    goToPassword = () => {
+        this.passwordRef.current.focus();
+    };
+
+    togglePassword = () => {
+        this.setState(({ showPassword }) => ({ showPassword: !showPassword }));
+    };
+
+    renderAccessory = () => {
+        const { showPassword } = this.state;
+        return (
+            <TouchableOpacity onPress={this.togglePassword}>
                 <Icon
                     style={styles.accessory}
                     name={showPassword ? 'eye-with-line' : 'eye'}
                 />
             </TouchableOpacity>
-        ),
-        [togglePassword, showPassword]
-    );
+        );
+    };
 
-    const emailChange = text => {
-        setEmail(text);
+    emailChange = text => {
+        const { resetAuth } = this.props;
+        this.setState({ email: text });
         resetAuth();
     };
 
-    const passwordChange = text => {
-        setPassword(text);
+    passwordChange = text => {
+        const { resetAuth } = this.props;
+        this.setState({ password: text });
         resetAuth();
     };
 
-    const submit = () => {
+    submit = () => {
+        const { signIn } = this.props;
+        const { email, password } = this.state;
+
         if (
             typeof email === 'string' &&
             typeof password === 'string' &&
@@ -90,62 +105,68 @@ const Signin = ({ close, authState, signIn, resetAuth }) => {
         }
     };
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar barStyle="light-content" />
-            <Aura />
-            <WhiteBar goBack={close} />
-            <KeyboardAvoidingView
-                behavior="padding"
-                style={styles.formContainer}
-            >
-                <Headline>Sign In</Headline>
-                <TextField
-                    ref={emailRef}
-                    label="Email address"
-                    textColor={Colors.white}
-                    tintColor={Colors.white}
-                    baseColor={Colors.white}
-                    autoCapitalize="none"
-                    onSubmitEditing={goToPassword}
-                    returnKeyType="next"
-                    keyboardType="email-address"
-                    textContentType="emailAddress"
-                    enablesReturnKeyAutomatically
-                    onChangeText={emailChange}
-                    autoFocus
-                />
-                <TextField
-                    ref={passwordRef}
-                    label="Password"
-                    textColor={Colors.white}
-                    tintColor={Colors.white}
-                    baseColor={Colors.white}
-                    secureTextEntry={!showPassword}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    returnKeyType="done"
-                    textContentType="password"
-                    renderRightAccessory={renderAccessory}
-                    enablesReturnKeyAutomatically
-                    onChangeText={passwordChange}
-                    error={
-                        authState === 'failed'
-                            ? 'Please make sure your email address and password are correct'
-                            : undefined
-                    }
-                />
-                <RoundedButton
-                    useGradient
-                    text="Sign In"
-                    wrapperStyle={styles.buttonWrapper}
-                    busy={authState === 'requested'}
-                    onPress={submit}
-                />
-            </KeyboardAvoidingView>
-        </SafeAreaView>
-    );
-};
+    render() {
+        const { close, authState } = this.props;
+        const { showPassword } = this.state;
+
+        return (
+            <SafeAreaView style={styles.container}>
+                <StatusBar barStyle="light-content" />
+                <Aura />
+                <WhiteBar goBack={close} />
+                <KeyboardAvoidingView
+                    behavior="padding"
+                    style={styles.formContainer}
+                >
+                    <Headline>Sign In</Headline>
+                    <TextField
+                        ref={this.emailRef}
+                        label="Email address"
+                        textColor={Colors.white}
+                        tintColor={Colors.white}
+                        baseColor={Colors.white}
+                        autoCapitalize="none"
+                        onSubmitEditing={this.goToPassword}
+                        returnKeyType="next"
+                        keyboardType="email-address"
+                        textContentType="emailAddress"
+                        enablesReturnKeyAutomatically
+                        onChangeText={this.emailChange}
+                        autoFocus
+                    />
+                    <TextField
+                        ref={this.passwordRef}
+                        label="Password"
+                        textColor={Colors.white}
+                        tintColor={Colors.white}
+                        baseColor={Colors.white}
+                        secureTextEntry={!showPassword}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        onSubmitEditing={this.onSubmit}
+                        returnKeyType="done"
+                        textContentType="password"
+                        renderRightAccessory={this.renderAccessory}
+                        enablesReturnKeyAutomatically
+                        onChangeText={this.passwordChange}
+                        error={
+                            authState === 'failed'
+                                ? 'Please make sure your email address and password are correct'
+                                : undefined
+                        }
+                    />
+                    <RoundedButton
+                        useGradient
+                        text="Sign In"
+                        wrapperStyle={styles.buttonWrapper}
+                        busy={authState === 'requested'}
+                        onPress={this.submit}
+                    />
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        );
+    }
+}
 
 const mapStateToProps = ({ user: { authState } }) => ({
     authState,
