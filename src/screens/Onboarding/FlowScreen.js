@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
     KeyboardAvoidingView,
     StyleSheet,
-    Text,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -12,6 +11,7 @@ import { connect } from 'react-redux';
 
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
+import Headline from './Headline';
 
 const styles = StyleSheet.create({
     container: {
@@ -20,15 +20,6 @@ const styles = StyleSheet.create({
         paddingLeft: 32,
         paddingRight: 32,
         alignItems: 'stretch',
-    },
-    headline: {
-        fontSize: 30,
-        lineHeight: 33,
-        color: Colors.white,
-        fontFamily: 'Nocturno Display Std',
-        width: 275,
-        alignSelf: 'flex-start',
-        marginBottom: 32,
     },
     spacer: {
         flex: 1,
@@ -107,7 +98,7 @@ class FlowScreen extends React.Component {
                 keyboardVerticalOffset={72}
                 style={[styles.container]}
             >
-                <Text style={styles.headline}>{headline}</Text>
+                <Headline>{headline}</Headline>
                 <TextField
                     ref={textFieldRef}
                     label={label}

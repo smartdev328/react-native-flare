@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
 import Home from './Home';
+import Signin from './Signin';
 import Signup from './Signup';
 import { regStart } from '../../actions/regActions';
 
@@ -19,7 +20,7 @@ const Onboarding = () => {
         return <Signup close={() => setSignUp(false)} />;
     }
     if (signIn) {
-        //
+        return <Signin close={() => setSignIn(false)} />;
     }
     return (
         <Home
