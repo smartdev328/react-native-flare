@@ -30,11 +30,13 @@ const styles = StyleSheet.create({
     },
 });
 
-const WhiteBar = ({ goBack, showLogo = true }) => (
+const WhiteBar = ({ goBack, showLogo = true, showBack = true }) => (
     <View style={styles.bar}>
-        <TouchableOpacity style={styles.backArrowWrapper} onPress={goBack}>
-            <Image source={backwardArrow} style={styles.backArrow} />
-        </TouchableOpacity>
+        {showBack && (
+            <TouchableOpacity style={styles.backArrowWrapper} onPress={goBack}>
+                <Image source={backwardArrow} style={styles.backArrow} />
+            </TouchableOpacity>
+        )}
         {showLogo && <Image source={smallestWhiteArrow} style={styles.logo} />}
     </View>
 );

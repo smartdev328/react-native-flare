@@ -34,6 +34,7 @@ export const initialState = Immutable({
             email: null,
             phone: null,
             password: null,
+            preferredPairing: null,
         },
     },
     beacons: {

@@ -38,6 +38,27 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 18,
     },
+    centerContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingHorizontal: 32,
+    },
+    spacer: {
+        flexGrow: 1,
+    },
+    headline: {
+        width: 233,
+        textAlign: 'center',
+        marginBottom: 12,
+        alignSelf: 'center',
+    },
+    image: {
+        width: 220,
+        height: 196,
+    },
+    spacedButton: {
+        marginBottom: 12,
+    },
 });
 
 export default styles;

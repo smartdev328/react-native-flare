@@ -1,40 +1,24 @@
 import * as React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
 
 import Headline from '../Onboarding/Headline';
-import sharedStyles from './styles';
+import styles from './styles';
 import RoundedButton from '../../bits/RoundedButton';
+import * as regActions from '../../actions/regActions';
 
 import cuff from '../../assets/cuff-v2.png';
 
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    bigSpacer: {
-        flexGrow: 1.75,
-    },
-    spacer: {
-        flexGrow: 1,
-    },
-    headline: {
-        width: 233,
-        textAlign: 'center',
-        marginBottom: 12,
-        alignSelf: 'center',
-    },
-    image: {
-        width: 220,
-        height: 196,
-    },
-    spacedButton: {
-        marginBottom: 12,
-    },
-});
-
-const GetStarted = ({ style }) => {
+const GetStarted = ({ style, setPreferredPairingMethod, nextPage }) => {
+    const preferBluetooth = () => {
+        setPreferredPairingMethod('bluetooth');
+        nextPage();
+    };
+    const preferManual = () => {
+        setPreferredPairingMethod('manual');
+        nextPage();
+    };
     const howToConnect = () => {
         Navigation.showModal({
             component: {
@@ -44,17 +28,18 @@ const GetStarted = ({ style }) => {
     };
 
     return (
-        <View style={[styles.container, ...style]}>
-            <View style={styles.bigSpacer} />
+        <View style={[styles.centerContainer, ...style]}>
+            <View style={styles.spacer} />
             <Headline style={styles.headline}>
                 Let’s connect your Flare cuff
             </Headline>
-            <View style={sharedStyles.line} />
+            <View style={styles.line} />
             <View style={styles.spacer} />
             <Image source={cuff} style={styles.image} />
             <View style={styles.spacer} />
             <RoundedButton
                 wrapperStyle={styles.spacedButton}
+                onPress={preferBluetooth}
                 text="Connect via Bluetooth"
                 useGradient={false}
                 width={240}
@@ -63,6 +48,7 @@ const GetStarted = ({ style }) => {
             />
             <RoundedButton
                 text="Enter serial number"
+                onPress={preferManual}
                 outline
                 useGradient={false}
                 width={240}
@@ -82,4 +68,11 @@ const GetStarted = ({ style }) => {
     );
 };
 
-export default GetStarted;
+const mapDispatchToProps = {
+    setPreferredPairingMethod: regActions.setPreferredPairingMethod,
+};
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(GetStarted);

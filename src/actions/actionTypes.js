@@ -128,3 +128,4 @@ export const USER_REG_SET_NAME = 'flare.app.USER_REG_SET_NAME';
 export const USER_REG_SET_EMAIL = 'flare.app.USER_REG_SET_EMAIL';
 export const USER_REG_SET_PHONE = 'flare.app.USER_REG_SET_PHONE';
 export const USER_REG_SET_PASSWORD = 'flare.app.USER_REG_SET_PASSWORD';
+export const USER_REG_SET_PAIRING = 'flare.app.USER_REG_SET_PAIRING';

@@ -11,3 +11,8 @@ export const regSetPassword = value => ({
     type: types.USER_REG_SET_PASSWORD,
     value,
 });
+
+export const setPreferredPairingMethod = value => ({
+    type: types.USER_REG_SET_PAIRING,
+    value,
+});

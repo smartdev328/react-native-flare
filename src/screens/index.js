@@ -25,6 +25,7 @@ import AddHardware from './AddHardware';
 import HowToConnect from './AddHardware/HowToConnect';
 
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
+import AboutPermissions from './AddHardware/AboutPermissions';
 
 export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
@@ -156,6 +157,10 @@ export default (store, Provider) => {
     Navigation.registerComponent(
         'com.flarejewelry.onboarding.addhardware.howtoconnect',
         () => HowToConnect
+    );
+    Navigation.registerComponent(
+        'com.flarejewelry.onboarding.addhardware.aboutpermissions',
+        () => AboutPermissions
     );
 
     if (MANUFACTURING_MODE_ENABLED) {

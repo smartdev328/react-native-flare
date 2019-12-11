@@ -428,6 +428,8 @@ export function user(state = initialState.user, action = {}) {
             return state.setIn(['reg', 'phone'], action.value);
         case types.USER_REG_SET_PASSWORD:
             return state.setIn(['reg', 'password'], action.value);
+        case types.USER_REG_SET_PAIRING:
+            return state.setIn(['reg', 'preferredPairing'], action.value);
 
         default:
             return state;
