@@ -7,46 +7,57 @@ import {
     View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Colors from './Colors';
 
 const textColor = '#F5F2ED';
 
 const styles = StyleSheet.create({
     base: {
-        width: 180,
-        height: 66,
         borderRadius: 33,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
     text: {
-        fontSize: 16,
         color: textColor,
         fontWeight: 'bold',
         textAlign: 'center',
         textTransform: 'uppercase',
     },
+    darkText: {
+        color: Colors.black,
+    },
     color: {
-        backgroundColor: '#D0D0D0',
+        backgroundColor: Colors.black,
+    },
+    outline: {
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: Colors.black,
     },
 });
 
 const gradientColors = ['#F9885E', '#C75C71'];
 
-const ColorButton = ({ children }) => (
-    <View style={[styles.base, styles.color]}>{children}</View>
+const ColorButton = ({ children, style }) => (
+    <View style={style}>{children}</View>
 );
 
-const GradientButton = ({ children }) => (
-    <LinearGradient
-        colors={gradientColors}
-        style={styles.base}
-        useAngle
-        angle={13}
-    >
+const GradientButton = ({ children, style }) => (
+    <LinearGradient colors={gradientColors} style={style} useAngle angle={13}>
         {children}
     </LinearGradient>
 );
+
+const computeColorStyle = ({ useGradient, outline, invisible }) => {
+    if (useGradient || invisible) {
+        return undefined;
+    } else if (outline) {
+        return styles.outline;
+    } else {
+        return styles.color;
+    }
+};
 
 const RoundedButton = ({
     text,
@@ -54,19 +65,31 @@ const RoundedButton = ({
     useGradient = true,
     wrapperStyle,
     busy,
+    outline = false,
+    invisible = false,
+    width = 180,
+    height = 66,
+    fontSize = 16,
 }) => {
     const ButtonComponent = useGradient ? GradientButton : ColorButton;
+    const colorStyle = computeColorStyle({ useGradient, outline, invisible });
+    const textColorStyle = outline || invisible ? styles.darkText : undefined;
+
     return (
         <TouchableOpacity
             onPress={onPress}
             style={wrapperStyle}
             disabled={busy}
         >
-            <ButtonComponent>
+            <ButtonComponent
+                style={[styles.base, colorStyle, { width, height }]}
+            >
                 {busy ? (
                     <ActivityIndicator size="small" color={textColor} />
                 ) : (
-                    <Text style={styles.text}>{text}</Text>
+                    <Text style={[styles.text, textColorStyle, { fontSize }]}>
+                        {text}
+                    </Text>
                 )}
             </ButtonComponent>
         </TouchableOpacity>

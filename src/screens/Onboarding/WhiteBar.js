@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     backArrowWrapper: {
         width: 34,
         flexDirection: 'column',
+        alignSelf: 'flex-start',
     },
     backArrow: {
         width: 34,
@@ -29,12 +30,12 @@ const styles = StyleSheet.create({
     },
 });
 
-const WhiteBar = ({ goBack }) => (
+const WhiteBar = ({ goBack, showLogo = true }) => (
     <View style={styles.bar}>
         <TouchableOpacity style={styles.backArrowWrapper} onPress={goBack}>
             <Image source={backwardArrow} style={styles.backArrow} />
         </TouchableOpacity>
-        <Image source={smallestWhiteArrow} style={styles.logo} />
+        {showLogo && <Image source={smallestWhiteArrow} style={styles.logo} />}
     </View>
 );
 

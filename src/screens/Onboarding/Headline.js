@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const Headline = ({ children }) => (
-    <Text style={styles.headline}>{children}</Text>
+const Headline = ({ children, style }) => (
+    <Text style={[styles.headline, style]}>{children}</Text>
 );
 
 export default Headline;
