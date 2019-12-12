@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SafeAreaView } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
+import { connect } from 'react-redux';
 
 import styles from './styles';
 import GetStarted from './GetStarted';
@@ -57,4 +58,10 @@ class AddHardware extends React.Component {
     }
 }
 
-export default AddHardware;
+const mapStateToProps = ({
+    user: {
+        reg: { preferredPairing },
+    },
+}) => ({ preferredPairing });
+
+export default connect(mapStateToProps)(AddHardware);

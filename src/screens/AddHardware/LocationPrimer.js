@@ -1,22 +1,41 @@
 import * as React from 'react';
 import { Image, Text, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
+import { connect } from 'react-redux';
+import { PERMISSIONS } from 'react-native-permissions';
 
 import styles from './styles';
 import Headline from '../Onboarding/Headline';
+import * as userActions from '../../actions/userActions';
 
 import locationStars from '../../assets/location-stars.png';
 import RoundedButton from '../../bits/RoundedButton';
 
-const LocationPrimer = ({ style, nextPage }) => {
-    const tellMeMore = () => {
+const LocationPrimer = ({
+    style,
+    nextPage,
+    getPermission,
+    locationPermission,
+    requestingPermissions,
+}) => {
+    React.useEffect(() => {
+        if (locationPermission && !requestingPermissions) {
+            nextPage();
+        }
+    }, [locationPermission, requestingPermissions, nextPage]);
+
+    const allowLocation = React.useCallback(() => {
+        getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS);
+    }, [getPermission]);
+
+    const tellMeMore = React.useCallback(() => {
         Navigation.showModal({
             component: {
                 name:
                     'com.flarejewelry.onboarding.addhardware.aboutpermissions',
             },
         });
-    };
+    }, []);
 
     return (
         <View style={[styles.centerContainer, ...style]}>
@@ -33,6 +52,7 @@ const LocationPrimer = ({ style, nextPage }) => {
             <View style={styles.spacer} />
             <RoundedButton
                 text="Allow Location"
+                onPress={allowLocation}
                 useGradient={false}
                 width={240}
                 height={48}
@@ -51,4 +71,19 @@ const LocationPrimer = ({ style, nextPage }) => {
     );
 };
 
-export default LocationPrimer;
+const mapStateToProps = ({ user: { permissions, requestingPermissions } }) => ({
+    locationPermission:
+        typeof permissions === 'object' &&
+        'location' in permissions &&
+        permissions.location,
+    requestingPermissions,
+});
+
+const mapDispatchToProps = {
+    getPermission: userActions.getPermission,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LocationPrimer);
