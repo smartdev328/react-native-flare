@@ -1,18 +1,38 @@
 import * as React from 'react';
 import { Image, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styles from '../styles';
 import Headline from '../../Onboarding/Headline';
 import cuff from '../../../assets/cuff-v2.png';
 import Geyser from './Geyser';
+import { beaconCountsReset } from '../../../actions/hardwareActions';
+import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../../../constants/Config';
+import { setFoundDevice } from '../../../actions/regActions';
 
 const Bluetooth = ({ style }) => {
-    const shortPressCounts = useSelector(
-        state => state.beacons.recentShortPressCounts
-    );
+    const dispatch = useDispatch();
+    const latestPress = useSelector(state => {
+        const {
+            beacons: { recentShortPressCounts },
+        } = state;
+        return recentShortPressCounts ? recentShortPressCounts[0] : {};
+    });
 
-    console.log('shortPressCounts', shortPressCounts);
+    React.useEffect(() => {
+        dispatch(beaconCountsReset());
+        return () => dispatch(beaconCountsReset());
+    }, [dispatch]);
+
+    React.useEffect(() => {
+        if (
+            latestPress &&
+            'count' in latestPress &&
+            latestPress.count >= DEVICE_ADDITION_MIN_PRESS_COUNT
+        ) {
+            dispatch(setFoundDevice(latestPress.deviceID));
+        }
+    }, [latestPress]);
 
     return (
         <View style={[styles.centerContainer, ...style]}>
