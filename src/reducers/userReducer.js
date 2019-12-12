@@ -223,10 +223,11 @@ export function user(state = initialState.user, action = {}) {
         case types.REGISTER_USER_SUCCESS:
             return state.merge({
                 registrationState: 'succeeded',
-                analyticsToken: action.data.analytics_token,
-                authToken: action.data.auth_token,
-                radioToken: action.data.radio_token,
-                devices: action.data.devices,
+                analyticsToken: action.registerData.analytics_token,
+                authToken: action.registerData.auth_token,
+                radioToken: action.registerData.radio_token,
+                devices: action.registerData.devices,
+                completedRegistration: true,
             });
 
         /**

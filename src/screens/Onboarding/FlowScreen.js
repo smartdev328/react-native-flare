@@ -84,6 +84,7 @@ class FlowScreen extends React.Component {
             textContentType,
             password = false,
             currentValue,
+            registrationState,
         } = this.props;
         const { showPassword, error } = this.state;
 
@@ -124,6 +125,7 @@ class FlowScreen extends React.Component {
                     useGradient
                     text="Continue"
                     wrapperStyle={styles.buttonWrapper}
+                    busy={registrationState === 'requested'}
                 />
             </KeyboardAvoidingView>
         );
@@ -132,6 +134,7 @@ class FlowScreen extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
     currentValue: state.user.reg[ownProps.value],
+    registrationState: state.user.registrationState,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => {

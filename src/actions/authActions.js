@@ -8,6 +8,7 @@ import {
 } from '../constants/Config';
 import * as types from './actionTypes';
 import Roles from '../constants/Roles';
+import ProtectedAPICall from '../bits/ProtectedAPICall';
 
 export function signIn(email, password) {
     return async function doSignIn(dispatch) {
@@ -47,31 +48,49 @@ export function signIn(email, password) {
     };
 }
 
-export function registerNewAccount(email, phone, serial) {
-    return async function doRegister(dispatch) {
-        dispatch({
-            type: types.REGISTER_USER_REQUEST,
+export const registerNewAccount = ({
+    email,
+    phone,
+    serial = undefined,
+    firstName,
+    lastName,
+    password,
+}) => async dispatch => {
+    dispatch({
+        type: types.REGISTER_USER_REQUEST,
+    });
+    try {
+        const registerResponse = await axios.post(`${API_URL}/auth/register`, {
+            email,
+            phone,
+            serial,
         });
-        return axios
-            .post(`${API_URL}/auth/register`, {
-                email,
-                phone,
-                serial,
-            })
-            .then(response => {
-                dispatch({
-                    type: types.REGISTER_USER_SUCCESS,
-                    data: response.data,
-                });
-            })
-            .catch(res =>
-                dispatch({
-                    type: types.REGISTER_USER_FAILURE,
-                    res,
-                })
-            );
-    };
-}
+        const token = registerResponse.data.auth_token;
+        const detailsResponse = await ProtectedAPICall(
+            token,
+            API_URL,
+            '/auth/register/details',
+            {
+                method: 'PUT',
+                data: {
+                    first: firstName,
+                    last: lastName,
+                    password,
+                },
+            }
+        );
+        dispatch({
+            type: types.REGISTER_USER_SUCCESS,
+            registerData: registerResponse.data,
+            detailsData: detailsResponse.data,
+        });
+    } catch (res) {
+        dispatch({
+            type: types.REGISTER_USER_FAILURE,
+            res,
+        });
+    }
+};
 
 export function resetAuth() {
     return async function doReset(dispatch) {

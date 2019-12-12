@@ -1,4 +1,4 @@
-const NAME_REGEX = /^(.*\p{Script=Latn}) (\p{Script=Latin}.*)$/u;
+const NAME_REGEX = /^(.*\p{Script=Latn}) +(\p{Script=Latin}.*)$/u;
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/u;
 const PHONE_REGEX = /^\+?1?[ -()]*[2-9](?:[0-9]){9}$/;
 
@@ -9,6 +9,19 @@ export const validateName = name => {
         return 'Please enter your first and last name';
     } else {
         return null;
+    }
+};
+
+export const splitName = name => {
+    if (typeof name !== 'string') {
+        return {};
+    }
+
+    const result = NAME_REGEX.exec(name);
+    if (result === null) {
+        return {};
+    } else {
+        return { firstName: result[1], lastName: result[2] };
     }
 };
 

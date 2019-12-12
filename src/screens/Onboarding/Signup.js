@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { Alert, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import { connect } from 'react-redux';
 
@@ -11,7 +11,9 @@ import {
     regSetPassword,
     regSetPhone,
 } from '../../actions/regActions';
+import * as authActions from '../../actions/authActions';
 import {
+    splitName,
     validateEmail,
     validateName,
     validatePassword,
@@ -29,8 +31,9 @@ const styles = StyleSheet.create({
 });
 
 const extractGreeting = name => {
-    if (typeof name === 'string' && name.length > 1) {
-        return `Welcome, ${name.split(' ')[0]}!`;
+    const { firstName } = splitName(name);
+    if (typeof firstName === 'string' && firstName.length > 1) {
+        return `Welcome, ${firstName}!`;
     } else {
         return 'Welcome!';
     }
@@ -46,6 +49,25 @@ class Signup extends React.Component {
         this.setFieldRef = this.fieldRefs.map((_, index) => ref => {
             this.fieldRefs[index] = ref;
         });
+    }
+
+    componentDidUpdate(prevProps) {
+        const { registrationState, onSuccess } = this.props;
+        if (prevProps.registrationState !== registrationState) {
+            // eslint-disable-next-line default-case
+            switch (registrationState) {
+                case 'failed':
+                    Alert.alert(
+                        'Error',
+                        'Sorry, we were unable to connect to Flare to create your account.',
+                        [{ text: 'OK' }]
+                    );
+                    break;
+                case 'succeeded':
+                    onSuccess();
+                    break;
+            }
+        }
     }
 
     goBack = () => {
@@ -74,6 +96,12 @@ class Signup extends React.Component {
 
     setPagerRef = ref => {
         this.pagerRef = ref;
+    };
+
+    submit = () => {
+        const { name, email, phone, password, registerNewAccount } = this.props;
+        const nameComponents = splitName(name);
+        registerNewAccount({ email, phone, password, ...nameComponents });
     };
 
     render() {
@@ -134,7 +162,7 @@ class Signup extends React.Component {
                     <View key="password">
                         <FlowScreen
                             headline={'Last thing:\nEnter a password!'}
-                            onNext={this.goForward}
+                            onNext={this.submit}
                             label="Your password"
                             textFieldRef={this.setFieldRef[3]}
                             password
@@ -152,10 +180,22 @@ class Signup extends React.Component {
 
 const mapStateToProps = ({
     user: {
-        reg: { name },
+        registrationState,
+        reg: { name, email, phone, password },
     },
 }) => ({
+    registrationState,
     name,
+    email,
+    phone,
+    password,
 });
 
-export default connect(mapStateToProps)(Signup);
+const mapDispatchToProps = {
+    registerNewAccount: authActions.registerNewAccount,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Signup);
