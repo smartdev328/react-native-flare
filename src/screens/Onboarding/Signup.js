@@ -125,7 +125,7 @@ class Signup extends React.Component {
                         <FlowScreen
                             headline="We’re so glad you’re here! What’s your name?"
                             onNext={this.goForward}
-                            label="Your name"
+                            label="Your full name"
                             textFieldRef={this.setFieldRef[0]}
                             textContentType="name"
                             actionCreator={regSetName}
