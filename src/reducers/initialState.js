@@ -2,7 +2,6 @@ import Immutable from 'seamless-immutable';
 import Strings from '../locales/en';
 import CallScripts from '../constants/CallScripts';
 
-// eslint-disable-next-line
 export const initialState = Immutable({
     nav: {
         root: 'insecure', // 'insecure' / 'secure',
@@ -29,6 +28,13 @@ export const initialState = Immutable({
             promptType: Strings.settings.notifications.defaultOption,
             promptMessage: Strings.settings.notifications.defaultMessage,
             analyticsEnabled: true,
+        },
+        reg: {
+            name: null,
+            email: null,
+            phone: null,
+            password: null,
+            preferredPairing: null,
         },
     },
     beacons: {

@@ -1,14 +1,24 @@
 import React from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+    ActivityIndicator,
+    KeyboardAvoidingView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
-import { cancelActiveFlare, resetCancelFlareState } from '../actions/beaconActions';
+import {
+    cancelActiveFlare,
+    resetCancelFlareState,
+} from '../actions/beaconActions';
 import { LONG_PRESS_CANCEL_PIN_LENGTH } from '../constants/Config';
 import Aura from '../bits/Aura';
 import Button from '../bits/Button';
 import Colors from '../bits/Colors';
-import CommonTop from './onboarding/CommonTop';
+import CommonTop from './CommonTop';
 import FlareAlert from '../bits/FlareAlert';
 import FlareTextInput from '../bits/FlareTextInput';
 import Spacing from '../bits/Spacing';
@@ -73,7 +83,9 @@ class PinCheck extends React.Component {
     }
 
     async submitPIN() {
-        this.props.dispatch(cancelActiveFlare(this.props.authToken, this.state.pin));
+        this.props.dispatch(
+            cancelActiveFlare(this.props.authToken, this.state.pin)
+        );
     }
 
     changePinText(val) {
@@ -91,35 +103,50 @@ class PinCheck extends React.Component {
             <KeyboardAvoidingView style={styles.container}>
                 <Aura source="aura-7" />
                 <CommonTop />
-                <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.header}>
+                <ScrollView
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={styles.header}
+                >
                     <Text style={styles.headerText}>{Strings.pin.prompt}</Text>
-                    {!this.props.cancelActiveFlare && this.props.cancelActiveFlareState === 'failure' && (
-                        <FlareAlert
-                            message={Strings.pin.error}
-                            variant="info"
-                            centered
-                            containerStyle={styles.warningArea}
-                        />
-                    )}
+                    {!this.props.cancelActiveFlare &&
+                        this.props.cancelActiveFlareState === 'failure' && (
+                            <FlareAlert
+                                message={Strings.pin.error}
+                                variant="info"
+                                centered
+                                containerStyle={styles.warningArea}
+                            />
+                        )}
                     <FlareTextInput
                         maxLength={LONG_PRESS_CANCEL_PIN_LENGTH}
-                        placeholder={Strings.onboarding.longPressCancel.pinPlaceholder}
+                        placeholder={
+                            Strings.onboarding.longPressCancel.pinPlaceholder
+                        }
                         secureTextEntry
                         keyboardType="phone-pad"
                         onChangeText={v => this.changePinText(v)}
                         value={this.state.pin}
                     />
                     <View style={styles.cancelButtonArea}>
-                        <Button title={Strings.pin.title} onPress={() => this.submitPIN()} primary />
+                        <Button
+                            title={Strings.pin.title}
+                            onPress={() => this.submitPIN()}
+                            primary
+                        />
                     </View>
                 </ScrollView>
                 <View style={styles.footer}>
                     <View style={styles.secondaryArea}>
-                        <Button title={Strings.pin.neverMind} onPress={() => this.neverMind()} secondary />
+                        <Button
+                            title={Strings.pin.neverMind}
+                            onPress={() => this.neverMind()}
+                            secondary
+                        />
                     </View>
-                    {this.props.cancelingActiveFlare && this.props.cancelActiveFlareState === 'request' && (
-                        <ActivityIndicator />
-                    )}
+                    {this.props.cancelingActiveFlare &&
+                        this.props.cancelActiveFlareState === 'request' && (
+                            <ActivityIndicator />
+                        )}
                 </View>
             </KeyboardAvoidingView>
         );

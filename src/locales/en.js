@@ -12,7 +12,8 @@ const Strings = {
         },
         chooseInstruction: {
             start: 'You have',
-            end: 'of 5 possible people in your crew. Adjust your crew by pressing names shown below.',
+            end:
+                'of 5 possible people in your crew. Adjust your crew by pressing names shown below.',
         },
         choosePrompt:
             'Choose up to 5 contacts by pressing their names. These are the people we will reach out to when you ' +
@@ -46,7 +47,8 @@ const Strings = {
     },
     home: {
         bluetoothDisabledWarning: 'Turn bluetooth on in your phone settings',
-        locationDisabledWarning: 'Set location permission to Always in phone settings',
+        locationDisabledWarning:
+            'Set location permission to Always in phone settings',
         cancelActiveFlare: 'Cancel Message',
         chooseLanguage: 'Choose language',
         contactsButtonLabelAdd: 'Choose Your Crew',
@@ -61,18 +63,21 @@ const Strings = {
     jewelry: {
         addNew: 'Add New',
         addNewAuto: {
-            prompt: 'Please press the button on your new jewelry 3 times in a row.',
+            prompt:
+                'Please press the button on your new jewelry 3 times in a row.',
         },
         addNewConfirm: {
             fccMessage: 'CONTAINS FCC ID: RYYEYSLSN',
             placeholderTwoFactor: 'Last 3 digits',
-            prompt: 'Got it! Please look at the bottom of your jewelry and type the last 3 digits of the code you see.',
+            prompt:
+                'Got it! Please look at the bottom of your jewelry and type the last 3 digits of the code you see.',
             sampleDigits: '???',
             secondFactorError: 'Wrong code? Please try again.',
         },
         addNewManual: {
             buttonLabel: 'Add Manually',
-            cameraPermissionMessage: 'Please let us use your camera so we can scan your jewelry',
+            cameraPermissionMessage:
+                'Please let us use your camera so we can scan your jewelry',
             cameraPermissionTitle: 'Permission to use camera',
             placeholderDeviceID: 'Jewelry code, eg XXX123',
             prompt:
@@ -90,7 +95,8 @@ const Strings = {
         cuffV3: {
             name: 'Flare Cuff',
         },
-        emptyList: "You don't have any jewelry. Press the Add New button to add jewelry to your account",
+        emptyList:
+            "You don't have any jewelry. Press the Add New button to add jewelry to your account",
         remove: 'Remove from account',
         removeConfirm: {
             cancelLabel: 'No, keep it',
@@ -120,7 +126,8 @@ const Strings = {
         testBeacon: 'Test',
     },
     notifications: {
-        bluetoothDisabled: 'Please turn on bluetooth so that Flare can work! 💔',
+        bluetoothDisabled:
+            'Please turn on bluetooth so that Flare can work! 💔',
         title: 'Reminder',
         events: {
             flare: {
@@ -129,7 +136,9 @@ const Strings = {
         },
     },
     onboarding: {
-        skipConfirmPrompt: "Are you sure you want to skip onboarding? The app basically won't work",
+        signupButton: 'Sign up',
+        skipConfirmPrompt:
+            "Are you sure you want to skip onboarding? The app basically won't work",
         welcome: {
             title: 'Welcome!',
             subtitle:
@@ -137,7 +146,8 @@ const Strings = {
                 'for your safety.',
             alwaysAllow: 'Always allow',
             buttonLabel: 'Get Started',
-            locationAlreadyPrompted: 'Set location permission to Always in phone settings so your jewelry can work.',
+            locationAlreadyPrompted:
+                'Set location permission to Always in phone settings so your jewelry can work.',
             proceedAnywayButtonLabel: 'No thanks, proceed anyway',
         },
         location: {
@@ -156,10 +166,12 @@ const Strings = {
                 'feel a click. Answer the call!',
             singleDevice: {
                 title: 'Short Press',
-                subtitleStart: 'Great. You can use the call as an excuse to exit gracefully.',
+                subtitleStart:
+                    'Great. You can use the call as an excuse to exit gracefully.',
             },
             disabled: {
-                subtitle: 'Give us location permission so you can use your jewelry.',
+                subtitle:
+                    'Give us location permission so you can use your jewelry.',
             },
             proceedAnywayButtonLabel: "I don't want a call right now",
             proceedLabel: 'Show me more!',
@@ -167,7 +179,8 @@ const Strings = {
         longPress: {
             waiting: {
                 title: 'Long Press',
-                subtitle: 'Now hold the button down for longer, about 3 seconds, and let go.',
+                subtitle:
+                    'Now hold the button down for longer, about 3 seconds, and let go.',
             },
             success: {
                 title: 'Sweet!',
@@ -184,12 +197,14 @@ const Strings = {
         },
         longPressCancel: {
             initial: {
-                subtitle: "Choose a 4 digit pin code that you'll enter to cancel messages in the future.",
+                subtitle:
+                    "Choose a 4 digit pin code that you'll enter to cancel messages in the future.",
                 buttonLabel: 'Save Secret',
             },
             hasSetPin: {
                 title: 'Nice.',
-                subtitle: 'You canceled your message, so your friends know the situation is resolved.',
+                subtitle:
+                    'You canceled your message, so your friends know the situation is resolved.',
                 buttonLabel: 'Keep going',
             },
             pinPlaceholder: 'Secret pin',
@@ -215,11 +230,13 @@ const Strings = {
                 first:
                     'Your selected contacts will get a group text message with your location. We ask them to give ' +
                     'you a call and check-in.',
-                second: "You'll be able to see a transcript of their conversation in the app.",
+                second:
+                    "You'll be able to see a transcript of their conversation in the app.",
                 third: 'Press the Cancel button below to end this message.',
             },
             buttonLabel: 'Cancel',
-            locationDisabled: 'This is the screen you see after you hold the button on your jewelry to send a message.',
+            locationDisabled:
+                'This is the screen you see after you hold the button on your jewelry to send a message.',
         },
         contacts: {
             hasCrew: {
@@ -229,16 +246,19 @@ const Strings = {
             },
             hasPermission: {
                 chooseCrewLabel: 'Choose Crew',
-                subtitle: 'Press the button below to choose the contacts you want to reach with Flare.',
+                subtitle:
+                    'Press the button below to choose the contacts you want to reach with Flare.',
                 title: 'Choose Your Crew',
             },
             initial: {
                 buttonLabel: 'Give Access',
-                subtitle: 'We need permission to access your contacts so that you can select the friends we message.',
+                subtitle:
+                    'We need permission to access your contacts so that you can select the friends we message.',
                 title: 'Contacts',
             },
             overlay: {
-                instructions: 'Click on the name of a contact to add them to your crew.',
+                instructions:
+                    'Click on the name of a contact to add them to your crew.',
                 title: 'Choose up to 5 contacts.',
                 closeButtonLabel: 'Save Crew',
             },
@@ -277,7 +297,8 @@ const Strings = {
     },
     settings: {
         call: {
-            details: 'Choose the message that you hear when you press the button and we call you.',
+            details:
+                'Choose the message that you hear when you press the button and we call you.',
             title: 'Phone call script',
             saveButtonLabel: 'Use script',
             scripts: {
@@ -346,13 +367,15 @@ const Strings = {
         },
     },
     register2: {
-        instructions: 'Almost done! Please enter your name and password to start using your jewelry.',
+        instructions:
+            'Almost done! Please enter your name and password to start using your jewelry.',
         firstNamePrompt: 'First name',
         lastNamePrompt: 'Last name',
         passwordPrompt: 'Password',
         submitLabel: "Let's do this!",
         errors: {
-            invalidPassword: 'Passwords need to be 8 characters or more. Use letters, numbers, and punctuation.',
+            invalidPassword:
+                'Passwords need to be 8 characters or more. Use letters, numbers, and punctuation.',
         },
     },
     signin: {
