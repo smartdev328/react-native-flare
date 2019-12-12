@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import * as React from 'react';
 import { Shape, Surface } from '@react-native-community/art';
 import { StyleSheet } from 'react-native';
@@ -20,7 +21,7 @@ const Geyser = () => {
     const [pathIndex, setPathIndex] = React.useState(0);
     React.useEffect(() => {
         const intervalId = setInterval(() => {
-            setPathIndex(i => (i + 1) % 3);
+            setPathIndex(i => (i + 1) % 4);
         }, 500);
 
         return () => clearInterval(intervalId);
@@ -28,13 +29,20 @@ const Geyser = () => {
 
     return (
         <Surface width={50} height={27} style={styles.surface}>
-            <Shape
-                d={PATHS[pathIndex]}
-                stroke={Colors.black}
-                strokeCap="round"
-                strokeJoin="round"
-                strokeWidth={3.9}
-            />
+            {PATHS.map(
+                (path, index) =>
+                    index <= pathIndex &&
+                    pathIndex !== 3 && (
+                        <Shape
+                            key={index}
+                            d={path}
+                            stroke={Colors.black}
+                            strokeCap="round"
+                            strokeJoin="round"
+                            strokeWidth={3.9}
+                        />
+                    )
+            )}
         </Surface>
     );
 };
