@@ -253,6 +253,8 @@ PODS:
     - React-cxxreact (= 0.61.2)
     - React-jsi (= 0.61.2)
     - ReactCommon/jscallinvoker (= 0.61.2)
+  - ReactNativeART (1.0.3):
+    - React
   - ReactNativeBeaconsManager (1.1.0):
     - React
   - ReactNativeNavigation (3.2.0):
@@ -311,6 +313,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - "ReactNativeBeaconsManager (from `../node_modules/@x-guard/react-native-beacons-manager`)"
   - ReactNativeNavigation (from `../node_modules/react-native-navigation/ReactNativeNavigation.podspec`)
   - "RNBluetoothInfo (from `../node_modules/@bitfly/react-native-bluetooth-info`)"
@@ -402,6 +405,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeART:
+    :path: "../node_modules/@react-native-community/art"
   ReactNativeBeaconsManager:
     :path: "../node_modules/@x-guard/react-native-beacons-manager"
   ReactNativeNavigation:
@@ -460,6 +465,7 @@ SPEC CHECKSUMS:
   React-RCTText: e3ef6191cdb627855ff7fe8fa0c1e14094967fb8
   React-RCTVibration: fb54c732fd20405a76598e431aa2f8c2bf527de9
   ReactCommon: 5848032ed2f274fcb40f6b9ec24067787c42d479
+  ReactNativeART: 7d65fa7e1469cbcfa351070cdd3b6135ad60c799
   ReactNativeBeaconsManager: dd0b01841445881989af5be9ab83153d1cdaa6b7
   ReactNativeNavigation: aad255980f20cc5d2001ed37972319f3789fea70
   RNBluetoothInfo: 74190dc3e5241b051d4559fa7fcb71267d954202

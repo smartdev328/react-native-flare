@@ -38,7 +38,7 @@ const Onboarding = ({ componentId }) => {
     } else {
         return (
             <Home
-                onSignUpPressed={onSignUpPressed}
+                onSignUpPressed={onSignUpSuccess}
                 onSignInPressed={onSignInPressed}
             />
         );

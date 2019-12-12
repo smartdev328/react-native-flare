@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { SafeAreaView } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
-import { connect } from 'react-redux';
 
 import styles from './styles';
 import GetStarted from './GetStarted';
 import WhiteBar from '../Onboarding/WhiteBar';
 import LocationPrimer from './LocationPrimer';
+import Pairing from './Pairing';
 
 class AddHardware extends React.Component {
     constructor() {
@@ -52,16 +52,11 @@ class AddHardware extends React.Component {
                         nextPage={this.nextPage}
                     />
                     <LocationPrimer nextPage={this.nextPage} />
+                    <Pairing />
                 </ViewPager>
             </SafeAreaView>
         );
     }
 }
 
-const mapStateToProps = ({
-    user: {
-        reg: { preferredPairing },
-    },
-}) => ({ preferredPairing });
-
-export default connect(mapStateToProps)(AddHardware);
+export default AddHardware;
