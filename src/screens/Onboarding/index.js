@@ -6,6 +6,7 @@ import Home from './Home';
 import Signin from './Signin';
 import Signup from './Signup';
 import { regStart } from '../../actions/regActions';
+import { resetClaim } from '../../actions/deviceActions';
 
 const Onboarding = ({ componentId }) => {
     const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const Onboarding = ({ componentId }) => {
     const closeSignIn = React.useCallback(() => setSignIn(false), [setSignIn]);
 
     const onSignUpSuccess = React.useCallback(() => {
+        dispatch(resetClaim());
+
         Navigation.push(componentId, {
             component: {
                 name: 'com.flarejewelry.onboarding.addhardware',

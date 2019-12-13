@@ -16,3 +16,8 @@ export const setPreferredPairingMethod = value => ({
     type: types.USER_REG_SET_PAIRING,
     value,
 });
+
+export const setFoundDevice = value => ({
+    type: types.USER_REG_SET_FOUND_DEVICE,
+    value,
+});

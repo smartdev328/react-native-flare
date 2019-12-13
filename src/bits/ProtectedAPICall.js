@@ -2,14 +2,11 @@
 import axios from 'axios';
 import { VERBOSE_NETWORK_LOGGING } from '../constants/Config';
 
-async function getAuthorizationHeader(userToken) {
-    const headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-    };
-    headers.Authorization = `Bearer ${userToken}`;
-    return headers;
-}
+const getAuthorizationHeader = userToken => ({
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${userToken}`,
+});
 
 /**
  * Requests a URL, returning a promise
@@ -22,11 +19,12 @@ async function getAuthorizationHeader(userToken) {
  * @return {Promise}           The request promise
  */
 export default async function request(token, serverUrl, route, options) {
-    const headers = await getAuthorizationHeader(token);
-    const optionsWithHeaders = Object.assign({}, options, {
+    const headers = getAuthorizationHeader(token);
+    const optionsWithHeaders = {
+        ...options,
         headers,
         url: `${serverUrl}${route}`,
-    });
+    };
 
     if (VERBOSE_NETWORK_LOGGING) {
         // eslint-disable-next-line

@@ -19,8 +19,6 @@ export function stopBleListening() {
     };
 }
 
-export default {
-    setBluetoothState,
-    startBleListening,
-    stopBleListening,
-};
+export const beaconCountsReset = () => ({
+    type: types.BEACON_COUNTS_RESET,
+});

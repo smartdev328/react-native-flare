@@ -30,6 +30,10 @@ export function claimDevice(token, deviceID, secondFactor) {
     };
 }
 
+export const resetClaim = () => ({
+    type: types.DEVICE_CLAIM_RESET,
+});
+
 export function disclaimDevice(token, deviceID) {
     return async function removeDeviceFromUser(dispatch) {
         dispatch({

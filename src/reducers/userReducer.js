@@ -257,18 +257,27 @@ export function user(state = initialState.user, action = {}) {
             });
 
         case types.DEVICE_CLAIM_SUCCESS:
-            return state.merge({
-                claimedDevice: action.claimedDevice,
-                claimingDevice: false,
-                claimingDeviceFailure: null,
-                devices: action.devices,
-            });
+            return state
+                .merge({
+                    claimedDevice: action.claimedDevice,
+                    claimingDevice: false,
+                    claimingDeviceFailure: null,
+                    devices: action.devices,
+                })
+                .setIn(['reg', 'foundDevice'], action.value);
 
         case types.DEVICE_CLAIM_FAILURE:
             return state.merge({
                 claimingDevice: false,
                 claimedDevice: null,
                 claimingDeviceFailure: action.status,
+            });
+
+        case types.DEVICE_CLAIM_RESET:
+            return state.merge({
+                claimingDevice: false,
+                claimedDevice: null,
+                claimingDeviceFailure: null,
             });
 
         case types.DEVICE_DISCLAIM_REQUEST:
@@ -431,6 +440,8 @@ export function user(state = initialState.user, action = {}) {
             return state.setIn(['reg', 'password'], action.value);
         case types.USER_REG_SET_PAIRING:
             return state.setIn(['reg', 'preferredPairing'], action.value);
+        case types.USER_REG_SET_FOUND_DEVICE:
+            return state.setIn(['reg', 'foundDevice'], action.value);
 
         default:
             return state;
