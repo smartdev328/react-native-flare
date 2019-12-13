@@ -10,7 +10,7 @@ import RoundedButton from '../../../bits/RoundedButton';
 const Confirm = ({ device, submit, busy }) => {
     const [secondFactor, setSecondFactor] = React.useState();
     const onPress = React.useCallback(() => {
-        submit(device, secondFactor);
+        submit({ deviceId: device, secondFactor });
     }, [submit, device, secondFactor]);
 
     const deviceLabel = FlareDeviceID.getJewelryLabelFromDeviceID(device);

@@ -273,6 +273,13 @@ export function user(state = initialState.user, action = {}) {
                 claimingDeviceFailure: action.status,
             });
 
+        case types.DEVICE_CLAIM_RESET:
+            return state.merge({
+                claimingDevice: false,
+                claimedDevice: null,
+                claimingDeviceFailure: null,
+            });
+
         case types.DEVICE_DISCLAIM_REQUEST:
             return state.merge({
                 disclaimingDevice: true,

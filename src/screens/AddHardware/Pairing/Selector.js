@@ -25,7 +25,14 @@ const Selector = props => {
         })
     );
     const submit = React.useCallback(
-        (deviceId, secondFactor) => {
+        ({ deviceId, secondFactor }) => {
+            if (
+                typeof deviceId !== 'number' ||
+                typeof secondFactor !== 'string' ||
+                secondFactor.length !== 3
+            ) {
+                return;
+            }
             dispatch(claimDevice(authToken, deviceId, secondFactor));
         },
         [dispatch, authToken]
@@ -44,7 +51,7 @@ const Selector = props => {
             <Confirm {...props} device={device} busy={busy} submit={submit} />
         );
     } else {
-        return <Bluetooth {...props} />;
+        return <Bluetooth {...props} busy={busy} submit={submit} />;
     }
 };
 

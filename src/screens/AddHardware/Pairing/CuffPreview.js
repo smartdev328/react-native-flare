@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const CuffPreview = ({ text, style, onChangeText }) => {
+const CuffPreview = ({ text = '', style, onChangeText }) => {
     const inputRef = React.useRef(null);
     const focusInput = React.useCallback(() => {
         if (inputRef.current) {

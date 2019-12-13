@@ -47,6 +47,7 @@ export const CREW_SET_SUCCESS = 'flare.app.crews.set.SUCCESS';
 export const DEVICE_CLAIM_FAILURE = 'flare.app.device.claim.FAILURE';
 export const DEVICE_CLAIM_REQUEST = 'flare.app.device.claim.REQUEST';
 export const DEVICE_CLAIM_SUCCESS = 'flare.app.device.claim.SUCCESS';
+export const DEVICE_CLAIM_RESET = 'flare.app.device.claim.RESET';
 
 export const DEVICE_DISCLAIM_FAILURE = 'flare.app.device.remove.FAILURE';
 export const DEVICE_DISCLAIM_REQUEST = 'flare.app.device.remove.REQUEST';
