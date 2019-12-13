@@ -13,7 +13,7 @@ const Selector = props => {
             user: {
                 claimingDevice,
                 claimedDevice,
-                stateAuthToken,
+                authToken: stateAuthToken,
                 reg: { preferredPairing, foundDevice },
             },
         }) => ({
