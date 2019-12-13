@@ -257,12 +257,14 @@ export function user(state = initialState.user, action = {}) {
             });
 
         case types.DEVICE_CLAIM_SUCCESS:
-            return state.merge({
-                claimedDevice: action.claimedDevice,
-                claimingDevice: false,
-                claimingDeviceFailure: null,
-                devices: action.devices,
-            });
+            return state
+                .merge({
+                    claimedDevice: action.claimedDevice,
+                    claimingDevice: false,
+                    claimingDeviceFailure: null,
+                    devices: action.devices,
+                })
+                .setIn(['reg', 'foundDevice'], action.value);
 
         case types.DEVICE_CLAIM_FAILURE:
             return state.merge({

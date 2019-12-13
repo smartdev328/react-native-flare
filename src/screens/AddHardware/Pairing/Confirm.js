@@ -1,38 +1,46 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-import { TextField } from 'react-native-material-textfield';
+import { Text, KeyboardAvoidingView } from 'react-native';
+
 import styles from '../styles';
 import Headline from '../../Onboarding/Headline';
 import CuffPreview from './CuffPreview';
 import FlareDeviceID from '../../../bits/FlareDeviceID';
+import RoundedButton from '../../../bits/RoundedButton';
 
-const Confirm = ({ device }) => {
+const Confirm = ({ device, submit, busy }) => {
+    const [secondFactor, setSecondFactor] = React.useState();
+    const onPress = React.useCallback(() => {
+        submit(device, secondFactor);
+    }, [submit, device, secondFactor]);
+
     const deviceLabel = FlareDeviceID.getJewelryLabelFromDeviceID(device);
-    const leftAccessory = React.useCallback(
-        () => <Text style={{ fontSize: 16 }}>{deviceLabel}</Text>,
-        [deviceLabel]
-    );
     return (
-        <View style={[styles.scrollContainer, { paddingVertical: 0 }]}>
+        <KeyboardAvoidingView
+            style={[styles.scrollContainer, { paddingTop: 0 }]}
+            keyboardVerticalOffset={96}
+            behavior="padding"
+        >
             <Headline>Confirm your Flare</Headline>
             <Text style={[styles.helpText, { marginBottom: 0 }]}>
                 Enter the last 3 digits of your serial number
             </Text>
-            <TextField
-                renderLeftAccessory={leftAccessory}
-                autoFocus
-                autoCapitalize="characters"
-                autoCompleteType="off"
-                autoCorreft={false}
-                keyboardType="ascii-capable"
-                returnKeyType="next"
-                maxLength={3}
-            />
             <CuffPreview
                 style={{ alignSelf: 'center', marginTop: 48 }}
-                text={`${deviceLabel}???`}
+                text={deviceLabel}
+                onChangeText={setSecondFactor}
             />
-        </View>
+            <RoundedButton
+                wrapperStyle={{
+                    alignSelf: 'center',
+                    marginTop: 'auto',
+                    marginBottom: 16,
+                }}
+                text="Continue"
+                useGradient={false}
+                busy={busy}
+                onPress={onPress}
+            />
+        </KeyboardAvoidingView>
     );
 };
 

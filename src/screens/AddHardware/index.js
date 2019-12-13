@@ -7,6 +7,7 @@ import GetStarted from './GetStarted';
 import WhiteBar from '../Onboarding/WhiteBar';
 import LocationPrimer from './LocationPrimer';
 import Pairing from './Pairing';
+import Success from './Success';
 
 class AddHardware extends React.Component {
     constructor() {
@@ -38,7 +39,7 @@ class AddHardware extends React.Component {
                 <WhiteBar
                     showLogo={false}
                     goBack={this.prevPage}
-                    showBack={page > 0}
+                    showBack={page !== 0 && page !== 3}
                 />
                 <ViewPager
                     ref={this.pagerRef}
@@ -52,7 +53,8 @@ class AddHardware extends React.Component {
                         nextPage={this.nextPage}
                     />
                     <LocationPrimer nextPage={this.nextPage} />
-                    <Pairing />
+                    <Pairing nextPage={this.nextPage} />
+                    <Success />
                 </ViewPager>
             </SafeAreaView>
         );
