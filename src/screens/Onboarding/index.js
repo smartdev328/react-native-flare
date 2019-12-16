@@ -32,7 +32,7 @@ const Onboarding = ({ componentId }) => {
                 options: { topBar: { visible: false } },
             },
         });
-    }, [componentId]);
+    }, [componentId, dispatch]);
 
     if (signUp) {
         return <Signup close={closeSignUp} onSuccess={onSignUpSuccess} />;
