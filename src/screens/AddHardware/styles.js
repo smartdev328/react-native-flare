@@ -7,10 +7,20 @@ const styles = StyleSheet.create({
         height: 1,
         width: 33,
     },
+    helpLine: {
+        backgroundColor: Colors.white,
+        height: 1,
+        width: 33,
+    },
     container: {
         flex: 1,
         flexDirection: 'column',
         backgroundColor: Colors.theme.cream,
+    },
+    helpContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: '#A8A8A8',
     },
     pager: {
         flex: 1,
@@ -59,6 +69,9 @@ const styles = StyleSheet.create({
     },
     spacedButton: {
         marginBottom: 12,
+    },
+    whiteText: {
+        color: Colors.white,
     },
 });
 

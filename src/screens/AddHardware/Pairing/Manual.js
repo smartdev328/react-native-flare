@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { KeyboardAvoidingView, Text } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native';
 import styles from '../styles';
 import Headline from '../../Onboarding/Headline';
 import CuffPreview from './CuffPreview';
 import RoundedButton from '../../../bits/RoundedButton';
+import Colors from '../../../bits/Colors';
 
 const PARSER_REGEX = /^([0-9A-F]{6})([0-9A-Z]{3})$/i;
 
@@ -33,7 +34,9 @@ const Manual = ({ style, submit, busy }) => {
             keyboardVerticalOffset={96}
             behavior="padding"
         >
-            <Headline>Enter your Flare serial number</Headline>
+            <Headline style={{ color: Colors.black }}>
+                Enter your Flare serial number
+            </Headline>
             <CuffPreview
                 style={{ alignSelf: 'center', marginTop: 48 }}
                 onChangeText={setSerial}

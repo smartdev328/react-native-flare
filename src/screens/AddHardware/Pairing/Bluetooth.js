@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from '../styles';
@@ -10,6 +10,29 @@ import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../../../constants/Config';
 import { setFoundDevice } from '../../../actions/regActions';
 
 import cuff from '../../../assets/cuff-v2.png';
+import Colors from '../../../bits/Colors';
+import { Navigation } from 'react-native-navigation';
+
+const localStyles = StyleSheet.create({
+    troubleBox: {
+        height: 48,
+        alignSelf: 'stretch',
+        backgroundColor: Colors.theme.cream,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        marginLeft: -32,
+        marginRight: -32,
+    },
+    trouble: {
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+    },
+});
 
 const Bluetooth = ({ style }) => {
     const dispatch = useDispatch();
@@ -19,6 +42,14 @@ const Bluetooth = ({ style }) => {
         } = state;
         return recentShortPressCounts ? recentShortPressCounts[0] : {};
     });
+
+    const havingTrouble = React.useCallback(() => {
+        Navigation.showModal({
+            component: {
+                name: 'com.flarejewelry.oboarding.addhardware.trouble',
+            },
+        });
+    }, []);
 
     React.useEffect(() => {
         dispatch(beaconCountsReset());
@@ -52,8 +83,11 @@ const Bluetooth = ({ style }) => {
             <Geyser />
             <Image source={cuff} style={styles.image} />
             <View style={{ flexGrow: 2 }} />
-            <TouchableOpacity>
-                <Text style={styles.trouble}>Having trouble?</Text>
+            <TouchableOpacity
+                onPress={havingTrouble}
+                style={localStyles.troubleBox}
+            >
+                <Text style={localStyles.trouble}>Having trouble?</Text>
             </TouchableOpacity>
         </View>
     );
