@@ -3,14 +3,14 @@ import Colors from '../../bits/Colors';
 
 const styles = StyleSheet.create({
     line: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         height: 1,
         width: 33,
     },
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#A8A8A8',
+        backgroundColor: Colors.theme.cream,
     },
     pager: {
         flex: 1,
@@ -30,11 +30,11 @@ const styles = StyleSheet.create({
     subhead: {
         fontSize: 20,
         lineHeight: 22,
-        color: Colors.white,
+        color: Colors.black,
         fontFamily: 'Nocturno Display Std',
     },
     helpText: {
-        color: Colors.white,
+        color: Colors.black,
         fontSize: 16,
         marginBottom: 18,
     },
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 12,
         alignSelf: 'center',
+        color: Colors.black,
     },
     image: {
         width: 220,

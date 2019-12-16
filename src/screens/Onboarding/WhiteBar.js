@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import backwardArrow from '../../assets/backward-arrow.png';
 import smallestWhiteArrow from '../../assets/smallest-white-logo.png';
+import Colors from '../../bits/Colors';
 
 const styles = StyleSheet.create({
     bar: {
@@ -28,17 +29,39 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: 'center',
     },
+    tintBlack: {
+        tintColor: Colors.black,
+    },
 });
 
-const WhiteBar = ({ goBack, showLogo = true, showBack = true }) => (
-    <View style={styles.bar}>
-        {showBack && (
-            <TouchableOpacity style={styles.backArrowWrapper} onPress={goBack}>
-                <Image source={backwardArrow} style={styles.backArrow} />
-            </TouchableOpacity>
-        )}
-        {showLogo && <Image source={smallestWhiteArrow} style={styles.logo} />}
-    </View>
-);
+const WhiteBar = ({
+    goBack,
+    showLogo = true,
+    showBack = true,
+    black = false,
+}) => {
+    const tintStyle = black ? styles.tintBlack : undefined;
+    return (
+        <View style={styles.bar}>
+            {showBack && (
+                <TouchableOpacity
+                    style={styles.backArrowWrapper}
+                    onPress={goBack}
+                >
+                    <Image
+                        source={backwardArrow}
+                        style={[styles.backArrow, tintStyle]}
+                    />
+                </TouchableOpacity>
+            )}
+            {showLogo && (
+                <Image
+                    source={smallestWhiteArrow}
+                    style={[styles.logo, tintStyle]}
+                />
+            )}
+        </View>
+    );
+};
 
 export default WhiteBar;

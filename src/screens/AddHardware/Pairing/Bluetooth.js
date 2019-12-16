@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from '../styles';
 import Headline from '../../Onboarding/Headline';
-import cuff from '../../../assets/cuff-v2.png';
 import Geyser from './Geyser';
 import { beaconCountsReset } from '../../../actions/hardwareActions';
 import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../../../constants/Config';
 import { setFoundDevice } from '../../../actions/regActions';
+
+import cuff from '../../../assets/cuff-v2.png';
 
 const Bluetooth = ({ style }) => {
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const Bluetooth = ({ style }) => {
         ) {
             dispatch(setFoundDevice(latestPress.deviceID));
         }
-    }, [latestPress]);
+    }, [latestPress, dispatch]);
 
     return (
         <View style={[styles.centerContainer, ...style]}>
@@ -51,6 +52,9 @@ const Bluetooth = ({ style }) => {
             <Geyser />
             <Image source={cuff} style={styles.image} />
             <View style={{ flexGrow: 2 }} />
+            <TouchableOpacity>
+                <Text style={styles.trouble}>Having trouble?</Text>
+            </TouchableOpacity>
         </View>
     );
 };

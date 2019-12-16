@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 
 import styles from './styles';
@@ -8,6 +8,9 @@ import WhiteBar from '../Onboarding/WhiteBar';
 import LocationPrimer from './LocationPrimer';
 import Pairing from './Pairing';
 import Success from './Success';
+import Aura from '../../bits/Aura';
+
+import auraSixLight from '../../assets/aura-6-light.jpg';
 
 class AddHardware extends React.Component {
     constructor() {
@@ -36,7 +39,10 @@ class AddHardware extends React.Component {
 
         return (
             <SafeAreaView style={styles.container}>
+                <StatusBar barStyle="dark-content" />
+                {page === 2 && <Aura source={auraSixLight} />}
                 <WhiteBar
+                    black={true}
                     showLogo={false}
                     goBack={this.prevPage}
                     showBack={page !== 0 && page !== 3}
