@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import LottieView from 'lottie-react-native';
+// import LottieView from 'lottie-react-native';
 
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
@@ -30,7 +30,7 @@ export default function getLongPressPage(props) {
 
     if (imageSource) {
         image = (
-            <LottieView
+            <View
                 source={imageSource}
                 autoPlay
                 loop

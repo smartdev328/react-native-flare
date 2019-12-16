@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import LottieView from 'lottie-react-native';
+// import LottieView from 'lottie-react-native';
 
 import Button from '../../bits/Button';
 import Colors from '../../bits/Colors';
@@ -118,7 +118,7 @@ export default function getShortPressPage(props) {
 
     if (imageSource) {
         image = (
-            <LottieView
+            <View
                 source={imageSource}
                 autoPlay
                 loop
