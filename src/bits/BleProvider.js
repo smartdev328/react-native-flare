@@ -4,12 +4,18 @@ import {
     SHOW_ALL_BEACONS_IN_HOME_SCREEN,
     MANUFACTURING_MODE_ENABLED,
 } from '../constants/Config';
-import { call, flare, checkin, manufacturingCheckin } from '../actions/beaconActions';
+import {
+    call,
+    flare,
+    checkin,
+    manufacturingCheckin,
+} from '../actions/beaconActions';
 import * as actionTypes from '../actions/actionTypes';
 import BleManager from './BleManager';
 import ManufacturingStages from '../constants/ManufacturingStages';
 import StoreObserver from './StoreObserver';
 import UserRoleTypes from '../constants/Roles';
+import { checkLocationsPermission } from '../actions/userActions';
 
 export default class BleProvider {
     constructor(options) {
@@ -17,6 +23,7 @@ export default class BleProvider {
             onBeacon: (beacon, position) => this.handleBeacon(beacon, position),
         });
         this.setStore(options.store);
+        this.props.dispatch(checkLocationsPermission());
     }
 
     setStore(store) {
@@ -24,7 +31,8 @@ export default class BleProvider {
         this.props = {
             dispatch: store.dispatch,
             hardware: store.getState().hardware,
-            radioToken: store.getState().user && store.getState().user.radioToken,
+            radioToken:
+                store.getState().user && store.getState().user.radioToken,
         };
         this.observer = StoreObserver(store);
         this.unsubscribe = this.observer(
@@ -32,8 +40,9 @@ export default class BleProvider {
                 bleListeningChange: state.hardware.bleListeningChange,
                 bleListeningChangeDir: state.hardware.bleListeningChangeDir,
                 radioToken: state.user.radioToken,
+                locationPermission: state.user.permissions.location,
             }),
-            newState => this.componentDidUpdate(newState),
+            newState => this.componentDidUpdate(newState)
         );
     }
 
@@ -42,12 +51,18 @@ export default class BleProvider {
             return;
         }
 
-        if (newState.radioToken) {
-            this.props.radioToken = newState.radioToken;
+        const {
+            bleListeningChange,
+            bleListeningChangeDir,
+            radioToken,
+            locationPermission,
+        } = newState;
+        if (radioToken) {
+            this.props.radioToken = radioToken;
         }
 
-        if (newState.bleListeningChange === 'requested') {
-            if (newState.bleListeningChangeDir === 'up') {
+        if (bleListeningChange === 'requested' && locationPermission) {
+            if (bleListeningChangeDir === 'up') {
                 this.bleManager.startListening();
             } else {
                 this.bleManager.shutdown();
@@ -58,15 +73,20 @@ export default class BleProvider {
     }
 
     handleBeacon(beacon, position) {
-        const userDevices = (this.store && this.store.getState().user.devices) || [];
-        const hasCompletedOnboarding = this.store && this.store.getState().user.hasViewedTutorial;
+        const userDevices =
+            (this.store && this.store.getState().user.devices) || [];
+        const hasCompletedOnboarding =
+            this.store && this.store.getState().user.hasViewedTutorial;
         const deviceIDs = userDevices.map(d => d.id);
-        const forCurrentUser = userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
+        const forCurrentUser =
+            userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
         const { dispatch, radioToken } = this.props;
 
         switch (beacon.type) {
             case BeaconTypes.Short.name:
-                dispatch(call(radioToken, beacon, position, forCurrentUser)).then(() => {
+                dispatch(
+                    call(radioToken, beacon, position, forCurrentUser)
+                ).then(() => {
                     // Track short presses for all nearby devices so we can know when users are adding jewelry
                     if (!forCurrentUser) {
                         dispatch({
@@ -79,9 +99,13 @@ export default class BleProvider {
 
             case BeaconTypes.Long.name:
                 if (hasCompletedOnboarding) {
-                    dispatch(flare(radioToken, beacon, position, forCurrentUser));
+                    dispatch(
+                        flare(radioToken, beacon, position, forCurrentUser)
+                    );
                 } else {
-                    console.log('Suppressing long press beacon during onboarding.');
+                    console.log(
+                        'Suppressing long press beacon during onboarding.'
+                    );
                 }
                 break;
 
@@ -92,15 +116,16 @@ export default class BleProvider {
             case BeaconTypes.BurnIn.name:
                 if (MANUFACTURING_MODE_ENABLED) {
                     const hasManufacturingRole =
-                        this.store.getState().user.role === UserRoleTypes.Manufacturing;
+                        this.store.getState().user.role ===
+                        UserRoleTypes.Manufacturing;
                     if (hasManufacturingRole) {
                         dispatch(
                             manufacturingCheckin(
                                 radioToken,
                                 beacon,
                                 position,
-                                ManufacturingStages.indexOf('BurnIn'),
-                            ),
+                                ManufacturingStages.indexOf('BurnIn')
+                            )
                         );
                     }
                 }
@@ -119,16 +144,25 @@ export default class BleProvider {
                 beacon,
             });
         } else if (BLUETOOTH_BEACON_LOGGING === 'enabled') {
-            console.log(`Not updating homescreen with irrelevant beacon ${JSON.stringify(beacon)}`);
+            console.log(
+                `Not updating homescreen with irrelevant beacon ${JSON.stringify(
+                    beacon
+                )}`
+            );
         }
 
-        if (BLUETOOTH_BEACON_LOGGING === 'enabled' || BLUETOOTH_BEACON_LOGGING === 'verbose') {
+        if (
+            BLUETOOTH_BEACON_LOGGING === 'enabled' ||
+            BLUETOOTH_BEACON_LOGGING === 'verbose'
+        ) {
             const short = beacon.uuid.substr(0, 8);
             console.debug(
-                `Beacon type ${beacon.type}: device ${beacon.deviceID}, uuid ${short}, rssi ${beacon.rssi}`,
+                `Beacon type ${beacon.type}: device ${beacon.deviceID}, uuid ${short}, rssi ${beacon.rssi}`
             );
             if (position) {
-                console.debug(`@ ${position.coords.latitude}, ${position.coords.longitude}`);
+                console.debug(
+                    `@ ${position.coords.latitude}, ${position.coords.longitude}`
+                );
             } else {
                 console.debug('@ unknown location');
             }

@@ -5,6 +5,8 @@ import Bluetooth from './Bluetooth';
 import Confirm from './Confirm';
 import Manual from './Manual';
 import { changeAppRoot, claimDevice } from '../../../actions';
+import { checkLocationsPermission } from '../../../actions/userActions';
+import { startBleListening } from '../../../actions/hardwareActions';
 
 const Selector = props => {
     const dispatch = useDispatch();
@@ -37,6 +39,11 @@ const Selector = props => {
         },
         [dispatch, authToken]
     );
+
+    React.useEffect(() => {
+        dispatch(startBleListening());
+        dispatch(checkLocationsPermission());
+    }, [dispatch]);
 
     React.useEffect(() => {
         if (finished) {

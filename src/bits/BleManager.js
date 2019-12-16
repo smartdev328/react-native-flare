@@ -1,4 +1,3 @@
-/* global navigator */
 import { Platform } from 'react-native';
 import Beacons from '@x-guard/react-native-beacons-manager';
 
@@ -26,13 +25,19 @@ export default class BleManager {
             this.processBeaconInRange(data);
         });
 
-        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.removeListener('regionDidEnter', region => {
-            Beacons.startRangingBeaconsInRegion(region);
-        });
+        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.removeListener(
+            'regionDidEnter',
+            region => {
+                Beacons.startRangingBeaconsInRegion(region);
+            }
+        );
 
-        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.removeListener('regionDidExit', region => {
-            Beacons.stopRangingBeaconsInRegion(region);
-        });
+        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.removeListener(
+            'regionDidExit',
+            region => {
+                Beacons.stopRangingBeaconsInRegion(region);
+            }
+        );
 
         this.beaconCache.shutdown();
         delete this.beaconCache;
@@ -81,7 +86,6 @@ export default class BleManager {
 
         if (Platform.OS === 'ios') {
             // IOS BLE SETUP
-            Beacons.requestAlwaysAuthorization();
             Beacons.shouldDropEmptyRanges(true);
             Regions.forEach(region => Beacons.startMonitoringForRegion(region));
             Beacons.startUpdatingLocation();
@@ -93,16 +97,25 @@ export default class BleManager {
             });
         }
 
-        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange', data => {
-            this.processBeaconInRange(data);
-        });
+        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener(
+            'beaconsDidRange',
+            data => {
+                this.processBeaconInRange(data);
+            }
+        );
 
-        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener('regionDidEnter', region => {
-            Beacons.startRangingBeaconsInRegion(region);
-        });
+        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
+            'regionDidEnter',
+            region => {
+                Beacons.startRangingBeaconsInRegion(region);
+            }
+        );
 
-        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener('regionDidExit', region => {
-            Beacons.stopRangingBeaconsInRegion(region);
-        });
+        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
+            'regionDidExit',
+            region => {
+                Beacons.stopRangingBeaconsInRegion(region);
+            }
+        );
     }
 }
