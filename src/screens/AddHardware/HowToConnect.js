@@ -7,7 +7,7 @@ import WhiteBar from '../Onboarding/WhiteBar';
 import Headline from '../Onboarding/Headline';
 
 const HowToConnect = ({ componentId }) => (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.helpContainer}>
         <WhiteBar
             showLogo={false}
             goBack={() => {
@@ -18,9 +18,9 @@ const HowToConnect = ({ componentId }) => (
             <Headline style={styles.noBottomMargin}>
                 How do I connect my Flare cuff?
             </Headline>
-            <View style={[styles.line, styles.marginLine]} />
-            <Text style={styles.subhead}>Bluetooth</Text>
-            <Text style={styles.helpText}>
+            <View style={[styles.line, styles.marginLine, styles.helpLine]} />
+            <Text style={[styles.subhead, styles.whiteText]}>Bluetooth</Text>
+            <Text style={[styles.helpText, styles.whiteText]}>
                 By pushing the discreet button on your cuff, your phone and the
                 cuff can establish a connection.
                 {'\n\n'}
@@ -30,9 +30,9 @@ const HowToConnect = ({ componentId }) => (
                 {'\n'}
                 Will I have to do this again?
             </Text>
-            <View style={[styles.line, styles.marginLine]} />
-            <Text style={styles.subhead}>Manually</Text>
-            <Text style={styles.helpText}>
+            <View style={[styles.line, styles.marginLine, styles.helpLine]} />
+            <Text style={[styles.subhead, styles.whiteText]}>Manually</Text>
+            <Text style={[styles.helpText, styles.whiteText]}>
                 In order to ensure that we connect to the right cuff, you can
                 always enter the serial number manually so that your phone and
                 cuff can establish a connection.

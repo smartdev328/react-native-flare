@@ -9,14 +9,14 @@ import RoundedButton from '../../bits/RoundedButton';
 
 const Section = ({ title, body }) => (
     <>
-        <View style={[styles.line, styles.marginLine]} />
-        <Text style={styles.subhead}>{title}</Text>
-        <Text style={styles.helpText}>{body}</Text>
+        <View style={[styles.line, styles.marginLine, styles.helpLine]} />
+        <Text style={[styles.subhead, styles.whiteText]}>{title}</Text>
+        <Text style={[styles.helpText, styles.whiteText]}>{body}</Text>
     </>
 );
 
 const AboutPermissions = ({ componentId }) => (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.helpContainer}>
         <WhiteBar
             showLogo={false}
             goBack={() => {

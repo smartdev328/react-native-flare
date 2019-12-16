@@ -7,9 +7,9 @@ import { PERMISSIONS } from 'react-native-permissions';
 import styles from './styles';
 import Headline from '../Onboarding/Headline';
 import * as userActions from '../../actions/userActions';
-
-import locationStars from '../../assets/location-stars.png';
 import RoundedButton from '../../bits/RoundedButton';
+
+import starryLocation from '../../assets/starry-location.png';
 
 const LocationPrimer = ({
     style,
@@ -48,7 +48,10 @@ const LocationPrimer = ({
                 connect with your jewelry
             </Text>
             <View style={styles.spacer} />
-            <Image style={{ width: 172, height: 230 }} source={locationStars} />
+            <Image
+                style={{ width: 202, height: 271 }}
+                source={starryLocation}
+            />
             <View style={styles.spacer} />
             <RoundedButton
                 text="Allow Location"

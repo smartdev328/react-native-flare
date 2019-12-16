@@ -20,7 +20,7 @@ export default {
     theme: {
         blue: '#4D45BF',
         blueLight: '#30C4FF',
-        cream: '#F4F2EC',
+        cream: '#F5F2ED',
         green: '#78C4BE',
         peach: '#F9885E',
         pink: '#ff50b5',

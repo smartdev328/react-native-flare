@@ -32,7 +32,7 @@ const Onboarding = ({ componentId }) => {
                 options: { topBar: { visible: false } },
             },
         });
-    }, [componentId]);
+    }, [componentId, dispatch]);
 
     if (signUp) {
         return <Signup close={closeSignUp} onSuccess={onSignUpSuccess} />;
@@ -41,7 +41,7 @@ const Onboarding = ({ componentId }) => {
     } else {
         return (
             <Home
-                onSignUpPressed={onSignUpPressed}
+                onSignUpPressed={onSignUpSuccess}
                 onSignInPressed={onSignInPressed}
             />
         );
