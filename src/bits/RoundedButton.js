@@ -49,11 +49,13 @@ const GradientButton = ({ children, style }) => (
     </LinearGradient>
 );
 
-const computeColorStyle = ({ useGradient, outline, invisible }) => {
+const computeColorStyle = ({ useGradient, outline, invisible, color }) => {
     if (useGradient || invisible) {
         return undefined;
     } else if (outline) {
         return styles.outline;
+    } else if (color) {
+        return { backgroundColor: color };
     } else {
         return styles.color;
     }
@@ -70,9 +72,15 @@ const RoundedButton = ({
     width = 180,
     height = 66,
     fontSize = 16,
+    color,
 }) => {
     const ButtonComponent = useGradient ? GradientButton : ColorButton;
-    const colorStyle = computeColorStyle({ useGradient, outline, invisible });
+    const colorStyle = computeColorStyle({
+        useGradient,
+        outline,
+        invisible,
+        color,
+    });
     const textColorStyle = outline || invisible ? styles.darkText : undefined;
 
     return (

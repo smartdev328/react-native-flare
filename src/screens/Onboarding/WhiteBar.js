@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
         marginLeft: 32,
         marginRight: 32,
         alignItems: 'stretch',
+        alignSelf: 'stretch',
     },
     backArrowWrapper: {
         width: 34,
