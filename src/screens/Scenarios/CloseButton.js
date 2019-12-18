@@ -5,7 +5,8 @@ import x from '../../assets/x.png';
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 16,
+        paddingVertical: 16,
+        paddingHorizontal: 32,
         alignSelf: 'flex-start',
     },
     image: {

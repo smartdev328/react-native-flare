@@ -16,6 +16,7 @@ const blueGradient = ['#B6C6F800', '#A9BBFBFF'];
 const TOP_MARGIN = 48;
 const TOP_GRADIENT_SIZE = 298;
 const BOTTOM_GRADIENT_SIZE = 235;
+const BOTTOM_MARGIN = 120;
 
 const WeirdVibes = ({ onBack }) => {
     const insets = useSafeArea();
@@ -31,7 +32,7 @@ const WeirdVibes = ({ onBack }) => {
             },
         }) => {
             translation.setValue(height);
-            Animated.parallel([
+            Animated.sequence([
                 Animated.timing(fadeAnim, {
                     duration: 600,
                     toValue: 1.0,
@@ -52,7 +53,12 @@ const WeirdVibes = ({ onBack }) => {
     const fullScreen = {
         position: 'absolute',
         width: dimensions.width,
-        height: dimensions.height - insets.top - insets.bottom - TOP_MARGIN,
+        height:
+            dimensions.height -
+            insets.top -
+            insets.bottom -
+            TOP_MARGIN -
+            BOTTOM_MARGIN,
         top: insets.top + TOP_MARGIN,
         left: 0,
     };
@@ -71,13 +77,15 @@ const WeirdVibes = ({ onBack }) => {
     const bottomGradient = {
         position: 'absolute',
         bottom: 0,
-        height: insets.bottom + BOTTOM_GRADIENT_SIZE,
+        height: insets.bottom + BOTTOM_GRADIENT_SIZE + BOTTOM_MARGIN,
         left: 0,
         width: dimensions.width,
     };
     const bottomGradientStops = [
         0,
-        1 - insets.bottom / (insets.bottom + BOTTOM_GRADIENT_SIZE),
+        1 -
+            (insets.bottom + BOTTOM_MARGIN) /
+                (insets.bottom + BOTTOM_GRADIENT_SIZE + BOTTOM_MARGIN),
     ];
 
     return (

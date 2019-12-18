@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 24,
         paddingHorizontal: 32,
+        alignSelf: 'stretch',
     },
     head: {
         fontFamily: 'Nocturno Display Std',
