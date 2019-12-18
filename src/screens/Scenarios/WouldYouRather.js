@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 
@@ -31,13 +31,14 @@ const styles = StyleSheet.create({
     },
 });
 
-const WouldYouRather = ({ style, extraPaddingBottom = 0 }) => (
-    <View
+const WouldYouRather = ({ style, extraPaddingBottom = 0, ...props }) => (
+    <Animated.View
         style={[
             styles.container,
             { paddingBottom: 24 + extraPaddingBottom },
             style,
         ]}
+        {...props}
     >
         <Text style={styles.head}>Would You Rather?</Text>
         <Text style={styles.body}>(BTW, there’s no wrong way to Flare.)</Text>
@@ -60,7 +61,7 @@ const WouldYouRather = ({ style, extraPaddingBottom = 0 }) => (
                 color={Colors.theme.purple}
             />
         </View>
-    </View>
+    </Animated.View>
 );
 
 export default WouldYouRather;

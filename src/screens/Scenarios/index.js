@@ -7,6 +7,7 @@ import WeirdVibes from './WeirdVibes';
 const Scenarios = () => {
     const [screen, setScreen] = React.useState('intro');
 
+    const intro = React.useCallback(() => setScreen('intro'), []);
     const weirdVibes = React.useCallback(() => {
         setScreen('weirdVibes');
     }, []);
@@ -18,7 +19,7 @@ const Scenarios = () => {
                     case 'intro':
                         return <Intro onNext={weirdVibes} />;
                     case 'weirdVibes':
-                        return <WeirdVibes />;
+                        return <WeirdVibes onBack={intro} />;
                     default:
                         return null;
                 }
