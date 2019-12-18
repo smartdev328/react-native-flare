@@ -32,7 +32,13 @@ const styles = StyleSheet.create({
     },
 });
 
-const WouldYouRather = ({ style, extraPaddingBottom = 0, ...props }) => (
+const WouldYouRather = ({
+    style,
+    extraPaddingBottom = 0,
+    fakeCall,
+    textCrew,
+    ...props
+}) => (
     <Animated.View
         style={[
             styles.container,
@@ -46,6 +52,7 @@ const WouldYouRather = ({ style, extraPaddingBottom = 0, ...props }) => (
         <View style={styles.buttonContainer}>
             <RoundedButton
                 useGradient={false}
+                onPress={fakeCall}
                 text="Get a fake call"
                 wrapperStyle={styles.firstButton}
                 height={46}
@@ -55,6 +62,7 @@ const WouldYouRather = ({ style, extraPaddingBottom = 0, ...props }) => (
             />
             <RoundedButton
                 useGradient={false}
+                onPress={textCrew}
                 text="Text your crew"
                 height={46}
                 width={146}

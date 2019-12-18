@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import styles from '../styles';
 import Headline from '../../Onboarding/Headline';
-import Geyser from './Geyser';
+import Geyser from '../../../bits/Geyser';
 import { beaconCountsReset } from '../../../actions/hardwareActions';
 import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../../../constants/Config';
 import { setFoundDevice } from '../../../actions/regActions';
 
 import cuff from '../../../assets/cuff-v2.png';
 import Colors from '../../../bits/Colors';
-import { Navigation } from 'react-native-navigation';
 
 const localStyles = StyleSheet.create({
     troubleBox: {

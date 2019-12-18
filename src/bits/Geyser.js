@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Shape, Surface } from '@react-native-community/art';
 import { StyleSheet } from 'react-native';
 
-import Colors from '../../../bits/Colors';
+import Colors from './Colors';
 
 const styles = StyleSheet.create({
     surface: {

@@ -23,6 +23,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 18,
     },
+    blackText: {
+        color: Colors.black,
+        fontSize: 20,
+        lineHeight: 28,
+        marginBottom: 24,
+    },
     line: {
         backgroundColor: Colors.white,
         height: 1,
