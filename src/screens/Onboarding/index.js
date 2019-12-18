@@ -17,9 +17,14 @@ const Onboarding = ({ componentId }) => {
         dispatch(regStart());
         setSignUp(true);
     }, [dispatch, setSignUp]);
-    const onSignInPressed = React.useCallback(() => setSignIn(true), [
-        setSignIn,
-    ]);
+    const onSignInPressed = React.useCallback(() => {
+        Navigation.push(componentId, {
+            component: {
+                name: 'com.flarejewelry.scenarios',
+                options: { topBar: { visible: false } },
+            },
+        });
+    }, [componentId]);
     const closeSignUp = React.useCallback(() => setSignUp(false), [setSignUp]);
     const closeSignIn = React.useCallback(() => setSignIn(false), [setSignIn]);
 
