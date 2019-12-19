@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, Easing, Image, View } from 'react-native';
+import { Animated, Easing, Image, Text, View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -8,7 +8,7 @@ import useDimensions from '../../bits/useDimensions';
 import pizzaWoman from '../../assets/pizza-woman.png';
 import Quote from './Quote';
 import WhiteBar from '../Onboarding/WhiteBar';
-import WouldYouRather from './WouldYouRather';
+import BottomSheet from './BottomSheet';
 
 const greenGradient = ['#007461FF', '#00877A00'];
 const blueGradient = ['#B6C6F800', '#A9BBFBFF'];
@@ -18,11 +18,12 @@ const TOP_GRADIENT_SIZE = 298;
 const BOTTOM_GRADIENT_SIZE = 235;
 const BOTTOM_MARGIN = 120;
 
-const WeirdVibes = ({ onBack, fakeCall, textCrew }) => {
+const WeirdVibes = ({ onBack, fakeCall, textCrew, postDemo = false }) => {
     const insets = useSafeArea();
     const dimensions = useDimensions();
 
-    const [fadeAnim] = React.useState(new Animated.Value(0.0));
+    const [firstQuoteOpacity] = React.useState(new Animated.Value(0.0));
+    const [secondQuoteOpacity] = React.useState(new Animated.Value(0.0));
     const [translation] = React.useState(new Animated.Value(1000));
 
     const onLayout = React.useCallback(
@@ -32,22 +33,47 @@ const WeirdVibes = ({ onBack, fakeCall, textCrew }) => {
             },
         }) => {
             translation.setValue(height);
-            Animated.sequence([
-                Animated.timing(fadeAnim, {
-                    duration: 600,
-                    toValue: 1.0,
-                    useNativeDriver: true,
-                    easing: Easing.ease,
-                }),
-                Animated.timing(translation, {
-                    duration: 600,
-                    toValue: 0.0,
-                    useNativeDriver: true,
-                    easing: Easing.ease,
-                }),
-            ]).start();
+            if (postDemo) {
+                firstQuoteOpacity.setValue(1.0);
+                Animated.sequence([
+                    Animated.timing(firstQuoteOpacity, {
+                        duration: 600,
+                        toValue: 0.0,
+                        delay: 400,
+                        useNativeDriver: true,
+                        easing: Easing.ease,
+                    }),
+                    Animated.timing(secondQuoteOpacity, {
+                        duration: 600,
+                        toValue: 1.0,
+                        useNativeDriver: true,
+                        easing: Easing.ease,
+                    }),
+                    Animated.timing(translation, {
+                        duration: 600,
+                        toValue: 0.0,
+                        useNativeDriver: true,
+                        easing: Easing.ease,
+                    }),
+                ]).start();
+            } else {
+                Animated.sequence([
+                    Animated.timing(firstQuoteOpacity, {
+                        duration: 600,
+                        toValue: 1.0,
+                        useNativeDriver: true,
+                        easing: Easing.ease,
+                    }),
+                    Animated.timing(translation, {
+                        duration: 600,
+                        toValue: 0.0,
+                        useNativeDriver: true,
+                        easing: Easing.ease,
+                    }),
+                ]).start();
+            }
         },
-        []
+        [postDemo]
     );
 
     const fullScreen = {
@@ -105,11 +131,34 @@ const WeirdVibes = ({ onBack, fakeCall, textCrew }) => {
 
             {/* actual flexbox children start here */}
             <View style={{ height: insets.top }} />
-            <WhiteBar showLogo={false} goBack={onBack} />
-            <Quote style={{ opacity: fadeAnim }}>
-                The party started to give me weird vibes. I was ready to leave.
-            </Quote>
-            <WouldYouRather
+            <WhiteBar
+                showLogo={false}
+                goBack={onBack}
+                showBack={typeof onBack === 'function'}
+            />
+            <View style={{ width: 264 }}>
+                <Quote
+                    style={{
+                        opacity: firstQuoteOpacity,
+                        position: 'absolute',
+                        top: 0,
+                    }}
+                >
+                    The party started to give me weird vibes. I was ready to
+                    leave.
+                </Quote>
+                <Quote
+                    style={{
+                        opacity: secondQuoteOpacity,
+                        position: 'absolute',
+                        top: 0,
+                    }}
+                >
+                    Flare gave me an easy excuse.{' '}
+                    <Text style={{ fontStyle: 'italic' }}>Bye y’all.</Text>
+                </Quote>
+            </View>
+            <BottomSheet
                 onLayout={onLayout}
                 style={{
                     marginTop: 'auto',
@@ -118,6 +167,7 @@ const WeirdVibes = ({ onBack, fakeCall, textCrew }) => {
                 extraPaddingBottom={insets.bottom}
                 fakeCall={fakeCall}
                 textCrew={textCrew}
+                postDemo={postDemo}
             />
         </View>
     );

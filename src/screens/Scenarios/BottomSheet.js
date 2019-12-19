@@ -30,23 +30,13 @@ const styles = StyleSheet.create({
     firstButton: {
         marginRight: 16,
     },
+    buttonMargin: {
+        marginTop: 12,
+    },
 });
 
-const WouldYouRather = ({
-    style,
-    extraPaddingBottom = 0,
-    fakeCall,
-    textCrew,
-    ...props
-}) => (
-    <Animated.View
-        style={[
-            styles.container,
-            { paddingBottom: 24 + extraPaddingBottom },
-            style,
-        ]}
-        {...props}
-    >
+const WouldYouRather = ({ fakeCall, textCrew }) => (
+    <>
         <Text style={styles.head}>Would You Rather?</Text>
         <Text style={styles.body}>(BTW, there’s no wrong way to Flare.)</Text>
         <View style={styles.buttonContainer}>
@@ -70,7 +60,53 @@ const WouldYouRather = ({
                 color={Colors.theme.purple}
             />
         </View>
+    </>
+);
+
+const Nice = ({ nextScenario }) => (
+    <>
+        <Text style={styles.head}>Nice.</Text>
+        <RoundedButton
+            useGradient
+            wrapperStyle={styles.buttonMargin}
+            onPress={nextScenario}
+            text="Next Scenario"
+            width={242}
+            height={46}
+        />
+        <RoundedButton
+            useGradient={false}
+            wrapperStyle={styles.buttonMargin}
+            onPress={nextScenario}
+            text="Add Flare to Contacts"
+            width={242}
+            height={46}
+        />
+    </>
+);
+
+const BottomSheet = ({
+    style,
+    extraPaddingBottom = 0,
+    fakeCall,
+    textCrew,
+    postDemo,
+    ...props
+}) => (
+    <Animated.View
+        style={[
+            styles.container,
+            { paddingBottom: 24 + extraPaddingBottom },
+            style,
+        ]}
+        {...props}
+    >
+        {postDemo ? (
+            <Nice />
+        ) : (
+            <WouldYouRather fakeCall={fakeCall} textCrew={textCrew} />
+        )}
     </Animated.View>
 );
 
-export default WouldYouRather;
+export default BottomSheet;

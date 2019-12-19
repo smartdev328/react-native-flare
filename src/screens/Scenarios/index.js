@@ -17,6 +17,9 @@ const Scenarios = () => {
     const fakeCall = React.useCallback(() => {
         setScreen('fakeCall');
     }, []);
+    const weirdVibesAgain = React.useCallback(() => {
+        setScreen('weirdVibesAgain');
+    }, []);
 
     return (
         <SafeAreaProvider>
@@ -29,7 +32,14 @@ const Scenarios = () => {
                             <WeirdVibes onBack={intro} fakeCall={fakeCall} />
                         );
                     case 'fakeCall':
-                        return <FakeCall onBack={weirdVibes} />;
+                        return (
+                            <FakeCall
+                                onBack={weirdVibes}
+                                onSuccess={weirdVibesAgain}
+                            />
+                        );
+                    case 'weirdVibesAgain':
+                        return <WeirdVibes postDemo />;
                     default:
                         return null;
                 }

@@ -12,7 +12,7 @@ import Cuff from './Cuff';
 
 import aura from '../../assets/aura-6-light.jpg';
 
-const FakeCall = ({ onBack }) => {
+const FakeCall = ({ onBack, onSuccess }) => {
     const [troubleOpacity] = React.useState(new Animated.Value(0.0));
 
     React.useEffect(() => {
@@ -43,6 +43,7 @@ const FakeCall = ({ onBack }) => {
             <RoundedButton
                 text="I got the call"
                 useGradient={false}
+                onPress={onSuccess}
                 wrapperStyle={{ marginTop: 24, marginBottom: 'auto' }}
                 width={146}
                 height={46}
