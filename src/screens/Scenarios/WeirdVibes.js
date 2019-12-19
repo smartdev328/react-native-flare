@@ -18,7 +18,14 @@ const TOP_GRADIENT_SIZE = 298;
 const BOTTOM_GRADIENT_SIZE = 235;
 const BOTTOM_MARGIN = 120;
 
-const WeirdVibes = ({ onBack, fakeCall, textCrew, postDemo = false }) => {
+const WeirdVibes = ({
+    onBack,
+    fakeCall,
+    textCrew,
+    nextScenario,
+    addToContacts,
+    postDemo = false,
+}) => {
     const insets = useSafeArea();
     const dimensions = useDimensions();
 
@@ -167,6 +174,8 @@ const WeirdVibes = ({ onBack, fakeCall, textCrew, postDemo = false }) => {
                 extraPaddingBottom={insets.bottom}
                 fakeCall={fakeCall}
                 textCrew={textCrew}
+                nextScenario={nextScenario}
+                addToContacts={addToContacts}
                 postDemo={postDemo}
             />
         </View>

@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Intro from './Intro';
 import WeirdVibes from './WeirdVibes';
 import FakeCall from './FakeCall';
+import addToContacts from '../AddToContacts';
 
 const Scenarios = () => {
     const [screen, setScreen] = React.useState('intro');
@@ -39,7 +40,12 @@ const Scenarios = () => {
                             />
                         );
                     case 'weirdVibesAgain':
-                        return <WeirdVibes postDemo />;
+                        return (
+                            <WeirdVibes
+                                postDemo
+                                addToContacts={addToContacts}
+                            />
+                        );
                     default:
                         return null;
                 }

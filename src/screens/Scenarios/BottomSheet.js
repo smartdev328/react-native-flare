@@ -63,7 +63,7 @@ const WouldYouRather = ({ fakeCall, textCrew }) => (
     </>
 );
 
-const Nice = ({ nextScenario }) => (
+const Nice = ({ nextScenario, addToContacts }) => (
     <>
         <Text style={styles.head}>Nice.</Text>
         <RoundedButton
@@ -77,7 +77,7 @@ const Nice = ({ nextScenario }) => (
         <RoundedButton
             useGradient={false}
             wrapperStyle={styles.buttonMargin}
-            onPress={nextScenario}
+            onPress={addToContacts}
             text="Add Flare to Contacts"
             width={242}
             height={46}
@@ -91,6 +91,8 @@ const BottomSheet = ({
     fakeCall,
     textCrew,
     postDemo,
+    addToContacts,
+    nextScenario,
     ...props
 }) => (
     <Animated.View
@@ -102,7 +104,7 @@ const BottomSheet = ({
         {...props}
     >
         {postDemo ? (
-            <Nice />
+            <Nice addToContacts={addToContacts} nextScenario={nextScenario} />
         ) : (
             <WouldYouRather fakeCall={fakeCall} textCrew={textCrew} />
         )}
