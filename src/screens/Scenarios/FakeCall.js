@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    Animated,
-    Easing,
-    Image,
-    SafeAreaView,
-    Text,
-    View,
-} from 'react-native';
+import { Animated, Easing, SafeAreaView, Text, View } from 'react-native';
 
 import styles from './styles';
 import Aura from '../../bits/Aura';
@@ -15,9 +8,9 @@ import Headline from '../Onboarding/Headline';
 import Colors from '../../bits/Colors';
 import Geyser from '../../bits/Geyser';
 import RoundedButton from '../../bits/RoundedButton';
+import Cuff from './Cuff';
 
 import aura from '../../assets/aura-6-light.jpg';
-import cuff from '../../assets/cuff-v2.png';
 
 const FakeCall = ({ onBack }) => {
     const [troubleOpacity] = React.useState(new Animated.Value(0.0));
@@ -46,7 +39,7 @@ const FakeCall = ({ onBack }) => {
                 react to the call, and hang up whenever!
             </Text>
             <Geyser />
-            <Image source={cuff} style={{ width: 241, height: 215 }} />
+            <Cuff button />
             <RoundedButton
                 text="I got the call"
                 useGradient={false}
