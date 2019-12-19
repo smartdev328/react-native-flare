@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Text } from 'react-native';
 
 import Scenario from './Scenario';
-import pizzaWoman from '../../assets/pizza-woman.png';
+import womenPair from '../../assets/women-pair.png';
 
-const greenGradient = ['#007461FF', '#00877A00'];
-const blueGradient = ['#B6C6F800', '#A9BBFBFF'];
+const blueGradient = ['#6978F6FF', '#6978F600'];
+const pinkGradient = ['#FEE5DB00', '#FFE1D6FF'];
 
 const FirstQuote = () => (
     <>The party started to give me weird vibes. I was ready to leave.</>
@@ -20,9 +20,9 @@ const SecondQuote = () => (
 const WeirdVibes = props => (
     <Scenario
         {...props}
-        topGradient={greenGradient}
-        bottomGradient={blueGradient}
-        image={pizzaWoman}
+        topGradient={blueGradient}
+        bottomGradient={pinkGradient}
+        image={womenPair}
         FirstQuote={FirstQuote}
         SecondQuote={SecondQuote}
     />
