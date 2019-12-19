@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Image, SafeAreaView, Text, View } from 'react-native';
+import {
+    Animated,
+    Easing,
+    Image,
+    SafeAreaView,
+    Text,
+    View,
+} from 'react-native';
 
 import styles from './styles';
 import Aura from '../../bits/Aura';
@@ -7,19 +14,22 @@ import WhiteBar from '../Onboarding/WhiteBar';
 import Headline from '../Onboarding/Headline';
 import Colors from '../../bits/Colors';
 import Geyser from '../../bits/Geyser';
+import RoundedButton from '../../bits/RoundedButton';
 
 import aura from '../../assets/aura-6-light.jpg';
 import cuff from '../../assets/cuff-v2.png';
-import RoundedButton from '../../bits/RoundedButton';
 
 const FakeCall = ({ onBack }) => {
-    const [havingTrouble, setHavingTrouble] = React.useState(false);
+    const [troubleOpacity] = React.useState(new Animated.Value(0.0));
 
     React.useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setHavingTrouble(true);
-        }, 3000);
-        return () => clearTimeout(timeoutId);
+        Animated.timing(troubleOpacity, {
+            delay: 3000,
+            duration: 300,
+            toValue: 1.0,
+            useNativeDriver: true,
+            easing: Easing.ease,
+        }).start();
     }, []);
 
     return (
@@ -45,16 +55,16 @@ const FakeCall = ({ onBack }) => {
                 height={46}
                 fontSize={14}
             />
-            {havingTrouble && (
-                <RoundedButton
-                    text="Having trouble?"
-                    useGradient={false}
-                    invisible
-                    width={146}
-                    height={46}
-                    fontSize={14}
-                />
-            )}
+            <RoundedButton
+                text="Having trouble?"
+                wrapperStyle={{ opacity: troubleOpacity }}
+                animated
+                useGradient={false}
+                invisible
+                width={146}
+                height={46}
+                fontSize={14}
+            />
         </SafeAreaView>
     );
 };

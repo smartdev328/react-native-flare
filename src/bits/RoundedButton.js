@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
     ActivityIndicator,
+    Animated,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -8,6 +9,8 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Colors from './Colors';
+
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 const textColor = '#F5F2ED';
 
@@ -39,10 +42,6 @@ const styles = StyleSheet.create({
 
 const gradientColors = ['#F9885E', '#C75C71'];
 
-const ColorButton = ({ children, style }) => (
-    <View style={style}>{children}</View>
-);
-
 const GradientButton = ({ children, style }) => (
     <LinearGradient colors={gradientColors} style={style} useAngle angle={13}>
         {children}
@@ -73,8 +72,9 @@ const RoundedButton = ({
     height = 66,
     fontSize = 16,
     color,
+    animated = false,
 }) => {
-    const ButtonComponent = useGradient ? GradientButton : ColorButton;
+    const ButtonComponent = useGradient ? GradientButton : View;
     const colorStyle = computeColorStyle({
         useGradient,
         outline,
@@ -83,12 +83,10 @@ const RoundedButton = ({
     });
     const textColorStyle = outline || invisible ? styles.darkText : undefined;
 
+    const Touchable = animated ? AnimatedTouchable : TouchableOpacity;
+
     return (
-        <TouchableOpacity
-            onPress={onPress}
-            style={wrapperStyle}
-            disabled={busy}
-        >
+        <Touchable onPress={onPress} style={wrapperStyle} disabled={busy}>
             <ButtonComponent
                 style={[styles.base, colorStyle, { width, height }]}
             >
@@ -100,7 +98,7 @@ const RoundedButton = ({
                     </Text>
                 )}
             </ButtonComponent>
-        </TouchableOpacity>
+        </Touchable>
     );
 };
 
