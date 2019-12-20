@@ -16,7 +16,6 @@ const textColor = '#F5F2ED';
 
 const styles = StyleSheet.create({
     base: {
-        borderRadius: 33,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -88,7 +87,11 @@ const RoundedButton = ({
     return (
         <Touchable onPress={onPress} style={wrapperStyle} disabled={busy}>
             <ButtonComponent
-                style={[styles.base, colorStyle, { width, height }]}
+                style={[
+                    styles.base,
+                    colorStyle,
+                    { width, height, borderRadius: height / 2 },
+                ]}
             >
                 {busy ? (
                     <ActivityIndicator size="small" color={textColor} />
