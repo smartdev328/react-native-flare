@@ -6,7 +6,10 @@ import { Navigation } from 'react-native-navigation';
 import styles from '../styles';
 import Headline from '../../Onboarding/Headline';
 import Geyser from '../../../bits/Geyser';
-import { beaconCountsReset } from '../../../actions/hardwareActions';
+import {
+    beaconCountsReset,
+    startBleListening,
+} from '../../../actions/hardwareActions';
 import { DEVICE_ADDITION_MIN_PRESS_COUNT } from '../../../constants/Config';
 import { setFoundDevice } from '../../../actions/regActions';
 
@@ -52,6 +55,7 @@ const Bluetooth = ({ style }) => {
     }, []);
 
     React.useEffect(() => {
+        dispatch(startBleListening());
         dispatch(beaconCountsReset());
         return () => dispatch(beaconCountsReset());
     }, [dispatch]);

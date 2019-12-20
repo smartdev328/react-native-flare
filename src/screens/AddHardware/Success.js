@@ -1,18 +1,23 @@
 import * as React from 'react';
 import { Image, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import styles from './styles';
 import Headline from '../Onboarding/Headline';
 import RoundedButton from '../../bits/RoundedButton';
-import { changeAppRoot } from '../../actions';
 
 import successfulHands from '../../assets/successful-hands.png';
 
-const Success = ({ style }) => {
+const Success = ({ style, componentId }) => {
     const dispatch = useDispatch();
     const finish = React.useCallback(() => {
-        dispatch(changeAppRoot('secure'));
+        Navigation.push(componentId, {
+            component: {
+                name: 'com.flarejewelry.scenarios',
+                options: { topBar: { visible: false } },
+            },
+        });
     }, [dispatch]);
 
     return (
