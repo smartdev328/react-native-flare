@@ -66,8 +66,8 @@ const Scenarios = () => {
                         return (
                             <WeirdVibes
                                 onBack={intro}
-                                fakeCall={fakeCall}
-                                textCrew={textYourCrew}
+                                fakeCall={didCall ? undefined : fakeCall}
+                                textCrew={didText ? undefined : textYourCrew}
                             />
                         );
                     case 'weirdVibesAgain':
@@ -81,8 +81,8 @@ const Scenarios = () => {
                     case 'uncomfortableDate':
                         return (
                             <UncomfortableDate
-                                fakeCall={fakeCall}
-                                textCrew={textYourCrew}
+                                fakeCall={didCall ? undefined : fakeCall}
+                                textCrew={didText ? undefined : textYourCrew}
                             />
                         );
                     case 'uncomfortableDateAgain':

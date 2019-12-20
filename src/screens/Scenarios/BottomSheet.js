@@ -42,6 +42,7 @@ const WouldYouRather = ({ fakeCall, textCrew }) => (
         <View style={styles.buttonContainer}>
             <RoundedButton
                 useGradient={false}
+                disabled={typeof fakeCall !== 'function'}
                 onPress={fakeCall}
                 text="Get a fake call"
                 wrapperStyle={styles.firstButton}
@@ -52,6 +53,7 @@ const WouldYouRather = ({ fakeCall, textCrew }) => (
             />
             <RoundedButton
                 useGradient={false}
+                disabled={typeof textCrew !== 'function'}
                 onPress={textCrew}
                 text="Text your crew"
                 height={46}

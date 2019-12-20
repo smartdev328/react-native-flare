@@ -37,6 +37,9 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderColor: Colors.black,
     },
+    disabled: {
+        opacity: 0.4,
+    },
 });
 
 const gradientColors = ['#F9885E', '#C75C71'];
@@ -72,6 +75,7 @@ const RoundedButton = ({
     fontSize = 16,
     color,
     animated = false,
+    disabled,
 }) => {
     const ButtonComponent = useGradient ? GradientButton : View;
     const colorStyle = computeColorStyle({
@@ -85,11 +89,16 @@ const RoundedButton = ({
     const Touchable = animated ? AnimatedTouchable : TouchableOpacity;
 
     return (
-        <Touchable onPress={onPress} style={wrapperStyle} disabled={busy}>
+        <Touchable
+            onPress={onPress}
+            style={wrapperStyle}
+            disabled={busy || disabled}
+        >
             <ButtonComponent
                 style={[
                     styles.base,
                     colorStyle,
+                    disabled ? styles.disabled : undefined,
                     { width, height, borderRadius: height / 2 },
                 ]}
             >
