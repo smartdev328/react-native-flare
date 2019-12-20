@@ -443,6 +443,15 @@ export function user(state = initialState.user, action = {}) {
         case types.USER_REG_SET_FOUND_DEVICE:
             return state.setIn(['reg', 'foundDevice'], action.value);
 
+        case types.USER_SCENARIO_RESET:
+            return state.set('scenarios', initialState.user.scenarios);
+        case types.USER_SCENARIO_SET_SCREEN:
+            return state.setIn(['scenarios', 'screen'], action.value);
+        case types.USER_SCENARIO_DID_CALL:
+            return state.setIn(['scenarios', 'didCall'], true);
+        case types.USER_SCENARIO_DID_TEXT:
+            return state.setIn(['scenarios', 'didText'], true);
+
         default:
             return state;
     }

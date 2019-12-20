@@ -37,6 +37,11 @@ export const initialState = Immutable({
             preferredPairing: null,
             foundDevice: null,
         },
+        scenarios: {
+            screen: null,
+            didCall: false,
+            didText: false,
+        },
     },
     beacons: {
         latest: null,

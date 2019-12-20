@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Intro from './Intro';
 import WeirdVibes from './WeirdVibes';
@@ -7,33 +8,53 @@ import FakeCall from './FakeCall';
 import addToContacts from '../AddToContacts';
 import UncomfortableDate from './UncomfortableDate';
 import TextYourCrew from './TextYourCrew';
+import { setScenarioScreen } from '../../actions/regActions';
 
 const Scenarios = () => {
-    const [screen, setScreen] = React.useState('intro');
-    const [didFirst, setDidFirst] = React.useState(false);
+    const dispatch = useDispatch();
+    const { screen, didCall, didText } = useSelector(
+        ({ user: { scenarios = {} } }) => ({
+            screen: scenarios.screen || 'intro',
+            didCall:
+                typeof scenarios.didCall === 'boolean'
+                    ? scenarios.didCall
+                    : false,
+            didText:
+                typeof scenarios.didText === 'boolean'
+                    ? scenarios.didText
+                    : false,
+        })
+    );
+
+    const didFirst = didCall || didText;
 
     const intro = React.useCallback(() => {
-        setScreen('intro');
-    }, []);
+        dispatch(setScenarioScreen('intro'));
+    }, [dispatch]);
     const weirdVibes = React.useCallback(() => {
-        setScreen('weirdVibes');
-    }, []);
+        dispatch(setScenarioScreen('weirdVibes'));
+    }, [dispatch]);
     const fakeCall = React.useCallback(() => {
-        setScreen('fakeCall');
-    }, []);
+        dispatch(setScenarioScreen('fakeCall'));
+    }, [dispatch]);
     const textYourCrew = React.useCallback(() => {
-        setScreen('textYourCrew');
-    }, []);
+        dispatch(setScenarioScreen('textYourCrew'));
+    }, [dispatch]);
     const uncomfortableDate = React.useCallback(() => {
-        setDidFirst(true);
-        setScreen('uncomfortableDate');
-    }, []);
+        dispatch(setScenarioScreen('uncomfortableDate'));
+    }, [dispatch]);
     const currentScenario = React.useCallback(() => {
-        setScreen(didFirst ? 'uncomfortableDate' : 'weirdVibes');
-    }, [didFirst]);
+        dispatch(
+            setScenarioScreen(didFirst ? 'uncomfortableDate' : 'weirdVibes')
+        );
+    }, [didFirst, dispatch]);
     const currentScenarioAgain = React.useCallback(() => {
-        setScreen(didFirst ? 'uncomfortableDateAgain' : 'weirdVibesAgain');
-    }, [didFirst]);
+        dispatch(
+            setScenarioScreen(
+                didFirst ? 'uncomfortableDateAgain' : 'weirdVibesAgain'
+            )
+        );
+    }, [didFirst, dispatch]);
 
     return (
         <SafeAreaProvider>

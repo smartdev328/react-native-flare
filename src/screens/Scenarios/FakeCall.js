@@ -1,10 +1,12 @@
 import * as React from 'react';
 
 import DeviceAction from './DeviceAction';
+import { scenarioDidCall } from '../../actions/regActions';
 
 const FakeCall = ({ onBack, onSuccess }) => (
     <DeviceAction
         onBack={onBack}
+        successAction={scenarioDidCall}
         onSuccess={onSuccess}
         headline1="Ready to try it?"
         headline2="Press for a call."

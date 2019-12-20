@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Animated, Easing, SafeAreaView, Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import styles from './styles';
 import Aura from '../../bits/Aura';
@@ -19,7 +20,9 @@ const DeviceAction = ({
     headline2,
     body,
     confirm,
+    successAction,
 }) => {
+    const dispatch = useDispatch();
     const [troubleOpacity] = React.useState(new Animated.Value(0.0));
 
     React.useEffect(() => {
@@ -31,6 +34,13 @@ const DeviceAction = ({
             easing: Easing.ease,
         }).start();
     }, []);
+
+    const fullSuccess = React.useCallback(() => {
+        if (successAction) {
+            dispatch(successAction());
+        }
+        onSuccess();
+    }, [successAction, onSuccess, dispatch]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -47,7 +57,7 @@ const DeviceAction = ({
             <RoundedButton
                 text={confirm}
                 useGradient={false}
-                onPress={onSuccess}
+                onPress={fullSuccess}
                 wrapperStyle={{ marginTop: 24, marginBottom: 'auto' }}
                 width={146}
                 height={46}

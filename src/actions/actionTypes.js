@@ -131,3 +131,7 @@ export const USER_REG_SET_PHONE = 'flare.app.USER_REG_SET_PHONE';
 export const USER_REG_SET_PASSWORD = 'flare.app.USER_REG_SET_PASSWORD';
 export const USER_REG_SET_PAIRING = 'flare.app.USER_REG_SET_PAIRING';
 export const USER_REG_SET_FOUND_DEVICE = 'flare.app.USER_REG_SET_FOUND_DEVICE';
+
+export const USER_SCENARIO_SET_SCREEN = 'flare.app.USER_SCENARIO_SET_SCREEN';
+export const USER_SCENARIO_DID_CALL = 'flare.app.USER_SCENARIO_DID_CALL';
+export const USER_SCENARIO_DID_TEXT = 'flare.app.USER_SCENARIO_DID_TEXT';
