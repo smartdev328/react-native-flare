@@ -13,7 +13,7 @@ const FirstQuote = () => (
 );
 const SecondQuote = () => (
     <>
-        I wanted to leave. I used flare to help me leave without making a scene.
+        I wanted to leave. I used Flare to help me leave without making a scene.
     </>
 );
 
