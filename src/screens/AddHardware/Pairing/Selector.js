@@ -8,7 +8,7 @@ import { changeAppRoot, claimDevice } from '../../../actions';
 import { checkLocationsPermission } from '../../../actions/userActions';
 import { startBleListening } from '../../../actions/hardwareActions';
 
-const Selector = props => {
+const Selector = ({ nextPage, ...props }) => {
     const dispatch = useDispatch();
     const { busy, finished, authToken, method, device } = useSelector(
         ({
@@ -47,9 +47,9 @@ const Selector = props => {
 
     React.useEffect(() => {
         if (finished) {
-            dispatch(changeAppRoot('secure'));
+            nextPage();
         }
-    }, [finished, dispatch]);
+    }, [finished, nextPage]);
 
     if (method === 'manual') {
         return <Manual {...props} busy={busy} submit={submit} />;

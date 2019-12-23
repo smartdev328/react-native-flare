@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Image, Text, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import styles from './styles';
@@ -10,7 +9,6 @@ import RoundedButton from '../../bits/RoundedButton';
 import successfulHands from '../../assets/successful-hands.png';
 
 const Success = ({ style, componentId }) => {
-    const dispatch = useDispatch();
     const finish = React.useCallback(() => {
         Navigation.push(componentId, {
             component: {
@@ -18,7 +16,7 @@ const Success = ({ style, componentId }) => {
                 options: { topBar: { visible: false } },
             },
         });
-    }, [dispatch]);
+    }, [componentId]);
 
     return (
         <View style={[styles.centerContainer, ...style]}>
