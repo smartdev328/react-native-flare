@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
         paddingTop: 24,
         paddingHorizontal: 32,
         alignSelf: 'stretch',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
     },
     head: {
         fontFamily: 'Nocturno Display Std',
