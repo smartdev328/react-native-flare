@@ -1,0 +1,22 @@
+{
+    "name": "RCTCallDetection",
+    "version": "1.8.2",
+    "summary": "Get different phone call states for iOS and Android along with incoming phone number(just for android)",
+    "homepage": "https://github.com/priteshrnandgaonkar/react-native-call-detection",
+    "license": "MIT",
+    "authors": "Pritesh Nandgaonkar <prit.nandgaonkar@gmail.com> (https://github.com/priteshrnandgaonkar)",
+    "source": {
+        "git": "https://github.com/priteshrnandgaonkar/react-native-call-detection",
+        "tag": "v1.8.2"
+    },
+    "source_files": [
+        "iOS/RCTCallDetection/RCTCallDetection/*.h",
+        "iOS/RCTCallDetection/RCTCallDetection/*.m"
+    ],
+    "platforms": {
+        "ios": "7.0"
+    },
+    "dependencies": {
+        "React": []
+    }
+}

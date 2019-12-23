@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Animated, Easing, SafeAreaView, Text, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 import styles from './styles';
 import Aura from '../../bits/Aura';
@@ -15,14 +14,12 @@ import aura from '../../assets/aura-6-light.jpg';
 
 const DeviceAction = ({
     onBack,
-    onSuccess,
     headline1,
     headline2,
     body,
     confirm,
-    successAction,
+    onNext,
 }) => {
-    const dispatch = useDispatch();
     const [troubleOpacity] = React.useState(new Animated.Value(0.0));
 
     React.useEffect(() => {
@@ -34,13 +31,6 @@ const DeviceAction = ({
             easing: Easing.ease,
         }).start();
     }, []);
-
-    const fullSuccess = React.useCallback(() => {
-        if (successAction) {
-            dispatch(successAction());
-        }
-        onSuccess();
-    }, [successAction, onSuccess, dispatch]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -54,22 +44,20 @@ const DeviceAction = ({
             <Text style={[styles.text, styles.blackText]}>{body}</Text>
             <Geyser />
             <Cuff button />
-            {typeof confirm === 'string' ? (
+            {onNext && (
                 <RoundedButton
                     text={confirm}
                     useGradient={false}
-                    onPress={fullSuccess}
-                    wrapperStyle={{ marginTop: 24, marginBottom: 'auto' }}
+                    onPress={onNext}
+                    wrapperStyle={{ marginTop: 24 }}
                     width={146}
                     height={46}
                     fontSize={14}
                 />
-            ) : (
-                <View style={{ marginBottom: 'auto' }} />
             )}
             <RoundedButton
                 text="Having trouble?"
-                wrapperStyle={{ opacity: troubleOpacity }}
+                wrapperStyle={{ opacity: troubleOpacity, marginTop: 'auto' }}
                 animated
                 useGradient={false}
                 invisible

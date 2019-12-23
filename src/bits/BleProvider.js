@@ -58,7 +58,7 @@ export default class BleProvider {
             radioToken,
             locationPermission,
         } = newState;
-        console.log(newState);
+        // console.log(newState);
         if (radioToken) {
             this.props.radioToken = radioToken;
         }

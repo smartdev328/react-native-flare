@@ -16,6 +16,8 @@ export const CLEAR_PROBLEM_BEACONS = 'flare.app.beacons.problems.CLEAR';
 export const BEACON_COUNTS_UPDATED = 'flare.app.beacons.COUNTS_UPDATED';
 export const BEACON_COUNTS_RESET = 'flare.app.beacons.COUNTS_RESET';
 
+export const CALL_STATUS_CHANGED = 'flare.app.phone.CALL_STATUS_CHANGED';
+
 export const BLUETOOTH_START_REQUEST = 'flare.app.ble.start.REQUEST';
 export const BLUETOOTH_START_FAILURE = 'flare.app.ble.start.FAILURE';
 export const BLUETOOTH_START_SUCCESS = 'flare.app.ble.start.SUCCESS';

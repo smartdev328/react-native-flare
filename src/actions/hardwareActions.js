@@ -16,3 +16,8 @@ export const stopBleListening = () => ({
 export const beaconCountsReset = () => ({
     type: types.BEACON_COUNTS_RESET,
 });
+
+export const callStatusChanged = status => ({
+    type: types.CALL_STATUS_CHANGED,
+    status,
+});

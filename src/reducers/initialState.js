@@ -62,6 +62,7 @@ export const initialState = Immutable({
         bleListening: false,
         bleListeningChange: 'succeeded',
         bleListeningChangeDir: 'down',
+        callStatus: null,
     },
     manufacturing: {},
 });

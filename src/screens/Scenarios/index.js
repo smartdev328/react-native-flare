@@ -8,11 +8,7 @@ import FakeCall from './FakeCall';
 import addToContacts from '../AddToContacts';
 import UncomfortableDate from './UncomfortableDate';
 import TextYourCrew from './TextYourCrew';
-import {
-    awaitLongPress,
-    scenarioDidText,
-    setScenarioScreen,
-} from '../../actions/regActions';
+import { awaitLongPress, setScenarioScreen } from '../../actions/regActions';
 import TextSimulator from './TextSimulator';
 
 const Scenarios = () => {
