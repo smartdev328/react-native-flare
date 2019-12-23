@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Animated, Easing, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { useDispatch } from 'react-redux';
+
 import Aura from '../../bits/Aura';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
+import { scenarioDidText } from '../../actions/regActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -84,10 +87,16 @@ const messages = [
     'Customize how YOU are notified that you sent a flare in your settings. 🤫',
 ];
 
-const TextSimulator = () => {
+const TextSimulator = ({ onSuccess }) => {
+    const dispatch = useDispatch();
     const [animations] = React.useState(
         messages.map(() => new Animated.Value(0.0))
     );
+
+    const fullSuccess = React.useCallback(() => {
+        dispatch(scenarioDidText());
+        onSuccess();
+    }, [dispatch, onSuccess]);
 
     React.useEffect(() => {
         Animated.sequence(
@@ -113,6 +122,7 @@ const TextSimulator = () => {
                 />
             ))}
             <RoundedButton
+                onPress={fullSuccess}
                 text="Situation Resolved"
                 useGradient={false}
                 wrapperStyle={styles.buttonWrapper}

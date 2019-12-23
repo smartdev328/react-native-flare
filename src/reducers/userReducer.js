@@ -451,6 +451,10 @@ export function user(state = initialState.user, action = {}) {
             return state.setIn(['scenarios', 'didCall'], true);
         case types.USER_SCENARIO_DID_TEXT:
             return state.setIn(['scenarios', 'didText'], true);
+        case types.USER_SCENARIO_AWAIT_LONG_PRESS:
+            return state.setIn(['scenarios', 'longPress'], 'wait');
+        case types.USER_SCENARIO_GOT_LONG_PRESS:
+            return state.setIn(['scenarios', 'longPress'], 'done');
 
         default:
             return state;

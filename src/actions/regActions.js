@@ -34,3 +34,11 @@ export const scenarioDidCall = () => ({
 export const scenarioDidText = () => ({
     type: types.USER_SCENARIO_DID_TEXT,
 });
+
+export const awaitLongPress = () => ({
+    type: types.USER_SCENARIO_AWAIT_LONG_PRESS,
+});
+
+export const gotLongPress = () => ({
+    type: types.USER_SCENARIO_GOT_LONG_PRESS,
+});

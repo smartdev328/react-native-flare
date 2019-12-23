@@ -8,11 +8,16 @@ import FakeCall from './FakeCall';
 import addToContacts from '../AddToContacts';
 import UncomfortableDate from './UncomfortableDate';
 import TextYourCrew from './TextYourCrew';
-import { setScenarioScreen } from '../../actions/regActions';
+import {
+    awaitLongPress,
+    scenarioDidText,
+    setScenarioScreen,
+} from '../../actions/regActions';
+import TextSimulator from './TextSimulator';
 
 const Scenarios = () => {
     const dispatch = useDispatch();
-    const { screen, didCall, didText } = useSelector(
+    const { screen, didCall, didText, gotPress } = useSelector(
         ({ user: { scenarios = {} } }) => ({
             screen: scenarios.screen || 'intro',
             didCall:
@@ -23,8 +28,15 @@ const Scenarios = () => {
                 typeof scenarios.didText === 'boolean'
                     ? scenarios.didText
                     : false,
+            gotPress: scenarios.longPress === 'done',
         })
     );
+
+    React.useEffect(() => {
+        if (gotPress && screen === 'textYourCrew') {
+            dispatch(setScenarioScreen('textSimulator'));
+        }
+    }, [gotPress, screen, dispatch]);
 
     const didFirst = didCall || didText;
 
@@ -38,6 +50,7 @@ const Scenarios = () => {
         dispatch(setScenarioScreen('fakeCall'));
     }, [dispatch]);
     const textYourCrew = React.useCallback(() => {
+        dispatch(awaitLongPress());
         dispatch(setScenarioScreen('textYourCrew'));
     }, [dispatch]);
     const uncomfortableDate = React.useCallback(() => {
@@ -100,11 +113,10 @@ const Scenarios = () => {
                             />
                         );
                     case 'textYourCrew':
+                        return <TextYourCrew onBack={currentScenario} />;
+                    case 'textSimulator':
                         return (
-                            <TextYourCrew
-                                onBack={currentScenario}
-                                onSuccess={currentScenarioAgain}
-                            />
+                            <TextSimulator onSuccess={currentScenarioAgain} />
                         );
                     default:
                         return null;

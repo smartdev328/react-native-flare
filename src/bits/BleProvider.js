@@ -16,6 +16,7 @@ import ManufacturingStages from '../constants/ManufacturingStages';
 import StoreObserver from './StoreObserver';
 import UserRoleTypes from '../constants/Roles';
 import { checkLocationsPermission } from '../actions/userActions';
+import { gotLongPress } from '../actions/regActions';
 
 export default class BleProvider {
     constructor(options) {
@@ -78,6 +79,9 @@ export default class BleProvider {
             (this.store && this.store.getState().user.devices) || [];
         const hasCompletedOnboarding =
             this.store && this.store.getState().user.hasViewedTutorial;
+        const awaitingLongPress =
+            this.store &&
+            this.store.getState().user.scenarios.longPress === 'wait';
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser =
             userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
@@ -103,6 +107,8 @@ export default class BleProvider {
                     dispatch(
                         flare(radioToken, beacon, position, forCurrentUser)
                     );
+                } else if (awaitingLongPress) {
+                    dispatch(gotLongPress());
                 } else {
                     console.log(
                         'Suppressing long press beacon during onboarding.'

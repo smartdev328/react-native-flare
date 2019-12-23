@@ -54,15 +54,19 @@ const DeviceAction = ({
             <Text style={[styles.text, styles.blackText]}>{body}</Text>
             <Geyser />
             <Cuff button />
-            <RoundedButton
-                text={confirm}
-                useGradient={false}
-                onPress={fullSuccess}
-                wrapperStyle={{ marginTop: 24, marginBottom: 'auto' }}
-                width={146}
-                height={46}
-                fontSize={14}
-            />
+            {typeof confirm === 'string' ? (
+                <RoundedButton
+                    text={confirm}
+                    useGradient={false}
+                    onPress={fullSuccess}
+                    wrapperStyle={{ marginTop: 24, marginBottom: 'auto' }}
+                    width={146}
+                    height={46}
+                    fontSize={14}
+                />
+            ) : (
+                <View style={{ marginBottom: 'auto' }} />
+            )}
             <RoundedButton
                 text="Having trouble?"
                 wrapperStyle={{ opacity: troubleOpacity }}
