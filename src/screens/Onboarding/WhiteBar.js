@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import Colors from '../../bits/Colors';
+
 import backwardArrow from '../../assets/backward-arrow.png';
 import smallestWhiteArrow from '../../assets/smallest-white-logo.png';
-import Colors from '../../bits/Colors';
 
 const styles = StyleSheet.create({
     bar: {
@@ -14,6 +16,7 @@ const styles = StyleSheet.create({
         marginLeft: 32,
         marginRight: 32,
         alignItems: 'stretch',
+        alignSelf: 'stretch',
     },
     backArrowWrapper: {
         width: 34,

@@ -27,6 +27,7 @@ import HowToConnect from './AddHardware/HowToConnect';
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import AboutPermissions from './AddHardware/AboutPermissions';
 import Trouble from './AddHardware/Trouble';
+import Scenarios from './Scenarios';
 
 export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
@@ -166,6 +167,12 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.oboarding.addhardware.trouble',
         () => Trouble,
+        Provider,
+        store
+    );
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.scenarios',
+        () => Scenarios,
         Provider,
         store
     );

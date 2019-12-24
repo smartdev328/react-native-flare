@@ -21,3 +21,24 @@ export const setFoundDevice = value => ({
     type: types.USER_REG_SET_FOUND_DEVICE,
     value,
 });
+
+export const setScenarioScreen = value => ({
+    type: types.USER_SCENARIO_SET_SCREEN,
+    value,
+});
+
+export const scenarioDidCall = () => ({
+    type: types.USER_SCENARIO_DID_CALL,
+});
+
+export const scenarioDidText = () => ({
+    type: types.USER_SCENARIO_DID_TEXT,
+});
+
+export const awaitLongPress = () => ({
+    type: types.USER_SCENARIO_AWAIT_LONG_PRESS,
+});
+
+export const gotLongPress = () => ({
+    type: types.USER_SCENARIO_GOT_LONG_PRESS,
+});

@@ -37,6 +37,12 @@ export const initialState = Immutable({
             preferredPairing: null,
             foundDevice: null,
         },
+        scenarios: {
+            screen: null,
+            didCall: false,
+            didText: false,
+            longPress: null,
+        },
     },
     beacons: {
         latest: null,
@@ -56,6 +62,7 @@ export const initialState = Immutable({
         bleListening: false,
         bleListeningChange: 'succeeded',
         bleListeningChangeDir: 'down',
+        callStatus: null,
     },
     manufacturing: {},
 });

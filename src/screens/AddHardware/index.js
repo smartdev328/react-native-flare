@@ -42,7 +42,7 @@ class AddHardware extends React.Component {
                 <StatusBar barStyle="dark-content" />
                 {page === 2 && <Aura source={auraSixLight} />}
                 <WhiteBar
-                    black={true}
+                    black
                     showLogo={false}
                     goBack={this.prevPage}
                     showBack={page !== 0 && page !== 3}
@@ -60,7 +60,7 @@ class AddHardware extends React.Component {
                     />
                     <LocationPrimer nextPage={this.nextPage} />
                     <Pairing nextPage={this.nextPage} />
-                    <Success />
+                    <Success componentId={componentId} />
                 </ViewPager>
             </SafeAreaView>
         );
