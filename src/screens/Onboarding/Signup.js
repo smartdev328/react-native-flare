@@ -21,6 +21,8 @@ import {
 } from './validators';
 import WhiteBar from './WhiteBar';
 
+import aura1519 from '../../assets/aura-1519.jpg';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -111,7 +113,7 @@ class Signup extends React.Component {
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle="light-content" />
-                <Aura />
+                <Aura source={aura1519} />
                 <WhiteBar goBack={this.goBack} />
                 <ViewPager
                     style={styles.flex}
