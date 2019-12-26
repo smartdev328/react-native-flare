@@ -6,9 +6,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
 import Headline from '../Onboarding/Headline';
 import CloseButton from './CloseButton';
+import RoundedButton from '../../bits/RoundedButton';
 
 import saraAndQuinn from '../../assets/sara-and-quinn.png';
-import RoundedButton from '../../bits/RoundedButton';
 
 const localStyles = StyleSheet.create({
     orange: {
