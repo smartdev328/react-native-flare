@@ -6,7 +6,6 @@ import Aura from '../../bits/Aura';
 import WhiteBar from '../Onboarding/WhiteBar';
 import Headline from '../Onboarding/Headline';
 import Colors from '../../bits/Colors';
-import Geyser from '../../bits/Geyser';
 import RoundedButton from '../../bits/RoundedButton';
 import Cuff from './Cuff';
 
@@ -19,6 +18,7 @@ const DeviceAction = ({
     body,
     confirm,
     onNext,
+    animation,
 }) => {
     const [troubleOpacity] = React.useState(new Animated.Value(0.0));
 
@@ -42,8 +42,7 @@ const DeviceAction = ({
             </Headline>
             <View style={[styles.line, { backgroundColor: Colors.black }]} />
             <Text style={[styles.text, styles.blackText]}>{body}</Text>
-            <Geyser />
-            <Cuff button />
+            <Cuff button animation={animation} />
             {onNext && (
                 <RoundedButton
                     text={confirm}
