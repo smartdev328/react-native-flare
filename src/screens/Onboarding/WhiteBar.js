@@ -4,7 +4,8 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Colors from '../../bits/Colors';
 
 import backwardArrow from '../../assets/backward-arrow.png';
-import smallestWhiteArrow from '../../assets/smallest-white-logo.png';
+import smallestAuraLogo from '../../assets/smallest-aura-logo.png';
+import smallestWhiteLogo from '../../assets/smallest-white-logo.png';
 
 const styles = StyleSheet.create({
     bar: {
@@ -42,6 +43,7 @@ const WhiteBar = ({
     showLogo = true,
     showBack = true,
     black = false,
+    aura = false,
 }) => {
     const tintStyle = black ? styles.tintBlack : undefined;
     return (
@@ -59,7 +61,7 @@ const WhiteBar = ({
             )}
             {showLogo && (
                 <Image
-                    source={smallestWhiteArrow}
+                    source={aura ? smallestAuraLogo : smallestWhiteLogo}
                     style={[styles.logo, tintStyle]}
                 />
             )}

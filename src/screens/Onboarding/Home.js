@@ -66,16 +66,17 @@ const Home = ({ onSignUpPressed, onSignInPressed }) => {
             <Image source={logoWhite} style={styles.logo} />
             <View style={styles.spacer} />
             <RoundedButton
-                useGradient
                 text={Strings.onboarding.signupButton}
                 wrapperStyle={styles.signupButton}
                 onPress={onSignUpPressed}
+                width={240}
             />
             <RoundedButton
-                useGradient={false}
+                inverse
                 text={Strings.signin.signInLabel}
                 wrapperStyle={styles.signinButton}
                 onPress={onSignInPressed}
+                width={240}
             />
         </SafeAreaView>
     );

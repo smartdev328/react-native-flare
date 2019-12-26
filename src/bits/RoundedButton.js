@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
     color: {
         backgroundColor: Colors.black,
     },
+    inverse: {
+        backgroundColor: '#F8F5F1',
+    },
     outline: {
         borderWidth: 1,
         borderStyle: 'solid',
@@ -50,13 +53,21 @@ const GradientButton = ({ children, style }) => (
     </LinearGradient>
 );
 
-const computeColorStyle = ({ useGradient, outline, invisible, color }) => {
+const computeColorStyle = ({
+    useGradient,
+    outline,
+    invisible,
+    color,
+    inverse,
+}) => {
     if (useGradient || invisible) {
         return undefined;
     } else if (outline) {
         return styles.outline;
     } else if (color) {
         return { backgroundColor: color };
+    } else if (inverse) {
+        return styles.inverse;
     } else {
         return styles.color;
     }
@@ -65,14 +76,15 @@ const computeColorStyle = ({ useGradient, outline, invisible, color }) => {
 const RoundedButton = ({
     text,
     onPress,
-    useGradient = true,
+    useGradient = false,
     wrapperStyle,
     busy,
     outline = false,
     invisible = false,
-    width = 180,
-    height = 66,
-    fontSize = 16,
+    inverse = false,
+    width = 146,
+    height = 46,
+    fontSize = 14,
     color,
     animated = false,
     disabled,
@@ -83,8 +95,10 @@ const RoundedButton = ({
         outline,
         invisible,
         color,
+        inverse,
     });
-    const textColorStyle = outline || invisible ? styles.darkText : undefined;
+    const textColorStyle =
+        outline || invisible || inverse ? styles.darkText : undefined;
 
     const Touchable = animated ? AnimatedTouchable : TouchableOpacity;
 
