@@ -10,7 +10,7 @@ import Pairing from './Pairing';
 import Success from './Success';
 import Aura from '../../bits/Aura';
 
-import auraSixLight from '../../assets/aura-6-light.jpg';
+import aura1519 from '../../assets/aura-1519.jpg';
 
 class AddHardware extends React.Component {
     constructor() {
@@ -40,7 +40,7 @@ class AddHardware extends React.Component {
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle="dark-content" />
-                {page === 2 && <Aura source={auraSixLight} />}
+                {page === 2 && <Aura source={aura1519} />}
                 <WhiteBar
                     black
                     showLogo={false}
@@ -54,11 +54,11 @@ class AddHardware extends React.Component {
                     keyboardDismissMode="none"
                     transitionStyle="scroll"
                 >
+                    <LocationPrimer nextPage={this.nextPage} />
                     <GetStarted
                         componentId={componentId}
                         nextPage={this.nextPage}
                     />
-                    <LocationPrimer nextPage={this.nextPage} />
                     <Pairing nextPage={this.nextPage} />
                     <Success componentId={componentId} />
                 </ViewPager>

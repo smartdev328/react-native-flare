@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     subhead: {
         fontSize: 20,
         lineHeight: 22,
+        marginTop: 12,
         color: Colors.black,
         fontFamily: 'Nocturno Display Std',
     },

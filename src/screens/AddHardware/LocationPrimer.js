@@ -39,13 +39,10 @@ const LocationPrimer = ({
 
     return (
         <View style={[styles.centerContainer, ...style]}>
-            <View style={styles.spacer} />
             <Headline style={styles.headline}>Enable Location</Headline>
             <View style={styles.line} />
-            <View style={styles.spacer} />
             <Text style={[styles.subhead, { textAlign: 'center' }]}>
-                You’ll need to enable your location in order to use Flare and
-                connect with your jewelry
+                You’ll need to enable your location in order to use Flare.
             </Text>
             <View style={styles.spacer} />
             <Image
@@ -56,19 +53,14 @@ const LocationPrimer = ({
             <RoundedButton
                 text="Allow Location"
                 onPress={allowLocation}
-                useGradient={false}
                 width={240}
-                height={48}
-                fontSize={14}
             />
             <RoundedButton
-                text="Tell me more"
+                text="Why do you need it?"
                 onPress={tellMeMore}
                 invisible
-                useGradient={false}
                 width={240}
-                height={48}
-                fontSize={14}
+                wrapperStyle={{ marginVertical: 12 }}
             />
         </View>
     );
