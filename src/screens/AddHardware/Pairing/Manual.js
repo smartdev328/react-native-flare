@@ -19,14 +19,14 @@ const parseDeviceId = fullId => {
     };
 };
 
-const Manual = ({ style, submit, busy }) => {
+const Manual = ({ submit, busy }) => {
     const [serial, setSerial] = React.useState('');
+    const parse = parseDeviceId(serial);
     const onPress = React.useCallback(() => {
-        const parse = parseDeviceId(serial);
         if (parse) {
             submit(parse);
         }
-    }, [submit, serial]);
+    }, [submit, parse]);
 
     return (
         <KeyboardAvoidingView
@@ -34,12 +34,11 @@ const Manual = ({ style, submit, busy }) => {
             keyboardVerticalOffset={96}
             behavior="padding"
         >
-            <Headline style={{ color: Colors.black }}>
-                Enter your Flare serial number
-            </Headline>
+            <Headline>Enter your Flare serial number</Headline>
             <CuffPreview
-                style={{ alignSelf: 'center', marginTop: 48 }}
+                style={{ alignSelf: 'center', marginTop: 16 }}
                 onChangeText={setSerial}
+                onSubmitEditing={onPress}
             />
             <RoundedButton
                 wrapperStyle={{
@@ -51,6 +50,7 @@ const Manual = ({ style, submit, busy }) => {
                 useGradient={false}
                 busy={busy}
                 onPress={onPress}
+                disabled={!parse}
             />
         </KeyboardAvoidingView>
     );
