@@ -192,21 +192,30 @@ export function user(state = initialState.user, action = {}) {
                 requestingPermissionsFailed: true,
             });
         case types.PERMISSIONS_SUCCESS: {
-            const grantUpdate = Immutable.setIn(
-                state.permissions,
-                [action.permission],
-                action.granted
-            );
-            const updatedPermissions = Immutable.setIn(
-                grantUpdate,
-                [`${action.permission}Prompted`],
-                true
-            );
-            return state.merge({
-                permissions: updatedPermissions,
-                requestingPermissions: false,
-                requestingPermissionsFailed: false,
-            });
+            if (action.permission !== 'location' || !action.isRequest) {
+                const grantUpdate = Immutable.setIn(
+                    state.permissions,
+                    [action.permission],
+                    action.granted
+                );
+                const updatedPermissions = Immutable.setIn(
+                    grantUpdate,
+                    [`${action.permission}Prompted`],
+                    true
+                );
+                return state.merge({
+                    permissions: updatedPermissions,
+                    requestingPermissions: false,
+                    requestingPermissionsFailed: false,
+                });
+            } else {
+                // location permission can "succeed" but only get temporary permission
+                // call check() if you need to know the actual state
+                return state.merge({
+                    requestingPermissions: false,
+                    requestingPermissionsFailed: false,
+                });
+            }
         }
 
         /**
