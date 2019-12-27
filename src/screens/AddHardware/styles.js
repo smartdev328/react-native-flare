@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     helpContainer: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#A8A8A8',
     },
     pager: {
         flex: 1,
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
         paddingHorizontal: 32,
-        paddingVertical: 20,
     },
     noBottomMargin: {
         marginBottom: 0,
@@ -40,6 +38,7 @@ const styles = StyleSheet.create({
     subhead: {
         fontSize: 20,
         lineHeight: 22,
+        marginTop: 12,
         color: Colors.black,
         fontFamily: 'Nocturno Display Std',
     },
@@ -72,6 +71,18 @@ const styles = StyleSheet.create({
     },
     whiteText: {
         color: Colors.white,
+    },
+    whiteLine: {
+        backgroundColor: Colors.white,
+    },
+    bottomSheet: {
+        backgroundColor: '#F5F2EDB2',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        alignSelf: 'stretch',
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingTop: 40,
     },
 });
 

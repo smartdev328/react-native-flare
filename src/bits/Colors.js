@@ -16,6 +16,7 @@ export default {
     grey: '#979797',
     greyLight: '#DBEDF5',
     red: '#FF0000',
+    error: '#E0AD8B',
     sequence: ['#4D45BF', '#FF4FB5', '#30C4FF', '#32AA6F'],
     theme: {
         blue: '#4D45BF',

@@ -1,3 +1,5 @@
+import { shallowEqualObjects } from 'shallow-equal';
+
 import { BeaconTypes } from './BleConstants';
 import {
     BLUETOOTH_BEACON_LOGGING,
@@ -13,7 +15,6 @@ import {
 import * as actionTypes from '../actions/actionTypes';
 import BleManager from './BleManager';
 import ManufacturingStages from '../constants/ManufacturingStages';
-import StoreObserver from './StoreObserver';
 import UserRoleTypes from '../constants/Roles';
 import { checkLocationsPermission } from '../actions/userActions';
 import { gotLongPress } from '../actions/regActions';
@@ -35,20 +36,20 @@ export default class BleProvider {
             radioToken:
                 store.getState().user && store.getState().user.radioToken,
         };
-        this.observer = StoreObserver(store);
-        this.unsubscribe = this.observer(
-            state => ({
+        this.unsubscribe = store.subscribe(() => {
+            const state = store.getState();
+            const newState = {
                 bleListeningChange: state.hardware.bleListeningChange,
                 bleListeningChangeDir: state.hardware.bleListeningChangeDir,
                 radioToken: state.user.radioToken,
                 locationPermission: state.user.permissions.location,
-            }),
-            newState => this.componentDidUpdate(newState)
-        );
+            };
+            this.componentDidUpdate(newState);
+        });
     }
 
     componentDidUpdate(newState) {
-        if (JSON.stringify(this.props.hardware) === JSON.stringify(newState)) {
+        if (shallowEqualObjects(this.props.hardware, newState)) {
             return;
         }
 

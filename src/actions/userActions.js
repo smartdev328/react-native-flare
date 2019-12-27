@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import Contacts from 'react-native-contacts';
 import {
     check,
@@ -39,17 +38,14 @@ export function setCrewMembers(token, crewId, members) {
     };
 }
 
-export function checkLocationsPermission() {
-    return function checkPermsLoc(dispatch) {
-        check(PERMISSIONS.IOS.LOCATION_ALWAYS).then(response => {
-            dispatch({
-                type: types.PERMISSIONS_SUCCESS,
-                permission: 'location',
-                granted: response === RESULTS.GRANTED,
-            });
-        });
-    };
-}
+export const checkLocationsPermission = () => async dispatch => {
+    const response = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+    dispatch({
+        type: types.PERMISSIONS_SUCCESS,
+        permission: 'location',
+        granted: response === RESULTS.GRANTED,
+    });
+};
 
 export function syncAccountDetails(args) {
     return function startSyncingAccountDetails(dispatch) {
@@ -129,7 +125,8 @@ export function getCrewEventTimeline(token) {
     };
 }
 
-export const getNotificationsPermission = async dispatch => {
+// eslint-disable-next-line camelcase
+export const DEPRECATED_getNotificationsPermission = async dispatch => {
     const { status } = await checkNotifications();
     if (status === RESULTS.GRANTED) {
         dispatch({
@@ -152,37 +149,35 @@ export const getNotificationsPermission = async dispatch => {
     }
 };
 
-export function getPermission(name) {
+export const getPermission = name => {
     const friendlyNames = {
         'ios.permission.CONTACTS': 'contacts',
         'ios.permission.LOCATION_ALWAYS': 'location',
     };
 
-    return async function doCheck(dispatch) {
-        check(name).then(checkResponse => {
-            dispatch({
-                type: types.PERMISSIONS_REQUEST,
-                name,
-            });
-            console.log('check', { checkResponse });
-            if (checkResponse !== RESULTS.GRANTED) {
-                request(name).then(response => {
-                    dispatch({
-                        type: types.PERMISSIONS_SUCCESS,
-                        permission: friendlyNames[name],
-                        granted: response === RESULTS.GRANTED,
-                    });
-                });
-            } else {
-                dispatch({
-                    type: types.PERMISSIONS_SUCCESS,
-                    permission: friendlyNames[name],
-                    granted: true,
-                });
-            }
+    return async dispatch => {
+        const checkResponse = await check(name);
+        dispatch({
+            type: types.PERMISSIONS_REQUEST,
+            name,
         });
+        if (checkResponse === RESULTS.GRANTED) {
+            dispatch({
+                type: types.PERMISSIONS_SUCCESS,
+                permission: friendlyNames[name],
+                granted: true,
+            });
+        } else {
+            await request(name);
+            const finalResponse = await check(name);
+            dispatch({
+                type: types.PERMISSIONS_SUCCESS,
+                permission: friendlyNames[name],
+                granted: finalResponse === RESULTS.GRANTED,
+            });
+        }
     };
-}
+};
 
 export function setNotificationMessage(token, message, custom) {
     return function setMessage(dispatch) {

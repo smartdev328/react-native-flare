@@ -42,3 +42,7 @@ export const awaitLongPress = () => ({
 export const gotLongPress = () => ({
     type: types.USER_SCENARIO_GOT_LONG_PRESS,
 });
+
+export const didAddToContacts = () => ({
+    type: types.USER_SCENARIO_ADDED_TO_CONTACTS,
+});

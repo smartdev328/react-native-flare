@@ -11,7 +11,7 @@ import {
     setCancelPIN,
     setOnboardingComplete,
     checkLocationsPermission,
-    getNotificationsPermission,
+    DEPRECATED_getNotificationsPermission,
 } from '../../actions/userActions';
 import { changeAppRoot } from '../../actions/navActions';
 import { startBleListening } from '../../actions/hardwareActions';
@@ -315,7 +315,7 @@ class OnboardingMain extends React.Component {
 
         const notificationsPage = getNotificationsPage({
             requestNotificationsPermission: () =>
-                this.props.dispatch(getNotificationsPermission),
+                this.props.dispatch(DEPRECATED_getNotificationsPermission),
             notificationEnabled:
                 this.props.permissions && this.props.permissions.notification,
             notificationPrompted:

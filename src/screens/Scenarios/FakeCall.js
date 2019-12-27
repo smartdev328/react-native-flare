@@ -5,6 +5,7 @@ import isPlainObject from 'is-plain-object';
 import DeviceAction from './DeviceAction';
 import { scenarioDidCall } from '../../actions/regActions';
 import { registerCallDetection } from '../../bits/CallDetection';
+import { TOUCH_AND_RELEASE } from '../Cuff';
 
 const FakeCall = ({ onBack, onSuccess }) => {
     const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const FakeCall = ({ onBack, onSuccess }) => {
             headline2="Press for a call."
             body="Press the button on your cuff and we’ll call you. Listen and react to the call, and hang up whenever!"
             confirm="I got the call"
+            animation={TOUCH_AND_RELEASE}
         />
     );
 };

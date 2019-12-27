@@ -1,70 +1,126 @@
 import * as React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
-import ViewPager from '@react-native-community/viewpager';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import { Navigation } from 'react-native-navigation';
+import {
+    SafeAreaConsumer,
+    SafeAreaProvider,
+} from 'react-native-safe-area-context';
 
 import styles from './styles';
 import GetStarted from './GetStarted';
 import WhiteBar from '../Onboarding/WhiteBar';
 import LocationPrimer from './LocationPrimer';
+import AlwaysAllow from './AlwaysAllow';
 import Pairing from './Pairing';
-import Success from './Success';
 import Aura from '../../bits/Aura';
 
-import auraSixLight from '../../assets/aura-6-light.jpg';
+import aura1519 from '../../assets/aura-1519.jpg';
 
-class AddHardware extends React.Component {
+class AddHardware extends React.PureComponent {
     constructor() {
         super();
         this.state = {
             page: 0,
         };
-        this.pagerRef = React.createRef();
     }
 
     nextPage = () => {
-        const { page } = this.state;
-        this.pagerRef.current.setPage(page + 1);
-        this.setState({ page: page + 1 });
+        this.setState(({ page }) => ({ page: page + 1 }));
     };
 
     prevPage = () => {
-        const { page } = this.state;
-        this.pagerRef.current.setPage(page - 1);
-        this.setState({ page: page - 1 });
+        this.setState(({ page }) => ({ page: page - 1 }));
     };
 
-    render() {
-        const { componentId } = this.props;
-        const { page } = this.state;
+    aboutPermissions = () => {
+        Navigation.showModal({
+            component: {
+                name:
+                    'com.flarejewelry.onboarding.addhardware.aboutpermissions',
+            },
+        });
+    };
 
-        return (
-            <SafeAreaView style={styles.container}>
-                <StatusBar barStyle="dark-content" />
-                {page === 2 && <Aura source={auraSixLight} />}
-                <WhiteBar
-                    black
-                    showLogo={false}
-                    goBack={this.prevPage}
-                    showBack={page !== 0 && page !== 3}
-                />
-                <ViewPager
-                    ref={this.pagerRef}
-                    style={styles.pager}
-                    scrollEnabled={false}
-                    keyboardDismissMode="none"
-                    transitionStyle="scroll"
-                >
+    finish = () => {
+        const { componentId } = this.props;
+        Navigation.push(componentId, {
+            component: {
+                name: 'com.flarejewelry.scenarios',
+                options: { topBar: { visible: false } },
+            },
+        });
+    };
+
+    currentScreen = ({ componentId, page, bottomMargin }) => {
+        switch (page) {
+            case 0:
+                return (
+                    <LocationPrimer
+                        style={[bottomMargin, StyleSheet.absoluteFill]}
+                        nextPage={this.nextPage}
+                        tellMeMore={this.aboutPermissions}
+                    />
+                );
+            case 1:
+                return (
+                    <AlwaysAllow
+                        style={[bottomMargin, StyleSheet.absoluteFill]}
+                        nextPage={this.nextPage}
+                        tellMeMore={this.aboutPermissions}
+                    />
+                );
+            case 2:
+                return (
                     <GetStarted
+                        style={[StyleSheet.absoluteFill]}
                         componentId={componentId}
                         nextPage={this.nextPage}
                     />
-                    <LocationPrimer nextPage={this.nextPage} />
-                    <Pairing nextPage={this.nextPage} />
-                    <Success componentId={componentId} />
-                </ViewPager>
-            </SafeAreaView>
+                );
+            case 3:
+                return (
+                    <Pairing
+                        style={[bottomMargin, StyleSheet.absoluteFill]}
+                        nextPage={this.finish}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
+    render() {
+        const { componentId, insets } = this.props;
+        const { page } = this.state;
+
+        const bottomMargin = { marginBottom: insets.bottom };
+
+        return (
+            <View style={[styles.container, { paddingTop: insets.top }]}>
+                <StatusBar
+                    barStyle={page >= 2 ? 'light-content' : 'dark-content'}
+                />
+                {page >= 2 && <Aura source={aura1519} />}
+                <WhiteBar
+                    black={page < 2}
+                    showLogo={false}
+                    goBack={this.prevPage}
+                    showBack={page === 3}
+                />
+                <View style={styles.pager}>
+                    {this.currentScreen({ componentId, page, bottomMargin })}
+                </View>
+            </View>
         );
     }
 }
 
-export default AddHardware;
+const AddHardwareWithProvider = props => (
+    <SafeAreaProvider>
+        <SafeAreaConsumer>
+            {insets => <AddHardware insets={insets} {...props} />}
+        </SafeAreaConsumer>
+    </SafeAreaProvider>
+);
+
+export default AddHardwareWithProvider;

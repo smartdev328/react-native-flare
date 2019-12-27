@@ -15,6 +15,7 @@ import { setFoundDevice } from '../../../actions/regActions';
 
 import cuff from '../../../assets/cuff-v2.png';
 import Colors from '../../../bits/Colors';
+import Cuff, { TOUCH_AND_RELEASE } from '../../Cuff';
 
 const localStyles = StyleSheet.create({
     troubleBox: {
@@ -72,27 +73,23 @@ const Bluetooth = ({ style }) => {
 
     return (
         <View style={[styles.centerContainer, ...style]}>
-            <View style={styles.spacer} />
-            <Headline style={styles.headline}>
+            <Headline style={[styles.headline, styles.whiteText]}>
                 Press your Flare repeatedly
             </Headline>
-            <View style={styles.line} />
+            <View style={[styles.line, styles.whiteLine]} />
             <Text
-                style={[styles.subhead, { textAlign: 'center', marginTop: 12 }]}
+                style={[
+                    styles.subhead,
+                    styles.whiteText,
+                    { textAlign: 'center', marginTop: 12 },
+                ]}
             >
                 Press the button on your jewelry repeatedly so that your phone
                 and jewelry can connect.
             </Text>
             <View style={styles.spacer} />
-            <Geyser />
-            <Image source={cuff} style={styles.image} />
+            <Cuff button animation={TOUCH_AND_RELEASE} />
             <View style={{ flexGrow: 2 }} />
-            <TouchableOpacity
-                onPress={havingTrouble}
-                style={localStyles.troubleBox}
-            >
-                <Text style={localStyles.trouble}>Having trouble?</Text>
-            </TouchableOpacity>
         </View>
     );
 };

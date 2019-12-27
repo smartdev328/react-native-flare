@@ -1,50 +1,36 @@
 import * as React from 'react';
-import { SafeAreaView, ScrollView, Text, View } from 'react-native';
-import { Navigation } from 'react-native-navigation';
+import { StyleSheet, Text } from 'react-native';
 
-import styles from './styles';
-import WhiteBar from '../Onboarding/WhiteBar';
-import Headline from '../Onboarding/Headline';
+import HelpScreen from './HelpScreen';
+import HelpSection from './HelpSection';
+import Colors from '../../bits/Colors';
 
-const HowToConnect = ({ componentId }) => (
-    <SafeAreaView style={styles.helpContainer}>
-        <WhiteBar
-            showLogo={false}
-            goBack={() => {
-                Navigation.dismissModal(componentId);
-            }}
+import bluetooth from '../../assets/permission-bluetooth.png';
+import manual from '../../assets/text-checkmark.png';
+
+const styles = StyleSheet.create({
+    option: {
+        fontSize: 16,
+        color: Colors.white,
+        marginBottom: 12,
+    },
+});
+
+const HowToConnect = props => (
+    <HelpScreen headline="How do I connect my Flare cuff?" {...props}>
+        <Text style={styles.option}>Option 1:</Text>
+        <HelpSection
+            icon={bluetooth}
+            title="Bluetooth"
+            body="By repeatedly pressing the discreet button on your cuff, your phone and cuff can establish a permanent connection."
         />
-        <ScrollView style={styles.scrollContainer}>
-            <Headline style={styles.noBottomMargin}>
-                How do I connect my Flare cuff?
-            </Headline>
-            <View style={[styles.line, styles.marginLine, styles.helpLine]} />
-            <Text style={[styles.subhead, styles.whiteText]}>Bluetooth</Text>
-            <Text style={[styles.helpText, styles.whiteText]}>
-                By pushing the discreet button on your cuff, your phone and the
-                cuff can establish a connection.
-                {'\n\n'}
-                It’s not working, what should I do?
-                {'\n'}
-                Where is the button?
-                {'\n'}
-                Will I have to do this again?
-            </Text>
-            <View style={[styles.line, styles.marginLine, styles.helpLine]} />
-            <Text style={[styles.subhead, styles.whiteText]}>Manually</Text>
-            <Text style={[styles.helpText, styles.whiteText]}>
-                In order to ensure that we connect to the right cuff, you can
-                always enter the serial number manually so that your phone and
-                cuff can establish a connection.
-                {'\n\n'}
-                When should I use this?
-                {'\n'}
-                Why do I have to do this?
-                {'\n'}
-                Where is my serial number?
-            </Text>
-        </ScrollView>
-    </SafeAreaView>
+        <Text style={styles.option}>Option 2:</Text>
+        <HelpSection
+            icon={manual}
+            title="Serial Number"
+            body="You can manually enter the serial number on the underside of your cuff; this also establishes a permanent connection and you can ensure that you are connecting to your cuff."
+        />
+    </HelpScreen>
 );
 
 export default HowToConnect;

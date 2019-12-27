@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Image, Text, View } from 'react-native';
-import { Navigation } from 'react-native-navigation';
 import { connect } from 'react-redux';
 import { PERMISSIONS } from 'react-native-permissions';
 
@@ -15,37 +14,30 @@ const LocationPrimer = ({
     style,
     nextPage,
     getPermission,
-    locationPermission,
     requestingPermissions,
+    tellMeMore,
 }) => {
+    const [didRequestPermission, setDidRequestPermission] = React.useState(
+        false
+    );
     React.useEffect(() => {
-        if (locationPermission && !requestingPermissions) {
+        if (requestingPermissions) {
+            setDidRequestPermission(true);
+        } else if (!requestingPermissions && didRequestPermission) {
             nextPage();
         }
-    }, [locationPermission, requestingPermissions, nextPage]);
+    }, [requestingPermissions, nextPage, didRequestPermission]);
 
     const allowLocation = React.useCallback(() => {
         getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS);
     }, [getPermission]);
 
-    const tellMeMore = React.useCallback(() => {
-        Navigation.showModal({
-            component: {
-                name:
-                    'com.flarejewelry.onboarding.addhardware.aboutpermissions',
-            },
-        });
-    }, []);
-
     return (
         <View style={[styles.centerContainer, ...style]}>
-            <View style={styles.spacer} />
             <Headline style={styles.headline}>Enable Location</Headline>
             <View style={styles.line} />
-            <View style={styles.spacer} />
             <Text style={[styles.subhead, { textAlign: 'center' }]}>
-                You’ll need to enable your location in order to use Flare and
-                connect with your jewelry
+                You’ll need to enable your location in order to use Flare.
             </Text>
             <View style={styles.spacer} />
             <Image
@@ -56,29 +48,20 @@ const LocationPrimer = ({
             <RoundedButton
                 text="Allow Location"
                 onPress={allowLocation}
-                useGradient={false}
                 width={240}
-                height={48}
-                fontSize={14}
             />
             <RoundedButton
-                text="Tell me more"
+                text="Why do you need it?"
                 onPress={tellMeMore}
                 invisible
-                useGradient={false}
                 width={240}
-                height={48}
-                fontSize={14}
+                wrapperStyle={{ marginVertical: 12 }}
             />
         </View>
     );
 };
 
-const mapStateToProps = ({ user: { permissions, requestingPermissions } }) => ({
-    locationPermission:
-        typeof permissions === 'object' &&
-        'location' in permissions &&
-        permissions.location,
+const mapStateToProps = ({ user: { requestingPermissions } }) => ({
     requestingPermissions,
 });
 
