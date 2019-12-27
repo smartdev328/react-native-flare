@@ -15,14 +15,18 @@ const LocationPrimer = ({
     style,
     nextPage,
     getPermission,
-    locationPermission,
     requestingPermissions,
 }) => {
+    const [didRequestPermission, setDidRequestPermission] = React.useState(
+        false
+    );
     React.useEffect(() => {
-        if (locationPermission && !requestingPermissions) {
+        if (requestingPermissions) {
+            setDidRequestPermission(true);
+        } else if (!requestingPermissions && didRequestPermission) {
             nextPage();
         }
-    }, [locationPermission, requestingPermissions, nextPage]);
+    }, [requestingPermissions, nextPage, didRequestPermission]);
 
     const allowLocation = React.useCallback(() => {
         getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS);
@@ -66,11 +70,7 @@ const LocationPrimer = ({
     );
 };
 
-const mapStateToProps = ({ user: { permissions, requestingPermissions } }) => ({
-    locationPermission:
-        typeof permissions === 'object' &&
-        'location' in permissions &&
-        permissions.location,
+const mapStateToProps = ({ user: { requestingPermissions } }) => ({
     requestingPermissions,
 });
 
