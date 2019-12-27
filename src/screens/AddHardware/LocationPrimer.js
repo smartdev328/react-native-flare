@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Image, Text, View } from 'react-native';
-import { Navigation } from 'react-native-navigation';
 import { connect } from 'react-redux';
 import { PERMISSIONS } from 'react-native-permissions';
 
@@ -16,6 +15,7 @@ const LocationPrimer = ({
     nextPage,
     getPermission,
     requestingPermissions,
+    tellMeMore,
 }) => {
     const [didRequestPermission, setDidRequestPermission] = React.useState(
         false
@@ -31,15 +31,6 @@ const LocationPrimer = ({
     const allowLocation = React.useCallback(() => {
         getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS);
     }, [getPermission]);
-
-    const tellMeMore = React.useCallback(() => {
-        Navigation.showModal({
-            component: {
-                name:
-                    'com.flarejewelry.onboarding.addhardware.aboutpermissions',
-            },
-        });
-    }, []);
 
     return (
         <View style={[styles.centerContainer, ...style]}>

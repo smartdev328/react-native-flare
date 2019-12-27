@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import Contacts from 'react-native-contacts';
 import {
     check,
@@ -164,7 +163,6 @@ export function getPermission(name) {
                 type: types.PERMISSIONS_REQUEST,
                 name,
             });
-            console.log('check', { checkResponse });
             if (checkResponse !== RESULTS.GRANTED) {
                 request(name).then(response => {
                     dispatch({

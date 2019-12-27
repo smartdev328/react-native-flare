@@ -6,11 +6,13 @@ import styles from './styles';
 import GetStarted from './GetStarted';
 import WhiteBar from '../Onboarding/WhiteBar';
 import LocationPrimer from './LocationPrimer';
+import AlwaysAllow from './AlwaysAllow';
 import Pairing from './Pairing';
 import Success from './Success';
 import Aura from '../../bits/Aura';
 
 import aura1519 from '../../assets/aura-1519.jpg';
+import { Navigation } from 'react-native-navigation';
 
 class AddHardware extends React.Component {
     constructor() {
@@ -31,6 +33,15 @@ class AddHardware extends React.Component {
         const { page } = this.state;
         this.pagerRef.current.setPage(page - 1);
         this.setState({ page: page - 1 });
+    };
+
+    aboutPermissions = () => {
+        Navigation.showModal({
+            component: {
+                name:
+                    'com.flarejewelry.onboarding.addhardware.aboutpermissions',
+            },
+        });
     };
 
     render() {
@@ -54,7 +65,14 @@ class AddHardware extends React.Component {
                     keyboardDismissMode="none"
                     transitionStyle="scroll"
                 >
-                    <LocationPrimer nextPage={this.nextPage} />
+                    <LocationPrimer
+                        nextPage={this.nextPage}
+                        tellMeMore={this.aboutPermissions}
+                    />
+                    <AlwaysAllow
+                        nextPage={this.nextPage}
+                        tellMeMore={this.aboutPermissions}
+                    />
                     <GetStarted
                         componentId={componentId}
                         nextPage={this.nextPage}
