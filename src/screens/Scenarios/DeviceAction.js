@@ -42,7 +42,7 @@ const DeviceAction = ({
             </Headline>
             <View style={[styles.line, { backgroundColor: Colors.black }]} />
             <Text style={[styles.text, styles.blackText]}>{body}</Text>
-            <Cuff button animation={animation} />
+            <Cuff button animation={animation} pause />
             {onNext && (
                 <RoundedButton
                     text={confirm}

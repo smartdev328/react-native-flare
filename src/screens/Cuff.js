@@ -42,9 +42,24 @@ const animations = {
     [PRESS_AND_HOLD]: pressAndHold,
 };
 
-const Cuff = ({ button, animation, style, small = false, ...rest }) => {
+const Cuff = ({ button, animation, style, small = false, pause, ...rest }) => {
+    const animationRef = React.useRef();
+    const [timeoutId, setTimeoutId] = React.useState(undefined);
+
     const animationSource = animations[animation];
     const wh = small ? styles.whSmall : styles.wh;
+
+    const delayThenRestart = React.useCallback(() => {
+        const id = setTimeout(() => {
+            animationRef.current.reset();
+            animationRef.current.play();
+        }, 800);
+        setTimeoutId(id);
+    }, []);
+
+    React.useEffect(() => {
+        return timeoutId ? () => clearTimeout(timeoutId) : undefined;
+    }, [timeoutId]);
 
     return (
         <View style={[wh, style]} {...rest}>
@@ -53,10 +68,12 @@ const Cuff = ({ button, animation, style, small = false, ...rest }) => {
             {animationSource && (
                 <View style={[styles.animationWrapper, styles.animation]}>
                     <AnimatedLottieView
+                        ref={animationRef}
                         source={animationSource}
                         style={styles.animation}
                         autoPlay
-                        loop
+                        loop={!pause}
+                        onAnimationFinish={pause ? delayThenRestart : undefined}
                     />
                 </View>
             )}
