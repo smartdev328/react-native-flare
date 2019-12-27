@@ -8,7 +8,7 @@ import FlareDeviceID from '../../../bits/FlareDeviceID';
 import RoundedButton from '../../../bits/RoundedButton';
 
 const Confirm = ({ device, submit, busy }) => {
-    const [secondFactor, setSecondFactor] = React.useState();
+    const [secondFactor, setSecondFactor] = React.useState('');
     const onPress = React.useCallback(() => {
         submit({ deviceId: device, secondFactor });
     }, [submit, device, secondFactor]);
@@ -20,14 +20,18 @@ const Confirm = ({ device, submit, busy }) => {
             keyboardVerticalOffset={96}
             behavior="padding"
         >
-            <Headline>Confirm your Flare</Headline>
-            <Text style={[styles.helpText, { marginBottom: 0 }]}>
-                Enter the last 3 digits of your serial number
+            <Headline style={{ marginBottom: 0 }}>Confirm your Flare</Headline>
+            <Text
+                style={[styles.helpText, styles.whiteText, { marginBottom: 0 }]}
+            >
+                Enter the last 3 digits of your serial number, we’re security
+                buffs:
             </Text>
             <CuffPreview
                 style={{ alignSelf: 'center', marginTop: 48 }}
                 text={deviceLabel}
                 onChangeText={setSecondFactor}
+                onSubmitEditing={onPress}
             />
             <RoundedButton
                 wrapperStyle={{
@@ -36,9 +40,9 @@ const Confirm = ({ device, submit, busy }) => {
                     marginBottom: 16,
                 }}
                 text="Continue"
-                useGradient={false}
                 busy={busy}
                 onPress={onPress}
+                disabled={secondFactor.length < 3}
             />
         </KeyboardAvoidingView>
     );

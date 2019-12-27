@@ -9,11 +9,12 @@ import {
 } from 'react-native';
 
 import image from '../../../assets/cuff-confirm.png';
+import Colors from '../../../bits/Colors';
 
 const styles = StyleSheet.create({
     container: {
-        width: 232,
-        height: 110,
+        width: 274,
+        height: 130,
     },
     image: {
         position: 'absolute',
@@ -24,12 +25,13 @@ const styles = StyleSheet.create({
     },
     textWrapper: {
         position: 'absolute',
-        left: 87,
-        top: 71,
+        left: 100,
+        top: 84,
         flexDirection: 'row',
     },
     text: {
-        fontSize: 14,
+        fontSize: 16,
+        color: Colors.black,
     },
     textInput: {
         borderWidth: 0,
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const CuffPreview = ({ text = '', style, onChangeText }) => {
+const CuffPreview = ({ text = '', style, ...rest }) => {
     const inputRef = React.useRef(null);
     const focusInput = React.useCallback(() => {
         if (inputRef.current) {
@@ -65,8 +67,9 @@ const CuffPreview = ({ text = '', style, onChangeText }) => {
                         autoCorrect={false}
                         keyboardType="ascii-capable"
                         returnKeyType="next"
-                        onChangeText={onChangeText}
                         maxLength={9 - text.length}
+                        keyboardAppearance="dark"
+                        {...rest}
                     />
                 </View>
             </View>

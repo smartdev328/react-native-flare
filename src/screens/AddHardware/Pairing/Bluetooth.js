@@ -90,12 +90,6 @@ const Bluetooth = ({ style }) => {
             <View style={styles.spacer} />
             <Cuff button animation={TOUCH_AND_RELEASE} />
             <View style={{ flexGrow: 2 }} />
-            <TouchableOpacity
-                onPress={havingTrouble}
-                style={localStyles.troubleBox}
-            >
-                <Text style={localStyles.trouble}>Having trouble?</Text>
-            </TouchableOpacity>
         </View>
     );
 };
