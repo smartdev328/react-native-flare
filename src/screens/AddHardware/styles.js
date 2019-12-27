@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     helpContainer: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#A8A8A8',
     },
     pager: {
         flex: 1,
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flex: 1,
         paddingHorizontal: 32,
-        paddingVertical: 20,
     },
     noBottomMargin: {
         marginBottom: 0,
