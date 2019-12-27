@@ -2,15 +2,19 @@ import * as React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import AnimatedLottieView from 'lottie-react-native';
 
-import cuff from '../../assets/cuff-v2.png';
-import cuffButton from '../../assets/cuff-button.png';
-import touchAndRelease from '../../assets/lotties/touch-and-release';
-import pressAndHold from '../../assets/lotties/press-and-hold';
+import cuff from '../assets/cuff-v2.png';
+import cuffButton from '../assets/cuff-button.png';
+import touchAndRelease from '../assets/lotties/touch-and-release';
+import pressAndHold from '../assets/lotties/press-and-hold';
 
 const styles = StyleSheet.create({
     wh: {
         width: 241,
         height: 215,
+    },
+    whSmall: {
+        width: 192,
+        height: 171,
     },
     button: {
         position: 'absolute',
@@ -38,12 +42,13 @@ const animations = {
     [PRESS_AND_HOLD]: pressAndHold,
 };
 
-const Cuff = ({ button, animation, style, ...rest }) => {
+const Cuff = ({ button, animation, style, small = false, ...rest }) => {
     const animationSource = animations[animation];
+    const wh = small ? styles.whSmall : styles.wh;
 
     return (
-        <View style={[styles.wh, style]} {...rest}>
-            <Image source={cuff} style={styles.wh} />
+        <View style={[wh, style]} {...rest}>
+            <Image source={cuff} style={wh} />
             {button && <Image source={cuffButton} style={styles.button} />}
             {animationSource && (
                 <View style={[styles.animationWrapper, styles.animation]}>

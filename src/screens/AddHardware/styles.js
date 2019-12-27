@@ -72,6 +72,18 @@ const styles = StyleSheet.create({
     whiteText: {
         color: Colors.white,
     },
+    whiteLine: {
+        backgroundColor: Colors.white,
+    },
+    bottomSheet: {
+        backgroundColor: '#F5F2ED',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        alignSelf: 'stretch',
+        flexDirection: 'column',
+        alignItems: 'center',
+        paddingTop: 40,
+    },
 });
 
 export default styles;

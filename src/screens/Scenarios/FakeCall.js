@@ -5,7 +5,7 @@ import isPlainObject from 'is-plain-object';
 import DeviceAction from './DeviceAction';
 import { scenarioDidCall } from '../../actions/regActions';
 import { registerCallDetection } from '../../bits/CallDetection';
-import { TOUCH_AND_RELEASE } from './Cuff';
+import { TOUCH_AND_RELEASE } from '../Cuff';
 
 const FakeCall = ({ onBack, onSuccess }) => {
     const dispatch = useDispatch();

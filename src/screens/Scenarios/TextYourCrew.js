@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import DeviceAction from './DeviceAction';
-import { PRESS_AND_HOLD } from './Cuff';
+import { PRESS_AND_HOLD } from '../Cuff';
 
 const TextYourCrew = ({ onBack }) => (
     <DeviceAction

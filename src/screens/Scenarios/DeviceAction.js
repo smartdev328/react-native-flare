@@ -7,7 +7,7 @@ import WhiteBar from '../Onboarding/WhiteBar';
 import Headline from '../Onboarding/Headline';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
-import Cuff from './Cuff';
+import Cuff from '../Cuff';
 
 import aura from '../../assets/aura-6-light.jpg';
 

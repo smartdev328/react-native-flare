@@ -1,6 +1,11 @@
 import * as React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
+import { Navigation } from 'react-native-navigation';
+import {
+    SafeAreaConsumer,
+    SafeAreaProvider,
+} from 'react-native-safe-area-context';
 
 import styles from './styles';
 import GetStarted from './GetStarted';
@@ -12,7 +17,6 @@ import Success from './Success';
 import Aura from '../../bits/Aura';
 
 import aura1519 from '../../assets/aura-1519.jpg';
-import { Navigation } from 'react-native-navigation';
 
 class AddHardware extends React.Component {
     constructor() {
@@ -45,18 +49,20 @@ class AddHardware extends React.Component {
     };
 
     render() {
-        const { componentId } = this.props;
+        const { componentId, insets } = this.props;
         const { page } = this.state;
 
+        const bottomMargin = { marginBottom: insets.bottom };
+
         return (
-            <SafeAreaView style={styles.container}>
+            <View style={[styles.container, { paddingTop: insets.top }]}>
                 <StatusBar barStyle="dark-content" />
                 {page === 2 && <Aura source={aura1519} />}
                 <WhiteBar
                     black
                     showLogo={false}
                     goBack={this.prevPage}
-                    showBack={page !== 0 && page !== 3}
+                    showBack={false}
                 />
                 <ViewPager
                     ref={this.pagerRef}
@@ -66,10 +72,12 @@ class AddHardware extends React.Component {
                     transitionStyle="scroll"
                 >
                     <LocationPrimer
+                        style={bottomMargin}
                         nextPage={this.nextPage}
                         tellMeMore={this.aboutPermissions}
                     />
                     <AlwaysAllow
+                        style={bottomMargin}
                         nextPage={this.nextPage}
                         tellMeMore={this.aboutPermissions}
                     />
@@ -80,9 +88,17 @@ class AddHardware extends React.Component {
                     <Pairing nextPage={this.nextPage} />
                     <Success componentId={componentId} />
                 </ViewPager>
-            </SafeAreaView>
+            </View>
         );
     }
 }
 
-export default AddHardware;
+const AddHardwareWithProvider = props => (
+    <SafeAreaProvider>
+        <SafeAreaConsumer>
+            {insets => <AddHardware insets={insets} {...props} />}
+        </SafeAreaConsumer>
+    </SafeAreaProvider>
+);
+
+export default AddHardwareWithProvider;
