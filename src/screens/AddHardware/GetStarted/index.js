@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Animated, Easing, Text, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { useDispatch } from 'react-redux';
-import { useSafeArea } from 'react-native-safe-area-context';
 
-import Headline from '../Onboarding/Headline';
-import styles from './styles';
-import RoundedButton from '../../bits/RoundedButton';
-import { setPreferredPairingMethod } from '../../actions/regActions';
-import Cuff from '../Cuff';
+import Headline from '../../Onboarding/Headline';
+import styles from '../styles';
+import { setPreferredPairingMethod } from '../../../actions/regActions';
+import Cuff from '../../Cuff';
+import BottomSheet from './BottomSheet';
 
 const GetStarted = ({ style, nextPage }) => {
-    const insets = useSafeArea();
+    const [translation] = React.useState(new Animated.Value(1000));
     const dispatch = useDispatch();
 
     const preferBluetooth = React.useCallback(() => {
@@ -30,6 +29,22 @@ const GetStarted = ({ style, nextPage }) => {
         });
     }, []);
 
+    const onLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { height },
+            },
+        }) => {
+            translation.setValue(height);
+            Animated.timing(translation, {
+                duration: 600,
+                toValue: 0.0,
+                useNativeDriver: true,
+                easing: Easing.ease,
+            }).start();
+        },
+        []
+    );
     return (
         <View
             style={[styles.centerContainer, { paddingHorizontal: 0 }, ...style]}
@@ -50,34 +65,13 @@ const GetStarted = ({ style, nextPage }) => {
             <View style={styles.spacer} />
             <Cuff small />
             <View style={styles.spacer} />
-            <View
-                style={[
-                    styles.bottomSheet,
-                    { paddingBottom: insets.bottom + 12 },
-                ]}
-            >
-                <Headline style={styles.headline}>Ready to pair?</Headline>
-                <RoundedButton
-                    wrapperStyle={styles.spacedButton}
-                    onPress={preferBluetooth}
-                    text="Connect via Bluetooth"
-                    useGradient
-                    width={240}
-                />
-                <RoundedButton
-                    wrapperStyle={styles.spacedButton}
-                    text="Enter serial number"
-                    onPress={preferManual}
-                    outline
-                    width={240}
-                />
-                <RoundedButton
-                    text="Tell me more"
-                    onPress={howToConnect}
-                    invisible
-                    width={240}
-                />
-            </View>
+            <BottomSheet
+                style={{ transform: [{ translateY: translation }] }}
+                howToConnect={howToConnect}
+                preferBluetooth={preferBluetooth}
+                preferManual={preferManual}
+                onLayout={onLayout}
+            />
         </View>
     );
 };
