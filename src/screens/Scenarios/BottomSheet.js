@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
+import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
     container: {
@@ -67,27 +68,34 @@ const WouldYouRather = ({ fakeCall, textCrew }) => (
     </>
 );
 
-const Nice = ({ nextScenario, addToContacts }) => (
-    <>
-        <Text style={styles.head}>Nice.</Text>
-        <RoundedButton
-            useGradient
-            wrapperStyle={styles.buttonMargin}
-            onPress={nextScenario}
-            text="Next Scenario"
-            width={242}
-            height={46}
-        />
-        <RoundedButton
-            useGradient={false}
-            wrapperStyle={styles.buttonMargin}
-            onPress={addToContacts}
-            text="Add Flare to Contacts"
-            width={242}
-            height={46}
-        />
-    </>
-);
+const Nice = ({ nextScenario, addToContacts }) => {
+    const didAddToContacts = useSelector(
+        state => state.user.scenarios.addedToContacts
+    );
+    return (
+        <>
+            <Text style={styles.head}>Nice.</Text>
+            <RoundedButton
+                useGradient
+                wrapperStyle={styles.buttonMargin}
+                onPress={nextScenario}
+                text="Next Scenario"
+                width={242}
+                height={46}
+            />
+            {!didAddToContacts && (
+                <RoundedButton
+                    useGradient={false}
+                    wrapperStyle={styles.buttonMargin}
+                    onPress={addToContacts}
+                    text="Add Flare to Contacts"
+                    width={242}
+                    height={46}
+                />
+            )}
+        </>
+    );
+};
 
 const BottomSheet = ({
     style,

@@ -42,6 +42,7 @@ export const initialState = Immutable({
             didCall: false,
             didText: false,
             longPress: null,
+            addedToContacts: false,
         },
     },
     beacons: {
