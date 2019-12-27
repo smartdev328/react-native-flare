@@ -13,12 +13,11 @@ import WhiteBar from '../Onboarding/WhiteBar';
 import LocationPrimer from './LocationPrimer';
 import AlwaysAllow from './AlwaysAllow';
 import Pairing from './Pairing';
-import Success from './Success';
 import Aura from '../../bits/Aura';
 
 import aura1519 from '../../assets/aura-1519.jpg';
 
-class AddHardware extends React.Component {
+class AddHardware extends React.PureComponent {
     constructor() {
         super();
         this.state = {
@@ -48,6 +47,16 @@ class AddHardware extends React.Component {
         });
     };
 
+    finish = () => {
+        const { componentId } = this.props;
+        Navigation.push(componentId, {
+            component: {
+                name: 'com.flarejewelry.scenarios',
+                options: { topBar: { visible: false } },
+            },
+        });
+    };
+
     render() {
         const { componentId, insets } = this.props;
         const { page } = this.state;
@@ -56,13 +65,15 @@ class AddHardware extends React.Component {
 
         return (
             <View style={[styles.container, { paddingTop: insets.top }]}>
-                <StatusBar barStyle="dark-content" />
-                {page === 2 && <Aura source={aura1519} />}
+                <StatusBar
+                    barStyle={page >= 2 ? 'light-content' : 'dark-content'}
+                />
+                {page >= 2 && <Aura source={aura1519} />}
                 <WhiteBar
-                    black
+                    black={page < 2}
                     showLogo={false}
                     goBack={this.prevPage}
-                    showBack={false}
+                    showBack={page === 3}
                 />
                 <ViewPager
                     ref={this.pagerRef}
@@ -85,8 +96,7 @@ class AddHardware extends React.Component {
                         componentId={componentId}
                         nextPage={this.nextPage}
                     />
-                    <Pairing nextPage={this.nextPage} />
-                    <Success componentId={componentId} />
+                    <Pairing nextPage={this.finish} />
                 </ViewPager>
             </View>
         );

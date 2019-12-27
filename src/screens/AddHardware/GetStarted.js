@@ -75,7 +75,6 @@ const GetStarted = ({ style, nextPage }) => {
                     text="Tell me more"
                     onPress={howToConnect}
                     invisible
-                    useGradient={false}
                     width={240}
                 />
             </View>
