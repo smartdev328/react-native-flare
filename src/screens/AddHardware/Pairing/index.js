@@ -60,7 +60,7 @@ const Pairing = ({ nextPage, ...props }) => {
             <Confirm {...props} device={device} busy={busy} submit={submit} />
         );
     } else {
-        return <Bluetooth {...props} busy={busy} submit={submit} />;
+        return <Bluetooth {...props} />;
     }
 };
 
