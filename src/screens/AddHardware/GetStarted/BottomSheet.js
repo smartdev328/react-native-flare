@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated } from 'react-native';
+import { Animated, View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 
 import styles from '../styles';
@@ -24,6 +24,8 @@ const BottomSheet = ({
             {...props}
         >
             <Headline style={styles.headline}>Ready to pair?</Headline>
+            <View style={[styles.line, { marginBottom: 12 }]} />
+
             <RoundedButton
                 wrapperStyle={styles.spacedButton}
                 onPress={preferBluetooth}

@@ -143,6 +143,7 @@ const Scenario = ({
                 showLogo={false}
                 goBack={onBack}
                 showBack={typeof onBack === 'function'}
+                offWhite
             />
             <View style={{ width: 264 }}>
                 <Quote

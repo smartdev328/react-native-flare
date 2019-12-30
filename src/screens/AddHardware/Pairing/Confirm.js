@@ -20,7 +20,7 @@ const Confirm = ({ device, submit, busy }) => {
             keyboardVerticalOffset={96}
             behavior="padding"
         >
-            <Headline style={{ marginBottom: 0 }}>Confirm your Flare</Headline>
+            <Headline style={{ marginBottom: 8 }}>Confirm your Flare</Headline>
             <Text
                 style={[styles.helpText, styles.whiteText, { marginBottom: 0 }]}
             >

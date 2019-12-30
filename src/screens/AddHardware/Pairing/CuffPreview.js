@@ -69,6 +69,10 @@ const CuffPreview = ({ text = '', style, ...rest }) => {
                         returnKeyType="next"
                         maxLength={9 - text.length}
                         keyboardAppearance="dark"
+                        placeholder={
+                            textLength === 6 ? '_\u2006_\u2006_' : undefined
+                        }
+                        placeholderTextColor="#000000"
                         {...rest}
                     />
                 </View>

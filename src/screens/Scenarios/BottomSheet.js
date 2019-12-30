@@ -110,7 +110,7 @@ const BottomSheet = ({
     <Animated.View
         style={[
             styles.container,
-            { paddingBottom: 24 + extraPaddingBottom },
+            { paddingBottom: 48 + extraPaddingBottom },
             style,
         ]}
         {...props}

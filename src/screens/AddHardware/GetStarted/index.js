@@ -52,16 +52,7 @@ const GetStarted = ({ style, nextPage }) => {
             <Headline style={[styles.headline, styles.whiteText]}>
                 Welcome to the Movement
             </Headline>
-            <View style={[styles.line, styles.whiteLine]} />
-            <Text
-                style={[
-                    styles.subhead,
-                    styles.whiteText,
-                    { textAlign: 'center' },
-                ]}
-            >
-                Let’s connect.
-            </Text>
+
             <View style={styles.spacer} />
             <Cuff small />
             <View style={styles.spacer} />

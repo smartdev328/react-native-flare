@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    StatusBar,
 } from 'react-native';
 
 import Voguing from './Voguing';
@@ -59,6 +60,7 @@ const Home = ({ onSignUpPressed, onSignInPressed }) => {
 
     return (
         <SafeAreaView style={styles.wrapper}>
+            <StatusBar barStyle="light-content" />
             <Voguing />
             <TouchableOpacity style={styles.shopLink} onPress={openShop}>
                 <Text style={styles.shopLinkText}>Shop</Text>
