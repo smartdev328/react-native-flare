@@ -85,6 +85,7 @@ class FlowScreen extends React.Component {
             password = false,
             currentValue,
             registrationState,
+            forceError = undefined,
         } = this.props;
         const { showPassword, error } = this.state;
 
@@ -106,7 +107,9 @@ class FlowScreen extends React.Component {
                     textColor={Colors.white}
                     tintColor={Colors.white}
                     baseColor={Colors.white}
-                    errorColor={Colors.error}
+                    errorColor={
+                        forceError && !error ? Colors.white : Colors.error
+                    }
                     secureTextEntry={password && !showPassword}
                     autoCapitalize={autoCapitalize}
                     autoCorrect={!password}
@@ -118,7 +121,7 @@ class FlowScreen extends React.Component {
                     renderRightAccessory={renderAccessory}
                     onChangeText={this.onChangeText}
                     value={currentValue}
-                    error={error}
+                    error={error || forceError}
                     keyboardAppearance="dark"
                 />
                 <View style={styles.spacer} />

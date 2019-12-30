@@ -172,6 +172,7 @@ class Signup extends React.Component {
                             actionCreator={regSetPassword}
                             value="password"
                             validator={validatePassword}
+                            forceError="Password must be at at least 8 characters and contain at least one letter, one uppercase letter and one number or symbol"
                         />
                     </View>
                 </ViewPager>

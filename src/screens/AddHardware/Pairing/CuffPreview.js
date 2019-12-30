@@ -67,7 +67,7 @@ const CuffPreview = ({ text = '', style, ...rest }) => {
                         autoCorrect={false}
                         keyboardType="ascii-capable"
                         returnKeyType="next"
-                        maxLength={9 - text.length}
+                        maxLength={9 - textLength}
                         keyboardAppearance="dark"
                         placeholder={
                             textLength === 6 ? '_\u2006_\u2006_' : undefined
