@@ -62,6 +62,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: Colors.black,
     },
+    connectSubhead: {
+        textAlign: 'center',
+        marginBottom: 16,
+        alignSelf: 'center',
+        color: Colors.black,
+    },
     image: {
         width: 220,
         height: 196,
