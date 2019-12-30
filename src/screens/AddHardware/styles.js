@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
     },
     bottomSheet: {
-        backgroundColor: '#F5F2ED',
+        backgroundColor: Colors.theme.cream,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         alignSelf: 'stretch',

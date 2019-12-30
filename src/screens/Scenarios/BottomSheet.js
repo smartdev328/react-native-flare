@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
-import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F5F2ED',
+        backgroundColor: Colors.theme.cream,
         flexDirection: 'column',
         alignItems: 'center',
         paddingTop: 24,

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Animated, Image, StyleSheet, Text } from 'react-native';
 
+import Colors from '../../bits/Colors';
+
 import quoteTop from '../../assets/quote-top.png';
 import quoteBottom from '../../assets/quote-bottom.png';
 
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 24,
         lineHeight: 26,
-        color: '#F8F5F1',
+        color: Colors.theme.cream,
         fontFamily: 'Nocturno Display Std',
         alignSelf: 'stretch',
         textAlign: 'center',

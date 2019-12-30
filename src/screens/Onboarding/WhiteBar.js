@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         tintColor: Colors.black,
     },
     tintOffWhite: {
-        tintColor: '#F8F5F1',
+        tintColor: Colors.theme.cream,
     },
 });
 
