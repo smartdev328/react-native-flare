@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         width: 33,
     },
     helpLine: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.cream,
         height: 1,
         width: 33,
     },
@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     whiteText: {
-        color: Colors.white,
+        color: Colors.theme.cream,
     },
     whiteLine: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.cream,
     },
     bottomSheet: {
         backgroundColor: Colors.theme.cream,

@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     entryBody: {
         fontSize: 14,
         paddingBottom: 8,
-        color: Colors.white,
+        color: Colors.theme.cream,
     },
     entryTimestamp: {
         fontSize: 8,
-        color: Colors.white,
+        color: Colors.theme.cream,
     },
     textLeft: {
         textAlign: 'left',

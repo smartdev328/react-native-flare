@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     shopLinkText: {
         fontSize: 16,
-        color: Colors.white,
+        color: Colors.theme.cream,
         fontWeight: 'bold',
         textAlign: 'center',
         textTransform: 'uppercase',

@@ -12,11 +12,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 12,
         alignSelf: 'center',
-        color: Colors.white,
+        color: Colors.theme.cream,
     },
     text: {
         fontFamily: 'Nocturno Display Std',
-        color: Colors.white,
+        color: Colors.theme.cream,
         textAlign: 'center',
         alignSelf: 'center',
         marginHorizontal: 32,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     line: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.cream,
         height: 1,
         width: 33,
         marginBottom: 12,

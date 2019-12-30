@@ -114,7 +114,7 @@ class Signup extends React.Component {
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle="light-content" />
                 <Aura source={aura1519} />
-                <WhiteBar goBack={this.goBack} />
+                <WhiteBar goBack={this.goBack} offWhite />
                 <ViewPager
                     style={styles.flex}
                     scrollEnabled={false}

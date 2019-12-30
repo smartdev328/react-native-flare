@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     headline: {
         fontSize: 30,
         lineHeight: 33,
-        color: Colors.white,
+        color: Colors.theme.cream,
         fontFamily: 'Nocturno Display Std',
         width: 275,
         alignSelf: 'flex-start',

@@ -11,7 +11,7 @@ import manual from '../../assets/text-checkmark.png';
 const styles = StyleSheet.create({
     option: {
         fontSize: 16,
-        color: Colors.white,
+        color: Colors.theme.cream,
         marginBottom: 12,
     },
 });
