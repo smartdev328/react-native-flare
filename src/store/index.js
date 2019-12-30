@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable no-undef */
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { persistCombineReducers } from 'redux-persist';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -55,6 +55,7 @@ const combinedReducer = persistCombineReducers(persistConfig, reducers);
 
 // eslint-disable-next-line
 export function configureStore(initialState) {
-    const enhancer = composeWithDevTools(applyMiddleware(...middleware));
+    const composeFunction = __DEV__ ? composeWithDevTools : compose;
+    const enhancer = composeFunction(applyMiddleware(...middleware));
     return createStore(combinedReducer, initialState, enhancer);
 }
