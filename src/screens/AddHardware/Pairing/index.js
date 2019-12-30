@@ -35,7 +35,9 @@ const Pairing = ({ nextPage, ...props }) => {
             ) {
                 return;
             }
-            dispatch(claimDevice(authToken, deviceId, secondFactor));
+            dispatch(
+                claimDevice(authToken, deviceId, secondFactor.toUpperCase())
+            );
         },
         [dispatch, authToken]
     );
