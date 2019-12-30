@@ -7,20 +7,23 @@ import Manual from './Manual';
 import { claimDevice } from '../../../actions';
 import { checkLocationsPermission } from '../../../actions/userActions';
 import { startBleListening } from '../../../actions/hardwareActions';
+import { resetClaim } from '../../../actions/deviceActions';
 
 const Pairing = ({ nextPage, ...props }) => {
     const dispatch = useDispatch();
-    const { busy, finished, authToken, method, device } = useSelector(
+    const { busy, finished, error, authToken, method, device } = useSelector(
         ({
             user: {
                 claimingDevice,
                 claimedDevice,
+                claimingDeviceFailure,
                 authToken: stateAuthToken,
                 reg: { preferredPairing, foundDevice },
             },
         }) => ({
             busy: claimingDevice,
             finished: !!claimedDevice,
+            error: claimingDeviceFailure,
             method: preferredPairing,
             device: foundDevice,
             authToken: stateAuthToken,
@@ -41,6 +44,9 @@ const Pairing = ({ nextPage, ...props }) => {
         },
         [dispatch, authToken]
     );
+    const reset = React.useCallback(() => {
+        dispatch(resetClaim());
+    }, [dispatch]);
 
     React.useEffect(() => {
         dispatch(startBleListening());
@@ -53,12 +59,12 @@ const Pairing = ({ nextPage, ...props }) => {
         }
     }, [finished, nextPage]);
 
+    const pairingProps = { ...props, busy, submit, reset, error };
+
     if (method === 'manual') {
-        return <Manual {...props} busy={busy} submit={submit} />;
+        return <Manual {...pairingProps} />;
     } else if (device) {
-        return (
-            <Confirm {...props} device={device} busy={busy} submit={submit} />
-        );
+        return <Confirm {...pairingProps} device={device} />;
     } else {
         return <Bluetooth {...props} />;
     }

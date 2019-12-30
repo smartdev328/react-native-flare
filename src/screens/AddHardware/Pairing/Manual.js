@@ -19,7 +19,7 @@ const parseDeviceId = fullId => {
     };
 };
 
-const Manual = ({ submit, busy }) => {
+const Manual = ({ submit, busy, reset, error }) => {
     const [serial, setSerial] = React.useState('');
     const parse = parseDeviceId(serial);
     const onPress = React.useCallback(() => {
@@ -27,6 +27,13 @@ const Manual = ({ submit, busy }) => {
             submit(parse);
         }
     }, [submit, parse]);
+    const onChangeText = React.useCallback(
+        text => {
+            setSerial(text);
+            reset();
+        },
+        [reset]
+    );
 
     return (
         <KeyboardAvoidingView
@@ -36,9 +43,14 @@ const Manual = ({ submit, busy }) => {
         >
             <Headline>Enter your Flare serial number</Headline>
             <CuffPreview
-                style={{ alignSelf: 'center', marginTop: 16 }}
-                onChangeText={setSerial}
+                style={{ alignSelf: 'center', marginTop: 8 }}
+                onChangeText={onChangeText}
                 onSubmitEditing={onPress}
+                error={
+                    error
+                        ? 'Please recheck and reenter your serial number'
+                        : undefined
+                }
             />
             <RoundedButton
                 wrapperStyle={{
