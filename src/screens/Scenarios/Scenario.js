@@ -24,6 +24,8 @@ const Scenario = ({
     topGradient,
     bottomGradient,
     image,
+    finishUp,
+    busy,
     FirstQuote,
     SecondQuote,
 }) => {
@@ -184,6 +186,8 @@ const Scenario = ({
                 nextScenario={nextScenario}
                 addToContacts={addToContacts}
                 postDemo={postDemo}
+                finishUp={finishUp}
+                busy={busy}
             />
         </View>
     );

@@ -10,29 +10,49 @@ import UncomfortableDate from './UncomfortableDate';
 import TextYourCrew from './TextYourCrew';
 import { awaitLongPress, setScenarioScreen } from '../../actions/regActions';
 import TextSimulator from './TextSimulator';
+import { setOnboardingComplete } from '../../actions/userActions';
+import { changeAppRoot } from '../../actions';
+
+const selector = ({
+    user: {
+        scenarios = {},
+        authToken,
+        settingOnboardingComplete,
+        hasViewedTutorial,
+    },
+}) => ({
+    token: authToken,
+    busy: settingOnboardingComplete,
+    done: hasViewedTutorial,
+    screen: scenarios.screen || 'intro',
+    didCall: typeof scenarios.didCall === 'boolean' ? scenarios.didCall : false,
+    didText: typeof scenarios.didText === 'boolean' ? scenarios.didText : false,
+    gotPress: scenarios.longPress === 'done',
+});
 
 const Scenarios = () => {
     const dispatch = useDispatch();
-    const { screen, didCall, didText, gotPress } = useSelector(
-        ({ user: { scenarios = {} } }) => ({
-            screen: scenarios.screen || 'intro',
-            didCall:
-                typeof scenarios.didCall === 'boolean'
-                    ? scenarios.didCall
-                    : false,
-            didText:
-                typeof scenarios.didText === 'boolean'
-                    ? scenarios.didText
-                    : false,
-            gotPress: scenarios.longPress === 'done',
-        })
-    );
+    const {
+        screen,
+        didCall,
+        didText,
+        gotPress,
+        token,
+        busy,
+        done,
+    } = useSelector(selector);
 
     React.useEffect(() => {
         if (gotPress && screen === 'textYourCrew') {
             dispatch(setScenarioScreen('textSimulator'));
         }
     }, [gotPress, screen, dispatch]);
+
+    React.useEffect(() => {
+        if (done) {
+            dispatch(changeAppRoot('secure'));
+        }
+    }, [dispatch, done]);
 
     const didFirst = didCall || didText;
 
@@ -68,6 +88,9 @@ const Scenarios = () => {
         () => addToContactsFunction(dispatch),
         [dispatch]
     );
+    const finishUp = React.useCallback(() => {
+        dispatch(setOnboardingComplete(token));
+    }, [dispatch, token]);
 
     return (
         <SafeAreaProvider>
@@ -102,6 +125,8 @@ const Scenarios = () => {
                         return (
                             <UncomfortableDate
                                 postDemo
+                                finishUp={finishUp}
+                                busy={busy}
                                 addToContacts={addToContacts}
                             />
                         );

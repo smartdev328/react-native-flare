@@ -69,7 +69,7 @@ const WouldYouRather = ({ fakeCall, textCrew }) => (
     </>
 );
 
-const Nice = ({ nextScenario, addToContacts }) => {
+const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
     const didAddToContacts = useSelector(
         state => state.user.scenarios.addedToContacts
     );
@@ -79,10 +79,10 @@ const Nice = ({ nextScenario, addToContacts }) => {
             <RoundedButton
                 useGradient
                 wrapperStyle={styles.buttonMargin}
-                onPress={nextScenario}
-                text="Next Scenario"
+                onPress={finishUp || nextScenario}
+                text={finishUp ? 'Done!' : 'Next Scenario'}
+                busy={busy}
                 width={242}
-                height={46}
             />
             {!didAddToContacts && (
                 <RoundedButton
@@ -91,7 +91,6 @@ const Nice = ({ nextScenario, addToContacts }) => {
                     onPress={addToContacts}
                     text="Add Flare to Contacts"
                     width={242}
-                    height={46}
                 />
             )}
         </>
@@ -106,6 +105,8 @@ const BottomSheet = ({
     postDemo,
     addToContacts,
     nextScenario,
+    finishUp,
+    busy,
     ...props
 }) => (
     <Animated.View
@@ -117,7 +118,12 @@ const BottomSheet = ({
         {...props}
     >
         {postDemo ? (
-            <Nice addToContacts={addToContacts} nextScenario={nextScenario} />
+            <Nice
+                addToContacts={addToContacts}
+                nextScenario={nextScenario}
+                finishUp={finishUp}
+                busy={busy}
+            />
         ) : (
             <WouldYouRather fakeCall={fakeCall} textCrew={textCrew} />
         )}
