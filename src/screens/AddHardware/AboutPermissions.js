@@ -13,26 +13,21 @@ const AboutPermissions = props => (
         headline="Our smart jewelry requires some permissions:"
         {...props}
     >
-        <HelpSection
-            icon={bluetoothIcon}
-            title="Bluetooth"
-            body="Without bluetooth, your phone and bracelet can’t talk to each other."
-        />
-        <HelpSection
-            icon={locationIcon}
-            title="Location"
-            body="We need your location so that we’ve always got your back, even when the app isn’t open."
-        />
-        <HelpSection
-            icon={contactsIcon}
-            title="Contacts"
-            body="When you add friends to your crew, you can add them directly from your phone contacts."
-        />
-        <HelpSection
-            icon={notificationsIcon}
-            title="Notifications"
-            body="In order to be discreet, you can opt for notifications to confirm that your jewelry has sent a text to your friends."
-        />
+        <HelpSection icon={bluetoothIcon} title="Bluetooth">
+            Without bluetooth, your phone and bracelet can’t talk to each other.
+        </HelpSection>
+        <HelpSection icon={locationIcon} title="Location">
+            We need your location so that we’ve always got your back, even when
+            the app isn’t open.
+        </HelpSection>
+        <HelpSection icon={contactsIcon} title="Contacts">
+            When you add friends to your crew, you can add them directly from
+            your phone contacts.
+        </HelpSection>
+        <HelpSection icon={notificationsIcon} title="Notifications">
+            In order to be discreet, you can opt for notifications to confirm
+            that your jewelry has sent a text to your friends.
+        </HelpSection>
     </HelpScreen>
 );
 

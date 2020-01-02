@@ -24,7 +24,7 @@ const sectionStyles = StyleSheet.create({
     },
 });
 
-const HelpSection = ({ icon, title, body }) => (
+const HelpSection = ({ icon, title, children }) => (
     <View style={sectionStyles.container}>
         <Image source={icon} style={sectionStyles.icon} resizeMode="center" />
         <View style={sectionStyles.textWrapper}>
@@ -37,7 +37,7 @@ const HelpSection = ({ icon, title, body }) => (
             >
                 {title}
             </Text>
-            <Text style={[styles.helpText, styles.whiteText]}>{body}</Text>
+            <Text style={[styles.helpText, styles.whiteText]}>{children}</Text>
         </View>
     </View>
 );
