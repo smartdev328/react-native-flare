@@ -9,13 +9,14 @@ import {
     View,
     StatusBar,
 } from 'react-native';
+import Video from 'react-native-video';
 
-import Voguing from './Voguing';
 import RoundedButton from '../../bits/RoundedButton';
 import Strings from '../../locales/en';
 import Colors from '../../bits/Colors';
 
 import logoWhite from '../../assets/logo-white.png';
+import animatedBackground from '../../assets/animated-aura.mp4';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -61,7 +62,12 @@ const Home = ({ onSignUpPressed, onSignInPressed }) => {
     return (
         <SafeAreaView style={styles.wrapper}>
             <StatusBar barStyle="light-content" />
-            <Voguing />
+            <Video
+                style={StyleSheet.absoluteFill}
+                repeat
+                source={animatedBackground}
+                resizeMode="cover"
+            />
             <TouchableOpacity style={styles.shopLink} onPress={openShop}>
                 <Text style={styles.shopLinkText}>Shop</Text>
             </TouchableOpacity>
