@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Intro from './Intro';
 import WeirdVibes from './WeirdVibes';
 import FakeCall from './FakeCall';
-import addToContacts from '../AddToContacts';
+import addToContactsFunction from '../AddToContacts';
 import UncomfortableDate from './UncomfortableDate';
 import TextYourCrew from './TextYourCrew';
 import { awaitLongPress, setScenarioScreen } from '../../actions/regActions';
@@ -64,6 +64,10 @@ const Scenarios = () => {
             )
         );
     }, [didFirst, dispatch]);
+    const addToContacts = React.useCallback(
+        () => addToContactsFunction(dispatch),
+        [dispatch]
+    );
 
     return (
         <SafeAreaProvider>

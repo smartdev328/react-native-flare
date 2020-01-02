@@ -33,6 +33,7 @@ const Scenario = ({
     const [firstQuoteOpacity] = React.useState(new Animated.Value(0.0));
     const [secondQuoteOpacity] = React.useState(new Animated.Value(0.0));
     const [translation] = React.useState(new Animated.Value(1000));
+    const [didAnimation, setDidAnimation] = React.useState(false);
 
     const onLayout = React.useCallback(
         ({
@@ -40,7 +41,13 @@ const Scenario = ({
                 layout: { height },
             },
         }) => {
+            if (didAnimation || height <= 0) {
+                return;
+            }
+
             translation.setValue(height);
+            setDidAnimation(true);
+
             if (postDemo) {
                 firstQuoteOpacity.setValue(1.0);
                 Animated.sequence([
@@ -81,7 +88,7 @@ const Scenario = ({
                 ]).start();
             }
         },
-        [postDemo]
+        [postDemo, didAnimation]
     );
 
     const fullScreen = {

@@ -1,4 +1,5 @@
 import Contacts from 'react-native-contacts';
+import { didAddToContacts } from '../actions/regActions';
 
 const FLARE = {
     givenName: '✨ Fake Name Here ✨',
@@ -10,8 +11,23 @@ const FLARE = {
     ],
 };
 
-const addToContacts = () => {
-    Contacts.openContactForm(FLARE, console.warn);
+const openContactForm = arg =>
+    new Promise((resolve, reject) => {
+        Contacts.openContactForm(arg, (error, contact) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(contact);
+            }
+        });
+    });
+
+const addToContacts = dispatch => {
+    openContactForm(FLARE).then(contact => {
+        if (contact) {
+            dispatch(didAddToContacts());
+        }
+    }, console.warn);
 };
 
 export default addToContacts;
