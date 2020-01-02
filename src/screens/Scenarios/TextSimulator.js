@@ -89,7 +89,7 @@ const messages = [
 
 const TextSimulator = ({ onSuccess }) => {
     const dispatch = useDispatch();
-    const [animations] = React.useState(
+    const [animations] = React.useState(() =>
         messages.map(() => new Animated.Value(0.0))
     );
 

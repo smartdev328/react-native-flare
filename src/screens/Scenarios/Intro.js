@@ -57,7 +57,7 @@ const Intro = ({ onClose, onNext }) => {
                 Flare was created for that gut feeling
             </Headline>
             <View style={styles.line} />
-            <Text style={styles.text}>
+            <Text style={styles.deviceActionText}>
                 Flare gives you low-key options to help you leave if you’re
                 feeling unsure.
             </Text>

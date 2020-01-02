@@ -23,11 +23,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: 18,
     },
-    blackText: {
-        color: Colors.black,
+    deviceActionText: {
+        fontFamily: 'Nocturno Display Std',
+        color: Colors.theme.cream,
+        textAlign: 'center',
+        alignSelf: 'center',
+        marginHorizontal: 32,
         fontSize: 20,
         lineHeight: 28,
-        marginBottom: 24,
+        marginBottom: 60,
     },
     line: {
         backgroundColor: Colors.theme.cream,
