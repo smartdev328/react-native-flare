@@ -11,7 +11,7 @@ import manual from '../../assets/text-checkmark.png';
 const styles = StyleSheet.create({
     option: {
         fontSize: 16,
-        color: Colors.white,
+        color: Colors.theme.cream,
         marginBottom: 12,
     },
 });
@@ -19,17 +19,16 @@ const styles = StyleSheet.create({
 const HowToConnect = props => (
     <HelpScreen headline="How do I connect my Flare cuff?" {...props}>
         <Text style={styles.option}>Option 1:</Text>
-        <HelpSection
-            icon={bluetooth}
-            title="Bluetooth"
-            body="By repeatedly pressing the discreet button on your cuff, your phone and cuff can establish a permanent connection."
-        />
+        <HelpSection icon={bluetooth} title="Bluetooth">
+            By repeatedly pressing the discreet button on your cuff, your phone
+            and cuff can establish a permanent connection.
+        </HelpSection>
         <Text style={styles.option}>Option 2:</Text>
-        <HelpSection
-            icon={manual}
-            title="Serial Number"
-            body="You can manually enter the serial number on the underside of your cuff; this also establishes a permanent connection and you can ensure that you are connecting to your cuff."
-        />
+        <HelpSection icon={manual} title="Serial Number">
+            You can manually enter the serial number on the underside of your
+            cuff; this also establishes a permanent connection and you can
+            ensure that you are connecting to your cuff.
+        </HelpSection>
     </HelpScreen>
 );
 

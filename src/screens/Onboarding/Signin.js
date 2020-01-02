@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
     },
     accessory: {
-        color: Colors.white,
+        color: Colors.theme.cream,
         fontSize: 24,
     },
     forgotWrapper: {
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     },
     forgotLink: {
         alignSelf: 'center',
-        color: Colors.white,
+        color: Colors.theme.cream,
         paddingVertical: 12,
         fontSize: 15,
         textDecorationLine: 'underline',
@@ -133,7 +133,7 @@ class Signin extends React.Component {
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle="light-content" />
                 <Aura source={aura1520} />
-                <WhiteBar goBack={close} aura />
+                <WhiteBar goBack={close} aura offWhite />
                 <KeyboardAvoidingView
                     behavior="padding"
                     style={styles.formContainer}
@@ -142,9 +142,9 @@ class Signin extends React.Component {
                     <TextField
                         ref={this.emailRef}
                         label="Email address"
-                        textColor={Colors.white}
-                        tintColor={Colors.white}
-                        baseColor={Colors.white}
+                        textColor={Colors.theme.cream}
+                        tintColor={Colors.theme.cream}
+                        baseColor={Colors.theme.cream}
                         errorColor={Colors.error}
                         autoCapitalize="none"
                         onSubmitEditing={this.goToPassword}
@@ -160,9 +160,9 @@ class Signin extends React.Component {
                     <TextField
                         ref={this.passwordRef}
                         label="Password"
-                        textColor={Colors.white}
-                        tintColor={Colors.white}
-                        baseColor={Colors.white}
+                        textColor={Colors.theme.cream}
+                        tintColor={Colors.theme.cream}
+                        baseColor={Colors.theme.cream}
                         errorColor={Colors.error}
                         secureTextEntry={!showPassword}
                         autoCapitalize="none"

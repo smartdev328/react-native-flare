@@ -65,6 +65,8 @@ export function user(state = initialState.user, action = {}) {
                 contactsCrewLookup: null,
                 authState: null,
             });
+        case types.USER_RESET:
+            return initialState.user;
 
         /**
          * ACCOUNT STATUS

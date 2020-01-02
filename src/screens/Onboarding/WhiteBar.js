@@ -36,7 +36,20 @@ const styles = StyleSheet.create({
     tintBlack: {
         tintColor: Colors.black,
     },
+    tintOffWhite: {
+        tintColor: Colors.theme.cream,
+    },
 });
+
+const computeTintStyle = (black, offWhite) => {
+    if (black) {
+        return styles.tintBlack;
+    } else if (offWhite) {
+        return styles.tintOffWhite;
+    } else {
+        return undefined;
+    }
+};
 
 const WhiteBar = ({
     goBack,
@@ -44,8 +57,9 @@ const WhiteBar = ({
     showBack = true,
     black = false,
     aura = false,
+    offWhite = false,
 }) => {
-    const tintStyle = black ? styles.tintBlack : undefined;
+    const tintStyle = computeTintStyle(black, offWhite);
     return (
         <View style={styles.bar}>
             {showBack && (

@@ -43,14 +43,14 @@ export const validatePhone = phone => {
 
 export const validatePassword = password => {
     if (typeof password !== 'string' || password.length < 8) {
-        return 'Please enter a password of at least 8 characters';
+        return 'Password must be at at least 8 characters and contain at least one letter, one uppercase letter and one number or symbol';
     }
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumbers = /\d/.test(password);
     const hasNonalphas = /\W/.test(password);
     if (hasUpperCase + hasLowerCase + hasNumbers + hasNonalphas < 3) {
-        return 'Please choose a password containing an uppercase letter, a lowercase letter, and a digit or symbol';
+        return 'Password must be at at least 8 characters and contain at least one letter, one uppercase letter and one number or symbol';
     }
 
     return null;

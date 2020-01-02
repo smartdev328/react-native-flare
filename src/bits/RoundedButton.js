@@ -12,8 +12,6 @@ import Colors from './Colors';
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-const textColor = '#F5F2ED';
-
 const styles = StyleSheet.create({
     base: {
         flexDirection: 'column',
@@ -21,7 +19,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
-        color: textColor,
+        color: Colors.theme.cream,
         fontWeight: 'bold',
         textAlign: 'center',
         textTransform: 'uppercase',
@@ -33,7 +31,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.black,
     },
     inverse: {
-        backgroundColor: '#F8F5F1',
+        backgroundColor: Colors.theme.cream,
     },
     outline: {
         borderWidth: 1,
@@ -117,7 +115,10 @@ const RoundedButton = ({
                 ]}
             >
                 {busy ? (
-                    <ActivityIndicator size="small" color={textColor} />
+                    <ActivityIndicator
+                        size="small"
+                        color={Colors.theme.cream}
+                    />
                 ) : (
                     <Text style={[styles.text, textColorStyle, { fontSize }]}>
                         {text}

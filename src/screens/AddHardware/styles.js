@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         width: 33,
     },
     helpLine: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.cream,
         height: 1,
         width: 33,
     },
@@ -62,6 +62,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: Colors.black,
     },
+    connectSubhead: {
+        textAlign: 'center',
+        marginBottom: 16,
+        alignSelf: 'center',
+        color: Colors.black,
+    },
     image: {
         width: 220,
         height: 196,
@@ -70,19 +76,19 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     whiteText: {
-        color: Colors.white,
+        color: Colors.theme.cream,
     },
     whiteLine: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.theme.cream,
     },
     bottomSheet: {
-        backgroundColor: '#F5F2EDB2',
+        backgroundColor: Colors.theme.cream,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         alignSelf: 'stretch',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: 40,
+        paddingTop: 24,
     },
 });
 

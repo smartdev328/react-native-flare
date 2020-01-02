@@ -10,43 +10,36 @@ import * as types from './actionTypes';
 import Roles from '../constants/Roles';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 
-export function signIn(email, password) {
-    return async function doSignIn(dispatch) {
+export const signIn = (email, password) => async dispatch => {
+    try {
         dispatch({
             type: types.AUTH_REQUEST,
         });
-        return axios
-            .post(`${API_URL}/auth/login`, {
-                email,
-                password,
-            })
-            .then(response => {
-                dispatch({
-                    type: types.AUTH_SUCCESS,
-                    data: response.data,
-                });
-                if (
-                    MANUFACTURING_MODE_ENABLED &&
-                    response.data.role === Roles.Manufacturing
-                ) {
-                    dispatch(changeAppRoot('secure-manufacturing'));
-                } else if (
-                    ONBOARDING_ENABLED &&
-                    !response.data.viewed_tutorial
-                ) {
-                    dispatch(changeAppRoot('secure-onboarding'));
-                } else {
-                    dispatch(changeAppRoot('secure'));
-                }
-            })
-            .catch(res =>
-                dispatch({
-                    type: types.AUTH_FAILURE,
-                    res,
-                })
-            );
-    };
-}
+        const response = await axios.post(`${API_URL}/auth/login`, {
+            email,
+            password,
+        });
+        dispatch({
+            type: types.AUTH_SUCCESS,
+            data: response.data,
+        });
+        if (
+            MANUFACTURING_MODE_ENABLED &&
+            response.data.role === Roles.Manufacturing
+        ) {
+            dispatch(changeAppRoot('secure-manufacturing'));
+        } else if (ONBOARDING_ENABLED && !response.data.viewed_tutorial) {
+            dispatch(changeAppRoot('secure-onboarding'));
+        } else {
+            dispatch(changeAppRoot('secure'));
+        }
+    } catch (res) {
+        dispatch({
+            type: types.AUTH_FAILURE,
+            res,
+        });
+    }
+};
 
 export const registerNewAccount = ({
     email,
@@ -92,16 +85,11 @@ export const registerNewAccount = ({
     }
 };
 
-export function resetAuth() {
-    return async function doReset(dispatch) {
-        dispatch({
-            type: types.AUTH_RESET,
-        });
-    };
-}
+export const resetAuth = () => ({
+    type: types.AUTH_RESET,
+});
 
-export function signOut() {
-    return async function doSignOut(dispatch) {
-        dispatch(resetAuth()).then(() => dispatch(changeAppRoot('insecure')));
-    };
-}
+export const signOut = () => async dispatch => {
+    await dispatch({ type: types.USER_RESET });
+    return dispatch(changeAppRoot('insecure'));
+};

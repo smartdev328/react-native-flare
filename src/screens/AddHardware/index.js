@@ -25,11 +25,11 @@ class AddHardware extends React.PureComponent {
     }
 
     nextPage = () => {
-        this.setState(({ page }) => ({ page: page + 1 }));
+        this.setState(({ page }) => ({ page: Math.min(page + 1, 3) }));
     };
 
     prevPage = () => {
-        this.setState(({ page }) => ({ page: page - 1 }));
+        this.setState(({ page }) => ({ page: Math.max(page - 1, 0) }));
     };
 
     aboutPermissions = () => {

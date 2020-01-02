@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Navigation } from 'react-native-navigation';
-import { SafeAreaView, ScrollView, StatusBar, View } from 'react-native';
+import { SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import styles from './styles';
 import Aura from '../../bits/Aura';
 import aura1521 from '../../assets/aura-1521.jpg';
@@ -16,7 +16,7 @@ const HelpScreen = ({ componentId, children, headline }) => {
         <SafeAreaView style={styles.helpContainer}>
             <StatusBar barStyle="light-content" />
             <Aura source={aura1521} />
-            <WhiteBar showLogo={false} goBack={dismiss} />
+            <WhiteBar showLogo={false} goBack={dismiss} offWhite />
             <ScrollView
                 style={styles.scrollContainer}
                 alwaysBounceVertical={false}
@@ -24,7 +24,6 @@ const HelpScreen = ({ componentId, children, headline }) => {
             >
                 <Headline>{headline}</Headline>
                 {children}
-                <View style={{ height: 24 }} />
             </ScrollView>
         </SafeAreaView>
     );

@@ -2,6 +2,7 @@ export const AUTH_FAILURE = 'flare.app.auth.FAILURE';
 export const AUTH_REQUEST = 'flare.app.auth.REQUEST';
 export const AUTH_RESET = 'flare.app.auth.RESET';
 export const AUTH_SUCCESS = 'flare.app.auth.SUCCESS';
+export const USER_RESET = 'flare.app.user.RESET';
 
 export const ACCOUNT_DETAILS_FAILURE = 'flare.app.account.details.FAILURE';
 export const ACCOUNT_DETAILS_REQUEST = 'flare.app.account.details.REQUEST';

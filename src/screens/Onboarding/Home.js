@@ -7,14 +7,16 @@ import {
     Text,
     TouchableOpacity,
     View,
+    StatusBar,
 } from 'react-native';
+import Video from 'react-native-video';
 
-import Voguing from './Voguing';
 import RoundedButton from '../../bits/RoundedButton';
 import Strings from '../../locales/en';
 import Colors from '../../bits/Colors';
 
 import logoWhite from '../../assets/logo-white.png';
+import animatedBackground from '../../assets/animated-aura.mp4';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -32,7 +34,7 @@ const styles = StyleSheet.create({
     },
     shopLinkText: {
         fontSize: 16,
-        color: Colors.white,
+        color: Colors.theme.cream,
         fontWeight: 'bold',
         textAlign: 'center',
         textTransform: 'uppercase',
@@ -59,7 +61,13 @@ const Home = ({ onSignUpPressed, onSignInPressed }) => {
 
     return (
         <SafeAreaView style={styles.wrapper}>
-            <Voguing />
+            <StatusBar barStyle="light-content" />
+            <Video
+                style={StyleSheet.absoluteFill}
+                repeat
+                source={animatedBackground}
+                resizeMode="cover"
+            />
             <TouchableOpacity style={styles.shopLink} onPress={openShop}>
                 <Text style={styles.shopLinkText}>Shop</Text>
             </TouchableOpacity>

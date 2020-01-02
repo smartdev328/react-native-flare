@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
-import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F5F2ED',
+        backgroundColor: Colors.theme.cream,
         flexDirection: 'column',
         alignItems: 'center',
         paddingTop: 24,
@@ -68,7 +69,7 @@ const WouldYouRather = ({ fakeCall, textCrew }) => (
     </>
 );
 
-const Nice = ({ nextScenario, addToContacts }) => {
+const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
     const didAddToContacts = useSelector(
         state => state.user.scenarios.addedToContacts
     );
@@ -78,10 +79,10 @@ const Nice = ({ nextScenario, addToContacts }) => {
             <RoundedButton
                 useGradient
                 wrapperStyle={styles.buttonMargin}
-                onPress={nextScenario}
-                text="Next Scenario"
+                onPress={finishUp || nextScenario}
+                text={finishUp ? 'Done!' : 'Next Scenario'}
+                busy={busy}
                 width={242}
-                height={46}
             />
             {!didAddToContacts && (
                 <RoundedButton
@@ -90,7 +91,6 @@ const Nice = ({ nextScenario, addToContacts }) => {
                     onPress={addToContacts}
                     text="Add Flare to Contacts"
                     width={242}
-                    height={46}
                 />
             )}
         </>
@@ -105,18 +105,25 @@ const BottomSheet = ({
     postDemo,
     addToContacts,
     nextScenario,
+    finishUp,
+    busy,
     ...props
 }) => (
     <Animated.View
         style={[
             styles.container,
-            { paddingBottom: 24 + extraPaddingBottom },
+            { paddingBottom: 48 + extraPaddingBottom },
             style,
         ]}
         {...props}
     >
         {postDemo ? (
-            <Nice addToContacts={addToContacts} nextScenario={nextScenario} />
+            <Nice
+                addToContacts={addToContacts}
+                nextScenario={nextScenario}
+                finishUp={finishUp}
+                busy={busy}
+            />
         ) : (
             <WouldYouRather fakeCall={fakeCall} textCrew={textCrew} />
         )}

@@ -9,7 +9,7 @@ import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import Cuff from '../Cuff';
 
-import aura from '../../assets/aura-6-light.jpg';
+import aura1519 from '../../assets/aura-1519.jpg';
 
 const DeviceAction = ({
     onBack,
@@ -20,50 +20,28 @@ const DeviceAction = ({
     onNext,
     animation,
 }) => {
-    const [troubleOpacity] = React.useState(new Animated.Value(0.0));
-
-    React.useEffect(() => {
-        Animated.timing(troubleOpacity, {
-            delay: 3000,
-            duration: 300,
-            toValue: 1.0,
-            useNativeDriver: true,
-            easing: Easing.ease,
-        }).start();
-    }, []);
-
     return (
         <SafeAreaView style={styles.container}>
-            <Aura source={aura} />
-            <WhiteBar showLogo={false} black goBack={onBack} />
-            <Headline style={[styles.headline, { color: Colors.theme.purple }]}>
+            <Aura source={aura1519} />
+            <WhiteBar showLogo={false} offWhite goBack={onBack} />
+            <Headline style={styles.headline}>
                 {`${headline1}\n`}
                 <Text style={{ fontStyle: 'italic' }}>{headline2}</Text>
             </Headline>
-            <View style={[styles.line, { backgroundColor: Colors.black }]} />
-            <Text style={[styles.text, styles.blackText]}>{body}</Text>
+            <View style={styles.line} />
+            <Text style={styles.deviceActionText}>{body}</Text>
             <Cuff button animation={animation} pause />
             {onNext && (
                 <RoundedButton
                     text={confirm}
                     useGradient={false}
                     onPress={onNext}
-                    wrapperStyle={{ marginTop: 24 }}
+                    wrapperStyle={{ marginTop: 60 }}
                     width={146}
                     height={46}
                     fontSize={14}
                 />
             )}
-            <RoundedButton
-                text="Having trouble?"
-                wrapperStyle={{ opacity: troubleOpacity, marginTop: 'auto' }}
-                animated
-                useGradient={false}
-                invisible
-                width={146}
-                height={46}
-                fontSize={14}
-            />
         </SafeAreaView>
     );
 };

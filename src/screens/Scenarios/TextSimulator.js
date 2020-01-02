@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     entryBody: {
         fontSize: 14,
         paddingBottom: 8,
-        color: Colors.white,
+        color: Colors.theme.cream,
     },
     entryTimestamp: {
         fontSize: 8,
-        color: Colors.white,
+        color: Colors.theme.cream,
     },
     textLeft: {
         textAlign: 'left',
@@ -89,7 +89,7 @@ const messages = [
 
 const TextSimulator = ({ onSuccess }) => {
     const dispatch = useDispatch();
-    const [animations] = React.useState(
+    const [animations] = React.useState(() =>
         messages.map(() => new Animated.Value(0.0))
     );
 
