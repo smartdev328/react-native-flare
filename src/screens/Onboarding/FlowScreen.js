@@ -60,8 +60,8 @@ class FlowScreen extends React.Component {
     };
 
     onChangeText = text => {
-        const { action } = this.props;
-        action(text);
+        const { action, password } = this.props;
+        action(password ? text : text.trim());
         this.setState({ error: undefined });
     };
 
