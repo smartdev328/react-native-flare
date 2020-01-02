@@ -113,10 +113,10 @@ class Signin extends React.Component {
         if (
             typeof email === 'string' &&
             typeof password === 'string' &&
-            email.length > 0 &&
+            email.trim().length > 0 &&
             password.length > 0
         ) {
-            signIn(email, password);
+            signIn(email.trim(), password);
         }
     };
 
