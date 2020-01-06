@@ -15,6 +15,10 @@ const sectionStyles = StyleSheet.create({
         marginRight: 12,
         alignSelf: 'flex-start',
     },
+    emoji: {
+        textAlign: 'center',
+        fontSize: 30,
+    },
     textWrapper: {
         flexDirection: 'column',
         flex: 1,
@@ -24,9 +28,19 @@ const sectionStyles = StyleSheet.create({
     },
 });
 
-const HelpSection = ({ icon, title, children }) => (
+const HelpSection = ({ emoji, icon, title, children }) => (
     <View style={sectionStyles.container}>
-        <Image source={icon} style={sectionStyles.icon} resizeMode="center" />
+        {typeof emoji === 'string' ? (
+            <Text style={[sectionStyles.icon, sectionStyles.emoji]}>
+                {emoji}
+            </Text>
+        ) : (
+            <Image
+                source={icon}
+                style={sectionStyles.icon}
+                resizeMode="center"
+            />
+        )}
         <View style={sectionStyles.textWrapper}>
             <Text
                 style={[

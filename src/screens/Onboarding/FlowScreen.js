@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import Headline from './Headline';
+import InsetsHOC from '../../bits/InsetsHOC';
 
 const styles = StyleSheet.create({
     container: {
@@ -60,8 +61,8 @@ class FlowScreen extends React.Component {
     };
 
     onChangeText = text => {
-        const { action } = this.props;
-        action(text);
+        const { action, password } = this.props;
+        action(password ? text : text.trim());
         this.setState({ error: undefined });
     };
 
@@ -86,6 +87,7 @@ class FlowScreen extends React.Component {
             currentValue,
             registrationState,
             forceError = undefined,
+            insets,
         } = this.props;
         const { showPassword, error } = this.state;
 
@@ -97,7 +99,7 @@ class FlowScreen extends React.Component {
         return (
             <KeyboardAvoidingView
                 behavior="padding"
-                keyboardVerticalOffset={72}
+                keyboardVerticalOffset={72 + insets.bottom}
                 style={[styles.container]}
             >
                 <Headline>{headline}</Headline>
@@ -151,4 +153,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FlowScreen);
+)(InsetsHOC(FlowScreen));

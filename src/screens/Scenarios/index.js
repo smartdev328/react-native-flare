@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import Intro from './Intro';
 import WeirdVibes from './WeirdVibes';
@@ -8,89 +9,77 @@ import FakeCall from './FakeCall';
 import addToContactsFunction from '../AddToContacts';
 import UncomfortableDate from './UncomfortableDate';
 import TextYourCrew from './TextYourCrew';
-import { awaitLongPress, setScenarioScreen } from '../../actions/regActions';
+import * as regActions from '../../actions/regActions';
 import TextSimulator from './TextSimulator';
-import { setOnboardingComplete } from '../../actions/userActions';
-import { changeAppRoot } from '../../actions';
+import * as userActions from '../../actions/userActions';
+import * as actions from '../../actions';
+import GoldenRules from './GoldenRules';
 
-const selector = ({
-    user: {
-        scenarios = {},
-        authToken,
-        settingOnboardingComplete,
-        hasViewedTutorial,
-    },
-}) => ({
-    token: authToken,
-    busy: settingOnboardingComplete,
-    done: hasViewedTutorial,
-    screen: scenarios.screen || 'intro',
-    didCall: typeof scenarios.didCall === 'boolean' ? scenarios.didCall : false,
-    didText: typeof scenarios.didText === 'boolean' ? scenarios.didText : false,
-    gotPress: scenarios.longPress === 'done',
-});
-
-const Scenarios = () => {
-    const dispatch = useDispatch();
-    const {
-        screen,
-        didCall,
-        didText,
-        gotPress,
-        token,
-        busy,
-        done,
-    } = useSelector(selector);
-
+const Scenarios = ({
+    screen,
+    didCall,
+    didText,
+    gotPress,
+    token,
+    busy,
+    done,
+    awaitShortPress,
+    awaitLongPress,
+    setScenarioScreen,
+    setOnboardingComplete,
+    changeAppRoot,
+    dispatch,
+}) => {
     React.useEffect(() => {
         if (gotPress && screen === 'textYourCrew') {
-            dispatch(setScenarioScreen('textSimulator'));
+            setScenarioScreen('textSimulator');
         }
-    }, [gotPress, screen, dispatch]);
+    }, [gotPress, screen, setScenarioScreen]);
 
     React.useEffect(() => {
         if (done) {
-            dispatch(changeAppRoot('secure'));
+            changeAppRoot('secure');
         }
-    }, [dispatch, done]);
+    }, [changeAppRoot, done]);
 
     const didFirst = didCall || didText;
 
     const intro = React.useCallback(() => {
-        dispatch(setScenarioScreen('intro'));
-    }, [dispatch]);
+        setScenarioScreen('intro');
+    }, [setScenarioScreen]);
     const weirdVibes = React.useCallback(() => {
-        dispatch(setScenarioScreen('weirdVibes'));
-    }, [dispatch]);
+        setScenarioScreen('weirdVibes');
+    }, [setScenarioScreen]);
     const fakeCall = React.useCallback(() => {
-        dispatch(setScenarioScreen('fakeCall'));
-    }, [dispatch]);
+        awaitShortPress();
+        setScenarioScreen('fakeCall');
+    }, [awaitShortPress, setScenarioScreen]);
     const textYourCrew = React.useCallback(() => {
-        dispatch(awaitLongPress());
-        dispatch(setScenarioScreen('textYourCrew'));
-    }, [dispatch]);
+        awaitLongPress();
+        setScenarioScreen('textYourCrew');
+    }, [awaitLongPress, setScenarioScreen]);
     const uncomfortableDate = React.useCallback(() => {
-        dispatch(setScenarioScreen('uncomfortableDate'));
-    }, [dispatch]);
+        setScenarioScreen('uncomfortableDate');
+    }, [setScenarioScreen]);
     const currentScenario = React.useCallback(() => {
-        dispatch(
-            setScenarioScreen(didFirst ? 'uncomfortableDate' : 'weirdVibes')
-        );
-    }, [didFirst, dispatch]);
+        setScenarioScreen(didFirst ? 'uncomfortableDate' : 'weirdVibes');
+    }, [didFirst, setScenarioScreen]);
     const currentScenarioAgain = React.useCallback(() => {
-        dispatch(
-            setScenarioScreen(
-                didFirst ? 'uncomfortableDateAgain' : 'weirdVibesAgain'
-            )
+        setScenarioScreen(
+            didFirst ? 'uncomfortableDateAgain' : 'weirdVibesAgain'
         );
-    }, [didFirst, dispatch]);
+    }, [didFirst, setScenarioScreen]);
+    const goldenRules = React.useCallback(
+        () => setScenarioScreen('goldenRules'),
+        [setScenarioScreen]
+    );
     const addToContacts = React.useCallback(
         () => addToContactsFunction(dispatch),
         [dispatch]
     );
     const finishUp = React.useCallback(() => {
-        dispatch(setOnboardingComplete(token));
-    }, [dispatch, token]);
+        setOnboardingComplete(token);
+    }, [setOnboardingComplete, token]);
 
     return (
         <SafeAreaProvider>
@@ -125,7 +114,7 @@ const Scenarios = () => {
                         return (
                             <UncomfortableDate
                                 postDemo
-                                finishUp={finishUp}
+                                finishUp={goldenRules}
                                 busy={busy}
                                 addToContacts={addToContacts}
                             />
@@ -143,6 +132,8 @@ const Scenarios = () => {
                         return (
                             <TextSimulator onSuccess={currentScenarioAgain} />
                         );
+                    case 'goldenRules':
+                        return <GoldenRules finishUp={finishUp} />;
                     default:
                         return null;
                 }
@@ -151,4 +142,38 @@ const Scenarios = () => {
     );
 };
 
-export default Scenarios;
+const mapStateToProps = ({
+    user: {
+        scenarios = {},
+        authToken,
+        settingOnboardingComplete,
+        hasViewedTutorial,
+    },
+}) => ({
+    token: authToken,
+    busy: settingOnboardingComplete,
+    done: hasViewedTutorial,
+    screen: scenarios.screen || 'intro',
+    didCall: typeof scenarios.didCall === 'boolean' ? scenarios.didCall : false,
+    didText: typeof scenarios.didText === 'boolean' ? scenarios.didText : false,
+    gotPress: scenarios.longPress === 'done',
+});
+
+const mapDispatchToProps = dispatch => ({
+    dispatch,
+    ...bindActionCreators(
+        {
+            awaitShortPress: regActions.awaitShortPress,
+            awaitLongPress: regActions.awaitLongPress,
+            setScenarioScreen: regActions.setScenarioScreen,
+            setOnboardingComplete: userActions.setOnboardingComplete,
+            changeAppRoot: actions.changeAppRoot,
+        },
+        dispatch
+    ),
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Scenarios);

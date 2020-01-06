@@ -1,9 +1,7 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import {
- Image, SafeAreaView, StyleSheet, Text, View 
-} from 'react-native';
+import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import BackgroundTimer from 'react-native-background-timer';
@@ -19,7 +17,10 @@ import {
 import { BeaconTypes } from '../bits/BleConstants';
 import { syncAccountDetails, changeAppRoot } from '../actions/index';
 import {
- flare, processQueuedBeacons, call, checkin 
+    flare,
+    processQueuedBeacons,
+    call,
+    checkin,
 } from '../actions/beaconActions';
 import { getCrewEventTimeline, getPermission } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
@@ -92,7 +93,10 @@ class HomeActive extends React.Component {
 
         this.eventTimelineRefreshTimer = null;
         if (props.hasActiveFlare) {
-            this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
+            this.eventTimelineRefreshTimer = setInterval(
+                () => this.refreshTimeline(),
+                FLARE_TIMELINE_REFRESH_INTERVAL
+            );
         }
         this.state = {
             showSideMenu: false,
@@ -121,7 +125,7 @@ class HomeActive extends React.Component {
         this.props.dispatch(
             syncAccountDetails({
                 analyticsToken: this.props.analyticsToken,
-            }),
+            })
         );
 
         // Periodically fetch account status to ensure auth and to observe account changes from other devices.
@@ -130,7 +134,10 @@ class HomeActive extends React.Component {
             this.eventTimelineRefreshTimer = null;
         }
         BackgroundTimer.stopBackgroundTimer();
-        BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
+        BackgroundTimer.runBackgroundTimer(
+            () => this.syncAccount(),
+            this.accountSyncTimeInMs
+        );
 
         // If the current user has an active flare, fetch the crew timeline
         // and show it
@@ -141,7 +148,10 @@ class HomeActive extends React.Component {
         /**
          * Handle transitions from active to inactive flare
          */
-        if (this.props.hasActiveFlare !== prevProps.hasActiveFlare && !this.props.hasActiveFlare) {
+        if (
+            this.props.hasActiveFlare !== prevProps.hasActiveFlare &&
+            !this.props.hasActiveFlare
+        ) {
             BackgroundTimer.stop();
             BackgroundTimer.stopBackgroundTimer();
             this.props.dispatch(changeAppRoot('secure'));
@@ -189,12 +199,12 @@ class HomeActive extends React.Component {
 
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
-        case 'menuButton':
-            this.toggleSideMenu();
-            break;
-        default:
-            console.warn('Unhandled button press in home screen.');
-            break;
+            case 'menuButton':
+                this.toggleSideMenu();
+                break;
+            default:
+                console.warn('Unhandled button press in home screen.');
+                break;
         }
     }
 
@@ -220,7 +230,7 @@ class HomeActive extends React.Component {
         getCurrentPosition({
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,
-        }).then((position) => {
+        }).then(position => {
             this.props.dispatch(
                 syncAccountDetails({
                     analyticsToken: this.props.analyticsToken,
@@ -236,14 +246,18 @@ class HomeActive extends React.Component {
                             position,
                         },
                     },
-                }),
+                })
             );
         });
 
         // Process any beacon events that we tried (and failed) to submit earlier.
         if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
             this.props.dispatch(
-                processQueuedBeacons(this.props.handleBeacon, this.props.authToken, this.props.problemBeacons),
+                processQueuedBeacons(
+                    this.props.handleBeacon,
+                    this.props.authToken,
+                    this.props.problemBeacons
+                )
             );
         }
     }
@@ -254,11 +268,16 @@ class HomeActive extends React.Component {
 
     startTimelineRefreshInterval() {
         if (this.eventTimelineRefreshTimer !== null) {
-            console.log('Already started timeline refresh; not starting it again.');
+            console.log(
+                'Already started timeline refresh; not starting it again.'
+            );
             return;
         }
         this.refreshTimeline();
-        this.eventTimelineRefreshTimer = setInterval(() => this.refreshTimeline(), FLARE_TIMELINE_REFRESH_INTERVAL);
+        this.eventTimelineRefreshTimer = setInterval(
+            () => this.refreshTimeline(),
+            FLARE_TIMELINE_REFRESH_INTERVAL
+        );
     }
 
     showPinCheckScreen() {
@@ -290,7 +309,14 @@ class HomeActive extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(flare(this.props.radioToken, testBeacon, position, /* forCurrentUser= */ true));
+        this.props.dispatch(
+            flare(
+                this.props.radioToken,
+                testBeacon,
+                position,
+                /* forCurrentUser= */ true
+            )
+        );
     }
 
     sendTestCall() {
@@ -307,7 +333,14 @@ class HomeActive extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(call(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true));
+        this.props.dispatch(
+            call(
+                this.props.radioToken,
+                testBeacon,
+                /* position= */ null,
+                /* forCurrentUser= */ true
+            )
+        );
     }
 
     sendTestCheckin() {
@@ -325,7 +358,12 @@ class HomeActive extends React.Component {
             timestamp: Date.now(),
         };
         this.props.dispatch(
-            checkin(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true),
+            checkin(
+                this.props.radioToken,
+                testBeacon,
+                /* position= */ null,
+                /* forCurrentUser= */ true
+            )
         );
     }
 
@@ -335,7 +373,9 @@ class HomeActive extends React.Component {
                 <Aura source="aura-5" />
                 <View style={styles.header}>
                     <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
-                    <Text style={styles.headerText}>{Strings.crewEventTimeline.title}</Text>
+                    <Text style={styles.headerText}>
+                        {Strings.crewEventTimeline.title}
+                    </Text>
                 </View>
                 <CrewEventTimeline
                     timeline={this.props.crewEventTimeline}

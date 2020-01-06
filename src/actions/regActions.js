@@ -43,6 +43,14 @@ export const gotLongPress = () => ({
     type: types.USER_SCENARIO_GOT_LONG_PRESS,
 });
 
+export const awaitShortPress = () => ({
+    type: types.USER_SCENARIO_AWAIT_SHORT_PRESS,
+});
+
+export const gotShortPress = () => ({
+    type: types.USER_SCENARIO_GOT_SHORT_PRESS,
+});
+
 export const didAddToContacts = () => ({
     type: types.USER_SCENARIO_ADDED_TO_CONTACTS,
 });

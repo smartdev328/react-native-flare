@@ -51,8 +51,10 @@ const Cuff = ({ button, animation, style, small = false, pause, ...rest }) => {
 
     const delayThenRestart = React.useCallback(() => {
         const id = setTimeout(() => {
-            animationRef.current.reset();
-            animationRef.current.play();
+            if (animationRef.current) {
+                animationRef.current.reset();
+                animationRef.current.play();
+            }
         }, 800);
         setTimeoutId(id);
     }, []);

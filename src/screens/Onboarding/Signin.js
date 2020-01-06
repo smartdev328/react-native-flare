@@ -19,7 +19,7 @@ import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import * as actions from '../../actions';
 
-import aura1520 from '../../assets/aura-1520.jpg';
+import aura1521 from '../../assets/aura-1521.jpg';
 
 const styles = StyleSheet.create({
     container: {
@@ -113,10 +113,10 @@ class Signin extends React.Component {
         if (
             typeof email === 'string' &&
             typeof password === 'string' &&
-            email.length > 0 &&
+            email.trim().length > 0 &&
             password.length > 0
         ) {
-            signIn(email, password);
+            signIn(email.trim(), password);
         }
     };
 
@@ -132,7 +132,7 @@ class Signin extends React.Component {
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle="light-content" />
-                <Aura source={aura1520} />
+                <Aura source={aura1521} />
                 <WhiteBar goBack={close} aura offWhite />
                 <KeyboardAvoidingView
                     behavior="padding"

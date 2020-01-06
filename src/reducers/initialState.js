@@ -41,6 +41,7 @@ export const initialState = Immutable({
             screen: null,
             didCall: false,
             didText: false,
+            shortPress: null,
             longPress: null,
             addedToContacts: false,
         },
