@@ -17,19 +17,13 @@ import {
     ACCOUNT_SYNC_INTERVAL_DEV,
     SHOW_ALL_BEACONS_IN_HOME_SCREEN,
 } from '../../constants/Config';
-import { BeaconTypes } from '../../bits/BleConstants';
 import {
     claimDevice,
     syncAccountDetails,
     fetchContacts,
     changeAppRoot,
 } from '../../actions/index';
-import {
-    flare,
-    processQueuedBeacons,
-    call,
-    checkin,
-} from '../../actions/beaconActions';
+import { processQueuedBeacons } from '../../actions/beaconActions';
 import { getPermission } from '../../actions/userActions';
 import { iconsMap } from '../../bits/AppIcons';
 import { startBleListening } from '../../actions/hardwareActions';
@@ -202,6 +196,53 @@ class Home extends React.Component {
         });
     };
 
+    handleAppStateChange = nextAppState => {
+        // eslint-disable-next-line
+        console.debug(`App went to state ${nextAppState}.`);
+        switch (nextAppState) {
+            case 'active':
+            case 'inactive':
+            case 'background':
+            default:
+                break;
+        }
+    };
+
+    handleBluetoothStateChange = bleState => {
+        const { connectionState } = bleState.type;
+        this.setState({
+            bluetoothEnabled: connectionState === 'on',
+        });
+    };
+
+    handleContactsClick = () => {
+        const { componentId } = this.props;
+        Navigation.push(componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Contacts',
+                options: {
+                    topBar: {
+                        visible: true,
+                        animate: false,
+                        leftButtons: [
+                            {
+                                id: 'backButton',
+                                icon: iconsMap.back,
+                                color: Colors.theme.purple,
+                            },
+                        ],
+                        title: {
+                            component: {
+                                name: 'com.flarejewelry.app.FlareNavBar',
+                                alignment: 'center',
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    };
+
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
             case 'menuButton':
@@ -263,132 +304,6 @@ class Home extends React.Component {
                 processQueuedBeacons(handleBeacon, authToken, problemBeacons)
             );
         }
-    }
-
-    handleAppStateChange = nextAppState => {
-        // eslint-disable-next-line
-        console.debug(`App went to state ${nextAppState}.`);
-        switch (nextAppState) {
-            case 'active':
-            case 'inactive':
-            case 'background':
-            default:
-                break;
-        }
-    };
-
-    handleBluetoothStateChange = bleState => {
-        const { connectionState } = bleState.type;
-        this.setState({
-            bluetoothEnabled: connectionState === 'on',
-        });
-    };
-
-    handleContactsClick = () => {
-        const { componentId } = this.props;
-        Navigation.push(componentId, {
-            component: {
-                name: 'com.flarejewelry.app.Contacts',
-                options: {
-                    topBar: {
-                        visible: true,
-                        animate: false,
-                        leftButtons: [
-                            {
-                                id: 'backButton',
-                                icon: iconsMap.back,
-                                color: Colors.theme.purple,
-                            },
-                        ],
-                        title: {
-                            component: {
-                                name: 'com.flarejewelry.app.FlareNavBar',
-                                alignment: 'center',
-                            },
-                        },
-                    },
-                },
-            },
-        });
-    };
-
-    sendTestFlare() {
-        if (!__DEV__) {
-            return;
-        }
-        const position = {
-            coords: {
-                latitude: 42.354338,
-                longitude: -71.065497,
-            },
-        };
-
-        const testBeacon = {
-            uuid: 'flare-dev-test',
-            nonce: null,
-            type: BeaconTypes.Long.value,
-            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
-            rssi: 0,
-            proximity: 'far',
-            accuracy: 0,
-            timestamp: Date.now(),
-        };
-        this.props.dispatch(
-            flare(
-                this.props.radioToken,
-                testBeacon,
-                position,
-                /* forCurrentUser= */ true
-            )
-        );
-    }
-
-    sendTestCall() {
-        if (!__DEV__) {
-            return;
-        }
-        const testBeacon = {
-            uuid: 'flare-dev-test',
-            nonce: null,
-            type: BeaconTypes.Short.value,
-            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
-            rssi: 0,
-            proximity: 'far',
-            accuracy: 0,
-            timestamp: Date.now(),
-        };
-        this.props.dispatch(
-            call(
-                this.props.radioToken,
-                testBeacon,
-                /* position= */ null,
-                /* forCurrentUser= */ true
-            )
-        );
-    }
-
-    sendTestCheckin() {
-        if (!__DEV__) {
-            return;
-        }
-        const testBeacon = {
-            uuid: 'flare-dev-test',
-            nonce: null,
-            type: BeaconTypes.Checkin.value,
-            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
-            rssi: 0,
-            proximity: 'far',
-            accuracy: 0,
-            timestamp: Date.now(),
-        };
-        this.props.dispatch(
-            checkin(
-                this.props.radioToken,
-                testBeacon,
-                /* position= */ null,
-                /* forCurrentUser= */ true
-            )
-        );
     }
 
     render() {
@@ -462,28 +377,6 @@ class Home extends React.Component {
                     )}
                     {!permissions.contacts && (
                         <Text>{Strings.home.contactsNeedPermission}</Text>
-                    )}
-                    {__DEV__ && !hasActiveFlare && (
-                        <View style={styles.devOnlyButtons}>
-                            <Button
-                                dev
-                                secondary
-                                onPress={() => this.sendTestFlare()}
-                                title={Strings.dev.sendTestFlare}
-                            />
-                            <Button
-                                dev
-                                secondary
-                                onPress={() => this.sendTestCall()}
-                                title={Strings.dev.sendTestCall}
-                            />
-                            <Button
-                                dev
-                                secondary
-                                onPress={() => this.sendTestCheckin()}
-                                title={Strings.dev.sendTestCheckin}
-                            />
-                        </View>
                     )}
                 </View>
             </View>
