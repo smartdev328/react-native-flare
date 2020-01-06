@@ -23,6 +23,7 @@ const Scenarios = ({
     token,
     busy,
     done,
+    awaitShortPress,
     awaitLongPress,
     setScenarioScreen,
     setOnboardingComplete,
@@ -50,8 +51,9 @@ const Scenarios = ({
         setScenarioScreen('weirdVibes');
     }, [setScenarioScreen]);
     const fakeCall = React.useCallback(() => {
+        awaitShortPress();
         setScenarioScreen('fakeCall');
-    }, [setScenarioScreen]);
+    }, [awaitShortPress, setScenarioScreen]);
     const textYourCrew = React.useCallback(() => {
         awaitLongPress();
         setScenarioScreen('textYourCrew');
@@ -161,6 +163,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch,
     ...bindActionCreators(
         {
+            awaitShortPress: regActions.awaitShortPress,
             awaitLongPress: regActions.awaitLongPress,
             setScenarioScreen: regActions.setScenarioScreen,
             setOnboardingComplete: userActions.setOnboardingComplete,

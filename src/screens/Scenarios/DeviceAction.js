@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Animated, Easing, SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
 
 import styles from './styles';
 import Aura from '../../bits/Aura';
 import WhiteBar from '../Onboarding/WhiteBar';
 import Headline from '../Onboarding/Headline';
-import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import Cuff from '../Cuff';
+import Tada from './Tada';
 
 import aura1519 from '../../assets/aura-1519.jpg';
 
@@ -19,6 +19,7 @@ const DeviceAction = ({
     confirm,
     onNext,
     animation,
+    tada = false,
 }) => {
     return (
         <SafeAreaView style={styles.container}>
@@ -30,7 +31,7 @@ const DeviceAction = ({
             </Headline>
             <View style={styles.line} />
             <Text style={styles.deviceActionText}>{body}</Text>
-            <Cuff button animation={animation} pause />
+            {tada ? <Tada /> : <Cuff button animation={animation} pause />}
             {onNext && (
                 <RoundedButton
                     text={confirm}

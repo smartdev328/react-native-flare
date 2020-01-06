@@ -9,7 +9,12 @@ import { TOUCH_AND_RELEASE } from '../Cuff';
 
 const FakeCall = ({ onBack, onSuccess }) => {
     const dispatch = useDispatch();
-    const callStatus = useSelector(({ hardware }) => hardware.callStatus);
+    const { callStatus, shortPressStatus } = useSelector(
+        ({ hardware, user: { scenarios } }) => ({
+            callStatus: hardware.callStatus,
+            shortPressStatus: scenarios.shortPress,
+        })
+    );
     const [gotCall, setGotCall] = React.useState(false);
     const [finishedCall, setFinishedCall] = React.useState(false);
 
@@ -38,7 +43,8 @@ const FakeCall = ({ onBack, onSuccess }) => {
             headline2="Press for a call."
             body="Press the button on your cuff and we’ll call you. Listen, react, and hang up whenever!"
             confirm="I got the call"
-            animation={TOUCH_AND_RELEASE}
+            tada={shortPressStatus === 'done' && !finishedCall}
+            animation={finishedCall ? undefined : TOUCH_AND_RELEASE}
         />
     );
 };

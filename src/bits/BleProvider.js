@@ -17,7 +17,7 @@ import BleManager from './BleManager';
 import ManufacturingStages from '../constants/ManufacturingStages';
 import UserRoleTypes from '../constants/Roles';
 import { checkLocationsPermission } from '../actions/userActions';
-import { gotLongPress } from '../actions/regActions';
+import { gotLongPress, gotShortPress } from '../actions/regActions';
 
 export default class BleProvider {
     constructor(options) {
@@ -80,6 +80,9 @@ export default class BleProvider {
             (this.store && this.store.getState().user.devices) || [];
         const hasCompletedOnboarding =
             this.store && this.store.getState().user.hasViewedTutorial;
+        const awaitingShortPress =
+            this.store &&
+            this.store.getState().user.scenarios.shortPress === 'wait';
         const awaitingLongPress =
             this.store &&
             this.store.getState().user.scenarios.longPress === 'wait';
@@ -90,6 +93,9 @@ export default class BleProvider {
 
         switch (beacon.type) {
             case BeaconTypes.Short.name:
+                if (awaitingShortPress) {
+                    dispatch(gotShortPress());
+                }
                 dispatch(
                     call(radioToken, beacon, position, forCurrentUser)
                 ).then(() => {
