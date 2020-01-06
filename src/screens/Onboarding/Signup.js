@@ -22,6 +22,7 @@ import {
 import WhiteBar from './WhiteBar';
 
 import aura1519 from '../../assets/aura-1519.jpg';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
     container: {
@@ -111,72 +112,74 @@ class Signup extends React.Component {
         const greeting = extractGreeting(name);
 
         return (
-            <SafeAreaView style={styles.container}>
-                <StatusBar barStyle="light-content" />
-                <Aura source={aura1519} />
-                <WhiteBar goBack={this.goBack} offWhite />
-                <ViewPager
-                    style={styles.flex}
-                    scrollEnabled={false}
-                    keyboardDismissMode="none"
-                    transitionStyle="scroll"
-                    ref={this.setPagerRef}
-                    onPageSelected={this.onPageSelected}
-                >
-                    <View key="name">
-                        <FlowScreen
-                            headline="We’re so glad you’re here! What’s your name?"
-                            onNext={this.goForward}
-                            label="Your full name"
-                            textFieldRef={this.setFieldRef[0]}
-                            textContentType="name"
-                            actionCreator={regSetName}
-                            value="name"
-                            validator={validateName}
-                        />
-                    </View>
-                    <View key="email">
-                        <FlowScreen
-                            headline={`${greeting} And what’s your email?`}
-                            onNext={this.goForward}
-                            label="Your email"
-                            textFieldRef={this.setFieldRef[1]}
-                            keyboardType="email-address"
-                            textContentType="emailAddress"
-                            actionCreator={regSetEmail}
-                            value="email"
-                            validator={validateEmail}
-                        />
-                    </View>
-                    <View key="phone">
-                        <FlowScreen
-                            headline="And what about your phone number?"
-                            onNext={this.goForward}
-                            label="Your phone number"
-                            textFieldRef={this.setFieldRef[2]}
-                            keyboardType="phone-pad"
-                            textContentType="telephoneNumber"
-                            actionCreator={regSetPhone}
-                            value="phone"
-                            validator={validatePhone}
-                        />
-                    </View>
-                    <View key="password">
-                        <FlowScreen
-                            headline={'Last thing:\nEnter a password!'}
-                            onNext={this.submit}
-                            label="Your password"
-                            textFieldRef={this.setFieldRef[3]}
-                            password
-                            textContentType="password"
-                            actionCreator={regSetPassword}
-                            value="password"
-                            validator={validatePassword}
-                            forceError="Password must be at at least 8 characters and contain at least one letter, one uppercase letter and one number or symbol"
-                        />
-                    </View>
-                </ViewPager>
-            </SafeAreaView>
+            <SafeAreaProvider>
+                <SafeAreaView style={styles.container}>
+                    <StatusBar barStyle="light-content" />
+                    <Aura source={aura1519} />
+                    <WhiteBar goBack={this.goBack} offWhite />
+                    <ViewPager
+                        style={styles.flex}
+                        scrollEnabled={false}
+                        keyboardDismissMode="none"
+                        transitionStyle="scroll"
+                        ref={this.setPagerRef}
+                        onPageSelected={this.onPageSelected}
+                    >
+                        <View key="name">
+                            <FlowScreen
+                                headline="We’re so glad you’re here! What’s your name?"
+                                onNext={this.goForward}
+                                label="Your full name"
+                                textFieldRef={this.setFieldRef[0]}
+                                textContentType="name"
+                                actionCreator={regSetName}
+                                value="name"
+                                validator={validateName}
+                            />
+                        </View>
+                        <View key="email">
+                            <FlowScreen
+                                headline={`${greeting} And what’s your email?`}
+                                onNext={this.goForward}
+                                label="Your email"
+                                textFieldRef={this.setFieldRef[1]}
+                                keyboardType="email-address"
+                                textContentType="emailAddress"
+                                actionCreator={regSetEmail}
+                                value="email"
+                                validator={validateEmail}
+                            />
+                        </View>
+                        <View key="phone">
+                            <FlowScreen
+                                headline="And what about your phone number?"
+                                onNext={this.goForward}
+                                label="Your phone number"
+                                textFieldRef={this.setFieldRef[2]}
+                                keyboardType="phone-pad"
+                                textContentType="telephoneNumber"
+                                actionCreator={regSetPhone}
+                                value="phone"
+                                validator={validatePhone}
+                            />
+                        </View>
+                        <View key="password">
+                            <FlowScreen
+                                headline={'Last thing:\nEnter a password!'}
+                                onNext={this.submit}
+                                label="Your password"
+                                textFieldRef={this.setFieldRef[3]}
+                                password
+                                textContentType="password"
+                                actionCreator={regSetPassword}
+                                value="password"
+                                validator={validatePassword}
+                                forceError="Password must be at at least 8 characters and contain at least one letter, one uppercase letter and one number or symbol"
+                            />
+                        </View>
+                    </ViewPager>
+                </SafeAreaView>
+            </SafeAreaProvider>
         );
     }
 }
