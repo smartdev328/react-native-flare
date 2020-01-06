@@ -92,24 +92,32 @@ const TextSimulator = ({ onSuccess }) => {
     const [animations] = React.useState(() =>
         messages.map(() => new Animated.Value(0.0))
     );
+    const [current, setCurrent] = React.useState(0);
+    const [busy, setBusy] = React.useState(true);
 
     const fullSuccess = React.useCallback(() => {
         dispatch(scenarioDidText());
         onSuccess();
     }, [dispatch, onSuccess]);
 
+    const nextAnimation = React.useCallback(() => {
+        setBusy(true);
+        Animated.timing(animations[current], {
+            useNativeDriver: true,
+            toValue: 1.0,
+            duration: 300,
+            easing: Easing.ease,
+        }).start(() => {
+            setBusy(false);
+            setCurrent(n => n + 1);
+        });
+    }, [animations, current]);
+
     React.useEffect(() => {
-        Animated.sequence(
-            animations.map(anim =>
-                Animated.timing(anim, {
-                    useNativeDriver: true,
-                    toValue: 1.0,
-                    duration: 1000,
-                    easing: Easing.ease,
-                })
-            )
-        ).start();
+        nextAnimation();
     }, []);
+
+    const done = current === messages.length;
 
     return (
         <SafeAreaView style={styles.container}>
@@ -122,13 +130,14 @@ const TextSimulator = ({ onSuccess }) => {
                 />
             ))}
             <RoundedButton
-                onPress={fullSuccess}
-                text="Situation Resolved"
+                onPress={done ? fullSuccess : nextAnimation}
+                text={done ? 'Situation Resolved' : 'Next'}
                 useGradient={false}
                 wrapperStyle={styles.buttonWrapper}
                 width={200}
                 fontSize={14}
                 height={46}
+                disabled={busy}
             />
         </SafeAreaView>
     );
