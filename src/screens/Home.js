@@ -1,9 +1,7 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import {
- AppState, StyleSheet, Text, View 
-} from 'react-native';
+import { AppState, StyleSheet, Text, View } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 import { connect } from 'react-redux';
@@ -21,10 +19,16 @@ import {
 } from '../constants/Config';
 import { BeaconTypes } from '../bits/BleConstants';
 import {
- claimDevice, syncAccountDetails, fetchContacts, changeAppRoot 
+    claimDevice,
+    syncAccountDetails,
+    fetchContacts,
+    changeAppRoot,
 } from '../actions/index';
 import {
- flare, processQueuedBeacons, call, checkin 
+    flare,
+    processQueuedBeacons,
+    call,
+    checkin,
 } from '../actions/beaconActions';
 import { getPermission } from '../actions/userActions';
 import { iconsMap } from '../bits/AppIcons';
@@ -96,15 +100,23 @@ class Home extends React.Component {
 
     componentDidMount() {
         const {
- hasActiveFlare, dispatch, hardware, permissions, analyticsToken 
-} = this.props;
+            hasActiveFlare,
+            dispatch,
+            hardware,
+            permissions,
+            analyticsToken,
+        } = this.props;
         if (hasActiveFlare) {
             dispatch(changeAppRoot('secure-active-event'));
         }
 
         // Update bluetooth state after first boot
-        RNBluetoothInfo.getCurrentState().then((bleState) => this.handleBluetoothStateChange(bleState));
-        RNBluetoothInfo.addEventListener('change', (bleState) => this.handleBluetoothStateChange(bleState));
+        RNBluetoothInfo.getCurrentState().then(bleState =>
+            this.handleBluetoothStateChange(bleState)
+        );
+        RNBluetoothInfo.addEventListener('change', bleState =>
+            this.handleBluetoothStateChange(bleState)
+        );
 
         // Contacts are not stored on the server. It takes a while to fetch them locally, so we
         // start that process now before users need to view them.
@@ -127,12 +139,17 @@ class Home extends React.Component {
         dispatch(
             syncAccountDetails({
                 analyticsToken,
-            }),
+            })
         );
 
         BackgroundTimer.stopBackgroundTimer();
-        BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
-        AppState.addEventListener('change', (newState) => this.handleAppStateChange(newState));
+        BackgroundTimer.runBackgroundTimer(
+            () => this.syncAccount(),
+            this.accountSyncTimeInMs
+        );
+        AppState.addEventListener('change', newState =>
+            this.handleAppStateChange(newState)
+        );
     }
 
     componentDidUpdate(prevProps) {
@@ -153,7 +170,10 @@ class Home extends React.Component {
                 });
                 this.props.dispatch(changeAppRoot('secure-active-event'));
             } else {
-                BackgroundTimer.runBackgroundTimer(() => this.syncAccount(), this.accountSyncTimeInMs);
+                BackgroundTimer.runBackgroundTimer(
+                    () => this.syncAccount(),
+                    this.accountSyncTimeInMs
+                );
                 PushNotificationIOS.removeAllDeliveredNotifications();
             }
         }
@@ -161,7 +181,10 @@ class Home extends React.Component {
         /**
          * Fetch contacts if the permission changes from denied to anything else
          */
-        if (prevProps.permissions.contacts === false && this.props.permissions.contacts) {
+        if (
+            prevProps.permissions.contacts === false &&
+            this.props.permissions.contacts
+        ) {
             this.props.dispatch(fetchContacts());
         }
     }
@@ -169,8 +192,12 @@ class Home extends React.Component {
     componentWillUnmount() {
         this.shuttingDown = true;
         BackgroundTimer.stopBackgroundTimer();
-        RNBluetoothInfo.removeEventListener('change', (bleState) => this.handleBluetoothStateChange(bleState));
-        AppState.removeEventListener('change', (newState) => this.handleAppStateChange(newState));
+        RNBluetoothInfo.removeEventListener('change', bleState =>
+            this.handleBluetoothStateChange(bleState)
+        );
+        AppState.removeEventListener('change', newState =>
+            this.handleAppStateChange(newState)
+        );
     }
 
     /**
@@ -207,12 +234,12 @@ class Home extends React.Component {
 
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
-        case 'menuButton':
-            this.toggleSideMenu();
-            break;
-        default:
-            console.warn('Unhandled button press in home screen.');
-            break;
+            case 'menuButton':
+                this.toggleSideMenu();
+                break;
+            default:
+                console.warn('Unhandled button press in home screen.');
+                break;
         }
     }
 
@@ -238,7 +265,7 @@ class Home extends React.Component {
         getCurrentPosition({
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,
-        }).then((position) => {
+        }).then(position => {
             this.props.dispatch(
                 syncAccountDetails({
                     analyticsToken: this.props.analyticsToken,
@@ -254,14 +281,18 @@ class Home extends React.Component {
                             position,
                         },
                     },
-                }),
+                })
             );
         });
 
         // Process any beacon events that we tried (and failed) to submit earlier.
         if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
             this.props.dispatch(
-                processQueuedBeacons(this.props.handleBeacon, this.props.authToken, this.props.problemBeacons),
+                processQueuedBeacons(
+                    this.props.handleBeacon,
+                    this.props.authToken,
+                    this.props.problemBeacons
+                )
             );
         }
     }
@@ -270,11 +301,11 @@ class Home extends React.Component {
         // eslint-disable-next-line
         console.debug(`App went to state ${nextAppState}.`);
         switch (nextAppState) {
-        case 'active':
-        case 'inactive':
-        case 'background':
-        default:
-            break;
+            case 'active':
+            case 'inactive':
+            case 'background':
+            default:
+                break;
         }
     }
 
@@ -333,7 +364,14 @@ class Home extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(flare(this.props.radioToken, testBeacon, position, /* forCurrentUser= */ true));
+        this.props.dispatch(
+            flare(
+                this.props.radioToken,
+                testBeacon,
+                position,
+                /* forCurrentUser= */ true
+            )
+        );
     }
 
     sendTestCall() {
@@ -350,7 +388,14 @@ class Home extends React.Component {
             accuracy: 0,
             timestamp: Date.now(),
         };
-        this.props.dispatch(call(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true));
+        this.props.dispatch(
+            call(
+                this.props.radioToken,
+                testBeacon,
+                /* position= */ null,
+                /* forCurrentUser= */ true
+            )
+        );
     }
 
     sendTestCheckin() {
@@ -368,7 +413,12 @@ class Home extends React.Component {
             timestamp: Date.now(),
         };
         this.props.dispatch(
-            checkin(this.props.radioToken, testBeacon, /* position= */ null, /* forCurrentUser= */ true),
+            checkin(
+                this.props.radioToken,
+                testBeacon,
+                /* position= */ null,
+                /* forCurrentUser= */ true
+            )
         );
     }
 
@@ -388,25 +438,43 @@ class Home extends React.Component {
         return (
             <View style={styles.container}>
                 {!bluetoothEnabled && (
-                    <FlareAlert message={Strings.home.bluetoothDisabledWarning} variant="warning" large centered />
+                    <FlareAlert
+                        message={Strings.home.bluetoothDisabledWarning}
+                        variant="warning"
+                        large
+                        centered
+                    />
                 )}
                 <View style={styles.deviceSelector}>
                     <DeviceSelector
-                        addDevice={(deviceID) => dispatch(claimDevice(authToken, deviceID))}
+                        addDevice={deviceID =>
+                            dispatch(claimDevice(authToken, deviceID))
+                        }
                         devices={devices}
                         claimingDevice={claimingDevice}
                         claimingDeviceFailure={claimingDeviceFailure}
                     >
                         <View style={styles.centered}>
-                            {!latestBeacon && <Text>{Strings.home.lastBeacon.absent}</Text>}
+                            {!latestBeacon && (
+                                <Text>{Strings.home.lastBeacon.absent}</Text>
+                            )}
                             {latestBeacon && (
                                 <View style={styles.centered}>
-                                    <Text>{Strings.home.lastBeacon.present}</Text>
-                                    <Text style={[styles.centered, styles.dimmed]}>
-                                        {moment(latestBeacon.timestamp).format('MMM D @ h:mma')}
+                                    <Text>
+                                        {Strings.home.lastBeacon.present}
+                                    </Text>
+                                    <Text
+                                        style={[styles.centered, styles.dimmed]}
+                                    >
+                                        {moment(latestBeacon.timestamp).format(
+                                            'MMM D @ h:mma'
+                                        )}
                                     </Text>
                                     {SHOW_ALL_BEACONS_IN_HOME_SCREEN && (
-                                        <FlareDeviceID value={latestBeacon.deviceID} style={[styles.centered]} />
+                                        <FlareDeviceID
+                                            value={latestBeacon.deviceID}
+                                            style={[styles.centered]}
+                                        />
                                     )}
                                 </View>
                             )}
@@ -416,9 +484,16 @@ class Home extends React.Component {
 
                 <View style={styles.footer}>
                     {!hasActiveFlare && permissions.contacts && (
-                        <Button primary dark onPress={() => this.handleContactsClick()} title={contactsLabel} />
+                        <Button
+                            primary
+                            dark
+                            onPress={() => this.handleContactsClick()}
+                            title={contactsLabel}
+                        />
                     )}
-                    {!permissions.contacts && <Text>{Strings.home.contactsNeedPermission}</Text>}
+                    {!permissions.contacts && (
+                        <Text>{Strings.home.contactsNeedPermission}</Text>
+                    )}
                     {__DEV__ && !hasActiveFlare && (
                         <View style={styles.devOnlyButtons}>
                             <Button
@@ -448,7 +523,8 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const contactsLabel =        state.user.crews && state.user.crews.length
+    const contactsLabel =
+        state.user.crews && state.user.crews.length
             ? Strings.home.contactsButtonLabelEdit
             : Strings.home.contactsButtonLabelAdd;
 
