@@ -19,7 +19,7 @@ import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import * as actions from '../../actions';
 
-import aura1520 from '../../assets/aura-1520.jpg';
+import aura1521 from '../../assets/aura-1521.jpg';
 
 const styles = StyleSheet.create({
     container: {
@@ -132,7 +132,7 @@ class Signin extends React.Component {
         return (
             <SafeAreaView style={styles.container}>
                 <StatusBar barStyle="light-content" />
-                <Aura source={aura1520} />
+                <Aura source={aura1521} />
                 <WhiteBar goBack={close} aura offWhite />
                 <KeyboardAvoidingView
                     behavior="padding"
