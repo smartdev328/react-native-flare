@@ -1,7 +1,7 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import { AppState, StyleSheet, Text, View } from 'react-native';
+import { AppState, Text, View } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 import { connect } from 'react-redux';
@@ -16,73 +16,31 @@ import {
     ACCOUNT_SYNC_INTERVAL_FLARE,
     ACCOUNT_SYNC_INTERVAL_DEV,
     SHOW_ALL_BEACONS_IN_HOME_SCREEN,
-} from '../constants/Config';
-import { BeaconTypes } from '../bits/BleConstants';
+} from '../../constants/Config';
+import { BeaconTypes } from '../../bits/BleConstants';
 import {
     claimDevice,
     syncAccountDetails,
     fetchContacts,
     changeAppRoot,
-} from '../actions/index';
+} from '../../actions/index';
 import {
     flare,
     processQueuedBeacons,
     call,
     checkin,
-} from '../actions/beaconActions';
-import { getPermission } from '../actions/userActions';
-import { iconsMap } from '../bits/AppIcons';
-import { startBleListening } from '../actions/hardwareActions';
-import Button from '../bits/Button';
-import Colors from '../bits/Colors';
-import DeviceSelector from '../bits/DeviceSelector';
-import FlareAlert from '../bits/FlareAlert';
-import FlareDeviceID from '../bits/FlareDeviceID';
-import getCurrentPosition from '../helpers/location';
-import Spacing from '../bits/Spacing';
-import Strings from '../locales/en';
-import Type from '../bits/Type';
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        display: 'flex',
-        alignItems: 'stretch',
-        justifyContent: 'space-between',
-        backgroundColor: Colors.theme.cream,
-        paddingBottom: Spacing.small,
-    },
-    footer: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 16,
-    },
-    centered: {
-        alignSelf: 'center',
-        textAlign: 'center',
-    },
-    deviceSelector: {
-        alignSelf: 'center',
-        justifyContent: 'center',
-        flex: 9,
-    },
-    bluetoothDisabledWarning: {
-        margin: Spacing.medium,
-    },
-    bluetoothDisabledWarningTitle: {
-        paddingHorizontal: Spacing.large,
-        textAlign: 'center',
-        fontSize: Type.size.medium,
-        fontWeight: '700',
-    },
-    devOnlyButtons: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-});
+} from '../../actions/beaconActions';
+import { getPermission } from '../../actions/userActions';
+import { iconsMap } from '../../bits/AppIcons';
+import { startBleListening } from '../../actions/hardwareActions';
+import Button from '../../bits/Button';
+import Colors from '../../bits/Colors';
+import DeviceSelector from '../../bits/DeviceSelector';
+import FlareAlert from '../../bits/FlareAlert';
+import FlareDeviceID from '../../bits/FlareDeviceID';
+import getCurrentPosition from '../../helpers/location';
+import Strings from '../../locales/en';
+import styles from './styles';
 
 class Home extends React.Component {
     constructor(props) {
@@ -122,8 +80,6 @@ class Home extends React.Component {
         // start that process now before users need to view them.
         if (permissions.contacts) {
             dispatch(fetchContacts());
-        } else {
-            dispatch(getPermission(PERMISSIONS.IOS.CONTACTS));
         }
 
         if (!permissions.location) {
@@ -153,22 +109,28 @@ class Home extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        const {
+            hasActiveFlare,
+            crewEventNotificationMessage,
+            dispatch,
+            permissions: { contacts: contactsPermission },
+        } = this.props;
         /**
          * Handle transitions in flare state: reset intervals for fetching data
          */
-        if (this.props.hasActiveFlare !== prevProps.hasActiveFlare) {
+        if (hasActiveFlare !== prevProps.hasActiveFlare) {
             this.setSyncTiming();
             BackgroundTimer.stop();
             BackgroundTimer.stopBackgroundTimer();
 
-            if (this.props.hasActiveFlare) {
+            if (hasActiveFlare) {
                 console.log('>>>>> Local notify!');
                 PushNotificationIOS.requestPermissions();
                 PushNotificationIOS.presentLocalNotification({
-                    alertBody: this.props.crewEventNotificationMessage,
+                    alertBody: crewEventNotificationMessage,
                     alertTitle: Strings.notifications.title,
                 });
-                this.props.dispatch(changeAppRoot('secure-active-event'));
+                dispatch(changeAppRoot('secure-active-event'));
             } else {
                 BackgroundTimer.runBackgroundTimer(
                     () => this.syncAccount(),
@@ -181,11 +143,8 @@ class Home extends React.Component {
         /**
          * Fetch contacts if the permission changes from denied to anything else
          */
-        if (
-            prevProps.permissions.contacts === false &&
-            this.props.permissions.contacts
-        ) {
-            this.props.dispatch(fetchContacts());
+        if (prevProps.permissions.contacts === false && contactsPermission) {
+            dispatch(fetchContacts());
         }
     }
 
@@ -206,7 +165,8 @@ class Home extends React.Component {
      * timing. All times are set in the environment configuration.
      */
     setSyncTiming() {
-        if (this.props.hasActiveFlare) {
+        const { hasActiveFlare } = this.props;
+        if (hasActiveFlare) {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_FLARE;
         } else if (__DEV__) {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_DEV;
@@ -215,11 +175,21 @@ class Home extends React.Component {
         }
     }
 
-    toggleSideMenu() {
+    goToPushedView = () => {
+        const { componentId } = this.props;
+        Navigation.push(componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Home',
+            },
+        });
+    };
+
+    toggleSideMenu = () => {
+        const { componentId } = this.props;
         const { showSideMenu } = this.state;
         const newSideMenuState = !showSideMenu;
 
-        Navigation.mergeOptions(this.props.componentId, {
+        Navigation.mergeOptions(componentId, {
             sideMenu: {
                 left: {
                     visible: newSideMenuState,
@@ -230,7 +200,7 @@ class Home extends React.Component {
         this.setState({
             showSideMenu: newSideMenuState,
         });
-    }
+    };
 
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
@@ -243,21 +213,23 @@ class Home extends React.Component {
         }
     }
 
-    goToPushedView = () => {
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.Home',
-            },
-        });
-    };
-
     /**
      * Submit user location and fetch any account updates.
      */
     syncAccount() {
+        const {
+            analyticsEnabled,
+            dispatch,
+            analyticsToken,
+            permissions,
+            hardware,
+            problemBeacons,
+            handleBeacon,
+            authToken,
+        } = this.props;
         // Don't kick off a new async request if we're shutting down. This prevents an infinite loop of syncing
         // status -> auth fail -> sign out.
-        if (this.shuttingDown || !this.props.analyticsEnabled) {
+        if (this.shuttingDown || !analyticsEnabled) {
             return;
         }
 
@@ -266,9 +238,9 @@ class Home extends React.Component {
             enableHighAccuracy: true,
             timeout: ACCOUNT_SYNC_INTERVAL,
         }).then(position => {
-            this.props.dispatch(
+            dispatch(
                 syncAccountDetails({
-                    analyticsToken: this.props.analyticsToken,
+                    analyticsToken,
                     status: {
                         timestamp: moment()
                             .utc()
@@ -276,8 +248,8 @@ class Home extends React.Component {
                         latitude: position.latitude,
                         longitude: position.longitude,
                         details: {
-                            permissions: this.props.permissions,
-                            hardware: this.props.hardware,
+                            permissions,
+                            hardware,
                             position,
                         },
                     },
@@ -286,18 +258,14 @@ class Home extends React.Component {
         });
 
         // Process any beacon events that we tried (and failed) to submit earlier.
-        if (this.props.problemBeacons && this.props.problemBeacons.length > 0) {
-            this.props.dispatch(
-                processQueuedBeacons(
-                    this.props.handleBeacon,
-                    this.props.authToken,
-                    this.props.problemBeacons
-                )
+        if (problemBeacons && problemBeacons.length > 0) {
+            dispatch(
+                processQueuedBeacons(handleBeacon, authToken, problemBeacons)
             );
         }
     }
 
-    handleAppStateChange(nextAppState) {
+    handleAppStateChange = nextAppState => {
         // eslint-disable-next-line
         console.debug(`App went to state ${nextAppState}.`);
         switch (nextAppState) {
@@ -307,17 +275,18 @@ class Home extends React.Component {
             default:
                 break;
         }
-    }
+    };
 
-    handleBluetoothStateChange(bleState) {
+    handleBluetoothStateChange = bleState => {
         const { connectionState } = bleState.type;
         this.setState({
             bluetoothEnabled: connectionState === 'on',
         });
-    }
+    };
 
-    handleContactsClick() {
-        Navigation.push(this.props.componentId, {
+    handleContactsClick = () => {
+        const { componentId } = this.props;
+        Navigation.push(componentId, {
             component: {
                 name: 'com.flarejewelry.app.Contacts',
                 options: {
@@ -341,7 +310,7 @@ class Home extends React.Component {
                 },
             },
         });
-    }
+    };
 
     sendTestFlare() {
         if (!__DEV__) {
@@ -447,9 +416,9 @@ class Home extends React.Component {
                 )}
                 <View style={styles.deviceSelector}>
                     <DeviceSelector
-                        addDevice={deviceID =>
-                            dispatch(claimDevice(authToken, deviceID))
-                        }
+                        addDevice={deviceID => {
+                            dispatch(claimDevice(authToken, deviceID));
+                        }}
                         devices={devices}
                         claimingDevice={claimingDevice}
                         claimingDeviceFailure={claimingDeviceFailure}
