@@ -100,9 +100,11 @@ export default class App extends Component {
                                                     topBar: {
                                                         background: {
                                                             color:
-                                                                Colors.theme
-                                                                    .cream,
+                                                                'transparent',
                                                         },
+                                                        leftButtonColor:
+                                                            Colors.theme.cream,
+                                                        drawBehind: true,
                                                         noBorder: true,
                                                         leftButtons: [
                                                             {

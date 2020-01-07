@@ -35,6 +35,9 @@ import FlareDeviceID from '../../bits/FlareDeviceID';
 import getCurrentPosition from '../../helpers/location';
 import Strings from '../../locales/en';
 import styles from './styles';
+import SoftLand from './SoftLand';
+
+const SOFT_LAND = true;
 
 class Home extends React.Component {
     constructor(props) {
@@ -307,6 +310,7 @@ class Home extends React.Component {
     }
 
     render() {
+        if (SOFT_LAND) return <SoftLand />;
         const { bluetoothEnabled } = this.state;
         const {
             devices,
