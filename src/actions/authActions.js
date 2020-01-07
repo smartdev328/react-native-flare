@@ -77,10 +77,11 @@ export const registerNewAccount = ({
             registerData: registerResponse.data,
             detailsData: detailsResponse.data,
         });
-    } catch (res) {
+    } catch (error) {
         dispatch({
             type: types.REGISTER_USER_FAILURE,
-            res,
+            error,
+            response: error.response,
         });
     }
 };
