@@ -7,17 +7,14 @@ const blueGradient = ['#B6C6F800', '#A9BBFBFF'];
 
 const FirstQuote = () => (
     <>
-        I went home with my date, but it just didn’t feel right once I was
-        there. I didn’t want to hurt their feelings but…
+        When the party started to die down, things got sketchy and I felt stuck.
     </>
 );
 const SecondQuote = () => (
-    <>
-        I wanted to leave. I used Flare to help me leave without making a scene.
-    </>
+    <>I left the party without making a scene. Glad I listened to my gut.</>
 );
 
-const UncomfortableDate = props => (
+const SecondScenario = props => (
     <Scenario
         {...props}
         topGradient={greenGradient}
@@ -25,7 +22,9 @@ const UncomfortableDate = props => (
         image={pizzaWoman}
         FirstQuote={FirstQuote}
         SecondQuote={SecondQuote}
+        cardHead="Use an excuse to leave."
+        cardBody="Try out the other feature!"
     />
 );
 
-export default UncomfortableDate;
+export default SecondScenario;

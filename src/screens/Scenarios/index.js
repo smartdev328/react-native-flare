@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Intro from './Intro';
-import WeirdVibes from './WeirdVibes';
 import FakeCall from './FakeCall';
+import FirstScenario from './FirstScenario';
+import SecondScenario from './SecondScenario';
 import addToContactsFunction from '../AddToContacts';
-import UncomfortableDate from './UncomfortableDate';
 import TextYourCrew from './TextYourCrew';
 import * as regActions from '../../actions/regActions';
 import TextSimulator from './TextSimulator';
@@ -47,8 +47,8 @@ const Scenarios = ({
     const intro = React.useCallback(() => {
         setScenarioScreen('intro');
     }, [setScenarioScreen]);
-    const weirdVibes = React.useCallback(() => {
-        setScenarioScreen('weirdVibes');
+    const firstScenario = React.useCallback(() => {
+        setScenarioScreen('firstScenario');
     }, [setScenarioScreen]);
     const fakeCall = React.useCallback(() => {
         awaitShortPress();
@@ -58,15 +58,15 @@ const Scenarios = ({
         awaitLongPress();
         setScenarioScreen('textYourCrew');
     }, [awaitLongPress, setScenarioScreen]);
-    const uncomfortableDate = React.useCallback(() => {
-        setScenarioScreen('uncomfortableDate');
+    const secondScenario = React.useCallback(() => {
+        setScenarioScreen('secondScenario');
     }, [setScenarioScreen]);
     const currentScenario = React.useCallback(() => {
-        setScenarioScreen(didFirst ? 'uncomfortableDate' : 'weirdVibes');
+        setScenarioScreen(didFirst ? 'secondScenario' : 'firstScenario');
     }, [didFirst, setScenarioScreen]);
     const currentScenarioAgain = React.useCallback(() => {
         setScenarioScreen(
-            didFirst ? 'uncomfortableDateAgain' : 'weirdVibesAgain'
+            didFirst ? 'secondScenarioAgain' : 'firstScenarioAgain'
         );
     }, [didFirst, setScenarioScreen]);
     const goldenRules = React.useCallback(
@@ -86,33 +86,33 @@ const Scenarios = ({
             {(() => {
                 switch (screen) {
                     case 'intro':
-                        return <Intro onNext={weirdVibes} />;
-                    case 'weirdVibes':
+                        return <Intro onNext={firstScenario} />;
+                    case 'firstScenario':
                         return (
-                            <WeirdVibes
+                            <FirstScenario
                                 onBack={intro}
                                 fakeCall={didCall ? undefined : fakeCall}
                                 textCrew={didText ? undefined : textYourCrew}
                             />
                         );
-                    case 'weirdVibesAgain':
+                    case 'firstScenarioAgain':
                         return (
-                            <WeirdVibes
+                            <FirstScenario
                                 postDemo
-                                nextScenario={uncomfortableDate}
+                                nextScenario={secondScenario}
                                 addToContacts={addToContacts}
                             />
                         );
-                    case 'uncomfortableDate':
+                    case 'secondScenario':
                         return (
-                            <UncomfortableDate
+                            <SecondScenario
                                 fakeCall={didCall ? undefined : fakeCall}
                                 textCrew={didText ? undefined : textYourCrew}
                             />
                         );
-                    case 'uncomfortableDateAgain':
+                    case 'secondScenarioAgain':
                         return (
-                            <UncomfortableDate
+                            <SecondScenario
                                 postDemo
                                 finishUp={goldenRules}
                                 busy={busy}
