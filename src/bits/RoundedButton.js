@@ -95,8 +95,8 @@ const RoundedButton = ({
         color,
         inverse,
     });
-    const textColorStyle =
-        outline || invisible || inverse ? styles.darkText : undefined;
+    const darkText = outline || invisible || inverse;
+    const textColorStyle = darkText ? styles.darkText : undefined;
 
     const Touchable = animated ? AnimatedTouchable : TouchableOpacity;
 
@@ -117,7 +117,7 @@ const RoundedButton = ({
                 {busy ? (
                     <ActivityIndicator
                         size="small"
-                        color={Colors.theme.cream}
+                        color={darkText ? Colors.black : Colors.theme.cream}
                     />
                 ) : (
                     <Text style={[styles.text, textColorStyle, { fontSize }]}>
