@@ -6,6 +6,7 @@ import DeviceAction from './DeviceAction';
 import { scenarioDidCall } from '../../actions/regActions';
 import { registerCallDetection } from '../../bits/CallDetection';
 import { TOUCH_AND_RELEASE } from '../Cuff';
+import Connecting from './Connecting';
 
 const FakeCall = ({ onBack, onSuccess }) => {
     const dispatch = useDispatch();
@@ -35,18 +36,21 @@ const FakeCall = ({ onBack, onSuccess }) => {
         onSuccess();
     }, [dispatch, onSuccess]);
 
-    return (
-        <DeviceAction
-            onBack={onBack}
-            onNext={finishedCall ? onNext : undefined}
-            headline1="Ready to try it?"
-            headline2="Press for a call."
-            body="Press the button on your cuff and we’ll call you. Listen, react, and hang up whenever!"
-            confirm="I got the call"
-            tada={shortPressStatus === 'done' && !finishedCall}
-            animation={finishedCall ? undefined : TOUCH_AND_RELEASE}
-        />
-    );
+    if (shortPressStatus === 'done' && !finishedCall) {
+        return <Connecting />;
+    } else {
+        return (
+            <DeviceAction
+                onBack={onBack}
+                onNext={finishedCall ? onNext : undefined}
+                headline1="Ready to try it?"
+                headline2="Press for a call."
+                body="Press the button on your cuff and we’ll call you. Listen, react, and hang up whenever!"
+                confirm="I got the call"
+                animation={finishedCall ? undefined : TOUCH_AND_RELEASE}
+            />
+        );
+    }
 };
 
 export default FakeCall;

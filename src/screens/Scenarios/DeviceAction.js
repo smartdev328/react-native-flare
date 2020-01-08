@@ -7,7 +7,6 @@ import WhiteBar from '../Onboarding/WhiteBar';
 import Headline from '../Onboarding/Headline';
 import RoundedButton from '../../bits/RoundedButton';
 import Cuff from '../Cuff';
-import Tada from './Tada';
 
 import aura1519 from '../../assets/aura-1519.jpg';
 
@@ -19,7 +18,6 @@ const DeviceAction = ({
     confirm,
     onNext,
     animation,
-    tada = false,
 }) => {
     return (
         <SafeAreaView style={styles.container}>
@@ -31,7 +29,7 @@ const DeviceAction = ({
             </Headline>
             <View style={styles.line} />
             <Text style={styles.deviceActionText}>{body}</Text>
-            {tada ? <Tada /> : <Cuff button animation={animation} pause />}
+            <Cuff button animation={animation} pause />
             {onNext && (
                 <RoundedButton
                     text={confirm}
