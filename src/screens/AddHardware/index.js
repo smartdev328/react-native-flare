@@ -15,6 +15,7 @@ import Pairing from './Pairing';
 import Aura from '../../bits/Aura';
 
 import aura1519 from '../../assets/aura-1519.jpg';
+import Success from './Success';
 
 class AddHardware extends React.PureComponent {
     constructor() {
@@ -25,7 +26,7 @@ class AddHardware extends React.PureComponent {
     }
 
     nextPage = () => {
-        this.setState(({ page }) => ({ page: Math.min(page + 1, 3) }));
+        this.setState(({ page }) => ({ page: Math.min(page + 1, 4) }));
     };
 
     prevPage = () => {
@@ -81,6 +82,13 @@ class AddHardware extends React.PureComponent {
                 return (
                     <Pairing
                         style={[bottomMargin, StyleSheet.absoluteFill]}
+                        nextPage={this.nextPage}
+                    />
+                );
+            case 4:
+                return (
+                    <Success
+                        style={[bottomMargin, StyleSheet.absoluteFill]}
                         nextPage={this.finish}
                     />
                 );
@@ -94,15 +102,14 @@ class AddHardware extends React.PureComponent {
         const { page } = this.state;
 
         const bottomMargin = { marginBottom: insets.bottom };
+        const dark = page === 2 || page === 3;
 
         return (
             <View style={[styles.container, { paddingTop: insets.top }]}>
-                <StatusBar
-                    barStyle={page >= 2 ? 'light-content' : 'dark-content'}
-                />
-                {page >= 2 && <Aura source={aura1519} />}
+                <StatusBar barStyle={dark ? 'light-content' : 'dark-content'} />
+                {dark && <Aura source={aura1519} />}
                 <WhiteBar
-                    black={page < 2}
+                    black={!dark}
                     showLogo={false}
                     goBack={this.prevPage}
                     showBack={page === 3}
