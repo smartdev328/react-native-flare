@@ -439,6 +439,16 @@ export function user(state = initialState.user, action = {}) {
                 savingSetting: false,
             });
 
+        case types.USER_GET_CALL_SCRIPTS_REQUEST:
+            return state.merge({ fetchingCallScripts: true });
+        case types.USER_GET_CALL_SCRIPTS_SUCCESS:
+            return state.merge({
+                fetchingCallScripts: false,
+                callScripts: action.data,
+            });
+        case types.USER_GET_CALL_SCRIPTS_FAILURE:
+            return state.merge({ fetchingCallScripts: false });
+
         case types.USER_REG_START:
             return state.set('reg', initialState.user.reg);
         case types.USER_REG_SET_NAME:

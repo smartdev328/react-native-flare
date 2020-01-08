@@ -329,3 +329,20 @@ export function setCallScript(token, script) {
             });
     };
 }
+
+export const getCallScripts = token => async dispatch => {
+    dispatch({ type: types.USER_GET_CALL_SCRIPTS_REQUEST });
+    try {
+        const { data } = await ProtectedAPICall(
+            token,
+            API_URL,
+            '/call/scripts',
+            {
+                method: 'GET',
+            }
+        );
+        dispatch({ type: types.USER_GET_CALL_SCRIPTS_SUCCESS, data });
+    } catch (error) {
+        dispatch({ type: types.USER_GET_CALL_SCRIPTS_FAILURE, error });
+    }
+};

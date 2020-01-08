@@ -127,6 +127,13 @@ export const USER_SET_CALL_SCRIPT_REQUEST =
 export const USER_SET_CALL_SCRIPT_SUCCESS =
     'flare.app.USER_SET_CALL_SCRIPT_SUCCESS';
 
+export const USER_GET_CALL_SCRIPTS_FAILURE =
+    'flare.app.USER_GET_CALL_SCRIPTS_FAILURE';
+export const USER_GET_CALL_SCRIPTS_REQUEST =
+    'flare.app.USER_GET_CALL_SCRIPTS_REQUEST';
+export const USER_GET_CALL_SCRIPTS_SUCCESS =
+    'flare.app.USER_GET_CALL_SCRIPTS_SUCCESS';
+
 export const USER_REG_START = 'flare.app.USER_REG_START';
 export const USER_REG_SET_NAME = 'flare.app.USER_REG_SET_NAME';
 export const USER_REG_SET_EMAIL = 'flare.app.USER_REG_SET_EMAIL';

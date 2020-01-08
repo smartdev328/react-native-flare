@@ -7,17 +7,19 @@ import {
     Text,
     View,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import isPlainObject from 'is-plain-object';
 
 import Aura from '../../bits/Aura';
 import Colors from '../../bits/Colors';
 import Constellation from './Constellation';
 import TaskCard from './TaskCard';
+import useDimensions from '../../bits/useDimensions';
+import { openContactsScreen } from '../Contacts';
+import { getCallScripts } from '../../actions/userActions';
 
 import aura599 from '../../assets/aura-599.jpg';
 import outlineHands from '../../assets/outline-hands.png';
-import useDimensions from '../../bits/useDimensions';
-import { openContactsScreen } from '../Contacts';
 
 const styles = StyleSheet.create({
     container: {
@@ -85,13 +87,17 @@ const ITEM_TEMPLATES = [
 ];
 
 const SoftLand = ({ componentId }) => {
+    const dispatch = useDispatch();
     const selector = useSelector(
         ({
             user: {
+                authToken,
                 crews,
                 permissions: { location: locationPermission },
+                callScripts,
             },
         }) => ({
+            authToken,
             locationPermission,
             haveCrew:
                 Array.isArray(crews) &&
@@ -101,6 +107,9 @@ const SoftLand = ({ componentId }) => {
                         Array.isArray(crew.members) &&
                         crew.members.length > 0
                 ),
+            haveCallScripts:
+                isPlainObject(callScripts) &&
+                Object.keys(callScripts).length > 0,
         })
     );
 
@@ -136,6 +145,15 @@ const SoftLand = ({ componentId }) => {
         }),
         [cardWidth]
     );
+
+    // preload list of call scripts if we've never seen them before, so as to
+    // lower the odds of them being not yet available when we want to show
+    // the UI
+    React.useEffect(() => {
+        if (selector.authToken && !selector.haveCallScripts) {
+            dispatch(getCallScripts(selector.authToken));
+        }
+    }, [selector.haveCallScripts, selector.authToken, dispatch]);
 
     return (
         <SafeAreaView style={styles.container}>

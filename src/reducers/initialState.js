@@ -7,7 +7,9 @@ export const initialState = Immutable({
         root: 'insecure', // 'insecure' / 'secure',
     },
     user: {
-        callSript: CallScripts.Default,
+        callScript: CallScripts.Default,
+        callScripts: null,
+        fetchingCallScripts: false,
         contacts: [],
         contactsCrewLookup: {},
         crewEvents: [],
