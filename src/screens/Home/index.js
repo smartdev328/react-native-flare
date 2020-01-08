@@ -25,10 +25,8 @@ import {
 } from '../../actions/index';
 import { processQueuedBeacons } from '../../actions/beaconActions';
 import { getPermission } from '../../actions/userActions';
-import { iconsMap } from '../../bits/AppIcons';
 import { startBleListening } from '../../actions/hardwareActions';
 import Button from '../../bits/Button';
-import Colors from '../../bits/Colors';
 import DeviceSelector from '../../bits/DeviceSelector';
 import FlareAlert from '../../bits/FlareAlert';
 import FlareDeviceID from '../../bits/FlareDeviceID';
@@ -36,6 +34,7 @@ import getCurrentPosition from '../../helpers/location';
 import Strings from '../../locales/en';
 import styles from './styles';
 import SoftLand from './SoftLand';
+import { openContactsScreen } from '../Contacts';
 
 const SOFT_LAND = true;
 
@@ -220,30 +219,7 @@ class Home extends React.Component {
 
     handleContactsClick = () => {
         const { componentId } = this.props;
-        Navigation.push(componentId, {
-            component: {
-                name: 'com.flarejewelry.app.Contacts',
-                options: {
-                    topBar: {
-                        visible: true,
-                        animate: false,
-                        leftButtons: [
-                            {
-                                id: 'backButton',
-                                icon: iconsMap.back,
-                                color: Colors.theme.purple,
-                            },
-                        ],
-                        title: {
-                            component: {
-                                name: 'com.flarejewelry.app.FlareNavBar',
-                                alignment: 'center',
-                            },
-                        },
-                    },
-                },
-            },
-        });
+        openContactsScreen(componentId);
     };
 
     navigationButtonPressed({ buttonId }) {
@@ -310,7 +286,6 @@ class Home extends React.Component {
     }
 
     render() {
-        if (SOFT_LAND) return <SoftLand />;
         const { bluetoothEnabled } = this.state;
         const {
             devices,
@@ -322,7 +297,13 @@ class Home extends React.Component {
             hasActiveFlare,
             permissions,
             contactsLabel,
+            componentId,
         } = this.props;
+
+        if (SOFT_LAND) {
+            return <SoftLand componentId={componentId} />;
+        }
+
         return (
             <View style={styles.container}>
                 {!bluetoothEnabled && (

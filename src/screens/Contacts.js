@@ -12,6 +12,8 @@ import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
 import { changeAppRoot } from '../actions/navActions';
+import { Navigation } from 'react-native-navigation';
+import { iconsMap } from '../bits/AppIcons';
 
 const MAX_CREW_SIZE = 5;
 
@@ -266,3 +268,30 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Contacts);
+
+export const openContactsScreen = componentId => {
+    Navigation.push(componentId, {
+        component: {
+            name: 'com.flarejewelry.app.Contacts',
+            options: {
+                topBar: {
+                    visible: true,
+                    animate: false,
+                    leftButtons: [
+                        {
+                            id: 'backButton',
+                            icon: iconsMap.back,
+                            color: Colors.theme.purple,
+                        },
+                    ],
+                    title: {
+                        component: {
+                            name: 'com.flarejewelry.app.FlareNavBar',
+                            alignment: 'center',
+                        },
+                    },
+                },
+            },
+        },
+    });
+};

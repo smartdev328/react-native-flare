@@ -17,6 +17,7 @@ import TaskCard from './TaskCard';
 import aura599 from '../../assets/aura-599.jpg';
 import outlineHands from '../../assets/outline-hands.png';
 import useDimensions from '../../bits/useDimensions';
+import { openContactsScreen } from '../Contacts';
 
 const styles = StyleSheet.create({
     container: {
@@ -47,10 +48,10 @@ const ITEM_TEMPLATES = [
         title: 'Choose your backup',
         body:
             'Which friends do you want your Flare cuff to text? This is your crew.',
-        done: () => false,
+        done: ({ haveCrew }) => haveCrew,
     },
     {
-        key: 'call-script',
+        key: 'callscript',
         title: 'Pick the perfect Cuff-Call',
         body:
             'What script do you want to hear when we call you? Choose the best for you.',
@@ -79,16 +80,42 @@ const ITEM_TEMPLATES = [
         key: 'permissions',
         title: 'Always allow location',
         body: '“Always allow” your location and turn Bluetooth on.',
-        done: () => true,
+        done: ({ locationPermission }) => locationPermission,
     },
 ];
 
-const SoftLand = () => {
-    const selector = useSelector(() => null);
-    const items = ITEM_TEMPLATES.map(({ done, ...rest }) => ({
+const SoftLand = ({ componentId }) => {
+    const selector = useSelector(
+        ({
+            user: {
+                crews,
+                permissions: { location: locationPermission },
+            },
+        }) => ({
+            locationPermission,
+            haveCrew:
+                Array.isArray(crews) &&
+                crews.some(
+                    crew =>
+                        'members' in crew &&
+                        Array.isArray(crew.members) &&
+                        crew.members.length > 0
+                ),
+        })
+    );
+
+    const callbacks = {
+        crew: React.useCallback(() => openContactsScreen(componentId), [
+            componentId,
+        ]),
+    };
+
+    const items = ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({
         done: done(selector),
+        key,
+        onPress: callbacks[key],
         ...rest,
-    }));
+    })).sort(({ done: done1 }, { done: done2 }) => done1 - done2);
     const doneCount = items.filter(({ done }) => done).length;
 
     const { width: screenWidth } = useDimensions();
