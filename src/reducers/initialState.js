@@ -1,13 +1,12 @@
 import Immutable from 'seamless-immutable';
 import Strings from '../locales/en';
-import CallScripts from '../constants/CallScripts';
 
 export const initialState = Immutable({
     nav: {
         root: 'insecure', // 'insecure' / 'secure',
     },
     user: {
-        callScript: CallScripts.Default,
+        callScript: 1,
         callScripts: null,
         sawCallScripts: false,
         fetchingCallScripts: false,
