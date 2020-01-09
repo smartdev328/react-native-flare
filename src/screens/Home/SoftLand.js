@@ -7,6 +7,7 @@ import {
     Text,
     View,
 } from 'react-native';
+import { Navigation } from 'react-native-navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import isPlainObject from 'is-plain-object';
 
@@ -57,7 +58,7 @@ const ITEM_TEMPLATES = [
         title: 'Pick the perfect Cuff-Call',
         body:
             'What script do you want to hear when we call you? Choose the best for you.',
-        done: () => false,
+        done: ({ sawCallScripts }) => sawCallScripts,
     },
     {
         key: 'notifs',
@@ -95,6 +96,7 @@ const SoftLand = ({ componentId }) => {
                 crews,
                 permissions: { location: locationPermission },
                 callScripts,
+                sawCallScripts,
             },
         }) => ({
             authToken,
@@ -110,6 +112,7 @@ const SoftLand = ({ componentId }) => {
             haveCallScripts:
                 isPlainObject(callScripts) &&
                 Object.keys(callScripts).length > 0,
+            sawCallScripts,
         })
     );
 
@@ -117,6 +120,11 @@ const SoftLand = ({ componentId }) => {
         crew: React.useCallback(() => openContactsScreen(componentId), [
             componentId,
         ]),
+        callscript: React.useCallback(() => {
+            Navigation.push(componentId, {
+                component: { name: 'com.flarejewelry.app.settings.Call' },
+            });
+        }),
     };
 
     const items = ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

@@ -346,3 +346,5 @@ export const getCallScripts = token => async dispatch => {
         dispatch({ type: types.USER_GET_CALL_SCRIPTS_FAILURE, error });
     }
 };
+
+export const sawCallScripts = () => ({ type: types.USER_SAW_CALL_SCRIPTS });

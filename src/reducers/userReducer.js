@@ -444,10 +444,13 @@ export function user(state = initialState.user, action = {}) {
         case types.USER_GET_CALL_SCRIPTS_SUCCESS:
             return state.merge({
                 fetchingCallScripts: false,
-                callScripts: action.data,
+                callScripts: action.data.data,
             });
         case types.USER_GET_CALL_SCRIPTS_FAILURE:
             return state.merge({ fetchingCallScripts: false });
+
+        case types.USER_SAW_CALL_SCRIPTS:
+            return state.merge({ sawCallScripts: true });
 
         case types.USER_REG_START:
             return state.set('reg', initialState.user.reg);

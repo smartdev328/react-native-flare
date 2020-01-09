@@ -1,122 +1,191 @@
 import React from 'react';
-import { ActivityIndicator, Picker, StyleSheet, Text, View } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
+import isPlainObject from 'is-plain-object';
+import { Navigation } from 'react-native-navigation';
 
-import { iconsMap } from '../../bits/AppIcons';
-import { setCallScript } from '../../actions/userActions';
-import CallScripts from '../../constants/CallScripts';
-import Button from '../../bits/Button';
+import * as userActions from '../../actions/userActions';
 import Colors from '../../bits/Colors';
-import Spacing from '../../bits/Spacing';
-import Strings from '../../locales/en';
-import Type from '../../bits/Type';
+import RadioGroup from './RadioGroup';
+import { useNavigationButtonCallback } from '../../bits/useNavigationCallback';
+
+import backIcon from '../../assets/backward-arrow.png';
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: Spacing.medium,
         backgroundColor: Colors.theme.cream,
-        display: 'flex',
-        height: '100%',
         justifyContent: 'flex-start',
+        flex: 1,
+        alignItems: 'stretch',
     },
-    title: {
-        fontSize: 12,
-        fontWeight: 'bold',
-        letterSpacing: 1.2,
-        color: Colors.black,
+    subhead: {
+        fontSize: 13,
+        marginTop: 16,
         textTransform: 'uppercase',
-        paddingHorizontal: Spacing.large,
-        marginBottom: Spacing.medium,
+        marginHorizontal: 24,
+        marginBottom: 8,
     },
-    details: {
-        paddingHorizontal: Spacing.large,
+    explain: {
+        fontSize: 12,
+        marginLeft: 24,
+        marginTop: 8,
+        width: 240,
+        alignSelf: 'flex-start',
     },
 });
 
-class SettingsCall extends React.PureComponent {
-    static options() {
-        return {
+const SettingsCall = ({
+    authToken,
+    savingSetting,
+    savedCallScript,
+    setCallScript,
+    callScripts,
+    componentId,
+    getCallScripts,
+    sawCallScripts,
+}) => {
+    const [dirty, setDirty] = React.useState(false);
+    const [didSave, setDidSave] = React.useState(false);
+    const [currentCallScript, setCurrentCallScript] = React.useState(
+        savedCallScript
+    );
+
+    const onCallScriptSelected = React.useCallback(script => {
+        setCurrentCallScript(script);
+        setDirty(true);
+    }, []);
+
+    const saveCallScript = React.useCallback(() => {
+        setCallScript(authToken, currentCallScript);
+        setDirty(false);
+        setDidSave(true);
+    }, [setCallScript, authToken, currentCallScript]);
+
+    React.useEffect(() => {
+        sawCallScripts();
+        getCallScripts(authToken);
+    }, [sawCallScripts, getCallScripts, authToken]);
+
+    React.useEffect(() => {
+        if (didSave && !savingSetting) {
+            Navigation.pop(componentId);
+        }
+    }, [savingSetting, componentId, didSave]);
+
+    React.useEffect(() => {
+        Navigation.mergeOptions(componentId, {
             topBar: {
-                visible: true,
-                animate: false,
-                leftButtons: [
-                    {
-                        id: 'backButton',
-                        icon: iconsMap.back,
-                        color: Colors.theme.purple,
-                    },
-                ],
-                title: {
-                    component: {
-                        name: 'com.flarejewelry.app.FlareNavBar',
-                        alignment: 'center',
-                    },
-                },
+                rightButtons: dirty
+                    ? [
+                          {
+                              id: 'save',
+                              text: 'Save',
+                              color: Colors.black,
+                          },
+                      ]
+                    : [],
             },
-        };
-    }
-
-    constructor(props) {
-        super(props);
-        console.log(`Creating call settings page with script ${props.callScript}`);
-        this.state = {
-            callScript: props.callScript,
-            dirty: false,
-        };
-    }
-
-    saveCallScript() {
-        this.props.dispatch(setCallScript(this.props.authToken, this.state.callScript));
-        this.setState({
-            dirty: false,
         });
-    }
+    }, [componentId, dirty]);
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>
-                        {Strings.settings.titlePrefix}
-                        {Strings.settings.call.title}
-                    </Text>
-                </View>
-                <Text style={styles.details}>{Strings.settings.call.details}</Text>
-                <Picker
-                    selectedValue={this.state.callScript}
-                    onValueChange={itemValue =>
-                        this.setState({
-                            callScript: itemValue,
-                            dirty: true,
-                        })
+    useNavigationButtonCallback(
+        ({ buttonId }) => {
+            switch (buttonId) {
+                case 'backButton':
+                    if (dirty) {
+                        Alert.alert(
+                            'Are you sure?',
+                            'You haven’t saved your changes',
+                            [
+                                {
+                                    style: 'cancel',
+                                    text: 'Cancel',
+                                    onPress: () => {},
+                                },
+                                {
+                                    style: 'destructive',
+                                    text: 'Close Anyway',
+                                    onPress: () => {
+                                        Navigation.pop(componentId);
+                                    },
+                                },
+                            ]
+                        );
+                    } else {
+                        Navigation.pop(componentId);
                     }
-                >
-                    <Picker.Item label={Strings.settings.call.scripts.roomMateFemale} value={CallScripts.Default} />
-                    <Picker.Item
-                        label={Strings.settings.call.scripts.roomMateMale}
-                        value={CallScripts.RoommateNeedsHelpMale}
-                    />
-                </Picker>
-                {this.props.savingSetting && <ActivityIndicator />}
-                {this.state.dirty && (
-                    <Button
-                        primary
-                        dark
-                        onPress={() => this.saveCallScript()}
-                        title={Strings.settings.call.saveButtonLabel}
-                    />
-                )}
-            </View>
-        );
-    }
-}
+                    break;
+                case 'save':
+                    saveCallScript();
+                    break;
+                default:
+                    break;
+            }
+        },
+        [saveCallScript, dirty, componentId]
+    );
 
-function mapStateToProps(state) {
-    return {
-        authToken: state.user.authToken,
-        callScript: state.user.callScript,
-        savingSetting: state.user.savingSetting,
-    };
-}
+    const pickerItems = React.useMemo(() => {
+        if (isPlainObject(callScripts)) {
+            return Object.entries(callScripts)
+                .filter(([id]) => id !== 'FounderIntro')
+                .map(([, { script_name: label, script_id: key }]) => ({
+                    key,
+                    label,
+                }));
+        } else {
+            return [];
+        }
+    }, [callScripts]);
 
-export default connect(mapStateToProps)(SettingsCall);
+    return (
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.subhead}>Select what you’ll hear</Text>
+            <RadioGroup
+                items={pickerItems}
+                selectedItem={currentCallScript}
+                onSelected={onCallScriptSelected}
+            />
+            <Text style={styles.explain}>
+                Select which call you’ll hear when you press your cuff once.
+            </Text>
+        </SafeAreaView>
+    );
+};
+
+SettingsCall.options = () => ({
+    topBar: {
+        visible: true,
+        animate: false,
+        leftButtons: [
+            {
+                id: 'backButton',
+                icon: backIcon,
+                color: Colors.black,
+            },
+        ],
+        title: {
+            text: 'Cuff Call',
+        },
+    },
+});
+
+const mapStateToProps = ({
+    user: { authToken, callScript, callScripts, savingSetting },
+}) => ({
+    authToken,
+    savedCallScript: callScript,
+    callScripts,
+    savingSetting,
+});
+
+const mapDispatchToProps = {
+    setCallScript: userActions.setCallScript,
+    getCallScripts: userActions.getCallScripts,
+    sawCallScripts: userActions.sawCallScripts,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SettingsCall);

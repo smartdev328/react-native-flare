@@ -134,6 +134,8 @@ export const USER_GET_CALL_SCRIPTS_REQUEST =
 export const USER_GET_CALL_SCRIPTS_SUCCESS =
     'flare.app.USER_GET_CALL_SCRIPTS_SUCCESS';
 
+export const USER_SAW_CALL_SCRIPTS = 'flare.app.USER_SAW_CALL_SCRIPTS';
+
 export const USER_REG_START = 'flare.app.USER_REG_START';
 export const USER_REG_SET_NAME = 'flare.app.USER_REG_SET_NAME';
 export const USER_REG_SET_EMAIL = 'flare.app.USER_REG_SET_EMAIL';
