@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-curly-brace-presence */
 import * as React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text } from 'react-native';
 
 import Colors from '../../bits/Colors';
 
@@ -14,9 +14,6 @@ const styles = StyleSheet.create({
         width: 168,
         height: 94,
         marginBottom: 24,
-    },
-    textWrapper: {
-        flexDirection: 'row',
     },
     text: {
         fontSize: 12,
@@ -47,14 +44,12 @@ const Constellation = ({ count, maxCount = 6 }) => {
     return (
         <>
             {image && <Image source={image} style={styles.image} />}
-            <View style={styles.textWrapper}>
-                <Text style={[styles.text, styles.textNumber]}>{count}</Text>
-                <Text style={[styles.text, styles.textString]}>{' of '}</Text>
-                <Text style={[styles.text, styles.textNumber]}>{maxCount}</Text>
-                <Text style={[styles.text, styles.textString]}>
-                    {' complete'}
-                </Text>
-            </View>
+            <Text style={styles.text}>
+                <Text style={styles.textNumber}>{count}</Text>
+                <Text style={styles.textString}>{' of '}</Text>
+                <Text style={styles.textNumber}>{maxCount}</Text>
+                <Text style={styles.textString}>{' complete'}</Text>
+            </Text>
         </>
     );
 };
