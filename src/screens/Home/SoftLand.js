@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {
     FlatList,
-    SafeAreaView,
     StatusBar,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
+import { useSafeArea } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import isPlainObject from 'is-plain-object';
 
@@ -37,11 +38,62 @@ const styles = StyleSheet.create({
         marginTop: 48,
     },
     list: {
-        marginTop: 96,
+        flexGrow: 0,
+        marginTop: 40,
+    },
+    listContainer: {
         alignSelf: 'stretch',
+        height: 200,
     },
     spacer: {
         width: 48,
+    },
+    bottomCard: {
+        backgroundColor: Colors.theme.cream,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        flexDirection: 'column',
+        marginTop: 'auto',
+        alignSelf: 'stretch',
+    },
+    toggleContainer: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        alignItems: 'stretch',
+        height: 46,
+        marginTop: -23,
+        width: 180,
+    },
+    toggleItem: {
+        width: 90,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: Colors.theme.cream,
+        borderWidth: 1,
+    },
+    toggleItemLeft: {
+        borderTopLeftRadius: 23,
+        borderBottomLeftRadius: 23,
+        borderRightWidth: 0,
+        paddingLeft: 4,
+    },
+    toggleItemRight: {
+        borderTopRightRadius: 23,
+        borderBottomRightRadius: 23,
+        borderLeftWidth: 0,
+        paddingRight: 4,
+    },
+    toggleItemSelected: {
+        backgroundColor: Colors.black,
+    },
+    toggleItemUnselected: {
+        backgroundColor: '#B77CA3',
+    },
+    toggleText: {
+        color: Colors.theme.cream,
+        textAlign: 'center',
+        fontSize: 20,
+        fontFamily: 'Nocturno Display Std',
     },
 });
 
@@ -115,6 +167,11 @@ const SoftLand = ({ componentId }) => {
             sawCallScripts,
         })
     );
+    const insets = useSafeArea();
+
+    const [showDone, setShowDone] = React.useState(false);
+    const setDone = React.useCallback(() => setShowDone(true));
+    const setUnDone = React.useCallback(() => setShowDone(false));
 
     const callbacks = {
         crew: React.useCallback(() => openContactsScreen(componentId), [
@@ -132,8 +189,9 @@ const SoftLand = ({ componentId }) => {
         key,
         onPress: callbacks[key],
         ...rest,
-    })).sort(({ done: done1 }, { done: done2 }) => done1 - done2);
+    }));
     const doneCount = items.filter(({ done }) => done).length;
+    const filteredItems = items.filter(({ done }) => done === showDone);
 
     const { width: screenWidth } = useDimensions();
     const cardWidth = screenWidth - 96;
@@ -164,25 +222,54 @@ const SoftLand = ({ componentId }) => {
     }, [selector.haveCallScripts, selector.authToken, dispatch]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
             <Aura source={aura599} />
             <Text style={styles.headline}>Your Safety Setup</Text>
             <Constellation count={doneCount} />
-            <FlatList
-                style={styles.list}
-                data={items}
-                extraData={cardWidth}
-                renderItem={renderItem}
-                horizontal
-                ListHeaderComponent={<View style={styles.spacer} />}
-                ListFooterComponent={<View style={styles.spacer} />}
-                snapToAlignment="start"
-                snapToInterval={cardWidth}
-                decelerationRate="fast"
-                getItemLayout={getItemLayout}
-            />
-        </SafeAreaView>
+            <View style={[styles.bottomCard]}>
+                <View style={styles.toggleContainer}>
+                    <TouchableOpacity
+                        style={[
+                            styles.toggleItem,
+                            styles.toggleItemLeft,
+                            showDone
+                                ? styles.toggleItemUnselected
+                                : styles.toggleItemSelected,
+                        ]}
+                        onPress={setUnDone}
+                    >
+                        <Text style={styles.toggleText}>To do</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.toggleItem,
+                            styles.toggleItemRight,
+                            showDone
+                                ? styles.toggleItemSelected
+                                : styles.toggleItemUnselected,
+                        ]}
+                        onPress={setDone}
+                    >
+                        <Text style={styles.toggleText}>Done</Text>
+                    </TouchableOpacity>
+                </View>
+                <FlatList
+                    style={[styles.list, { paddingBottom: insets.bottom + 40 }]}
+                    contentContainerStyle={styles.listContainer}
+                    data={filteredItems}
+                    extraData={cardWidth}
+                    renderItem={renderItem}
+                    horizontal
+                    ListHeaderComponent={<View style={styles.spacer} />}
+                    ListFooterComponent={<View style={styles.spacer} />}
+                    snapToAlignment="start"
+                    snapToInterval={cardWidth}
+                    decelerationRate="fast"
+                    getItemLayout={getItemLayout}
+                />
+            </View>
+        </View>
     );
 };
 

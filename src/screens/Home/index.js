@@ -3,6 +3,7 @@
 import React from 'react';
 import { AppState } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -273,7 +274,11 @@ class Home extends React.Component {
     render() {
         const { componentId } = this.props;
 
-        return <SoftLand componentId={componentId} />;
+        return (
+            <SafeAreaProvider>
+                <SoftLand componentId={componentId} />
+            </SafeAreaProvider>
+        );
     }
 }
 
