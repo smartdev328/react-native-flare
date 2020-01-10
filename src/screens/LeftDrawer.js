@@ -1,10 +1,19 @@
 import React from 'react';
-import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    Image,
+    Linking,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
 
-import { changeAppRoot } from '../actions';
-import { AMBASSADOR_SIGNUP_URL, LEFT_NAVIGATION_WIDTH } from '../constants/Config';
+import * as navActions from '../actions/navActions';
+import {
+    AMBASSADOR_SIGNUP_URL,
+    LEFT_NAVIGATION_WIDTH,
+} from '../constants/Config';
 import Aura from '../bits/Aura';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
@@ -12,7 +21,7 @@ import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
 
-import { signOut } from '../actions/authActions';
+import * as authActions from '../actions/authActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -58,71 +67,73 @@ const styles = StyleSheet.create({
     },
 });
 
-// eslint-disable-next-line react/prefer-stateless-function
-class LeftDrawer extends React.Component {
-    handleHome() {
-        this.props.dispatch(changeAppRoot('secure'));
-    }
+const MenuItem = ({ onPress, label }) => (
+    <TouchableOpacity onPress={onPress}>
+        <Text style={styles.menuItem}>{label}</Text>
+    </TouchableOpacity>
+);
 
-    handleJewelry() {
-        this.props.dispatch(changeAppRoot('secure-jewelry'));
-    }
+const LeftDrawer = ({ changeAppRoot, signOut }) => {
+    const handleHome = React.useCallback(() => {
+        changeAppRoot('secure');
+    }, [changeAppRoot]);
 
-    handleSettings() {
-        this.props.dispatch(changeAppRoot('secure-settings'));
-    }
+    const handleJewelry = React.useCallback(() => {
+        changeAppRoot('secure-jewelry');
+    }, [changeAppRoot]);
 
-    handleSignOut() {
-        this.props.dispatch(signOut());
-    }
+    const handleSettings = React.useCallback(() => {
+        changeAppRoot('secure-settings');
+    }, [changeAppRoot]);
 
-    goToPushedView = () => {
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.LeftDrawer',
-            },
-        });
-    };
+    const ambassadorSignup = React.useCallback(() => {
+        Linking.openURL(AMBASSADOR_SIGNUP_URL);
+    }, []);
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <Aura />
-                <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
-                <RandomImage
-                    sources={[{ uri: 'menu-photo-1' }, { uri: 'menu-photo-2' }, { uri: 'menu-photo-3' }]}
-                    style={styles.topImage}
+    return (
+        <View style={styles.container}>
+            <Aura />
+            <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
+            <RandomImage
+                sources={[
+                    { uri: 'menu-photo-1' },
+                    { uri: 'menu-photo-2' },
+                    { uri: 'menu-photo-3' },
+                ]}
+                style={styles.topImage}
+            />
+            <View>
+                <MenuItem
+                    onPress={handleHome}
+                    label={Strings.leftDrawer.home}
                 />
-                <View>
-                    <TouchableOpacity onPress={() => this.handleHome()}>
-                        <Text style={styles.menuItem}>{Strings.leftDrawer.home}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.handleJewelry()}>
-                        <Text style={styles.menuItem}>{Strings.leftDrawer.jewelry}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.handleSettings()}>
-                        <Text style={styles.menuItem}>{Strings.leftDrawer.settings}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.handleSignOut()}>
-                        <Text style={styles.menuItem}>{Strings.generic.signOut}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => Linking.openURL(AMBASSADOR_SIGNUP_URL)}>
-                        <Text style={[styles.menuItem, styles.specialMenuItem]}>
-                            {Strings.leftDrawer.ambassador}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                <MenuItem
+                    onPress={handleJewelry}
+                    label={Strings.leftDrawer.jewelry}
+                />
+                <MenuItem
+                    onPress={handleSettings}
+                    label={Strings.leftDrawer.settings}
+                />
+                <MenuItem onPress={signOut} label={Strings.generic.signOut} />
+                <TouchableOpacity onPress={ambassadorSignup}>
+                    <Text style={[styles.menuItem, styles.specialMenuItem]}>
+                        {Strings.leftDrawer.ambassador}
+                    </Text>
+                </TouchableOpacity>
             </View>
-        );
-    }
-}
+        </View>
+    );
+};
 
-function mapStateToProps(state) {
-    return {
-        authToken: state.user.authToken,
-        cancelingActiveFlare: state.user.cancelingActiveFlare,
-        hasActiveFlare: state.user.hasActiveFlare,
-    };
-}
+const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps)(LeftDrawer);
+const mapDispatchToProps = {
+    changeAppRoot: navActions.changeAppRoot,
+    signOut: authActions.signOut,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LeftDrawer);
