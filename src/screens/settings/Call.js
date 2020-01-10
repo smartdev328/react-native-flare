@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { Alert, SafeAreaView, StatusBar, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import isPlainObject from 'is-plain-object';
 import { Navigation } from 'react-native-navigation';
@@ -140,6 +140,7 @@ const SettingsCall = ({
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar barStyle="dark-content" />
             <Text style={styles.subhead}>Select what you’ll hear</Text>
             <RadioGroup
                 items={pickerItems}
@@ -157,6 +158,7 @@ SettingsCall.options = () => ({
     topBar: {
         visible: true,
         animate: false,
+        background: { color: Colors.theme.cream },
         leftButtons: [
             {
                 id: 'backButton',
