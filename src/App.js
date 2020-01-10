@@ -131,9 +131,7 @@ export default class App extends Component {
                             },
                             options: {
                                 sideMenu: {
-                                    left: {
-                                        width: LEFT_NAVIGATION_WIDTH,
-                                    },
+                                    animationType: 'slide',
                                 },
                                 topBar: {
                                     noBorder: true,

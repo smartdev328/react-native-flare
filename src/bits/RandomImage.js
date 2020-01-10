@@ -1,23 +1,14 @@
-/* eslint global-require: "off" */
 import React from 'react';
 import { Image } from 'react-native';
 
-export default class FlareDate extends React.PureComponent {
-    constructor(props) {
-        super(props);
+const RandomImage = ({ sources, ...rest }) => {
+    const randomIndex = React.useMemo(
+        () => Math.floor(Math.random() * sources.length),
+        [sources.length]
+    );
+    const currentSource = sources[randomIndex];
 
-        const randomIndex = Math.floor(Math.random() * props.sources.length);
-        this.state = {
-            currentSource: props.sources[randomIndex],
-        };
-    }
+    return <Image {...rest} source={currentSource} />;
+};
 
-    render() {
-        return (
-            <Image
-                {...this.props}
-                source={this.state.currentSource}
-            />
-        );
-    }
-}
+export default RandomImage;
