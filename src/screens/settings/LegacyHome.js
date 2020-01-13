@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
-import Colors from '../bits/Colors';
-import Strings from '../locales/en';
-import Spacing from '../bits/Spacing';
-import SettingsSection from '../bits/SettingsSection';
+import Colors from '../../bits/Colors';
+import Strings from '../../locales/en';
+import Spacing from '../../bits/Spacing';
+import SettingsSection from '../../bits/SettingsSection';
 
 const styles = StyleSheet.create({
     container: {
@@ -41,7 +41,11 @@ const SettingsSections = [
     {
         name: 'account',
         title: Strings.settings.sections.account.title,
-        pages: [SettingsPages.privacy, SettingsPages.notifications, SettingsPages.call],
+        pages: [
+            SettingsPages.privacy,
+            SettingsPages.notifications,
+            SettingsPages.call,
+        ],
     },
     {
         name: 'diagnostics',
@@ -87,12 +91,14 @@ export default class Settings extends React.Component {
 
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
-        case 'menuButton':
-            this.toggleSideMenu();
-            break;
-        default:
-            console.warn(`Unhandled button press in home screen: ${buttonId}`);
-            break;
+            case 'menuButton':
+                this.toggleSideMenu();
+                break;
+            default:
+                console.warn(
+                    `Unhandled button press in home screen: ${buttonId}`
+                );
+                break;
         }
     }
 
@@ -130,21 +136,21 @@ export default class Settings extends React.Component {
 
     handlePress(pressed) {
         switch (pressed) {
-        case SettingsPages.call:
-            this.showCallScreen();
-            break;
-        case SettingsPages.config:
-            this.showConfigScreen();
-            break;
-        case SettingsPages.notifications:
-            this.showNotificationsScreen();
-            break;
-        case SettingsPages.privacy:
-            this.showPrivacyScreen();
-            break;
-        default:
-            console.warn(`Unhandled settings link pressed: ${pressed}`);
-            break;
+            case SettingsPages.call:
+                this.showCallScreen();
+                break;
+            case SettingsPages.config:
+                this.showConfigScreen();
+                break;
+            case SettingsPages.notifications:
+                this.showNotificationsScreen();
+                break;
+            case SettingsPages.privacy:
+                this.showPrivacyScreen();
+                break;
+            default:
+                console.warn(`Unhandled settings link pressed: ${pressed}`);
+                break;
         }
     }
 

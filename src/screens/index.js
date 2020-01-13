@@ -15,11 +15,13 @@ import PinCheck from './PinCheck';
 import Register from './Register';
 import Register2 from './Register2';
 import Root from './Root';
-import Settings from './Settings';
-import SettingsCall from './settings/Call';
-import SettingsConfig from './settings/Config';
-import SetttingsNotifications from './settings/Notifications';
-import SettingsPrivacy from './settings/Privacy';
+import {
+    Call as SettingsCall,
+    LegacyConfig as SettingsConfig,
+    LegacyHome as Settings,
+    Notifications as SetttingsNotifications,
+    LegacyPrivacy as SettingsPrivacy,
+} from './settings';
 import SignIn from './SignIn';
 import AddHardware from './AddHardware';
 import HowToConnect from './AddHardware/HowToConnect';
