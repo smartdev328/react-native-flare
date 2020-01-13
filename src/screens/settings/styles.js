@@ -52,32 +52,39 @@ export const styles = StyleSheet.create({
     icon: {
         width: 24,
         height: 24,
+        marginRight: 18,
     },
     text: {
-        marginLeft: 18,
         fontSize: 17,
         color: Colors.black,
         flex: 1,
     },
 });
 
-export const navOptions = titleText => ({
-    topBar: {
-        visible: true,
-        animate: false,
-        background: { color: Colors.theme.cream },
-        leftButtons: [
+export const navOptions = (titleText, back = true) => {
+    const opts = {
+        topBar: {
+            visible: true,
+            animate: false,
+            background: { color: Colors.theme.cream },
+            title: {
+                text: titleText,
+            },
+        },
+    };
+
+    if (back) {
+        opts.topBar.leftButtons = [
             {
                 id: 'backButton',
                 icon: backIcon,
                 color: Colors.black,
             },
-        ],
-        title: {
-            text: titleText,
-        },
-    },
-});
+        ];
+    }
+
+    return opts;
+};
 
 export const saveButton = {
     id: 'save',

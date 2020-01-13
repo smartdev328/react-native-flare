@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
 
 import * as navActions from '../actions/navActions';
-import * as authActions from '../actions/authActions';
 import { LEFT_NAVIGATION_WIDTH } from '../constants/Config';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
@@ -56,7 +55,7 @@ const MenuItem = ({ onPress, label, icon }) => (
     </TouchableOpacity>
 );
 
-const LeftDrawer = ({ changeAppRoot, signOut }) => {
+const LeftDrawer = ({ changeAppRoot }) => {
     const insets = useSafeArea();
 
     const handleHome = React.useCallback(() => {
@@ -69,6 +68,10 @@ const LeftDrawer = ({ changeAppRoot, signOut }) => {
 
     const handleSettings = React.useCallback(() => {
         changeAppRoot('secure-settings');
+    }, [changeAppRoot]);
+
+    const handleAccount = React.useCallback(() => {
+        changeAppRoot('secure-account');
     }, [changeAppRoot]);
 
     return (
@@ -106,7 +109,7 @@ const LeftDrawer = ({ changeAppRoot, signOut }) => {
                     icon={iconSettings}
                 />
                 <MenuItem
-                    onPress={handleSettings}
+                    onPress={handleAccount}
                     label="My Account"
                     icon={iconProfile}
                 />
@@ -119,7 +122,6 @@ const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
     changeAppRoot: navActions.changeAppRoot,
-    signOut: authActions.signOut,
 };
 
 const ConnectedLeftDrawer = connect(

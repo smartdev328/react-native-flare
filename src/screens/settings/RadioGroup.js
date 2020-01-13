@@ -19,11 +19,11 @@ const RadioGroup = ({ items, onSelected, selectedItem }) => {
         return null;
     } else {
         return (
-            <View style={styles.container}>
+            <View style={styles.itemContainer}>
                 {items.map((item, index) => (
                     <TouchableOpacity
                         style={[
-                            styles.itemContainer,
+                            styles.item,
                             index === 0 ? undefined : styles.itemBorder,
                         ]}
                         key={item.key}

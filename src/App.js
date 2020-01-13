@@ -16,6 +16,8 @@ import Colors from './bits/Colors';
 import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
 
+import menuIcon from './assets/menu-icon.png';
+
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
 let store = null;
@@ -24,6 +26,68 @@ export const bugsnag = new Client('a48fda6bc569b8e593d7cf2fe3b6a49c');
 RNLocation.configure({
     allowsBackgroundLocationUpdates: true,
 });
+
+const setDefaultOptions = () => {
+    Navigation.setDefaultOptions({
+        topBar: {
+            background: {
+                color: Colors.theme.cream,
+                translucent: false,
+            },
+            leftButtons: [
+                {
+                    id: 'menuButton',
+                    icon: menuIcon,
+                    color: Colors.black,
+                },
+            ],
+            title: {
+                component: {
+                    name: 'com.flarejewelry.app.FlareNavBar',
+                    alignment: 'center',
+                },
+            },
+            noBorder: true,
+        },
+    });
+};
+
+const setRootWithDefaults = (id, name) => {
+    Navigation.setRoot({
+        root: {
+            sideMenu: {
+                left: {
+                    component: {
+                        name: 'com.flarejewelry.app.LeftDrawer',
+                    },
+                },
+                center: {
+                    stack: {
+                        id,
+                        children: [
+                            {
+                                component: { name },
+                            },
+                        ],
+                    },
+                },
+                options: {
+                    sideMenu: {
+                        sideMenu: {
+                            animationType: 'slide',
+                        },
+                        left: {
+                            width: LEFT_NAVIGATION_WIDTH,
+                        },
+                    },
+                    topBar: {
+                        noBorder: true,
+                    },
+                },
+            },
+        },
+    });
+};
 
 export default class App extends Component {
     constructor(props) {
@@ -110,8 +174,7 @@ export default class App extends Component {
                                                             {
                                                                 id:
                                                                     'menuButton',
-                                                                // eslint-disable-next-line
-                                                                icon: require('./assets/menu-icon.png'),
+                                                                icon: menuIcon,
                                                             },
                                                         ],
                                                         title: {
@@ -142,62 +205,18 @@ export default class App extends Component {
                 });
                 break;
             case 'secure-jewelry':
-                Navigation.setDefaultOptions({
-                    topBar: {
-                        background: {
-                            color: Colors.theme.cream,
-                            translucent: false,
-                        },
-                        leftButtons: [
-                            {
-                                id: 'menuButton',
-                                icon: require('./assets/menu-icon.png'),
-                                color: Colors.black,
-                            },
-                        ],
-                        title: {
-                            component: {
-                                name: 'com.flarejewelry.app.FlareNavBar',
-                                alignment: 'center',
-                            },
-                        },
-                        noBorder: true,
-                    },
-                });
-                Navigation.setRoot({
-                    root: {
-                        sideMenu: {
-                            left: {
-                                component: {
-                                    name: 'com.flarejewelry.app.LeftDrawer',
-                                },
-                            },
-                            center: {
-                                stack: {
-                                    id: 'JEWELRY_STACK',
-                                    children: [
-                                        {
-                                            component: {
-                                                name:
-                                                    'com.flarejewelry.app.Jewelry',
-                                            },
-                                        },
-                                    ],
-                                },
-                            },
-                            options: {
-                                sideMenu: {
-                                    left: {
-                                        width: LEFT_NAVIGATION_WIDTH,
-                                    },
-                                },
-                                topBar: {
-                                    noBorder: true,
-                                },
-                            },
-                        },
-                    },
-                });
+                setDefaultOptions();
+                setRootWithDefaults(
+                    'JEWELRY_STACK',
+                    'com.flarejewelry.app.Jewelry'
+                );
+                break;
+            case 'secure-account':
+                setDefaultOptions();
+                setRootWithDefaults(
+                    'ACCOUNT_STACK',
+                    'com.flarejewelry.app.settings.Account'
+                );
                 break;
             case 'secure-active-event':
                 Navigation.setRoot({
@@ -221,62 +240,11 @@ export default class App extends Component {
                 });
                 break;
             case 'secure-settings':
-                Navigation.setDefaultOptions({
-                    topBar: {
-                        background: {
-                            color: Colors.theme.cream,
-                            translucent: false,
-                        },
-                        leftButtons: [
-                            {
-                                id: 'menuButton',
-                                icon: require('./assets/menu-icon.png'),
-                                color: Colors.black,
-                            },
-                        ],
-                        title: {
-                            component: {
-                                name: 'com.flarejewelry.app.FlareNavBar',
-                                alignment: 'center',
-                            },
-                        },
-                        noBorder: true,
-                    },
-                });
-                Navigation.setRoot({
-                    root: {
-                        sideMenu: {
-                            left: {
-                                component: {
-                                    name: 'com.flarejewelry.app.LeftDrawer',
-                                },
-                            },
-                            center: {
-                                stack: {
-                                    id: 'SETTINGS_STACK',
-                                    children: [
-                                        {
-                                            component: {
-                                                name:
-                                                    'com.flarejewelry.app.Settings',
-                                            },
-                                        },
-                                    ],
-                                },
-                            },
-                            options: {
-                                sideMenu: {
-                                    left: {
-                                        width: LEFT_NAVIGATION_WIDTH,
-                                    },
-                                },
-                                topBar: {
-                                    noBorder: true,
-                                },
-                            },
-                        },
-                    },
-                });
+                setDefaultOptions();
+                setRootWithDefaults(
+                    'SETTINGS_STACK',
+                    'com.flarejewelry.app.Settings'
+                );
                 break;
             case 'secure-manufacturing':
                 Navigation.setRoot({

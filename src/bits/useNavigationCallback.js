@@ -11,3 +11,24 @@ export const useNavigationButtonCallback = (callback, deps) => {
         };
     }, deps);
 };
+
+export const useSlideMenu = componentId => {
+    const [showSideMenu, setShowSideMenu] = React.useState(false);
+
+    useNavigationButtonCallback(
+        ({ buttonId }) => {
+            console.log('unbc', { buttonId, showSideMenu });
+            if (buttonId === 'menuButton') {
+                Navigation.mergeOptions(componentId, {
+                    sideMenu: {
+                        left: {
+                            visible: !showSideMenu,
+                        },
+                    },
+                });
+                setShowSideMenu(!showSideMenu);
+            }
+        },
+        [componentId, showSideMenu]
+    );
+};

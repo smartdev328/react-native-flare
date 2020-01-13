@@ -16,6 +16,7 @@ import Register from './Register';
 import Register2 from './Register2';
 import Root from './Root';
 import {
+    Account,
     Call as SettingsCall,
     LegacyConfig as SettingsConfig,
     LegacyHome as Settings,
@@ -117,6 +118,12 @@ export default (store, Provider) => {
     Navigation.registerComponent(
         'com.flarejewelry.app.Settings',
         () => Settings
+    );
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.settings.Account',
+        () => Account,
+        Provider,
+        store
     );
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.settings.Call',
