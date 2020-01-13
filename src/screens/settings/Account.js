@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {
+    Image,
+    Linking,
     SafeAreaView,
     StatusBar,
     Switch,
@@ -16,7 +18,8 @@ import * as userActions from '../../actions/userActions';
 import Colors from '../../bits/Colors';
 import contactSupport from '../../bits/contactSupport';
 import { useSlideMenu } from '../../bits/useNavigationCallback';
-import { nav } from '../../reducers';
+
+import chevron from '../../assets/chevron.png';
 
 const Account = ({
     componentId,
@@ -30,7 +33,7 @@ const Account = ({
 
     const editJewelry = React.useCallback(() => {
         changeAppRoot('secure-jewelry');
-    });
+    }, [changeAppRoot]);
 
     const setPrivacy = React.useCallback(
         value => {
@@ -39,6 +42,13 @@ const Account = ({
         [authToken, setPrivacyConfig]
     );
 
+    const openTerms = React.useCallback(() => {
+        Linking.openURL('https://getflare.com/pages/terms-of-service');
+    }, []);
+    const openPrivacy = React.useCallback(() => {
+        Linking.openURL('https://getflare.com/pages/privacy-policy');
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" />
@@ -46,6 +56,11 @@ const Account = ({
             <View style={styles.itemContainer}>
                 <TouchableOpacity style={styles.item} onPress={editJewelry}>
                     <Text style={styles.text}>Add/Edit Jewelry</Text>
+                    <Image
+                        resizeMode="center"
+                        source={chevron}
+                        style={styles.icon}
+                    />
                 </TouchableOpacity>
                 <View style={[styles.item, styles.itemBorder]}>
                     <Text style={styles.text}>
@@ -64,10 +79,10 @@ const Account = ({
             >
                 <Text style={styles.text}>Support Center</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} onPress={openTerms}>
                 <Text style={styles.text}>Terms and Conditions</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item}>
+            <TouchableOpacity style={styles.item} onPress={openPrivacy}>
                 <Text style={styles.text}>Privacy Policy</Text>
             </TouchableOpacity>
             <TouchableOpacity

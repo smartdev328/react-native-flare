@@ -30,7 +30,7 @@ const RadioGroup = ({ items, onSelected, selectedItem }) => {
                         onPress={callbacks[index]}
                     >
                         <Image
-                            style={styles.icon}
+                            style={[styles.icon, { marginRight: 18 }]}
                             source={
                                 item.key === selectedItem
                                     ? selectedIcon

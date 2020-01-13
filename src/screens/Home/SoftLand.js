@@ -170,8 +170,8 @@ const SoftLand = ({ componentId }) => {
     const insets = useSafeArea();
 
     const [showDone, setShowDone] = React.useState(false);
-    const setDone = React.useCallback(() => setShowDone(true));
-    const setUnDone = React.useCallback(() => setShowDone(false));
+    const setDone = React.useCallback(() => setShowDone(true), []);
+    const setUnDone = React.useCallback(() => setShowDone(false), []);
 
     const callbacks = {
         crew: React.useCallback(() => openContactsScreen(componentId), [
@@ -181,7 +181,7 @@ const SoftLand = ({ componentId }) => {
             Navigation.push(componentId, {
                 component: { name: 'com.flarejewelry.app.settings.Call' },
             });
-        }),
+        }, [componentId]),
     };
 
     const items = ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

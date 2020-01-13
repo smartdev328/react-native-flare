@@ -19,7 +19,7 @@ import {
     Account,
     Call as SettingsCall,
     LegacyConfig as SettingsConfig,
-    LegacyHome as Settings,
+    Home as Settings,
     Notifications as SetttingsNotifications,
 } from './settings';
 import SignIn from './SignIn';
