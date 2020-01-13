@@ -75,13 +75,16 @@ const Home = ({ onSignUpPressed, onSignInPressed }) => {
             <View style={styles.spacer} />
             <RoundedButton
                 text={Strings.onboarding.signupButton}
+                outline
+                forceWhiteText
                 wrapperStyle={styles.signupButton}
                 onPress={onSignUpPressed}
                 width={240}
             />
             <RoundedButton
-                inverse
                 text={Strings.signin.signInLabel}
+                invisible
+                forceWhiteText
                 wrapperStyle={styles.signinButton}
                 onPress={onSignInPressed}
                 width={240}
