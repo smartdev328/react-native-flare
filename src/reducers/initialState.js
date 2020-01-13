@@ -29,6 +29,7 @@ export const initialState = Immutable({
         settings: {
             promptType: Strings.settings.notifications.defaultOption,
             promptMessage: Strings.settings.notifications.defaultMessage,
+            enableNotifications: true,
             analyticsEnabled: true,
         },
         reg: {

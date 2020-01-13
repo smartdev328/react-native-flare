@@ -58,6 +58,15 @@ export const styles = StyleSheet.create({
         color: Colors.black,
         flex: 1,
     },
+    disabled: {
+        opacity: 0.4,
+    },
+    spaced: {
+        marginTop: 48,
+    },
+    textField: {
+        marginHorizontal: 24,
+    },
 });
 
 export const navOptions = (titleText, back = true) => {

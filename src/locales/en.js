@@ -328,7 +328,7 @@ const Strings = {
         notifications: {
             customOption: 'Custom',
             customPromptPlaceholder: 'Your code phrase',
-            defaultMessage: '8am appt tomorrow',
+            defaultMessage: 'You sent a flare 💫',
             defaultOption: 'Default',
             promptSelectionBody:
                 "You'll get a notification with this message when you press and hold the button on your jewelry. " +

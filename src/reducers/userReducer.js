@@ -359,6 +359,13 @@ export function user(state = initialState.user, action = {}) {
             });
         }
 
+        case types.USER_SET_NOTIFICATIONS_ENABLED:
+            return Immutable.setIn(
+                state,
+                ['settings', 'enableNotifications'],
+                action.value
+            );
+
         /**
          * SET USER PIN
          */

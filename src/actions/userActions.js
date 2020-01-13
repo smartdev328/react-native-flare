@@ -149,6 +149,29 @@ export const DEPRECATED_getNotificationsPermission = async dispatch => {
     }
 };
 
+export const checkNotificationPermission = () => async dispatch => {
+    const { status } = await checkNotifications();
+    dispatch({
+        type: types.PERMISSIONS_SUCCESS,
+        permission: 'notification',
+        granted: status === RESULTS.GRANTED,
+    });
+};
+
+export const getNotificationPermission = () => async dispatch => {
+    const result = await requestNotifications([
+        'alert',
+        'badge',
+        'sound',
+        'lockScreen',
+    ]);
+    dispatch({
+        type: types.PERMISSIONS_SUCCESS,
+        permission: 'notification',
+        granted: result === RESULTS.GRANTED,
+    });
+};
+
 export const getPermission = name => {
     const friendlyNames = {
         'ios.permission.CONTACTS': 'contacts',
@@ -205,6 +228,11 @@ export function setNotificationMessage(token, message, custom) {
             });
     };
 }
+
+export const setNotificationsEnabled = value => ({
+    type: types.USER_SET_NOTIFICATIONS_ENABLED,
+    value,
+});
 
 export function setCancelPIN(token, pin) {
     return function setPin(dispatch) {
