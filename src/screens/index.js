@@ -21,7 +21,6 @@ import {
     LegacyConfig as SettingsConfig,
     LegacyHome as Settings,
     Notifications as SetttingsNotifications,
-    LegacyPrivacy as SettingsPrivacy,
 } from './settings';
 import SignIn from './SignIn';
 import AddHardware from './AddHardware';
@@ -138,12 +137,6 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.settings.Notifications',
         () => SetttingsNotifications,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.settings.Privacy',
-        () => SettingsPrivacy,
         Provider,
         store
     );
