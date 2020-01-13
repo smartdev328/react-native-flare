@@ -18,7 +18,6 @@ import Root from './Root';
 import {
     Account,
     Call as SettingsCall,
-    LegacyConfig as SettingsConfig,
     Home as Settings,
     Notifications as SetttingsNotifications,
 } from './settings';
@@ -28,7 +27,6 @@ import HowToConnect from './AddHardware/HowToConnect';
 
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import AboutPermissions from './AddHardware/AboutPermissions';
-import Trouble from './AddHardware/Trouble';
 import Scenarios from './Scenarios';
 
 export default (store, Provider) => {
@@ -130,10 +128,6 @@ export default (store, Provider) => {
         Provider,
         store
     );
-    Navigation.registerComponent(
-        'com.flarejewelry.app.settings.Config',
-        () => SettingsConfig
-    );
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.settings.Notifications',
         () => SetttingsNotifications,
@@ -165,12 +159,6 @@ export default (store, Provider) => {
     Navigation.registerComponent(
         'com.flarejewelry.onboarding.addhardware.aboutpermissions',
         () => AboutPermissions
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.oboarding.addhardware.trouble',
-        () => Trouble,
-        Provider,
-        store
     );
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.scenarios',
