@@ -8,6 +8,7 @@ import {
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
@@ -145,9 +146,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     const { actionCreator } = ownProps;
-    return {
-        action: text => dispatch(actionCreator(text)),
-    };
+    return bindActionCreators({ action: actionCreator }, dispatch);
 };
 
 export default connect(
