@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
     FlatList,
+    ScrollView,
     StatusBar,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
@@ -16,12 +16,13 @@ import Aura from '../../bits/Aura';
 import Colors from '../../bits/Colors';
 import Constellation from './Constellation';
 import TaskCard from './TaskCard';
+import DoneItem from './DoneItem';
 import useDimensions from '../../bits/useDimensions';
 import { openContactsScreen } from '../Contacts';
 import { getCallScripts } from '../../actions/userActions';
+import count from '../../bits/count';
 
-import aura599 from '../../assets/aura-599.jpg';
-import outlineHands from '../../assets/outline-hands.png';
+import aura1528 from '../../assets/aura-1528.jpg';
 
 const styles = StyleSheet.create({
     container: {
@@ -37,9 +38,19 @@ const styles = StyleSheet.create({
         marginBottom: 24,
         marginTop: 48,
     },
+    subhead: {
+        textAlign: 'left',
+        alignSelf: 'flex-start',
+        color: Colors.theme.cream,
+        fontFamily: 'Nocturno Display Std',
+        fontSize: 20,
+        marginTop: 12,
+        marginHorizontal: 56,
+    },
     list: {
         flexGrow: 0,
         marginTop: 40,
+        paddingBottom: 12,
     },
     listContainer: {
         alignSelf: 'stretch',
@@ -106,13 +117,6 @@ const ITEM_TEMPLATES = [
         done: ({ haveCrew }) => haveCrew,
     },
     {
-        key: 'callscript',
-        title: 'Pick the perfect Cuff-Call',
-        body:
-            'What script do you want to hear when we call you? Choose the best for you.',
-        done: ({ sawCallScripts }) => sawCallScripts,
-    },
-    {
         key: 'notifs',
         title: 'Customize Notifications',
         body:
@@ -120,22 +124,30 @@ const ITEM_TEMPLATES = [
         done: ({ sawNotifSettings }) => sawNotifSettings,
     },
     {
-        key: 'test',
-        title: 'Test your cuff',
-        body: 'Test your cuff to learn how it works and when to use it.',
-        done: () => true,
-    },
-    {
-        key: 'pair',
-        title: 'Pair your Flare Cuff',
-        body: 'Connect your jewelry with your app for the first time.',
-        done: () => true,
+        key: 'callscript',
+        title: 'Pick the perfect Cuff-Call',
+        body:
+            'What script do you want to hear when we call you? Choose the best for you.',
+        done: ({ sawCallScripts }) => sawCallScripts,
     },
     {
         key: 'permissions',
-        title: 'Always allow location',
+        title: 'Allow Location and Bluetooth',
         body: '“Always allow” your location and turn Bluetooth on.',
         done: ({ locationPermission }) => locationPermission,
+    },
+    {
+        key: 'share',
+        title: 'Share Flare 💕',
+        body:
+            'Invite your friends to join the movement. Send a special promo code.',
+        done: () => false,
+    },
+    {
+        key: 'onboard',
+        title: 'Onboard with Flare',
+        body: 'Test your cuff to learn how it works and when to use it.',
+        done: () => true,
     },
 ];
 
@@ -171,10 +183,6 @@ const SoftLand = ({ componentId }) => {
     );
     const insets = useSafeArea();
 
-    const [showDone, setShowDone] = React.useState(false);
-    const setDone = React.useCallback(() => setShowDone(true), []);
-    const setUnDone = React.useCallback(() => setShowDone(false), []);
-
     const callbacks = {
         crew: React.useCallback(() => openContactsScreen(componentId), [
             componentId,
@@ -204,16 +212,15 @@ const SoftLand = ({ componentId }) => {
         onPress: callbacks[key],
         ...rest,
     }));
-    const doneCount = items.filter(({ done }) => done).length;
-    const filteredItems = items.filter(({ done }) => done === showDone);
+    const doneCount = count(items, ({ done }) => done);
+    const doneItems = items.filter(({ done }) => done);
+    const undoneItems = items.filter(({ done }) => !done);
 
     const { width: screenWidth } = useDimensions();
     const cardWidth = screenWidth - 96;
 
     const renderItem = React.useCallback(
-        ({ item }) => (
-            <TaskCard {...item} image={outlineHands} width={cardWidth} />
-        ),
+        ({ item }) => <TaskCard {...item} width={cardWidth} />,
         [cardWidth]
     );
 
@@ -238,40 +245,20 @@ const SoftLand = ({ componentId }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
-            <Aura source={aura599} />
-            <Text style={styles.headline}>Your Safety Setup</Text>
-            <Constellation count={doneCount} />
-            <View style={[styles.bottomCard]}>
-                <View style={styles.toggleContainer}>
-                    <TouchableOpacity
-                        style={[
-                            styles.toggleItem,
-                            styles.toggleItemLeft,
-                            showDone
-                                ? styles.toggleItemUnselected
-                                : styles.toggleItemSelected,
-                        ]}
-                        onPress={setUnDone}
-                    >
-                        <Text style={styles.toggleText}>To do</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[
-                            styles.toggleItem,
-                            styles.toggleItemRight,
-                            showDone
-                                ? styles.toggleItemSelected
-                                : styles.toggleItemUnselected,
-                        ]}
-                        onPress={setDone}
-                    >
-                        <Text style={styles.toggleText}>Done</Text>
-                    </TouchableOpacity>
-                </View>
+            <Aura source={aura1528} />
+            <ScrollView
+                style={{ flex: 1, alignSelf: 'stretch' }}
+                contentContainerStyle={{
+                    alignItems: 'center',
+                    paddingBottom: insets.bottom + 32,
+                }}
+            >
+                <Text style={styles.headline}>Your Safety Setup</Text>
+                <Constellation count={doneCount} />
                 <FlatList
-                    style={[styles.list, { paddingBottom: insets.bottom + 40 }]}
+                    style={styles.list}
                     contentContainerStyle={styles.listContainer}
-                    data={filteredItems}
+                    data={undoneItems}
                     extraData={cardWidth}
                     renderItem={renderItem}
                     horizontal
@@ -282,7 +269,11 @@ const SoftLand = ({ componentId }) => {
                     decelerationRate="fast"
                     getItemLayout={getItemLayout}
                 />
-            </View>
+                <Text style={styles.subhead}>Completed</Text>
+                {doneItems.map(item => (
+                    <DoneItem {...item} />
+                ))}
+            </ScrollView>
         </View>
     );
 };

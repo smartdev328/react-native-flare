@@ -3,18 +3,13 @@ import { Image, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 
 import Colors from '../../bits/Colors';
 
+import cardbg from '../../assets/card-bg.jpg';
+
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         paddingHorizontal: 8,
         height: 200,
-    },
-    image: {
-        width: 105,
-        height: 81,
-        right: 0,
-        top: 0,
-        position: 'absolute',
     },
     card: {
         height: 200,
@@ -23,7 +18,12 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignSelf: 'stretch',
         alignItems: 'flex-start',
-        backgroundColor: Colors.black,
+    },
+    cardbg: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        height: 200,
         borderTopLeftRadius: 30,
         borderBottomRightRadius: 30,
     },
@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Nocturno Display Std',
         fontSize: 20,
         marginBottom: 8,
-        marginRight: 80,
     },
     body: {
         color: Colors.theme.cream,
@@ -43,13 +42,16 @@ const styles = StyleSheet.create({
     },
 });
 
-const TaskCard = ({ image, title, body, onPress, width }) => (
+const TaskCard = ({ title, body, onPress, width }) => (
     <TouchableOpacity style={[styles.container, { width }]} onPress={onPress}>
         <View style={styles.card}>
+            <Image
+                source={cardbg}
+                style={[styles.cardbg, { width: width - 24 }]}
+            />
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.body}>{body}</Text>
         </View>
-        <Image source={image} style={styles.image} />
     </TouchableOpacity>
 );
 
