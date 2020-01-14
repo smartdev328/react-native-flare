@@ -376,3 +376,5 @@ export const getCallScripts = token => async dispatch => {
 };
 
 export const sawCallScripts = () => ({ type: types.USER_SAW_CALL_SCRIPTS });
+
+export const sawNotifSettings = () => ({ type: types.USER_SAW_NOTIF_SETTINGS });

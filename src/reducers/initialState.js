@@ -9,6 +9,7 @@ export const initialState = Immutable({
         callScript: 1,
         callScripts: null,
         sawCallScripts: false,
+        sawNotifSettings: false,
         fetchingCallScripts: false,
         contacts: [],
         contactsCrewLookup: {},

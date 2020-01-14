@@ -117,7 +117,7 @@ const ITEM_TEMPLATES = [
         title: 'Customize Notifications',
         body:
             'How do you want to be notified that your text has been sent? Choose your level of discretion.',
-        done: () => false,
+        done: ({ sawNotifSettings }) => sawNotifSettings,
     },
     {
         key: 'test',
@@ -149,6 +149,7 @@ const SoftLand = ({ componentId }) => {
                 permissions: { location: locationPermission },
                 callScripts,
                 sawCallScripts,
+                sawNotifSettings,
             },
         }) => ({
             authToken,
@@ -165,6 +166,7 @@ const SoftLand = ({ componentId }) => {
                 isPlainObject(callScripts) &&
                 Object.keys(callScripts).length > 0,
             sawCallScripts,
+            sawNotifSettings,
         })
     );
     const insets = useSafeArea();

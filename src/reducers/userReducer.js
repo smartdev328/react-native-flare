@@ -458,6 +458,8 @@ export function user(state = initialState.user, action = {}) {
 
         case types.USER_SAW_CALL_SCRIPTS:
             return state.merge({ sawCallScripts: true });
+        case types.USER_SAW_NOTIF_SETTINGS:
+            return state.merge({ sawNotifSettings: true });
 
         case types.USER_REG_START:
             return state.set('reg', initialState.user.reg);

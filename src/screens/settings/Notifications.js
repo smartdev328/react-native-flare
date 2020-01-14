@@ -20,11 +20,16 @@ const Notifications = ({
     checkNotificationPermission,
     getNotificationPermission,
     setNotificationMessage,
+    sawNotifSettings,
 }) => {
     const [dirty, setDirty] = React.useState(false);
     const [didSave, setDidSave] = React.useState(false);
     const [message, setMessage] = React.useState(promptMessage);
     const fullyEnabled = enableNotifications && notifPermission;
+
+    React.useEffect(() => {
+        sawNotifSettings();
+    }, [sawNotifSettings]);
 
     React.useEffect(() => {
         Navigation.mergeOptions(componentId, {
@@ -141,6 +146,7 @@ const mapDispatchToProps = {
     checkNotificationPermission: userActions.checkNotificationPermission,
     getNotificationPermission: userActions.getNotificationPermission,
     setNotificationMessage: userActions.setNotificationMessage,
+    sawNotifSettings: userActions.sawNotifSettings,
 };
 
 export default connect(
