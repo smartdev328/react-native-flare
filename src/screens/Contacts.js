@@ -1,8 +1,10 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
-import { setCrewMembers, fetchContacts } from '../actions/userActions';
+import * as userActions from '../actions/userActions';
+import * as navActions from '../actions/navActions';
 import Button from '../bits/Button';
 import ContactsList from '../bits/ContactsList';
 import Colors from '../bits/Colors';
@@ -11,8 +13,6 @@ import CrewList from '../bits/CrewList';
 import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
 import Type from '../bits/Type';
-import { changeAppRoot } from '../actions/navActions';
-import { Navigation } from 'react-native-navigation';
 import { iconsMap } from '../bits/AppIcons';
 
 const MAX_CREW_SIZE = 5;
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
 
 const CREW_LIST_ITEM_HEIGHT = 46;
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Contacts extends React.Component {
     static options() {
         return {
@@ -90,7 +89,8 @@ class Contacts extends React.Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchContacts());
+        const { fetchContacts } = this.props;
+        fetchContacts();
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -117,7 +117,8 @@ class Contacts extends React.Component {
         return null;
     }
 
-    handleContactPress(contact) {
+    handleContactPress = contact => {
+        const { setCrewMembers, authToken } = this.props;
         const { crew } = this.state;
         const { members } = crew;
 
@@ -140,13 +141,12 @@ class Contacts extends React.Component {
             crew,
         });
 
-        const crewId = (this.state.crew && this.state.crew.id) || 0;
-        this.props.dispatch(
-            setCrewMembers(this.props.authToken, crewId, newMembers)
-        );
-    }
+        const crewId = (crew && crew.id) || 0;
+        setCrewMembers(authToken, crewId, newMembers);
+    };
 
-    removeCrewMember(contact) {
+    removeCrewMember = contact => {
+        const { setCrewMembers, authToken } = this.props;
         const { crew } = this.state;
         const { members } = crew;
 
@@ -159,16 +159,25 @@ class Contacts extends React.Component {
             crew,
         });
 
-        const crewId = (this.state.crew && this.state.crew.id) || 0;
-        this.props.dispatch(
-            setCrewMembers(this.props.authToken, crewId, newMembers)
-        );
-    }
+        const crewId = (crew && crew.id) || 0;
+        setCrewMembers(authToken, crewId, newMembers);
+    };
 
     render() {
+        const {
+            fromOnboarding,
+            hasCrew,
+            crew,
+            changeAppRoot,
+            contacts,
+            contactsCount,
+            contactsCrewLookup,
+            loading,
+        } = this.props;
+        const { crewListHeight, contactSections } = this.state;
         return (
             <View style={styles.container}>
-                {this.props.fromOnboarding && (
+                {fromOnboarding && (
                     <View style={styles.onboardingHeader}>
                         <View style={styles.tutorialOverlay}>
                             <CommonTop />
@@ -182,71 +191,63 @@ class Contacts extends React.Component {
                                 }
                             </Text>
                         </View>
-                        {this.props.hasCrew && (
+                        {hasCrew && (
                             <View style={styles.tutorialButtons}>
                                 <CrewList
                                     style={{
-                                        height: this.state.crewListHeight,
+                                        height: crewListHeight,
                                     }}
-                                    crew={this.props.crew}
-                                    onPressContact={contact =>
-                                        this.removeCrewMember(contact)
-                                    }
+                                    crew={crew}
+                                    onPressContact={this.removeCrewMember}
                                 />
                                 <Button
                                     title={
                                         Strings.onboarding.contacts.overlay
                                             .closeButtonLabel
                                     }
-                                    onPress={() =>
-                                        this.props.dispatch(
-                                            changeAppRoot('secure')
-                                        )
-                                    }
+                                    onPress={() => changeAppRoot('secure')}
                                     primary
                                 />
                             </View>
                         )}
                     </View>
                 )}
-                {!this.props.fromOnboarding && (
+                {fromOnboarding && (
                     <View>
-                        {!this.props.hasCrew && (
+                        {hasCrew && (
                             <View>
                                 <Text style={styles.prompt}>
                                     {Strings.contacts.choosePrompt}
                                 </Text>
                             </View>
                         )}
-                        {this.props.hasCrew && (
+                        {hasCrew && (
                             <View>
                                 <Text style={styles.prompt}>
                                     {Strings.contacts.chooseInstruction.start}{' '}
-                                    {this.props.crew.members.length}{' '}
+                                    {crew.members.length}{' '}
                                     {Strings.contacts.chooseInstruction.end}
                                 </Text>
                                 <CrewList
                                     style={{
-                                        height: this.state.crewListHeight,
+                                        height: crewListHeight,
                                     }}
-                                    crew={this.props.crew}
-                                    onPressContact={contact =>
-                                        this.removeCrewMember(contact)
-                                    }
+                                    crew={crew}
+                                    onPressContact={this.removeCrewMember}
                                 />
                             </View>
                         )}
                     </View>
                 )}
                 <ContactsList
-                    contacts={this.props.contacts}
-                    contactsCount={this.props.contactsCount}
-                    contactsCrewLookup={this.props.contactsCrewLookup || {}}
-                    onPressContact={contact => this.handleContactPress(contact)}
-                    sectionList={this.state.contactSections}
+                    contacts={contacts}
+                    contactsCount={contactsCount}
+                    contactsCrewLookup={contactsCrewLookup || {}}
+                    onPressContact={this.handleContactPress}
+                    sectionList={contactSections}
                 />
 
-                <View>{this.props.loading && <ActivityIndicator />}</View>
+                <View>{loading && <ActivityIndicator />}</View>
             </View>
         );
     }
@@ -267,7 +268,16 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Contacts);
+const mapDispatchToProps = {
+    setCrewMembers: userActions.setCrewMembers,
+    fetchContacts: userActions.fetchContacts,
+    changeAppRoot: navActions.changeAppRoot,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Contacts);
 
 export const openContactsScreen = componentId => {
     Navigation.push(componentId, {
