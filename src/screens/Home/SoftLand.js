@@ -182,6 +182,18 @@ const SoftLand = ({ componentId }) => {
                 component: { name: 'com.flarejewelry.app.settings.Call' },
             });
         }, [componentId]),
+        notifs: React.useCallback(() => {
+            Navigation.push(componentId, {
+                component: {
+                    name: 'com.flarejewelry.app.settings.Notifications',
+                },
+            });
+        }, [componentId]),
+        permissions: React.useCallback(() => {
+            Navigation.showModal({
+                component: { name: 'com.flarejewelry.app.PermissionsReminder' },
+            });
+        }, []),
     };
 
     const items = ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

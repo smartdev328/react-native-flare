@@ -28,6 +28,7 @@ import HowToConnect from './AddHardware/HowToConnect';
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import AboutPermissions from './AddHardware/AboutPermissions';
 import Scenarios from './Scenarios';
+import PermissionsReminder from './Home/PermissionsReminder';
 
 export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
@@ -73,6 +74,12 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.HomeActive',
         () => HomeActive,
+        Provider,
+        store
+    );
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.PermissionsReminder',
+        () => PermissionsReminder,
         Provider,
         store
     );
