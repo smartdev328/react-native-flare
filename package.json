@@ -33,7 +33,6 @@
         "react-native-location": "^2.5.0",
         "react-native-material-textfield": "^0.16.1",
         "react-native-navigation": "3.2.0",
-        "react-native-onboarding-swiper": "https://github.com/mgaron/react-native-onboarding-swiper.git",
         "react-native-permissions": "^2.0.0",
         "react-native-safe-area-context": "^0.6.1",
         "react-native-splash-screen": "^3.2.0",
