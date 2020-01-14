@@ -151,7 +151,11 @@ const TextSimulator = ({ onSuccess }) => {
                     { paddingBottom: insets.bottom },
                 ]}
             >
-                <ScrollView alwaysBounceVertical={false} ref={scrollRef}>
+                <ScrollView
+                    alwaysBounceVertical={false}
+                    ref={scrollRef}
+                    indicatorStyle="white"
+                >
                     {messages.map(
                         (message, index) =>
                             index <= current && (

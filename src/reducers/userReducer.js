@@ -359,6 +359,13 @@ export function user(state = initialState.user, action = {}) {
             });
         }
 
+        case types.USER_SET_NOTIFICATIONS_ENABLED:
+            return Immutable.setIn(
+                state,
+                ['settings', 'enableNotifications'],
+                action.value
+            );
+
         /**
          * SET USER PIN
          */
@@ -438,6 +445,21 @@ export function user(state = initialState.user, action = {}) {
             return state.merge({
                 savingSetting: false,
             });
+
+        case types.USER_GET_CALL_SCRIPTS_REQUEST:
+            return state.merge({ fetchingCallScripts: true });
+        case types.USER_GET_CALL_SCRIPTS_SUCCESS:
+            return state.merge({
+                fetchingCallScripts: false,
+                callScripts: action.data.data,
+            });
+        case types.USER_GET_CALL_SCRIPTS_FAILURE:
+            return state.merge({ fetchingCallScripts: false });
+
+        case types.USER_SAW_CALL_SCRIPTS:
+            return state.merge({ sawCallScripts: true });
+        case types.USER_SAW_NOTIF_SETTINGS:
+            return state.merge({ sawNotifSettings: true });
 
         case types.USER_REG_START:
             return state.set('reg', initialState.user.reg);

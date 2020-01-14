@@ -67,8 +67,8 @@ const TaskItem = ({ emoji, icon, text, last = false }) => (
     </View>
 );
 
-const AlwaysAllow = ({ nextPage, style, tellMeMore }) => {
-    const [didAdvance, setDidAdvance] = React.useState(false);
+const AlwaysAllow = ({ nextPage, style = [], tellMeMore, force = false }) => {
+    const [didAdvance, setDidAdvance] = React.useState(force);
     const dispatch = useDispatch();
 
     const locationPermission = useSelector(

@@ -28,6 +28,8 @@ const Scenario = ({
     busy,
     FirstQuote,
     SecondQuote,
+    cardHead,
+    cardBody,
 }) => {
     const insets = useSafeArea();
     const dimensions = useDimensions();
@@ -188,6 +190,8 @@ const Scenario = ({
                 postDemo={postDemo}
                 finishUp={finishUp}
                 busy={busy}
+                cardHead={cardHead}
+                cardBody={cardBody}
             />
         </View>
     );

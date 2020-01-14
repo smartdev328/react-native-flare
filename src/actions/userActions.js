@@ -149,6 +149,29 @@ export const DEPRECATED_getNotificationsPermission = async dispatch => {
     }
 };
 
+export const checkNotificationPermission = () => async dispatch => {
+    const { status } = await checkNotifications();
+    dispatch({
+        type: types.PERMISSIONS_SUCCESS,
+        permission: 'notification',
+        granted: status === RESULTS.GRANTED,
+    });
+};
+
+export const getNotificationPermission = () => async dispatch => {
+    const result = await requestNotifications([
+        'alert',
+        'badge',
+        'sound',
+        'lockScreen',
+    ]);
+    dispatch({
+        type: types.PERMISSIONS_SUCCESS,
+        permission: 'notification',
+        granted: result === RESULTS.GRANTED,
+    });
+};
+
 export const getPermission = name => {
     const friendlyNames = {
         'ios.permission.CONTACTS': 'contacts',
@@ -205,6 +228,11 @@ export function setNotificationMessage(token, message, custom) {
             });
     };
 }
+
+export const setNotificationsEnabled = value => ({
+    type: types.USER_SET_NOTIFICATIONS_ENABLED,
+    value,
+});
 
 export function setCancelPIN(token, pin) {
     return function setPin(dispatch) {
@@ -329,3 +357,24 @@ export function setCallScript(token, script) {
             });
     };
 }
+
+export const getCallScripts = token => async dispatch => {
+    dispatch({ type: types.USER_GET_CALL_SCRIPTS_REQUEST });
+    try {
+        const { data } = await ProtectedAPICall(
+            token,
+            API_URL,
+            '/call/scripts',
+            {
+                method: 'GET',
+            }
+        );
+        dispatch({ type: types.USER_GET_CALL_SCRIPTS_SUCCESS, data });
+    } catch (error) {
+        dispatch({ type: types.USER_GET_CALL_SCRIPTS_FAILURE, error });
+    }
+};
+
+export const sawCallScripts = () => ({ type: types.USER_SAW_CALL_SCRIPTS });
+
+export const sawNotifSettings = () => ({ type: types.USER_SAW_NOTIF_SETTINGS });

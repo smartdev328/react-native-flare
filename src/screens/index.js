@@ -15,19 +15,20 @@ import PinCheck from './PinCheck';
 import Register from './Register';
 import Register2 from './Register2';
 import Root from './Root';
-import Settings from './Settings';
-import SettingsCall from './settings/Call';
-import SettingsConfig from './settings/Config';
-import SetttingsNotifications from './settings/Notifications';
-import SettingsPrivacy from './settings/Privacy';
+import {
+    Account,
+    Call as SettingsCall,
+    Home as Settings,
+    Notifications as SetttingsNotifications,
+} from './settings';
 import SignIn from './SignIn';
 import AddHardware from './AddHardware';
 import HowToConnect from './AddHardware/HowToConnect';
 
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import AboutPermissions from './AddHardware/AboutPermissions';
-import Trouble from './AddHardware/Trouble';
 import Scenarios from './Scenarios';
+import PermissionsReminder from './Home/PermissionsReminder';
 
 export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
@@ -77,6 +78,12 @@ export default (store, Provider) => {
         store
     );
     Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.PermissionsReminder',
+        () => PermissionsReminder,
+        Provider,
+        store
+    );
+    Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.Jewelry',
         () => Jewelry,
         Provider,
@@ -117,24 +124,20 @@ export default (store, Provider) => {
         () => Settings
     );
     Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.settings.Account',
+        () => Account,
+        Provider,
+        store
+    );
+    Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.settings.Call',
         () => SettingsCall,
         Provider,
         store
     );
-    Navigation.registerComponent(
-        'com.flarejewelry.app.settings.Config',
-        () => SettingsConfig
-    );
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.settings.Notifications',
         () => SetttingsNotifications,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.settings.Privacy',
-        () => SettingsPrivacy,
         Provider,
         store
     );
@@ -163,12 +166,6 @@ export default (store, Provider) => {
     Navigation.registerComponent(
         'com.flarejewelry.onboarding.addhardware.aboutpermissions',
         () => AboutPermissions
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.oboarding.addhardware.trouble',
-        () => Trouble,
-        Provider,
-        store
     );
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.scenarios',

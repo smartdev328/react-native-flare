@@ -1,13 +1,16 @@
 import Immutable from 'seamless-immutable';
 import Strings from '../locales/en';
-import CallScripts from '../constants/CallScripts';
 
 export const initialState = Immutable({
     nav: {
         root: 'insecure', // 'insecure' / 'secure',
     },
     user: {
-        callSript: CallScripts.Default,
+        callScript: 1,
+        callScripts: null,
+        sawCallScripts: false,
+        sawNotifSettings: false,
+        fetchingCallScripts: false,
         contacts: [],
         contactsCrewLookup: {},
         crewEvents: [],
@@ -27,6 +30,7 @@ export const initialState = Immutable({
         settings: {
             promptType: Strings.settings.notifications.defaultOption,
             promptMessage: Strings.settings.notifications.defaultMessage,
+            enableNotifications: true,
             analyticsEnabled: true,
         },
         reg: {

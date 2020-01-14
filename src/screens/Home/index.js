@@ -1,8 +1,9 @@
 /* global __DEV__ */
 /* eslint global-require: "off" */
 import React from 'react';
-import { AppState, Text, View } from 'react-native';
+import { AppState } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -15,26 +16,18 @@ import {
     ACCOUNT_SYNC_INTERVAL,
     ACCOUNT_SYNC_INTERVAL_FLARE,
     ACCOUNT_SYNC_INTERVAL_DEV,
-    SHOW_ALL_BEACONS_IN_HOME_SCREEN,
 } from '../../constants/Config';
 import {
-    claimDevice,
     syncAccountDetails,
     fetchContacts,
     changeAppRoot,
 } from '../../actions/index';
 import { processQueuedBeacons } from '../../actions/beaconActions';
 import { getPermission } from '../../actions/userActions';
-import { iconsMap } from '../../bits/AppIcons';
 import { startBleListening } from '../../actions/hardwareActions';
-import Button from '../../bits/Button';
-import Colors from '../../bits/Colors';
-import DeviceSelector from '../../bits/DeviceSelector';
-import FlareAlert from '../../bits/FlareAlert';
-import FlareDeviceID from '../../bits/FlareDeviceID';
 import getCurrentPosition from '../../helpers/location';
 import Strings from '../../locales/en';
-import styles from './styles';
+import SoftLand from './SoftLand';
 
 class Home extends React.Component {
     constructor(props) {
@@ -215,34 +208,6 @@ class Home extends React.Component {
         });
     };
 
-    handleContactsClick = () => {
-        const { componentId } = this.props;
-        Navigation.push(componentId, {
-            component: {
-                name: 'com.flarejewelry.app.Contacts',
-                options: {
-                    topBar: {
-                        visible: true,
-                        animate: false,
-                        leftButtons: [
-                            {
-                                id: 'backButton',
-                                icon: iconsMap.back,
-                                color: Colors.theme.purple,
-                            },
-                        ],
-                        title: {
-                            component: {
-                                name: 'com.flarejewelry.app.FlareNavBar',
-                                alignment: 'center',
-                            },
-                        },
-                    },
-                },
-            },
-        });
-    };
-
     navigationButtonPressed({ buttonId }) {
         switch (buttonId) {
             case 'menuButton':
@@ -307,107 +272,27 @@ class Home extends React.Component {
     }
 
     render() {
-        const { bluetoothEnabled } = this.state;
-        const {
-            devices,
-            claimingDevice,
-            claimingDeviceFailure,
-            dispatch,
-            authToken,
-            latestBeacon,
-            hasActiveFlare,
-            permissions,
-            contactsLabel,
-        } = this.props;
-        return (
-            <View style={styles.container}>
-                {!bluetoothEnabled && (
-                    <FlareAlert
-                        message={Strings.home.bluetoothDisabledWarning}
-                        variant="warning"
-                        large
-                        centered
-                    />
-                )}
-                <View style={styles.deviceSelector}>
-                    <DeviceSelector
-                        addDevice={deviceID => {
-                            dispatch(claimDevice(authToken, deviceID));
-                        }}
-                        devices={devices}
-                        claimingDevice={claimingDevice}
-                        claimingDeviceFailure={claimingDeviceFailure}
-                    >
-                        <View style={styles.centered}>
-                            {!latestBeacon && (
-                                <Text>{Strings.home.lastBeacon.absent}</Text>
-                            )}
-                            {latestBeacon && (
-                                <View style={styles.centered}>
-                                    <Text>
-                                        {Strings.home.lastBeacon.present}
-                                    </Text>
-                                    <Text
-                                        style={[styles.centered, styles.dimmed]}
-                                    >
-                                        {moment(latestBeacon.timestamp).format(
-                                            'MMM D @ h:mma'
-                                        )}
-                                    </Text>
-                                    {SHOW_ALL_BEACONS_IN_HOME_SCREEN && (
-                                        <FlareDeviceID
-                                            value={latestBeacon.deviceID}
-                                            style={[styles.centered]}
-                                        />
-                                    )}
-                                </View>
-                            )}
-                        </View>
-                    </DeviceSelector>
-                </View>
+        const { componentId } = this.props;
 
-                <View style={styles.footer}>
-                    {!hasActiveFlare && permissions.contacts && (
-                        <Button
-                            primary
-                            dark
-                            onPress={() => this.handleContactsClick()}
-                            title={contactsLabel}
-                        />
-                    )}
-                    {!permissions.contacts && (
-                        <Text>{Strings.home.contactsNeedPermission}</Text>
-                    )}
-                </View>
-            </View>
+        return (
+            <SafeAreaProvider>
+                <SoftLand componentId={componentId} />
+            </SafeAreaProvider>
         );
     }
 }
 
-function mapStateToProps(state) {
-    const contactsLabel =
-        state.user.crews && state.user.crews.length
-            ? Strings.home.contactsButtonLabelEdit
-            : Strings.home.contactsButtonLabelAdd;
-
-    return {
-        activatingFlareState: state.user.activatingFlareState,
-        analyticsEnabled: state.user.settings.analyticsEnabled,
-        claimingDevice: state.user.claimingDevice,
-        claimingDeviceFailure: state.user.claimingDeviceFailure,
-        crewEventNotificationMessage: state.user.settings.promptMessage,
-        contactsLabel,
-        crews: state.user.crews,
-        devices: state.user.devices,
-        hardware: state.hardware,
-        hasActiveFlare: state.user.hasActiveFlare,
-        latestBeacon: state.beacons.latest,
-        permissions: state.user.permissions,
-        problemBeacons: state.beacons.problems,
-        analyticsToken: state.user.analyticsToken,
-        authToken: state.user.authToken,
-        radioToken: state.user.radioToken,
-    };
-}
+const mapStateToProps = state => ({
+    analyticsEnabled: state.user.settings.analyticsEnabled,
+    crewEventNotificationMessage: state.user.settings.promptMessage,
+    hardware: state.hardware,
+    hasActiveFlare: state.user.hasActiveFlare,
+    latestBeacon: state.beacons.latest,
+    permissions: state.user.permissions,
+    problemBeacons: state.beacons.problems,
+    analyticsToken: state.user.analyticsToken,
+    authToken: state.user.authToken,
+    radioToken: state.user.radioToken,
+});
 
 export default connect(mapStateToProps)(Home);

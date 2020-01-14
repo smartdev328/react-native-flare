@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderColor: Colors.black,
     },
+    whiteOutline: {
+        borderColor: Colors.theme.cream,
+    },
     disabled: {
         opacity: 0.4,
     },
@@ -85,6 +88,7 @@ const RoundedButton = ({
     fontSize = 14,
     color,
     animated = false,
+    forceWhiteText = false,
     disabled,
 }) => {
     const ButtonComponent = useGradient ? GradientButton : View;
@@ -95,8 +99,8 @@ const RoundedButton = ({
         color,
         inverse,
     });
-    const textColorStyle =
-        outline || invisible || inverse ? styles.darkText : undefined;
+    const darkText = (outline || invisible || inverse) && !forceWhiteText;
+    const textColorStyle = darkText ? styles.darkText : undefined;
 
     const Touchable = animated ? AnimatedTouchable : TouchableOpacity;
 
@@ -110,6 +114,7 @@ const RoundedButton = ({
                 style={[
                     styles.base,
                     colorStyle,
+                    outline && forceWhiteText ? styles.whiteOutline : undefined,
                     disabled ? styles.disabled : undefined,
                     { width, height, borderRadius: height / 2 },
                 ]}
@@ -117,7 +122,7 @@ const RoundedButton = ({
                 {busy ? (
                     <ActivityIndicator
                         size="small"
-                        color={Colors.theme.cream}
+                        color={darkText ? Colors.black : Colors.theme.cream}
                     />
                 ) : (
                     <Text style={[styles.text, textColorStyle, { fontSize }]}>

@@ -14,7 +14,8 @@ export const BLUETOOTH_BEACON_LOGGING = 'enabled';
 /**
  * URL to bring users to ambassador signup page
  */
-export const AMBASSADOR_SIGNUP_URL = 'https://flare-jewelry.breezy.hr/p/cb160cabd112-brand-ambassador';
+export const AMBASSADOR_SIGNUP_URL =
+    'https://flare-jewelry.breezy.hr/p/cb160cabd112-brand-ambassador';
 
 /**
  * Toggle showing all beacons (regardless of user) on the home screen
@@ -115,7 +116,7 @@ export const LONG_PRESS_CANCEL_PIN_LENGTH = 4;
 /**
  * Left navigation width
  */
-export const LEFT_NAVIGATION_WIDTH = 223;
+export const LEFT_NAVIGATION_WIDTH = 300;
 
 /**
  * Toggle visibility of Add New Jewelry feature

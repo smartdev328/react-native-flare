@@ -1,128 +1,167 @@
 import React from 'react';
-import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    Image,
+    Linking,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
 
-import { changeAppRoot } from '../actions';
-import { AMBASSADOR_SIGNUP_URL, LEFT_NAVIGATION_WIDTH } from '../constants/Config';
-import Aura from '../bits/Aura';
+import * as navActions from '../actions/navActions';
+import { LEFT_NAVIGATION_WIDTH } from '../constants/Config';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
-import Spacing from '../bits/Spacing';
 import Strings from '../locales/en';
-import Type from '../bits/Type';
+import contactSupport from '../bits/contactSupport';
 
-import { signOut } from '../actions/authActions';
+import iconCrew from '../assets/menu-item-crew.png';
+import iconHome from '../assets/menu-item-home.png';
+import iconProfile from '../assets/menu-item-profile.png';
+import iconSettings from '../assets/menu-item-settings.png';
+import iconContact from '../assets/menu-item-contact.png';
+import iconInfo from '../assets/menu-item-info.png';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'space-between',
-        backgroundColor: Colors.backgrounds.pink,
-        paddingTop: Spacing.small,
-        paddingLeft: Spacing.medium,
-        paddingRight: Spacing.medium,
-        paddingBottom: Spacing.small,
+        backgroundColor: Colors.theme.cream,
+        paddingHorizontal: 32,
         width: LEFT_NAVIGATION_WIDTH,
     },
     menuItem: {
-        paddingTop: Spacing.smallish,
-        paddingBottom: Spacing.smallish,
-        fontSize: Type.size.medium,
-        color: Colors.white,
+        alignSelf: 'stretch',
+        flexDirection: 'row',
+        height: 36,
+        alignItems: 'center',
     },
-    specialMenuItem: {
-        borderWidth: 2,
-        borderColor: Colors.white,
-        color: Colors.white,
-        marginTop: Spacing.large,
+    padded: {
+        marginTop: 36,
+    },
+    menuItemIcon: {
+        width: 36,
+        height: 36,
+        resizeMode: 'center',
+        marginRight: 12,
+        tintColor: Colors.theme.black,
+    },
+    menuItemText: {
+        fontFamily: 'Nocturno Display Std',
         fontSize: 16,
-        fontWeight: 'bold',
-        paddingHorizontal: Spacing.smallish,
-        width: '85%',
-        alignItems: 'flex-start',
-        textAlign: 'left',
-        textTransform: 'uppercase',
-    },
-    logo: {
-        height: 48,
-        width: 180,
-        resizeMode: 'contain',
-        marginTop: Spacing.small,
-        padding: 0,
+        color: Colors.theme.black,
     },
     topImage: {
         width: 180,
         height: 300,
+        marginBottom: 'auto',
+        alignSelf: 'center',
+        resizeMode: 'contain',
     },
 });
 
-// eslint-disable-next-line react/prefer-stateless-function
-class LeftDrawer extends React.Component {
-    handleHome() {
-        this.props.dispatch(changeAppRoot('secure'));
-    }
+const MenuItem = ({ onPress, label, icon, style }) => (
+    <TouchableOpacity style={[styles.menuItem, style]} onPress={onPress}>
+        <Image source={icon} style={styles.menuItemIcon} />
+        <Text style={styles.menuItemText}>{label}</Text>
+    </TouchableOpacity>
+);
 
-    handleJewelry() {
-        this.props.dispatch(changeAppRoot('secure-jewelry'));
-    }
+const LeftDrawer = ({ changeAppRoot }) => {
+    const insets = useSafeArea();
 
-    handleSettings() {
-        this.props.dispatch(changeAppRoot('secure-settings'));
-    }
+    const handleHome = React.useCallback(() => {
+        changeAppRoot('secure');
+    }, [changeAppRoot]);
 
-    handleSignOut() {
-        this.props.dispatch(signOut());
-    }
+    const handleJewelry = React.useCallback(() => {
+        changeAppRoot('secure-jewelry');
+    }, [changeAppRoot]);
 
-    goToPushedView = () => {
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.LeftDrawer',
-            },
-        });
-    };
+    const handleSettings = React.useCallback(() => {
+        changeAppRoot('secure-settings');
+    }, [changeAppRoot]);
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <Aura />
-                <Image source={{ uri: 'logo-aura' }} style={styles.logo} />
-                <RandomImage
-                    sources={[{ uri: 'menu-photo-1' }, { uri: 'menu-photo-2' }, { uri: 'menu-photo-3' }]}
-                    style={styles.topImage}
+    const handleAccount = React.useCallback(() => {
+        changeAppRoot('secure-account');
+    }, [changeAppRoot]);
+
+    const howFlareWorks = React.useCallback(() => {
+        Linking.openURL('https://getflare.com/pages/how-it-works');
+    }, []);
+
+    return (
+        <View
+            style={[
+                styles.container,
+                {
+                    paddingTop: insets.top + 32,
+                    paddingBottom: insets.bottom + 32,
+                },
+            ]}
+        >
+            <RandomImage
+                sources={[
+                    { uri: 'menu-photo-1' },
+                    { uri: 'menu-photo-2' },
+                    { uri: 'menu-photo-3' },
+                ]}
+                style={styles.topImage}
+            />
+            <View>
+                <MenuItem
+                    onPress={handleHome}
+                    label={Strings.leftDrawer.home}
+                    icon={iconHome}
                 />
-                <View>
-                    <TouchableOpacity onPress={() => this.handleHome()}>
-                        <Text style={styles.menuItem}>{Strings.leftDrawer.home}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.handleJewelry()}>
-                        <Text style={styles.menuItem}>{Strings.leftDrawer.jewelry}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.handleSettings()}>
-                        <Text style={styles.menuItem}>{Strings.leftDrawer.settings}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.handleSignOut()}>
-                        <Text style={styles.menuItem}>{Strings.generic.signOut}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => Linking.openURL(AMBASSADOR_SIGNUP_URL)}>
-                        <Text style={[styles.menuItem, styles.specialMenuItem]}>
-                            {Strings.leftDrawer.ambassador}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                <MenuItem
+                    onPress={handleJewelry}
+                    label="My Crew"
+                    icon={iconCrew}
+                />
+                <MenuItem
+                    onPress={handleSettings}
+                    label={Strings.leftDrawer.settings}
+                    icon={iconSettings}
+                />
+                <MenuItem
+                    onPress={handleAccount}
+                    label="My Account"
+                    icon={iconProfile}
+                />
+                <MenuItem
+                    onPress={contactSupport}
+                    label="Contact Support"
+                    icon={iconContact}
+                />
+                <MenuItem
+                    style={styles.padded}
+                    onPress={howFlareWorks}
+                    label="How Flare Works"
+                    icon={iconInfo}
+                />
             </View>
-        );
-    }
-}
+        </View>
+    );
+};
 
-function mapStateToProps(state) {
-    return {
-        authToken: state.user.authToken,
-        cancelingActiveFlare: state.user.cancelingActiveFlare,
-        hasActiveFlare: state.user.hasActiveFlare,
-    };
-}
+const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps)(LeftDrawer);
+const mapDispatchToProps = {
+    changeAppRoot: navActions.changeAppRoot,
+};
+
+const ConnectedLeftDrawer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LeftDrawer);
+
+const WrappedDrawer = ({ ...props }) => (
+    <SafeAreaProvider>
+        <ConnectedLeftDrawer {...props} />
+    </SafeAreaProvider>
+);
+
+export default WrappedDrawer;

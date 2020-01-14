@@ -39,10 +39,10 @@ const styles = StyleSheet.create({
     },
 });
 
-const WouldYouRather = ({ fakeCall, textCrew }) => (
+const WouldYouRather = ({ fakeCall, textCrew, cardHead, cardBody }) => (
     <>
-        <Text style={styles.head}>Would You Rather?</Text>
-        <Text style={styles.body}>(BTW, there’s no wrong way to Flare.)</Text>
+        <Text style={styles.head}>{cardHead}</Text>
+        <Text style={styles.body}>{cardBody}</Text>
         <View style={styles.buttonContainer}>
             <RoundedButton
                 useGradient={false}
@@ -80,7 +80,7 @@ const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
                 useGradient
                 wrapperStyle={styles.buttonMargin}
                 onPress={finishUp || nextScenario}
-                text={finishUp ? 'Done!' : 'Next Scenario'}
+                text={finishUp ? 'Finish Onboarding' : 'Next Scenario'}
                 busy={busy}
                 width={242}
             />
@@ -107,6 +107,8 @@ const BottomSheet = ({
     nextScenario,
     finishUp,
     busy,
+    cardHead,
+    cardBody,
     ...props
 }) => (
     <Animated.View
@@ -125,7 +127,12 @@ const BottomSheet = ({
                 busy={busy}
             />
         ) : (
-            <WouldYouRather fakeCall={fakeCall} textCrew={textCrew} />
+            <WouldYouRather
+                fakeCall={fakeCall}
+                textCrew={textCrew}
+                cardHead={cardHead}
+                cardBody={cardBody}
+            />
         )}
     </Animated.View>
 );
