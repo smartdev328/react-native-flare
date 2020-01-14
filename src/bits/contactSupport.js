@@ -3,8 +3,8 @@ import { stringify } from 'qs';
 
 const contactSupport = () => {
     const args = {
-        subject: 'Subject',
-        body: 'This is the prefilled body.',
+        // subject: 'Subject',
+        // body: 'This is the prefilled body.',
     };
     Linking.openURL(`mailto:hello@getflare.com?${stringify(args)}`);
 };
