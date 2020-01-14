@@ -23,6 +23,7 @@ import { getCallScripts } from '../../actions/userActions';
 import count from '../../bits/count';
 
 import aura1528 from '../../assets/aura-1528.jpg';
+import shareFlare from '../../bits/shareFlare';
 
 const styles = StyleSheet.create({
     container: {
@@ -204,6 +205,7 @@ const SoftLand = ({ componentId }) => {
                 component: { name: 'com.flarejewelry.app.PermissionsReminder' },
             });
         }, []),
+        share: shareFlare,
     };
 
     const items = ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

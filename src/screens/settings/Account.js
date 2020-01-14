@@ -18,8 +18,11 @@ import * as userActions from '../../actions/userActions';
 import Colors from '../../bits/Colors';
 import contactSupport from '../../bits/contactSupport';
 import { useSlideMenu } from '../../bits/useNavigationCallback';
+import shareFlare from '../../bits/shareFlare';
 
 import chevron from '../../assets/chevron.png';
+import shareIcon from '../../assets/menu-item-share.png';
+import contactIcon from '../../assets/menu-item-contact.png';
 
 const Account = ({
     componentId,
@@ -75,9 +78,22 @@ const Account = ({
             </View>
             <TouchableOpacity
                 style={[styles.item, { marginTop: 80 }]}
-                onPress={contactSupport}
+                onPress={shareFlare}
             >
+                <Text style={styles.text}>Share Flare</Text>
+                <Image
+                    source={shareIcon}
+                    style={styles.icon}
+                    resizeMode="center"
+                />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.item} onPress={contactSupport}>
                 <Text style={styles.text}>Support Center</Text>
+                <Image
+                    source={contactIcon}
+                    style={styles.icon}
+                    resizeMode="center"
+                />
             </TouchableOpacity>
             <TouchableOpacity style={styles.item} onPress={openTerms}>
                 <Text style={styles.text}>Terms and Conditions</Text>
