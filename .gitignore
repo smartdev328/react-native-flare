@@ -25,6 +25,8 @@ ios/app.app.dSYM.zip
 ios/app.ipa
 ios/fastlane/report.xml
 ios/GetFlare.xcworkspace/xcuserdata/*
+ios/GetFlare.xcworkspace/project.xcworkspace/xcuserdata/
+ios/GetFlare.xcodeproj/xcuserdata/
 
 # dependencies
 /node_modules
