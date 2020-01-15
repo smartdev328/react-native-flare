@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     },
     navigatorItemText: {
         color: Colors.red,
-        fontSize: Type.size.tiny,
+        fontSize: 10,
     },
 });
 
@@ -87,7 +87,7 @@ class ContactsListItem extends React.PureComponent {
     }
 }
 
-const SectionNavigator = ({ sections, onPress }) => {
+const SectionNavigator = React.memo(({ sections, onPress }) => {
     return (
         <View style={styles.navigator}>
             {sections.map((section, index) => (
@@ -101,7 +101,7 @@ const SectionNavigator = ({ sections, onPress }) => {
             ))}
         </View>
     );
-};
+});
 
 const ContactsList = ({ contacts, onPressContact, sectionList }) => {
     const flatList = React.useRef();
@@ -129,9 +129,9 @@ const ContactsList = ({ contacts, onPressContact, sectionList }) => {
     );
 
     return (
-        <View>
+        <View style={{ flexGrow: 1 }}>
             <SectionList
-                stickySectionHeadersEnabled={false}
+                stickySectionHeadersEnabled
                 ref={flatList}
                 renderItem={renderItem}
                 renderSectionHeader={({ section: { title } }) => (
@@ -144,7 +144,6 @@ const ContactsList = ({ contacts, onPressContact, sectionList }) => {
                     offset: LIST_ITEM_HEIGHT * index,
                     index,
                 })}
-                contentContainerStyle={{ paddingBottom: 500 }}
             />
             <SectionNavigator sections={sectionList} onPress={onSectionPress} />
         </View>

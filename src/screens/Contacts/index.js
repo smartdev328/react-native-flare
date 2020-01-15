@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.theme.cream,
+        flexDirection: 'column',
     },
     nameFieldContainer: {
         marginBottom: Spacing.small,
@@ -60,8 +61,6 @@ const styles = StyleSheet.create({
         paddingBottom: Spacing.medium,
     },
 });
-
-const CREW_LIST_ITEM_HEIGHT = 46;
 
 class Contacts extends React.Component {
     static options = () => settingsNavOptions('My Crew', true);
@@ -154,35 +153,19 @@ class Contacts extends React.Component {
             },
         });
 
-        const crewListHeight = crew.members.length * CREW_LIST_ITEM_HEIGHT;
-
         return (
             <View style={styles.container}>
-                <View>
-                    {hasCrew && (
-                        <View>
-                            <Text style={styles.prompt}>
-                                {Strings.contacts.choosePrompt}
-                            </Text>
-                        </View>
-                    )}
-                    {hasCrew && (
-                        <View>
-                            <Text style={styles.prompt}>
-                                {Strings.contacts.chooseInstruction.start}{' '}
-                                {crew.members.length}{' '}
-                                {Strings.contacts.chooseInstruction.end}
-                            </Text>
-                            <CrewList
-                                style={{
-                                    height: crewListHeight,
-                                }}
-                                crew={crew}
-                                onPressContact={this.removeCrewMember}
-                            />
-                        </View>
-                    )}
-                </View>
+                <Text style={styles.prompt}>
+                    {hasCrew
+                        ? Strings.contacts.choosePrompt
+                        : `${Strings.contacts.chooseInstruction.start} ${crew.members.length} ${Strings.contacts.chooseInstruction.end}`}
+                </Text>
+                {hasCrew && (
+                    <CrewList
+                        crew={crew}
+                        onPressContact={this.removeCrewMember}
+                    />
+                )}
                 <ContactsList
                     contacts={contacts}
                     contactsCount={contactsCount}
