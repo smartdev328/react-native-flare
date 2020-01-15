@@ -3,7 +3,7 @@ import AddJewelry from './AddJewelry';
 import AddJewelryConfirm from './AddJewelryConfirm';
 import AddJewelryManual from './AddJewelryManual';
 import Confirm from './Confirm';
-import Contacts from './Contacts';
+import Contacts, { TextConfirm } from './Contacts';
 import FlareNavBar from '../bits/FlareNavBar';
 import Home from './Home';
 import HomeActive from './HomeActive';
@@ -57,6 +57,12 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.Contacts',
         () => Contacts,
+        Provider,
+        store
+    );
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.contacts.TextConfirm',
+        () => TextConfirm,
         Provider,
         store
     );

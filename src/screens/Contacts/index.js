@@ -1,5 +1,12 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Alert,
+    StatusBar,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
@@ -71,12 +78,20 @@ class Contacts extends React.Component {
             crew: props.crew,
             contactSections: null,
             dirty: false,
+            addedMembers: false,
         };
     }
 
     componentDidMount() {
         const { fetchContacts } = this.props;
         fetchContacts();
+        this.navigationEventListener = Navigation.events().bindComponent(this);
+    }
+
+    componentWillUnmount() {
+        if (this.navigationEventListener) {
+            this.navigationEventListener.remove();
+        }
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -117,6 +132,7 @@ class Contacts extends React.Component {
         this.setState(({ crew }) => ({
             crew: { ...crew, members: newMembers },
             dirty: true,
+            addedMembers: true,
         }));
     };
 
@@ -135,6 +151,65 @@ class Contacts extends React.Component {
             dirty: true,
         }));
     };
+
+    confirmClose = (title, message, cancel, ok) => {
+        const { componentId } = this.props;
+        Alert.alert(title, message, [
+            {
+                style: 'cancel',
+                text: cancel,
+                onPress: () => {},
+            },
+            {
+                style: 'destructive',
+                text: ok,
+                onPress: () => {
+                    Navigation.pop(componentId);
+                },
+            },
+        ]);
+    };
+
+    handleBack = () => {
+        const { componentId } = this.props;
+        const { dirty, crew } = this.state;
+        if (dirty) {
+            this.confirmClose(
+                'Leave without saving?',
+                undefined,
+                'Go Back',
+                'Yes'
+            );
+        } else if (!crew || !crew.members || crew.members.length === 0) {
+            this.confirmClose(
+                'Are you sure you don’t want to add a crew?',
+                'If you don’t add a crew, we can’t text your friends with your cuff.',
+                'Add a Crew',
+                'I’m sure'
+            );
+        } else {
+            Navigation.pop(componentId);
+        }
+    };
+
+    handleSave = () => {
+        Navigation.showModal({
+            component: { name: 'com.flarejewelry.app.contacts.TextConfirm' },
+        });
+    };
+
+    navigationButtonPressed({ buttonId }) {
+        switch (buttonId) {
+            case 'backButton':
+                this.handleBack();
+                break;
+            case 'save':
+                this.handleSave();
+                break;
+            default:
+                break;
+        }
+    }
 
     render() {
         const {
@@ -155,6 +230,7 @@ class Contacts extends React.Component {
 
         return (
             <View style={styles.container}>
+                <StatusBar barStyle="dark-content" />
                 <Text style={styles.prompt}>
                     {hasCrew
                         ? Strings.contacts.choosePrompt
@@ -213,3 +289,5 @@ export const openContactsScreen = componentId => {
         },
     });
 };
+
+export { default as TextConfirm } from './TextConfirm';
