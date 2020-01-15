@@ -152,12 +152,20 @@ export function user(state = initialState.user, action = {}) {
             });
 
         case types.CONTACTS_SUCCESS: {
-            const filteredContacts = filterContacts(action.contacts);
-            return state.merge({
-                contactsState: 'succeeded',
-                contacts: filteredContacts.contacts,
-                contactsCount: filteredContacts.count,
-            });
+            try {
+                const filteredContacts = filterContacts(
+                    action.contacts,
+                    action.sortOrder
+                );
+                return state.merge({
+                    contactsState: 'succeeded',
+                    contacts: filteredContacts.contacts,
+                    contactsCount: filteredContacts.count,
+                });
+            } catch (error) {
+                console.error(error);
+                return state;
+            }
         }
 
         /**

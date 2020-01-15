@@ -1,89 +1,68 @@
-export const filterContacts = rawContacts => {
-    const contacts = [];
-    for (
-        let contactIndex = 0;
-        contactIndex < rawContacts.length;
-        contactIndex += 1
-    ) {
-        const { givenName, middleName, familyName } = rawContacts[contactIndex];
-        let name = [givenName, middleName, familyName]
-            .join(' ')
-            .replace(/\s\s+/g, ' ');
+import Contacts from 'react-native-contacts';
+import groupBy from 'lodash/groupBy';
+import sortBy from 'lodash/sortBy';
 
-        if (
-            name.trim().length === 0 &&
-            rawContacts[contactIndex].company.length
-        ) {
-            name = rawContacts[contactIndex].company;
-        }
+export const getAllContacts = () =>
+    new Promise((resolve, reject) => {
+        Contacts.getAllWithoutPhotos((err, contacts) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(contacts);
+            }
+        });
+    });
 
-        const contactInfo = {
-            name,
-        };
-        const { phoneNumbers } = rawContacts[contactIndex];
-        const duplicateNumberCheck = {};
-        for (
-            let phoneIndex = 0;
-            phoneIndex < phoneNumbers.length;
-            phoneIndex += 1
-        ) {
-            const strippedNumber = phoneNumbers[phoneIndex].number.replace(
-                /[^0-9]/g,
-                ''
+const validComponent = component =>
+    typeof component === 'string' && component.length > 0;
+
+export const filterContacts = (rawContacts, sortOrder) => {
+    const fullContacts = rawContacts.flatMap(
+        ({
+            familyName,
+            givenName,
+            middleName,
+            company,
+            recordID,
+            phoneNumbers,
+        }) => {
+            const haveName = [givenName, middleName, familyName].some(
+                validComponent
             );
-            if (
-                !Object.hasOwnProperty.call(
-                    duplicateNumberCheck,
-                    strippedNumber
-                )
-            ) {
-                duplicateNumberCheck[strippedNumber] = null;
-                const key = `${name}${strippedNumber}${phoneNumbers[phoneIndex].label}`.replace(
-                    ' ',
-                    ''
-                );
-                const contact = {
-                    ...contactInfo,
-                    key,
-                    label: phoneNumbers[phoneIndex].label,
-                    phone: phoneNumbers[phoneIndex].number,
-                };
-                contacts.push(contact);
-            }
+            const name = haveName
+                ? [givenName, middleName, familyName]
+                      .filter(validComponent)
+                      .join(' ')
+                : company;
+            const sortKey = (haveName && sortOrder === 'family_name'
+                ? [familyName, givenName, middleName]
+                      .filter(validComponent)
+                      .join(' ')
+                : name
+            )
+                .toLocaleUpperCase()
+                .normalize('NFKD');
+            const firstLetter = sortKey[0];
+            const section =
+                firstLetter >= 'A' && firstLetter <= 'Z' ? firstLetter : '#';
+            return phoneNumbers.map(({ label, number }) => ({
+                name,
+                sortKey,
+                key: `${recordID}${label}${number}`,
+                label,
+                phone: number,
+                section,
+            }));
         }
-    }
-
-    const sections = {};
-    contacts.forEach(contact => {
-        const firstLetter = contact.name.length > 0 ? contact.name[0] : '?';
-        if (!Object.prototype.hasOwnProperty.call(sections, firstLetter)) {
-            sections[firstLetter] = [];
-        }
-        const contactWithSection = { ...contact, section: firstLetter };
-        sections[firstLetter].push(contactWithSection);
-    });
-
-    const organizedContacts = [];
-    const sortedKeys = Object.keys(sections).sort();
-    let totalContactsCount = 0;
-    sortedKeys.forEach(sectionKey => {
-        sections[sectionKey].sort((a, b) => {
-            if (a.name < b.name) {
-                return -1;
-            } else if (a.name > b.name) {
-                return 1;
-            }
-            return 0;
-        });
-        organizedContacts.push({
-            title: sectionKey.toLocaleUpperCase(),
-            data: sections[sectionKey],
-        });
-        totalContactsCount += sections[sectionKey].length;
-    });
-
+    );
+    const sortedContacts = sortBy(fullContacts, ['sortKey', 'label', 'number']);
+    const sectionedContacts = Object.entries(
+        groupBy(sortedContacts, 'section')
+    ).map(([title, data]) => ({ title, data }));
     return {
-        contacts: organizedContacts,
-        count: totalContactsCount,
+        contacts: sortBy(sectionedContacts, ({ title }) =>
+            title === '#' ? '\uFFFF' : title
+        ),
+        count: sortedContacts.length,
     };
 };

@@ -1,4 +1,3 @@
-import Contacts from 'react-native-contacts';
 import {
     check,
     checkNotifications,
@@ -11,6 +10,8 @@ import {
 import * as types from './actionTypes';
 import { API_URL } from '../constants/Config';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
+import { getContactsOrder } from '../bits/settingsUrl';
+import { getAllContacts } from '../helpers/contacts';
 
 export function setCrewMembers(token, crewId, members) {
     return async function setCrew(dispatch) {
@@ -84,20 +85,23 @@ export function syncAccountDetails(args) {
     };
 }
 
-export const fetchContacts = () => dispatch => {
+export const fetchContacts = () => async dispatch => {
     dispatch({
         type: types.CONTACTS_REQUEST,
     });
-    Contacts.getAllWithoutPhotos((err, contacts) => {
-        if (err) {
-            dispatch({ type: types.CONTACTS_FAILURE });
-        } else {
-            dispatch({
-                type: types.CONTACTS_SUCCESS,
-                contacts,
-            });
-        }
-    });
+    try {
+        const [contacts, sortOrder] = await Promise.all([
+            getAllContacts(),
+            getContactsOrder(),
+        ]);
+        dispatch({
+            type: types.CONTACTS_SUCCESS,
+            contacts,
+            sortOrder,
+        });
+    } catch (error) {
+        dispatch({ type: types.CONTACTS_FAILURE, error });
+    }
 };
 
 export function getCrewEventTimeline(token) {
