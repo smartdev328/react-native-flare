@@ -84,23 +84,21 @@ export function syncAccountDetails(args) {
     };
 }
 
-export function fetchContacts() {
-    return function startFetchingContacts(dispatch) {
-        dispatch({
-            type: types.CONTACTS_REQUEST,
-        });
-        Contacts.getAllWithoutPhotos((err, contacts) => {
-            if (err) {
-                dispatch({ type: types.CONTACTS_FAILURE });
-            } else {
-                dispatch({
-                    type: types.CONTACTS_SUCCESS,
-                    contacts,
-                });
-            }
-        });
-    };
-}
+export const fetchContacts = () => dispatch => {
+    dispatch({
+        type: types.CONTACTS_REQUEST,
+    });
+    Contacts.getAllWithoutPhotos((err, contacts) => {
+        if (err) {
+            dispatch({ type: types.CONTACTS_FAILURE });
+        } else {
+            dispatch({
+                type: types.CONTACTS_SUCCESS,
+                contacts,
+            });
+        }
+    });
+};
 
 export function getCrewEventTimeline(token) {
     return function getTimeline(dispatch) {
