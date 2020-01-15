@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import checkbox from '../../assets/task-card-checkbox.png';
 
@@ -27,11 +27,15 @@ const styles = StyleSheet.create({
     },
 });
 
-const DoneItem = ({ title, onPress }) => (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-        <Image source={checkbox} style={styles.image} />
-        <Text style={styles.text}>{title}</Text>
-    </TouchableOpacity>
-);
+const DoneItem = ({ title, onPress }) => {
+    const Wrapper = typeof onPress === 'function' ? TouchableOpacity : View;
+
+    return (
+        <Wrapper style={styles.container} onPress={onPress}>
+            <Image source={checkbox} style={styles.image} />
+            <Text style={styles.text}>{title}</Text>
+        </Wrapper>
+    );
+};
 
 export default React.memo(DoneItem);
