@@ -5,10 +5,8 @@ import { Navigation } from 'react-native-navigation';
 
 import * as userActions from '../../actions/userActions';
 import * as navActions from '../../actions/navActions';
-import Button from '../../bits/Button';
 import ContactsList from './ContactsList';
 import Colors from '../../bits/Colors';
-import CommonTop from '../CommonTop';
 import CrewList from './CrewList';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
@@ -141,9 +139,7 @@ class Contacts extends React.Component {
 
     render() {
         const {
-            fromOnboarding,
             hasCrew,
-            changeAppRoot,
             contacts,
             contactsCount,
             contactsCrewLookup,
@@ -162,68 +158,31 @@ class Contacts extends React.Component {
 
         return (
             <View style={styles.container}>
-                {fromOnboarding && (
-                    <View style={styles.onboardingHeader}>
-                        <View style={styles.tutorialOverlay}>
-                            <CommonTop />
-                            <Text style={styles.tutorialTitle}>
-                                {Strings.onboarding.contacts.overlay.title}
-                            </Text>
-                            <Text style={styles.tutorialText}>
-                                {
-                                    Strings.onboarding.contacts.overlay
-                                        .instructions
-                                }
+                <View>
+                    {hasCrew && (
+                        <View>
+                            <Text style={styles.prompt}>
+                                {Strings.contacts.choosePrompt}
                             </Text>
                         </View>
-                        {hasCrew && (
-                            <View style={styles.tutorialButtons}>
-                                <CrewList
-                                    style={{
-                                        height: crewListHeight,
-                                    }}
-                                    crew={crew}
-                                    onPressContact={this.removeCrewMember}
-                                />
-                                <Button
-                                    title={
-                                        Strings.onboarding.contacts.overlay
-                                            .closeButtonLabel
-                                    }
-                                    onPress={() => changeAppRoot('secure')}
-                                    primary
-                                />
-                            </View>
-                        )}
-                    </View>
-                )}
-                {!fromOnboarding && (
-                    <View>
-                        {hasCrew && (
-                            <View>
-                                <Text style={styles.prompt}>
-                                    {Strings.contacts.choosePrompt}
-                                </Text>
-                            </View>
-                        )}
-                        {hasCrew && (
-                            <View>
-                                <Text style={styles.prompt}>
-                                    {Strings.contacts.chooseInstruction.start}{' '}
-                                    {crew.members.length}{' '}
-                                    {Strings.contacts.chooseInstruction.end}
-                                </Text>
-                                <CrewList
-                                    style={{
-                                        height: crewListHeight,
-                                    }}
-                                    crew={crew}
-                                    onPressContact={this.removeCrewMember}
-                                />
-                            </View>
-                        )}
-                    </View>
-                )}
+                    )}
+                    {hasCrew && (
+                        <View>
+                            <Text style={styles.prompt}>
+                                {Strings.contacts.chooseInstruction.start}{' '}
+                                {crew.members.length}{' '}
+                                {Strings.contacts.chooseInstruction.end}
+                            </Text>
+                            <CrewList
+                                style={{
+                                    height: crewListHeight,
+                                }}
+                                crew={crew}
+                                onPressContact={this.removeCrewMember}
+                            />
+                        </View>
+                    )}
+                </View>
                 <ContactsList
                     contacts={contacts}
                     contactsCount={contactsCount}
