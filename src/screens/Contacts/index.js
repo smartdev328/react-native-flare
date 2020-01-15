@@ -13,7 +13,7 @@ import CrewList from './CrewList';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Type from '../../bits/Type';
-import { iconsMap } from '../../bits/AppIcons';
+import { saveButton, settingsNavOptions } from '../Settings';
 
 const MAX_CREW_SIZE = 5;
 
@@ -66,25 +66,14 @@ const styles = StyleSheet.create({
 const CREW_LIST_ITEM_HEIGHT = 46;
 
 class Contacts extends React.Component {
-    static options() {
-        return {
-            topBar: {
-                options: {
-                    backgroundColor: Colors.theme.purple,
-                },
-                visible: true,
-                animate: false,
-                leftButtons: [],
-            },
-        };
-    }
+    static options = () => settingsNavOptions('My Crew', true);
 
     constructor(props) {
         super(props);
         this.state = {
             crew: props.crew,
-            crewListHeight: props.crew.members.length * CREW_LIST_ITEM_HEIGHT,
             contactSections: null,
+            dirty: false,
         };
     }
 
@@ -95,16 +84,10 @@ class Contacts extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         const newState = {};
-        const { crew, contacts } = props;
+        const { contacts } = props;
         let needsUpdate = false;
-        if (JSON.stringify(crew) !== JSON.stringify(state.crew)) {
-            newState.crew = props.crew;
-            newState.crewListHeight =
-                props.crew.members.length * CREW_LIST_ITEM_HEIGHT;
-            needsUpdate = true;
-        }
 
-        const sections = contacts.map(contactSection => contactSection.title);
+        const sections = contacts.map(({ title }) => title);
         if (sections !== state.contactSections) {
             newState.contactSections = sections;
             needsUpdate = true;
@@ -118,63 +101,65 @@ class Contacts extends React.Component {
     }
 
     handleContactPress = contact => {
-        const { setCrewMembers, authToken } = this.props;
-        const { crew } = this.state;
-        const { members } = crew;
+        const {
+            crew: { members: oldMembers },
+        } = this.state;
 
-        if (!contact || !contact.name || members.length === MAX_CREW_SIZE) {
+        if (!contact || !contact.name || oldMembers.length === MAX_CREW_SIZE) {
             return;
         }
 
-        const memberIndex = members.findIndex(e => e.key === contact.key);
-        let newMembers = null;
-        if (memberIndex === -1) {
-            // If the selected contact is not in the crew, add it
-            newMembers = members.concat(contact);
-        } else {
-            // The selected contact is in the crew, so remove it by keeping everyone else
-            newMembers = members.filter((val, index) => index !== memberIndex);
-        }
+        const memberIndex = oldMembers.findIndex(e => e.key === contact.key);
+        const newMembers =
+            memberIndex === -1
+                ? // If the selected contact is not in the crew, add it
+                  [...oldMembers, contact]
+                : // The selected contact is in the crew, so remove it by keeping everyone else
+                  oldMembers.filter((val, index) => index !== memberIndex);
 
-        crew.members = newMembers;
-        this.setState({
-            crew,
-        });
-
-        const crewId = (crew && crew.id) || 0;
-        setCrewMembers(authToken, crewId, newMembers);
+        this.setState(({ crew }) => ({
+            crew: { ...crew, members: newMembers },
+            dirty: true,
+        }));
     };
 
     removeCrewMember = contact => {
-        const { setCrewMembers, authToken } = this.props;
-        const { crew } = this.state;
-        const { members } = crew;
+        const {
+            crew: { members: oldMembers },
+        } = this.state;
 
-        const memberIndex = members.findIndex(e => e.id === contact.id);
-        let newMembers = null;
-        newMembers = members.filter((val, index) => index !== memberIndex);
+        const memberIndex = oldMembers.findIndex(e => e.id === contact.id);
+        const newMembers = oldMembers.filter(
+            (val, index) => index !== memberIndex
+        );
 
-        crew.members = newMembers;
-        this.setState({
-            crew,
-        });
-
-        const crewId = (crew && crew.id) || 0;
-        setCrewMembers(authToken, crewId, newMembers);
+        this.setState(({ crew }) => ({
+            crew: { ...crew, members: newMembers },
+            dirty: true,
+        }));
     };
 
     render() {
         const {
             fromOnboarding,
             hasCrew,
-            crew,
             changeAppRoot,
             contacts,
             contactsCount,
             contactsCrewLookup,
             loading,
+            componentId,
         } = this.props;
-        const { crewListHeight, contactSections } = this.state;
+        const { contactSections, dirty, crew } = this.state;
+
+        Navigation.mergeOptions(componentId, {
+            topBar: {
+                rightButtons: dirty ? [saveButton] : [],
+            },
+        });
+
+        const crewListHeight = crew.members.length * CREW_LIST_ITEM_HEIGHT;
+
         return (
             <View style={styles.container}>
                 {fromOnboarding && (
@@ -212,7 +197,7 @@ class Contacts extends React.Component {
                         )}
                     </View>
                 )}
-                {fromOnboarding && (
+                {!fromOnboarding && (
                     <View>
                         {hasCrew && (
                             <View>
@@ -283,25 +268,6 @@ export const openContactsScreen = componentId => {
     Navigation.push(componentId, {
         component: {
             name: 'com.flarejewelry.app.Contacts',
-            options: {
-                topBar: {
-                    visible: true,
-                    animate: false,
-                    leftButtons: [
-                        {
-                            id: 'backButton',
-                            icon: iconsMap.back,
-                            color: Colors.theme.purple,
-                        },
-                    ],
-                    title: {
-                        component: {
-                            name: 'com.flarejewelry.app.FlareNavBar',
-                            alignment: 'center',
-                        },
-                    },
-                },
-            },
         },
     });
 };

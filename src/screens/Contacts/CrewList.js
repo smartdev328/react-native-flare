@@ -39,34 +39,38 @@ const styles = StyleSheet.create({
     },
 });
 
-const CrewList = function createCrewList(props) {
+const CrewList = ({ style, crew, onPressContact }) => {
+    const renderItem = React.useCallback(
+        ({ item }) => (
+            <View style={styles.member}>
+                <Text style={styles.memberName}>
+                    {item.name}
+                    {item.label && item.label.length && item.label}
+                </Text>
+                <TouchableOpacity
+                    style={styles.memberAction}
+                    onPress={() => {
+                        onPressContact(item);
+                    }}
+                >
+                    <Icon
+                        name="cross"
+                        size={Type.size.medium}
+                        color={Colors.white}
+                    />
+                </TouchableOpacity>
+            </View>
+        ),
+        [onPressContact]
+    );
     return (
         <FlatList
-            style={[styles.container, props.style]}
+            style={[styles.container, style]}
             showsVerticalScrollIndicator={false}
             overScrollMode="always"
             scrollEnabled={false}
-            data={(props.crew && props.crew.members) || []}
-            renderItem={({ item }) => (
-                <View style={styles.member}>
-                    <Text style={styles.memberName}>
-                        {item.name}
-                        {item.label && item.label.length && item.label}
-                    </Text>
-                    <TouchableOpacity
-                        style={styles.memberAction}
-                        onPress={() => {
-                            props.onPressContact(item);
-                        }}
-                    >
-                        <Icon
-                            name="cross"
-                            size={Type.size.medium}
-                            color={Colors.white}
-                        />
-                    </TouchableOpacity>
-                </View>
-            )}
+            data={(crew && crew.members) || []}
+            renderItem={renderItem}
         />
     );
 };

@@ -61,81 +61,83 @@ const styles = StyleSheet.create({
     },
 });
 
-class ContactsListItem extends React.Component {
-    shouldComponentUpdate() {
-        return false;
-    }
+class ContactsListItem extends React.PureComponent {
+    onContainerPress = () => {
+        const { onPress, itemKey, name, label, phone } = this.props;
+        onPress({ key: itemKey, name, label, phone });
+    };
+
     render() {
+        const { name, label, phone } = this.props;
+
         return (
             <TouchableOpacity
                 style={styles.listItem}
-                onPress={() =>
-                    this.props.onPress({
-                        key: this.props.itemKey,
-                        name: this.props.name,
-                        label: this.props.label,
-                        phone: this.props.phone,
-                    })
-                }
+                onPress={this.onContainerPress}
             >
                 <View style={styles.listItemDetails}>
                     <Text style={styles.displayName}>
-                        {this.props.name}
-                        {this.props.label}
+                        {name}
+                        {label}
                     </Text>
-                    <Text style={styles.phone}>{this.props.phone}</Text>
+                    <Text style={styles.phone}>{phone}</Text>
                 </View>
             </TouchableOpacity>
         );
     }
 }
 
-function SectionNavigator(props) {
+const SectionNavigator = ({ sections, onPress }) => {
     return (
         <View style={styles.navigator}>
-            {props.sections.map((section, index) => (
+            {sections.map((section, index) => (
                 <TouchableOpacity
                     key={section}
                     style={styles.navigatorItem}
-                    onPress={() =>
-                        this.flatList.scrollToLocation({
-                            sectionIndex: index,
-                            itemIndex: 0,
-                        })
-                    }
+                    onPress={() => onPress(index)}
                 >
                     <Text style={styles.navigatorItemText}>{section}</Text>
                 </TouchableOpacity>
             ))}
         </View>
     );
-}
+};
 
-function ContactsList(props) {
+const ContactsList = ({ contacts, onPressContact, sectionList }) => {
+    const flatList = React.useRef();
+    const onSectionPress = React.useCallback(
+        index => {
+            flatList.current.scrollToLocation({
+                sectionIndex: index,
+                itemIndex: 0,
+            });
+        },
+        [flatList]
+    );
+
+    const renderItem = React.useCallback(
+        ({ item }) => (
+            <ContactsListItem
+                itemKey={item.key}
+                name={item.name}
+                label={item.label && item.label.length && ` - ${item.label}`}
+                phone={item.phone}
+                onPress={onPressContact}
+            />
+        ),
+        [onPressContact]
+    );
+
     return (
         <View>
             <SectionList
                 stickySectionHeadersEnabled={false}
-                ref={ref => {
-                    this.flatList = ref;
-                }}
-                renderItem={({ item }) => (
-                    <ContactsListItem
-                        itemKey={item.key}
-                        name={item.name}
-                        label={
-                            item.label &&
-                            item.label.length &&
-                            ` - ${item.label}`
-                        }
-                        phone={item.phone}
-                        onPress={props.onPressContact}
-                    />
-                )}
+                ref={flatList}
+                renderItem={renderItem}
                 renderSectionHeader={({ section: { title } }) => (
                     <Text style={styles.sectionHeader}>{title}</Text>
                 )}
-                sections={props.contacts}
+                sections={contacts}
                 keyExtractor={(item, index) => `${index}_${item.key}`}
                 getItemLayout={(data, index) => ({
                     length: LIST_ITEM_HEIGHT,
@@ -144,12 +146,9 @@ function ContactsList(props) {
                 })}
                 contentContainerStyle={{ paddingBottom: 500 }}
             />
-            <SectionNavigator
-                sections={props.sectionList}
-                list={this.flatList}
-            />
+            <SectionNavigator sections={sectionList} onPress={onSectionPress} />
         </View>
     );
-}
+};
 
 export default ContactsList;
