@@ -3,17 +3,17 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
-import * as userActions from '../actions/userActions';
-import * as navActions from '../actions/navActions';
-import Button from '../bits/Button';
-import ContactsList from '../bits/ContactsList';
-import Colors from '../bits/Colors';
-import CommonTop from './CommonTop';
-import CrewList from '../bits/CrewList';
-import Spacing from '../bits/Spacing';
-import Strings from '../locales/en';
-import Type from '../bits/Type';
-import { iconsMap } from '../bits/AppIcons';
+import * as userActions from '../../actions/userActions';
+import * as navActions from '../../actions/navActions';
+import Button from '../../bits/Button';
+import ContactsList from './ContactsList';
+import Colors from '../../bits/Colors';
+import CommonTop from '../CommonTop';
+import CrewList from './CrewList';
+import Spacing from '../../bits/Spacing';
+import Strings from '../../locales/en';
+import Type from '../../bits/Type';
+import { iconsMap } from '../../bits/AppIcons';
 
 const MAX_CREW_SIZE = 5;
 

@@ -1,11 +1,17 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    FlatList,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Entypo';
 
-import Colors from '../bits/Colors';
-import Spacing from '../bits/Spacing';
-import Type from './Type';
+import Colors from '../../bits/Colors';
+import Spacing from '../../bits/Spacing';
+import Type from '../../bits/Type';
 
 const styles = StyleSheet.create({
     container: {},
@@ -53,7 +59,11 @@ const CrewList = function createCrewList(props) {
                             props.onPressContact(item);
                         }}
                     >
-                        <Icon name="cross" size={Type.size.medium} color={Colors.white} />
+                        <Icon
+                            name="cross"
+                            size={Type.size.medium}
+                            color={Colors.white}
+                        />
                     </TouchableOpacity>
                 </View>
             )}

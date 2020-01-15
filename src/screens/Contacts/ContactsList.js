@@ -1,9 +1,15 @@
 import React from 'react';
-import { SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    SectionList,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 
-import Colors from '../bits/Colors';
-import Spacing from './Spacing';
-import Type from './Type';
+import Colors from '../../bits/Colors';
+import Spacing from '../../bits/Spacing';
+import Type from '../../bits/Type';
 
 const LIST_ITEM_HEIGHT = 50;
 
@@ -91,7 +97,12 @@ function SectionNavigator(props) {
                 <TouchableOpacity
                     key={section}
                     style={styles.navigatorItem}
-                    onPress={() => this.flatList.scrollToLocation({ sectionIndex: index, itemIndex: 0 })}
+                    onPress={() =>
+                        this.flatList.scrollToLocation({
+                            sectionIndex: index,
+                            itemIndex: 0,
+                        })
+                    }
                 >
                     <Text style={styles.navigatorItemText}>{section}</Text>
                 </TouchableOpacity>
@@ -105,25 +116,38 @@ function ContactsList(props) {
         <View>
             <SectionList
                 stickySectionHeadersEnabled={false}
-                ref={(ref) => {
+                ref={ref => {
                     this.flatList = ref;
                 }}
                 renderItem={({ item }) => (
                     <ContactsListItem
                         itemKey={item.key}
                         name={item.name}
-                        label={item.label && item.label.length && ` - ${item.label}`}
+                        label={
+                            item.label &&
+                            item.label.length &&
+                            ` - ${item.label}`
+                        }
                         phone={item.phone}
                         onPress={props.onPressContact}
                     />
                 )}
-                renderSectionHeader={({ section: { title } }) => <Text style={styles.sectionHeader}>{title}</Text>}
+                renderSectionHeader={({ section: { title } }) => (
+                    <Text style={styles.sectionHeader}>{title}</Text>
+                )}
                 sections={props.contacts}
                 keyExtractor={(item, index) => `${index}_${item.key}`}
-                getItemLayout={(data, index) => ({ length: LIST_ITEM_HEIGHT, offset: LIST_ITEM_HEIGHT * index, index })}
+                getItemLayout={(data, index) => ({
+                    length: LIST_ITEM_HEIGHT,
+                    offset: LIST_ITEM_HEIGHT * index,
+                    index,
+                })}
                 contentContainerStyle={{ paddingBottom: 500 }}
             />
-            <SectionNavigator sections={props.sectionList} list={this.flatList} />
+            <SectionNavigator
+                sections={props.sectionList}
+                list={this.flatList}
+            />
         </View>
     );
 }
