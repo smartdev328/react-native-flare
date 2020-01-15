@@ -20,7 +20,7 @@ import {
     Call as SettingsCall,
     Home as Settings,
     Notifications as SetttingsNotifications,
-} from './settings';
+} from './Settings';
 import SignIn from './SignIn';
 import AddHardware from './AddHardware';
 import HowToConnect from './AddHardware/HowToConnect';
