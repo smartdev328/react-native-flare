@@ -14,13 +14,10 @@ import {
     FLARE_TIMELINE_REFRESH_INTERVAL,
 } from '../constants/Config';
 
-import { BeaconTypes } from '../bits/BleConstants';
 import { syncAccountDetails, changeAppRoot } from '../actions/index';
 import {
-    flare,
     processQueuedBeacons,
-    call,
-    checkin,
+    cancelActiveFlare,
 } from '../actions/beaconActions';
 import { getCrewEventTimeline, getPermission } from '../actions/userActions';
 import { startBleListening } from '../actions/hardwareActions';
@@ -262,9 +259,13 @@ class HomeActive extends React.Component {
         }
     }
 
-    refreshTimeline() {
+    refreshTimeline = () => {
         this.props.dispatch(getCrewEventTimeline(this.props.authToken));
-    }
+    };
+
+    cancelFlare = () => {
+        this.props.dispatch(cancelActiveFlare(this.props.authToken));
+    };
 
     startTimelineRefreshInterval() {
         if (this.eventTimelineRefreshTimer !== null) {
@@ -280,93 +281,6 @@ class HomeActive extends React.Component {
         );
     }
 
-    showPinCheckScreen() {
-        Navigation.push(this.props.componentId, {
-            component: {
-                name: 'com.flarejewelry.app.PinCheck',
-            },
-        });
-    }
-
-    sendTestFlare() {
-        if (!__DEV__) {
-            return;
-        }
-        const position = {
-            coords: {
-                latitude: 42.354338,
-                longitude: -71.065497,
-            },
-        };
-
-        const testBeacon = {
-            uuid: 'flare-dev-test',
-            nonce: null,
-            type: BeaconTypes.Long.value,
-            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
-            rssi: 0,
-            proximity: 'far',
-            accuracy: 0,
-            timestamp: Date.now(),
-        };
-        this.props.dispatch(
-            flare(
-                this.props.radioToken,
-                testBeacon,
-                position,
-                /* forCurrentUser= */ true
-            )
-        );
-    }
-
-    sendTestCall() {
-        if (!__DEV__) {
-            return;
-        }
-        const testBeacon = {
-            uuid: 'flare-dev-test',
-            nonce: null,
-            type: BeaconTypes.Short.value,
-            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
-            rssi: 0,
-            proximity: 'far',
-            accuracy: 0,
-            timestamp: Date.now(),
-        };
-        this.props.dispatch(
-            call(
-                this.props.radioToken,
-                testBeacon,
-                /* position= */ null,
-                /* forCurrentUser= */ true
-            )
-        );
-    }
-
-    sendTestCheckin() {
-        if (!__DEV__) {
-            return;
-        }
-        const testBeacon = {
-            uuid: 'flare-dev-test',
-            nonce: null,
-            type: BeaconTypes.Checkin.value,
-            deviceID: this.props.devices[0] ? this.props.devices[0].id : 1,
-            rssi: 0,
-            proximity: 'far',
-            accuracy: 0,
-            timestamp: Date.now(),
-        };
-        this.props.dispatch(
-            checkin(
-                this.props.radioToken,
-                testBeacon,
-                /* position= */ null,
-                /* forCurrentUser= */ true
-            )
-        );
-    }
-
     render() {
         return (
             <SafeAreaView style={styles.container}>
@@ -379,38 +293,16 @@ class HomeActive extends React.Component {
                 </View>
                 <CrewEventTimeline
                     timeline={this.props.crewEventTimeline}
-                    onRefresh={() => this.refreshTimeline()}
+                    onRefresh={this.refreshTimeline}
                     containerStyle={styles.crewTimelineContainer}
                 />
                 <View style={styles.footer}>
                     <Button
                         dark
                         primary
-                        onPress={() => this.showPinCheckScreen()}
+                        onPress={this.cancelFlare}
                         title={Strings.home.cancelActiveFlare}
                     />
-                    {__DEV__ && (
-                        <View style={styles.devOnlyButtons}>
-                            <Button
-                                dev
-                                secondary
-                                onPress={() => this.sendTestFlare()}
-                                title={Strings.dev.sendTestFlare}
-                            />
-                            <Button
-                                dev
-                                secondary
-                                onPress={() => this.sendTestCall()}
-                                title={Strings.dev.sendTestCall}
-                            />
-                            <Button
-                                dev
-                                secondary
-                                onPress={() => this.sendTestCheckin()}
-                                title={Strings.dev.sendTestCheckin}
-                            />
-                        </View>
-                    )}
                 </View>
             </SafeAreaView>
         );

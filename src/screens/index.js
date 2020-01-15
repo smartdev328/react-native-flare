@@ -11,7 +11,6 @@ import Jewelry from './Jewelry';
 import ManufacturingMain from './ManufacturingMain';
 import LeftDrawer from './LeftDrawer';
 import Onboarding from './Onboarding';
-import PinCheck from './PinCheck';
 import Register from './Register';
 import Register2 from './Register2';
 import Root from './Root';
@@ -92,12 +91,6 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.LeftDrawer',
         () => LeftDrawer,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.PinCheck',
-        () => PinCheck,
         Provider,
         store
     );

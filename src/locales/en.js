@@ -49,7 +49,7 @@ const Strings = {
         bluetoothDisabledWarning: 'Turn bluetooth on in your phone settings',
         locationDisabledWarning:
             'Set location permission to Always in phone settings',
-        cancelActiveFlare: 'Cancel Message',
+        cancelActiveFlare: 'I’m Okay',
         chooseLanguage: 'Choose language',
         contactsButtonLabelAdd: 'Choose Your Crew',
         contactsButtonLabelEdit: 'Edit Your Crew',
