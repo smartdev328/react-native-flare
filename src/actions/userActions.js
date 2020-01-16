@@ -1,4 +1,3 @@
-import Contacts from 'react-native-contacts';
 import {
     check,
     checkNotifications,
@@ -11,32 +10,38 @@ import {
 import * as types from './actionTypes';
 import { API_URL } from '../constants/Config';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
+import { getContactsOrder } from '../bits/settingsUrl';
+import { getAllContacts } from '../helpers/contacts';
 
-export function setCrewMembers(token, crewId, members) {
-    return async function setCrew(dispatch) {
+export const resetSetCrewMembers = () => ({ type: types.CREW_SET_RESET });
+
+export const setCrewMembers = (token, crewId, members) => async dispatch => {
+    dispatch({
+        type: types.CREW_SET_REQUEST,
+    });
+    try {
+        const response = await ProtectedAPICall(
+            token,
+            API_URL,
+            `/crews/${crewId}`,
+            {
+                method: 'POST',
+                data: {
+                    members,
+                },
+            }
+        );
         dispatch({
-            type: types.CREW_SET_REQUEST,
+            type: types.CREW_SET_SUCCESS,
+            crew: response.data.data.crew,
         });
-        ProtectedAPICall(token, API_URL, `/crews/${crewId}`, {
-            method: 'POST',
-            data: {
-                members,
-            },
-        })
-            .then(response => {
-                dispatch({
-                    type: types.CREW_SET_SUCCESS,
-                    crew: response.data.data.crew,
-                });
-            })
-            .catch(status => {
-                dispatch({
-                    type: types.CREW_SET_FAILURE,
-                    status,
-                });
-            });
-    };
-}
+    } catch (status) {
+        dispatch({
+            type: types.CREW_SET_FAILURE,
+            status,
+        });
+    }
+};
 
 export const checkLocationsPermission = () => async dispatch => {
     const response = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
@@ -84,23 +89,24 @@ export function syncAccountDetails(args) {
     };
 }
 
-export function fetchContacts() {
-    return function startFetchingContacts(dispatch) {
+export const fetchContacts = () => async dispatch => {
+    dispatch({
+        type: types.CONTACTS_REQUEST,
+    });
+    try {
+        const [contacts, sortOrder] = await Promise.all([
+            getAllContacts(),
+            getContactsOrder(),
+        ]);
         dispatch({
-            type: types.CONTACTS_REQUEST,
+            type: types.CONTACTS_SUCCESS,
+            contacts,
+            sortOrder,
         });
-        Contacts.getAllWithoutPhotos((err, contacts) => {
-            if (err) {
-                dispatch({ type: types.CONTACTS_FAILURE });
-            } else {
-                dispatch({
-                    type: types.CONTACTS_SUCCESS,
-                    contacts,
-                });
-            }
-        });
-    };
-}
+    } catch (error) {
+        dispatch({ type: types.CONTACTS_FAILURE, error });
+    }
+};
 
 export function getCrewEventTimeline(token) {
     return function getTimeline(dispatch) {
@@ -378,3 +384,12 @@ export const getCallScripts = token => async dispatch => {
 export const sawCallScripts = () => ({ type: types.USER_SAW_CALL_SCRIPTS });
 
 export const sawNotifSettings = () => ({ type: types.USER_SAW_NOTIF_SETTINGS });
+
+export const textFriendsReset = () => ({ type: types.USER_TEXT_FRIENDS_RESET });
+export const textFriendsRequest = () => ({
+    type: types.USER_TEXT_FRIENDS_REQUEST,
+});
+export const textFriendsResponse = response => ({
+    type: types.USER_TEXT_FRIENDS_RESPONSE,
+    response,
+});

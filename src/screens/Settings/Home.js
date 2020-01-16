@@ -3,17 +3,21 @@ import * as React from 'react';
 import {
     Image,
     SafeAreaView,
+    StatusBar,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
+import { useSlideMenu } from '../../bits/useNavigationCallback';
 import { navOptions, styles } from './styles';
 
 import chevron from '../../assets/chevron.png';
 
 const Home = ({ componentId }) => {
+    useSlideMenu(componentId);
+
     const openCall = React.useCallback(() => {
         Navigation.push(componentId, {
             component: { name: 'com.flarejewelry.app.settings.Call' },
@@ -28,6 +32,7 @@ const Home = ({ componentId }) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar barStyle="dark-content" />
             <Text style={styles.subhead}>
                 <Text style={{ fontWeight: 'bold' }}>Press</Text> for a call
             </Text>

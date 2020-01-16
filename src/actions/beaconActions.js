@@ -93,33 +93,29 @@ export function flare(token, beacon, position, forCurrentUser) {
     };
 }
 
-export function cancelActiveFlare(token, pin) {
-    return async function doCancelFlare(dispatch) {
-        dispatch({
-            type: types.CANCEL_ACTIVE_FLARE_REQUEST,
-        });
-        ProtectedAPICall(token, API_URL, '/crews/event/cancel', {
-            method: 'POST',
-            data: {
-                pin,
-            },
-        })
-            .then(response => {
-                dispatch({
-                    type: types.CANCEL_ACTIVE_FLARE_SUCCESS,
-                    data: {
-                        crewEvents: response.crew_events,
-                    },
-                });
-            })
-            .catch(status => {
-                dispatch({
-                    type: types.CANCEL_ACTIVE_FLARE_FAILURE,
-                    status,
-                });
+export const cancelActiveFlare = token => dispatch => {
+    dispatch({
+        type: types.CANCEL_ACTIVE_FLARE_REQUEST,
+    });
+    ProtectedAPICall(token, API_URL, '/crews/event/cancel', {
+        method: 'POST',
+        data: {},
+    })
+        .then(response => {
+            dispatch({
+                type: types.CANCEL_ACTIVE_FLARE_SUCCESS,
+                data: {
+                    crewEvents: response.crew_events,
+                },
             });
-    };
-}
+        })
+        .catch(status => {
+            dispatch({
+                type: types.CANCEL_ACTIVE_FLARE_FAILURE,
+                status,
+            });
+        });
+};
 
 export function resetCancelFlareState() {
     return dispatch =>
@@ -227,7 +223,11 @@ export function processQueuedBeacons(handleBeacon, token, problemBeacons) {
             } else {
                 retry += 1;
             }
-            const updatedBeacon = Immutable.setIn(problem.beacon, ['retry'], retry);
+            const updatedBeacon = Immutable.setIn(
+                problem.beacon,
+                ['retry'],
+                retry
+            );
 
             // resubmit the beacon with the incremented retry counter
             handleBeacon(dispatch, token, updatedBeacon, problem.position);

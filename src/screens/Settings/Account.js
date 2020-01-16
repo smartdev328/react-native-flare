@@ -28,6 +28,8 @@ const Account = ({
     componentId,
     authToken,
     analyticsEnabled,
+    devices,
+    referralKey,
     setPrivacyConfig,
     signOut,
     changeAppRoot,
@@ -45,12 +47,18 @@ const Account = ({
         [authToken, setPrivacyConfig]
     );
 
+    const support = React.useCallback(() => {
+        contactSupport(devices);
+    }, [devices]);
     const openTerms = React.useCallback(() => {
         Linking.openURL('https://getflare.com/pages/terms-of-service');
     }, []);
     const openPrivacy = React.useCallback(() => {
         Linking.openURL('https://getflare.com/pages/privacy-policy');
     }, []);
+    const share = React.useCallback(() => {
+        shareFlare(referralKey);
+    }, [referralKey]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -78,7 +86,7 @@ const Account = ({
             </View>
             <TouchableOpacity
                 style={[styles.item, { marginTop: 80 }]}
-                onPress={shareFlare}
+                onPress={share}
             >
                 <Text style={styles.text}>Share Flare</Text>
                 <Image
@@ -87,7 +95,7 @@ const Account = ({
                     resizeMode="center"
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item} onPress={contactSupport}>
+            <TouchableOpacity style={styles.item} onPress={support}>
                 <Text style={styles.text}>Support Center</Text>
                 <Image
                     source={contactIcon}
@@ -117,8 +125,10 @@ const mapStateToProps = ({
     user: {
         authToken,
         settings: { analyticsEnabled },
+        devices,
+        referralKey,
     },
-}) => ({ authToken, analyticsEnabled });
+}) => ({ authToken, analyticsEnabled, devices, referralKey });
 
 const mapDispatchToProps = {
     signOut: authActions.signOut,

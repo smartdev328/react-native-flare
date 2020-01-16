@@ -3,7 +3,7 @@ import AddJewelry from './AddJewelry';
 import AddJewelryConfirm from './AddJewelryConfirm';
 import AddJewelryManual from './AddJewelryManual';
 import Confirm from './Confirm';
-import Contacts from './Contacts';
+import Contacts, { TextConfirm } from './Contacts';
 import FlareNavBar from '../bits/FlareNavBar';
 import Home from './Home';
 import HomeActive from './HomeActive';
@@ -11,7 +11,6 @@ import Jewelry from './Jewelry';
 import ManufacturingMain from './ManufacturingMain';
 import LeftDrawer from './LeftDrawer';
 import Onboarding from './Onboarding';
-import PinCheck from './PinCheck';
 import Register from './Register';
 import Register2 from './Register2';
 import Root from './Root';
@@ -20,7 +19,7 @@ import {
     Call as SettingsCall,
     Home as Settings,
     Notifications as SetttingsNotifications,
-} from './settings';
+} from './Settings';
 import SignIn from './SignIn';
 import AddHardware from './AddHardware';
 import HowToConnect from './AddHardware/HowToConnect';
@@ -61,6 +60,12 @@ export default (store, Provider) => {
         Provider,
         store
     );
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.app.contacts.TextConfirm',
+        () => TextConfirm,
+        Provider,
+        store
+    );
     Navigation.registerComponent(
         'com.flarejewelry.app.FlareNavBar',
         () => FlareNavBar
@@ -92,12 +97,6 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.LeftDrawer',
         () => LeftDrawer,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.PinCheck',
-        () => PinCheck,
         Provider,
         store
     );

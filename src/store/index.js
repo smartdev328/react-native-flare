@@ -41,6 +41,7 @@ const transformerConfig = {
             'callScript',
             'callScripts',
             'sawCallScripts',
+            'sawNotifSettings',
         ],
         beacons: ['latest', 'problems'],
     },

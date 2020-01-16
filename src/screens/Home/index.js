@@ -28,6 +28,7 @@ import { startBleListening } from '../../actions/hardwareActions';
 import getCurrentPosition from '../../helpers/location';
 import Strings from '../../locales/en';
 import SoftLand from './SoftLand';
+import { setRootComponent } from '../../actions';
 
 class Home extends React.Component {
     constructor(props) {
@@ -50,7 +51,9 @@ class Home extends React.Component {
             hardware,
             permissions,
             analyticsToken,
+            componentId,
         } = this.props;
+        dispatch(setRootComponent(componentId));
         if (hasActiveFlare) {
             dispatch(changeAppRoot('secure-active-event'));
         }

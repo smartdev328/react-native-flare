@@ -8,6 +8,9 @@ export const nav = (state = initialState.nav, action = {}) => {
                 root: action.root,
             });
 
+        case types.SET_ROOT_COMPONENT:
+            return state.merge({ rootComponentId: action.componentId });
+
         default:
             return state;
     }

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
+import { Navigation } from 'react-native-navigation';
 
 import * as navActions from '../actions/navActions';
 import { LEFT_NAVIGATION_WIDTH } from '../constants/Config';
@@ -23,6 +24,7 @@ import iconProfile from '../assets/menu-item-profile.png';
 import iconSettings from '../assets/menu-item-settings.png';
 import iconContact from '../assets/menu-item-contact.png';
 import iconInfo from '../assets/menu-item-info.png';
+import { openContactsScreen } from './Contacts';
 
 const styles = StyleSheet.create({
     container: {
@@ -69,16 +71,24 @@ const MenuItem = ({ onPress, label, icon, style }) => (
     </TouchableOpacity>
 );
 
-const LeftDrawer = ({ changeAppRoot }) => {
+const LeftDrawer = ({ changeAppRoot, devices, rootComponentId }) => {
     const insets = useSafeArea();
 
     const handleHome = React.useCallback(() => {
         changeAppRoot('secure');
     }, [changeAppRoot]);
 
-    const handleJewelry = React.useCallback(() => {
-        changeAppRoot('secure-jewelry');
-    }, [changeAppRoot]);
+    const handleCrew = React.useCallback(() => {
+        changeAppRoot('secure');
+        Navigation.mergeOptions(rootComponentId, {
+            sideMenu: {
+                left: {
+                    visible: false,
+                },
+            },
+        });
+        openContactsScreen(rootComponentId);
+    }, [changeAppRoot, rootComponentId]);
 
     const handleSettings = React.useCallback(() => {
         changeAppRoot('secure-settings');
@@ -87,6 +97,10 @@ const LeftDrawer = ({ changeAppRoot }) => {
     const handleAccount = React.useCallback(() => {
         changeAppRoot('secure-account');
     }, [changeAppRoot]);
+
+    const handleSupport = React.useCallback(() => {
+        contactSupport(devices);
+    }, [devices]);
 
     const howFlareWorks = React.useCallback(() => {
         Linking.openURL('https://getflare.com/pages/how-it-works');
@@ -117,7 +131,7 @@ const LeftDrawer = ({ changeAppRoot }) => {
                     icon={iconHome}
                 />
                 <MenuItem
-                    onPress={handleJewelry}
+                    onPress={handleCrew}
                     label="My Crew"
                     icon={iconCrew}
                 />
@@ -132,7 +146,7 @@ const LeftDrawer = ({ changeAppRoot }) => {
                     icon={iconProfile}
                 />
                 <MenuItem
-                    onPress={contactSupport}
+                    onPress={handleSupport}
                     label="Contact Support"
                     icon={iconContact}
                 />
@@ -147,7 +161,10 @@ const LeftDrawer = ({ changeAppRoot }) => {
     );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ user: { devices }, nav: { rootComponentId } }) => ({
+    devices,
+    rootComponentId,
+});
 
 const mapDispatchToProps = {
     changeAppRoot: navActions.changeAppRoot,

@@ -43,6 +43,7 @@ export const CONTACTS_FAILURE = 'flare.app.contacts.FAILURE';
 export const CONTACTS_REQUEST = 'flare.app.contacts.REQUEST';
 export const CONTACTS_SUCCESS = 'flare.app.contacts.SUCCESS';
 
+export const CREW_SET_RESET = 'flare.app.crews.set.RESET';
 export const CREW_SET_FAILURE = 'flare.app.crews.set.FAILURE';
 export const CREW_SET_REQUEST = 'flare.app.crews.set.REQUEST';
 export const CREW_SET_SUCCESS = 'flare.app.crews.set.SUCCESS';
@@ -63,6 +64,7 @@ export const PERMISSIONS_REQUEST = 'flare.app.permissions.REQUEST';
 export const PERMISSIONS_SUCCESS = 'flare.app.permissions.SUCCESS';
 
 export const ROOT_CHANGED = 'flare.app.ROOT_CHANGED';
+export const SET_ROOT_COMPONENT = 'flare.app.nav.SET_ROOT_COMPONENT';
 
 export const BLUETOOTH_STATE_CHANGED = 'flare.app.hardware.BLUETOOTH';
 
@@ -158,6 +160,10 @@ export const USER_SCENARIO_GOT_LONG_PRESS =
 export const USER_SCENARIO_AWAIT_SHORT_PRESS =
     'flare.app.USER_SCENARIO_AWAIT_SHORT_PRESS';
 export const USER_SCENARIO_GOT_SHORT_PRESS =
-    'flare.USER_SCENARIO_GOT_SHORT_PRESS';
+    'flare.app.USER_SCENARIO_GOT_SHORT_PRESS';
 export const USER_SCENARIO_ADDED_TO_CONTACTS =
-    'USER_SCENARIO_ADDED_TO_CONTACTS';
+    'flare.app.USER_SCENARIO_ADDED_TO_CONTACTS';
+
+export const USER_TEXT_FRIENDS_RESET = 'flare.app.user.textFriends.RESET';
+export const USER_TEXT_FRIENDS_REQUEST = 'flare.app.user.textFriends.REQUEST';
+export const USER_TEXT_FRIENDS_RESPONSE = 'flare.app.user.textFriends.RESPONSE';
