@@ -3,6 +3,7 @@ import * as React from 'react';
 import {
     Image,
     SafeAreaView,
+    StatusBar,
     Text,
     TouchableOpacity,
     View,
@@ -28,6 +29,7 @@ const Home = ({ componentId }) => {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar barStyle="dark-content" />
             <Text style={styles.subhead}>
                 <Text style={{ fontWeight: 'bold' }}>Press</Text> for a call
             </Text>
