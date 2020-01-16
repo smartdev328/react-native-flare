@@ -380,3 +380,12 @@ export const getCallScripts = token => async dispatch => {
 export const sawCallScripts = () => ({ type: types.USER_SAW_CALL_SCRIPTS });
 
 export const sawNotifSettings = () => ({ type: types.USER_SAW_NOTIF_SETTINGS });
+
+export const textFriendsReset = () => ({ type: types.USER_TEXT_FRIENDS_RESET });
+export const textFriendsRequest = () => ({
+    type: types.USER_TEXT_FRIENDS_REQUEST,
+});
+export const textFriendsResponse = response => ({
+    type: types.USER_TEXT_FRIENDS_RESPONSE,
+    response,
+});

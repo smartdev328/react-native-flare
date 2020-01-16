@@ -158,6 +158,10 @@ export const USER_SCENARIO_GOT_LONG_PRESS =
 export const USER_SCENARIO_AWAIT_SHORT_PRESS =
     'flare.app.USER_SCENARIO_AWAIT_SHORT_PRESS';
 export const USER_SCENARIO_GOT_SHORT_PRESS =
-    'flare.USER_SCENARIO_GOT_SHORT_PRESS';
+    'flare.app.USER_SCENARIO_GOT_SHORT_PRESS';
 export const USER_SCENARIO_ADDED_TO_CONTACTS =
-    'USER_SCENARIO_ADDED_TO_CONTACTS';
+    'flare.app.USER_SCENARIO_ADDED_TO_CONTACTS';
+
+export const USER_TEXT_FRIENDS_RESET = 'flare.app.user.textFriends.RESET';
+export const USER_TEXT_FRIENDS_REQUEST = 'flare.app.user.textFriends.REQUEST';
+export const USER_TEXT_FRIENDS_RESPONSE = 'flare.app.user.textFriends.RESPONSE';

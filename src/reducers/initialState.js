@@ -49,6 +49,7 @@ export const initialState = Immutable({
             longPress: null,
             addedToContacts: false,
         },
+        textFriends: undefined,
     },
     beacons: {
         latest: null,

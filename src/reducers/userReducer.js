@@ -74,21 +74,16 @@ export function user(state = initialState.user, action = {}) {
          * is to keep all devices in sync with each other.
          */
         case types.ACCOUNT_DETAILS_SUCCESS:
-            return state.replace(
-                state,
-                {
-                    crewEvents: action.data.crew_events,
-                    crews: action.data.crews,
-                    devices: action.data.devices,
-                    hasActiveFlare:
-                        action.data.crew_events &&
-                        action.data.crew_events.length > 0,
-                    profile: action.data.profile,
-                },
-                {
-                    deep: true,
-                }
-            );
+            return state.merge({
+                crewEvents: action.data.crew_events,
+                crews: action.data.crews,
+                devices: action.data.devices,
+                hasActiveFlare:
+                    action.data.crew_events &&
+                    action.data.crew_events.length > 0,
+                profile: action.data.profile,
+                referralKey: action.data.referral_key,
+            });
 
         /**
          * BEACONS
@@ -502,6 +497,13 @@ export function user(state = initialState.user, action = {}) {
             return state.setIn(['scenarios', 'shortPress'], 'done');
         case types.USER_SCENARIO_ADDED_TO_CONTACTS:
             return state.setIn(['scenarios', 'addedToContacts', true]);
+
+        case types.USER_TEXT_FRIENDS_RESET:
+            return state.without('textFriends');
+        case types.USER_TEXT_FRIENDS_REQUEST:
+            return state.set('textFriends', 'requested');
+        case types.USER_TEXT_FRIENDS_RESPONSE:
+            return state.set('textFriends', action.response);
 
         default:
             return state;
