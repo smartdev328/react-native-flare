@@ -10,11 +10,14 @@ import {
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
+import { useSlideMenu } from '../../bits/useNavigationCallback';
 import { navOptions, styles } from './styles';
 
 import chevron from '../../assets/chevron.png';
 
 const Home = ({ componentId }) => {
+    useSlideMenu(componentId);
+
     const openCall = React.useCallback(() => {
         Navigation.push(componentId, {
             component: { name: 'com.flarejewelry.app.settings.Call' },
