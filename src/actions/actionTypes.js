@@ -43,6 +43,7 @@ export const CONTACTS_FAILURE = 'flare.app.contacts.FAILURE';
 export const CONTACTS_REQUEST = 'flare.app.contacts.REQUEST';
 export const CONTACTS_SUCCESS = 'flare.app.contacts.SUCCESS';
 
+export const CREW_SET_RESET = 'flare.app.crews.set.RESET';
 export const CREW_SET_FAILURE = 'flare.app.crews.set.FAILURE';
 export const CREW_SET_REQUEST = 'flare.app.crews.set.REQUEST';
 export const CREW_SET_SUCCESS = 'flare.app.crews.set.SUCCESS';

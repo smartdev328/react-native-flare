@@ -166,6 +166,9 @@ export function user(state = initialState.user, action = {}) {
         /**
          * CREWS
          */
+        case types.CREW_SET_RESET:
+            return state.without('crewUpdateState');
+
         case types.CREW_SET_REQUEST:
             return state.merge({
                 crewUpdateState: 'requested',

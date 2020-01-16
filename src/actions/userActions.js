@@ -13,31 +13,35 @@ import ProtectedAPICall from '../bits/ProtectedAPICall';
 import { getContactsOrder } from '../bits/settingsUrl';
 import { getAllContacts } from '../helpers/contacts';
 
-export function setCrewMembers(token, crewId, members) {
-    return async function setCrew(dispatch) {
+export const resetSetCrewMembers = () => ({ type: types.CREW_SET_RESET });
+
+export const setCrewMembers = (token, crewId, members) => async dispatch => {
+    dispatch({
+        type: types.CREW_SET_REQUEST,
+    });
+    try {
+        const response = await ProtectedAPICall(
+            token,
+            API_URL,
+            `/crews/${crewId}`,
+            {
+                method: 'POST',
+                data: {
+                    members,
+                },
+            }
+        );
         dispatch({
-            type: types.CREW_SET_REQUEST,
+            type: types.CREW_SET_SUCCESS,
+            crew: response.data.data.crew,
         });
-        ProtectedAPICall(token, API_URL, `/crews/${crewId}`, {
-            method: 'POST',
-            data: {
-                members,
-            },
-        })
-            .then(response => {
-                dispatch({
-                    type: types.CREW_SET_SUCCESS,
-                    crew: response.data.data.crew,
-                });
-            })
-            .catch(status => {
-                dispatch({
-                    type: types.CREW_SET_FAILURE,
-                    status,
-                });
-            });
-    };
-}
+    } catch (status) {
+        dispatch({
+            type: types.CREW_SET_FAILURE,
+            status,
+        });
+    }
+};
 
 export const checkLocationsPermission = () => async dispatch => {
     const response = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);

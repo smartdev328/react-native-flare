@@ -1,10 +1,19 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import * as React from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import {
+    Alert,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
+import { textFriendsResponse } from '../../actions/userActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -77,6 +86,37 @@ const TextConfirm = ({ componentId }) => {
 
     const dispatch = useDispatch();
 
+    const setResponse = React.useCallback(
+        response => {
+            dispatch(textFriendsResponse(response));
+            Navigation.dismissModal(componentId);
+        },
+        [componentId, dispatch]
+    );
+
+    const confirm = React.useCallback(() => {
+        setResponse('confirm');
+    }, [setResponse]);
+
+    const notNow = React.useCallback(() => {
+        Alert.alert(
+            'Are you sure?',
+            'We need to ensure that your crew has your back and knows what to do. If you don’t allow this action, we can’t text your friends with your cuff.',
+            [
+                {
+                    text: 'I’m sure',
+                    style: 'destructive',
+                    onPress: () => setResponse('cancel'),
+                },
+                {
+                    text: 'Text my crew',
+                    style: 'default',
+                    onPress: () => setResponse('confirm'),
+                },
+            ]
+        );
+    }, [setResponse]);
+
     return (
         <SafeAreaView style={[StyleSheet.absoluteFill, styles.container]}>
             <StatusBar barStyle="dark-content" />
@@ -104,12 +144,14 @@ const TextConfirm = ({ componentId }) => {
             </View>
             <RoundedButton
                 wrapperStyle={styles.spacedButton}
+                onPress={confirm}
                 text="Text My Crew"
                 width={240}
             />
             <RoundedButton
                 wrapperStyle={styles.otherButton}
                 invisible
+                onPress={notNow}
                 text="Not Now"
                 width={240}
             />

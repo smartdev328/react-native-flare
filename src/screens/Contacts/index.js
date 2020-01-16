@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import memoize from 'memoize-one';
 
 import * as userActions from '../../actions/userActions';
 import * as navActions from '../../actions/navActions';
@@ -72,20 +73,66 @@ const styles = StyleSheet.create({
 class Contacts extends React.Component {
     static options = () => settingsNavOptions('My Crew', true);
 
+    computeSections = memoize(contacts => contacts.map(({ title }) => title));
+
     constructor(props) {
         super(props);
         this.state = {
             crew: props.crew,
-            contactSections: null,
             dirty: false,
             addedMembers: false,
         };
     }
 
     componentDidMount() {
-        const { fetchContacts } = this.props;
+        const {
+            fetchContacts,
+            textFriendsReset,
+            resetSetCrewMembers,
+        } = this.props;
         fetchContacts();
+        textFriendsReset();
+        resetSetCrewMembers();
         this.navigationEventListener = Navigation.events().bindComponent(this);
+    }
+
+    componentDidUpdate(
+        { textFriendsState: prevTextFriendsState, loading: prevLoading },
+        { dirty: prevDirty }
+    ) {
+        const {
+            textFriendsState,
+            componentId,
+            loading,
+            crewUpdateState,
+        } = this.props;
+        const { dirty } = this.state;
+        if (
+            prevTextFriendsState === 'requested' &&
+            textFriendsState !== 'requested'
+        ) {
+            switch (textFriendsState) {
+                case 'confirm':
+                    this.performSave();
+                    break;
+                case 'cancel':
+                default:
+                    Navigation.pop(componentId);
+                    break;
+            }
+        }
+        if (dirty !== prevDirty) {
+            Navigation.mergeOptions(componentId, {
+                topBar: {
+                    rightButtons: dirty ? [saveButton] : [],
+                },
+            });
+        }
+        if (loading !== prevLoading) {
+            if (crewUpdateState === 'succeeded') {
+                Navigation.pop(componentId);
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -94,23 +141,11 @@ class Contacts extends React.Component {
         }
     }
 
-    static getDerivedStateFromProps(props, state) {
-        const newState = {};
-        const { contacts } = props;
-        let needsUpdate = false;
-
-        const sections = contacts.map(({ title }) => title);
-        if (sections !== state.contactSections) {
-            newState.contactSections = sections;
-            needsUpdate = true;
-        }
-
-        if (needsUpdate) {
-            return newState;
-        }
-
-        return null;
-    }
+    performSave = () => {
+        const { setCrewMembers, authToken } = this.props;
+        const { crew } = this.state;
+        setCrewMembers(authToken, crew.id || 0, crew.members);
+    };
 
     handleContactPress = contact => {
         const {
@@ -193,13 +228,17 @@ class Contacts extends React.Component {
     };
 
     handleSave = () => {
-        const { addedMembers, crew } = this.state;
+        const { textFriendsRequest } = this.props;
+        const { addedMembers } = this.state;
         if (addedMembers) {
+            textFriendsRequest();
             Navigation.showModal({
                 component: {
                     name: 'com.flarejewelry.app.contacts.TextConfirm',
                 },
             });
+        } else {
+            this.performSave();
         }
     };
 
@@ -223,15 +262,8 @@ class Contacts extends React.Component {
             contactsCount,
             contactsCrewLookup,
             loading,
-            componentId,
         } = this.props;
-        const { contactSections, dirty, crew } = this.state;
-
-        Navigation.mergeOptions(componentId, {
-            topBar: {
-                rightButtons: dirty ? [saveButton] : [],
-            },
-        });
+        const { crew } = this.state;
 
         return (
             <View style={styles.container}>
@@ -252,7 +284,7 @@ class Contacts extends React.Component {
                     contactsCount={contactsCount}
                     contactsCrewLookup={contactsCrewLookup || {}}
                     onPressContact={this.handleContactPress}
-                    sectionList={contactSections}
+                    sectionList={this.computeSections(contacts)}
                 />
 
                 <View>{loading && <ActivityIndicator />}</View>
@@ -261,25 +293,40 @@ class Contacts extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    const { crews } = state.user;
+const mapStateToProps = ({
+    user: {
+        crews,
+        authToken,
+        contacts,
+        contactsCount,
+        contactsCrewLookup,
+        hasViewedTutorial,
+        crewUpdateState,
+        textFriends,
+    },
+}) => {
     const crew = crews && crews.length ? crews[0] : { name: null, members: [] };
     return {
-        authToken: state.user.authToken,
+        authToken,
         crew,
         hasCrew: crew && crew.members && crew.members.length > 0,
-        contacts: state.user.contacts,
-        contactsCount: state.user.contactsCount,
-        contactsCrewLookup: state.user.contactsCrewLookup,
-        hasViewedTutorial: state.user.hasViewedTutorial,
-        loading: state.user.crewUpdateState === 'requested',
+        contacts,
+        contactsCount,
+        contactsCrewLookup,
+        hasViewedTutorial,
+        crewUpdateState,
+        loading: crewUpdateState === 'requested',
+        textFriendsState: textFriends,
     };
-}
+};
 
 const mapDispatchToProps = {
     setCrewMembers: userActions.setCrewMembers,
     fetchContacts: userActions.fetchContacts,
     changeAppRoot: navActions.changeAppRoot,
+    textFriendsRequest: userActions.textFriendsRequest,
+    textFriendsReset: userActions.textFriendsReset,
+    resetSetCrewMembers: userActions.resetSetCrewMembers,
 };
 
 export default connect(
