@@ -218,6 +218,13 @@ export default class App extends Component {
                     'com.flarejewelry.app.settings.Account'
                 );
                 break;
+            case 'secure-crew':
+                setDefaultOptions();
+                setRootWithDefaults(
+                    'CREW_STACK',
+                    'com.flarejewelry.app.settings.Crew'
+                );
+                break;
             case 'secure-active-event':
                 Navigation.setRoot({
                     root: {

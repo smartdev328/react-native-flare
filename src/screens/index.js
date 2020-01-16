@@ -17,6 +17,7 @@ import Root from './Root';
 import {
     Account,
     Call as SettingsCall,
+    Crew as SettingsCrew,
     Home as Settings,
     Notifications as SetttingsNotifications,
 } from './Settings';
@@ -133,6 +134,10 @@ export default (store, Provider) => {
         () => SettingsCall,
         Provider,
         store
+    );
+    Navigation.registerComponent(
+        'com.flarejewelry.app.settings.Crew',
+        () => SettingsCrew
     );
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.settings.Notifications',
