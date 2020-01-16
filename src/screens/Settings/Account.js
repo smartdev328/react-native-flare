@@ -28,6 +28,7 @@ const Account = ({
     componentId,
     authToken,
     analyticsEnabled,
+    devices,
     setPrivacyConfig,
     signOut,
     changeAppRoot,
@@ -45,6 +46,9 @@ const Account = ({
         [authToken, setPrivacyConfig]
     );
 
+    const support = React.useCallback(() => {
+        contactSupport(devices);
+    }, [devices]);
     const openTerms = React.useCallback(() => {
         Linking.openURL('https://getflare.com/pages/terms-of-service');
     }, []);
@@ -87,7 +91,7 @@ const Account = ({
                     resizeMode="center"
                 />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item} onPress={contactSupport}>
+            <TouchableOpacity style={styles.item} onPress={support}>
                 <Text style={styles.text}>Support Center</Text>
                 <Image
                     source={contactIcon}
@@ -117,8 +121,9 @@ const mapStateToProps = ({
     user: {
         authToken,
         settings: { analyticsEnabled },
+        devices,
     },
-}) => ({ authToken, analyticsEnabled });
+}) => ({ authToken, analyticsEnabled, devices });
 
 const mapDispatchToProps = {
     signOut: authActions.signOut,

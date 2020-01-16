@@ -69,7 +69,7 @@ const MenuItem = ({ onPress, label, icon, style }) => (
     </TouchableOpacity>
 );
 
-const LeftDrawer = ({ changeAppRoot }) => {
+const LeftDrawer = ({ changeAppRoot, devices }) => {
     const insets = useSafeArea();
 
     const handleHome = React.useCallback(() => {
@@ -87,6 +87,10 @@ const LeftDrawer = ({ changeAppRoot }) => {
     const handleAccount = React.useCallback(() => {
         changeAppRoot('secure-account');
     }, [changeAppRoot]);
+
+    const handleSupport = React.useCallback(() => {
+        contactSupport(devices);
+    }, [devices]);
 
     const howFlareWorks = React.useCallback(() => {
         Linking.openURL('https://getflare.com/pages/how-it-works');
@@ -132,7 +136,7 @@ const LeftDrawer = ({ changeAppRoot }) => {
                     icon={iconProfile}
                 />
                 <MenuItem
-                    onPress={contactSupport}
+                    onPress={handleSupport}
                     label="Contact Support"
                     icon={iconContact}
                 />
@@ -147,7 +151,7 @@ const LeftDrawer = ({ changeAppRoot }) => {
     );
 };
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ user: { devices } }) => ({ devices });
 
 const mapDispatchToProps = {
     changeAppRoot: navActions.changeAppRoot,
