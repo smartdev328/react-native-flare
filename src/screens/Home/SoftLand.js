@@ -163,6 +163,7 @@ const SoftLand = ({ componentId }) => {
                 callScripts,
                 sawCallScripts,
                 sawNotifSettings,
+                referralKey,
             },
         }) => ({
             authToken,
@@ -180,6 +181,7 @@ const SoftLand = ({ componentId }) => {
                 Object.keys(callScripts).length > 0,
             sawCallScripts,
             sawNotifSettings,
+            referralKey,
         })
     );
     const insets = useSafeArea();
@@ -205,7 +207,9 @@ const SoftLand = ({ componentId }) => {
                 component: { name: 'com.flarejewelry.app.PermissionsReminder' },
             });
         }, []),
-        share: shareFlare,
+        share: React.useCallback(() => {
+            shareFlare(selector.referralKey);
+        }, [selector.referralKey]),
     };
 
     const items = ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

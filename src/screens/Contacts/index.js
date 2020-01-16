@@ -193,9 +193,14 @@ class Contacts extends React.Component {
     };
 
     handleSave = () => {
-        Navigation.showModal({
-            component: { name: 'com.flarejewelry.app.contacts.TextConfirm' },
-        });
+        const { addedMembers, crew } = this.state;
+        if (addedMembers) {
+            Navigation.showModal({
+                component: {
+                    name: 'com.flarejewelry.app.contacts.TextConfirm',
+                },
+            });
+        }
     };
 
     navigationButtonPressed({ buttonId }) {

@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import * as React from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 
@@ -54,7 +57,26 @@ const styles = StyleSheet.create({
     },
 });
 
-const TextConfirm = () => {
+const generateFullName = (first, last) => {
+    if (first && last) {
+        return `${first} ${last[0].toUpperCase()}`;
+    } else if (first) {
+        return first;
+    } else {
+        return 'Your friend';
+    }
+};
+
+const TextConfirm = ({ componentId }) => {
+    const { firstName, lastName } = useSelector(({ user: { profile } }) => ({
+        firstName: profile ? profile.first_name : undefined,
+        lastName: profile ? profile.last_name : undefined,
+    }));
+
+    const fullName = generateFullName(firstName, lastName);
+
+    const dispatch = useDispatch();
+
     return (
         <SafeAreaView style={[StyleSheet.absoluteFill, styles.container]}>
             <StatusBar barStyle="dark-content" />
@@ -69,11 +91,11 @@ const TextConfirm = () => {
             </Text>
             <View style={styles.fakeTextContainer}>
                 <Text style={styles.fakeText}>
-                    Hey hey! [Sara D] has added you to their Crew of friends in
-                    Flare (a new safety jewelry company) because you always have
-                    their back.
+                    Hey hey! {fullName} has added you to their Crew of friends
+                    in Flare (a new safety jewelry company) because you always
+                    have their back.
                     {'\n\n'}
-                    You will receive messages when [Sara D] presses the hidden
+                    You will receive messages when {fullName} presses the hidden
                     button on their bracelet to indicate that they’re in an iffy
                     situation and want you to check up on them.
                     {'\n\n'}
