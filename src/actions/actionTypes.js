@@ -64,6 +64,7 @@ export const PERMISSIONS_REQUEST = 'flare.app.permissions.REQUEST';
 export const PERMISSIONS_SUCCESS = 'flare.app.permissions.SUCCESS';
 
 export const ROOT_CHANGED = 'flare.app.ROOT_CHANGED';
+export const SET_ROOT_COMPONENT = 'flare.app.nav.SET_ROOT_COMPONENT';
 
 export const BLUETOOTH_STATE_CHANGED = 'flare.app.hardware.BLUETOOTH';
 

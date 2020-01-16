@@ -7,7 +7,7 @@ const deviceIds = devices => {
     if (Array.isArray(devices) && devices.length > 0) {
         return devices
             .map(({ id }) => FlareDeviceID.getJewelryLabelFromDeviceID(id))
-            .join(',');
+            .join(', ');
     } else {
         return undefined;
     }

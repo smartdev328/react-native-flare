@@ -4,6 +4,7 @@ import Strings from '../locales/en';
 export const initialState = Immutable({
     nav: {
         root: 'insecure', // 'insecure' / 'secure',
+        rootComponentId: null,
     },
     user: {
         callScript: 1,
