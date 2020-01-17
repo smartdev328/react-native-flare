@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { KeyboardAvoidingView } from 'react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
+
 import styles from '../styles';
 import Headline from '../../Onboarding/Headline';
 import CuffPreview from './CuffPreview';
 import RoundedButton from '../../../bits/RoundedButton';
-import Colors from '../../../bits/Colors';
 
 const PARSER_REGEX = /^([0-9A-F]{6})([0-9A-Z]{3})$/i;
 
@@ -34,11 +35,12 @@ const Manual = ({ submit, busy, reset, error }) => {
         },
         [reset]
     );
+    const insets = useSafeArea();
 
     return (
         <KeyboardAvoidingView
             style={[styles.scrollContainer, { paddingTop: 0 }]}
-            keyboardVerticalOffset={96}
+            keyboardVerticalOffset={96 + insets.bottom}
             behavior="padding"
         >
             <Headline>Enter your Flare serial number</Headline>

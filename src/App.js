@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Text } from 'react-native';
 import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import { persistStore } from 'redux-persist';
@@ -92,6 +93,11 @@ const setRootWithDefaults = (id, name) => {
 export default class App extends Component {
     constructor(props) {
         super(props);
+
+        if (!Text.defaultProps) {
+            Text.defaultProps = {};
+        }
+        Text.defaultProps.allowFontScaling = false;
 
         this.currentRoot = 'uninitialized';
         store = configureStore(initialState);
@@ -216,6 +222,13 @@ export default class App extends Component {
                 setRootWithDefaults(
                     'ACCOUNT_STACK',
                     'com.flarejewelry.app.settings.Account'
+                );
+                break;
+            case 'secure-crew':
+                setDefaultOptions();
+                setRootWithDefaults(
+                    'CREW_STACK',
+                    'com.flarejewelry.app.settings.Crew'
                 );
                 break;
             case 'secure-active-event':

@@ -3,6 +3,8 @@ import { stringify } from 'qs';
 
 import FlareDeviceID from './FlareDeviceID';
 
+const FLARE_EMAIL = 'hello@getflare.com';
+
 const deviceIds = devices => {
     if (Array.isArray(devices) && devices.length > 0) {
         return devices
@@ -13,7 +15,7 @@ const deviceIds = devices => {
     }
 };
 
-const contactSupport = (devices = []) => {
+const contactSupport = async (devices = []) => {
     const deviceIdString = deviceIds(devices);
     const body =
         typeof deviceIdString === 'string'
@@ -24,7 +26,14 @@ const contactSupport = (devices = []) => {
         // subject: 'Subject',
         body,
     };
-    return Linking.openURL(`mailto:hello@getflare.com?${stringify(args)}`);
+    const gmailUrl = `googlegmail://co?${stringify({
+        ...args,
+        to: FLARE_EMAIL,
+    })}`;
+    const canGmail = await Linking.canOpenURL(gmailUrl);
+    return Linking.openURL(
+        canGmail ? gmailUrl : `mailto:${FLARE_EMAIL}?${stringify(args)}`
+    );
 };
 
 export default contactSupport;

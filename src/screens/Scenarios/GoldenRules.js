@@ -31,7 +31,7 @@ const GoldenRules = ({ finishUp }) => {
                     other to connect.
                 </HelpSection>
                 <HelpSection emoji="✅" title="Bluetooth On.">
-                    Bluetooth has to be on for Flare to work. (But you don’t
+                    Leave your bluetooth on for Flare to work. (But you don’t
                     need to pair with your bracelet again!)
                 </HelpSection>
                 <HelpSection emoji="📍" title="Location Services.">
@@ -39,8 +39,9 @@ const GoldenRules = ({ finishUp }) => {
                     your location. Keep location services “always” allowed.
                 </HelpSection>
                 <HelpSection emoji="💕" title="Love.">
-                    Use flare with love, thoughtfulness, honesty and good
-                    intention. We are a movement.
+                    Use Flare with love, thoughtfulness, honesty and good
+                    intention. You are now part of the movement that is breaking
+                    stereotypes about safety.
                 </HelpSection>
             </ScrollView>
             <RoundedButton

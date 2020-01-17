@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
-import { Navigation } from 'react-native-navigation';
 
 import * as navActions from '../actions/navActions';
 import { LEFT_NAVIGATION_WIDTH } from '../constants/Config';
@@ -24,7 +23,6 @@ import iconProfile from '../assets/menu-item-profile.png';
 import iconSettings from '../assets/menu-item-settings.png';
 import iconContact from '../assets/menu-item-contact.png';
 import iconInfo from '../assets/menu-item-info.png';
-import { openContactsScreen } from './Contacts';
 
 const styles = StyleSheet.create({
     container: {
@@ -71,7 +69,7 @@ const MenuItem = ({ onPress, label, icon, style }) => (
     </TouchableOpacity>
 );
 
-const LeftDrawer = ({ changeAppRoot, devices, rootComponentId }) => {
+const LeftDrawer = ({ changeAppRoot, devices }) => {
     const insets = useSafeArea();
 
     const handleHome = React.useCallback(() => {
@@ -79,16 +77,8 @@ const LeftDrawer = ({ changeAppRoot, devices, rootComponentId }) => {
     }, [changeAppRoot]);
 
     const handleCrew = React.useCallback(() => {
-        changeAppRoot('secure');
-        Navigation.mergeOptions(rootComponentId, {
-            sideMenu: {
-                left: {
-                    visible: false,
-                },
-            },
-        });
-        openContactsScreen(rootComponentId);
-    }, [changeAppRoot, rootComponentId]);
+        changeAppRoot('secure-crew');
+    }, [changeAppRoot]);
 
     const handleSettings = React.useCallback(() => {
         changeAppRoot('secure-settings');
@@ -161,9 +151,8 @@ const LeftDrawer = ({ changeAppRoot, devices, rootComponentId }) => {
     );
 };
 
-const mapStateToProps = ({ user: { devices }, nav: { rootComponentId } }) => ({
+const mapStateToProps = ({ user: { devices } }) => ({
     devices,
-    rootComponentId,
 });
 
 const mapDispatchToProps = {

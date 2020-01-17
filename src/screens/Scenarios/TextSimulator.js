@@ -143,7 +143,7 @@ const TextSimulator = ({ onSuccess }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
-            <Text style={styles.headline}>You started a Flare.</Text>
+            <Text style={styles.headline}>You started a message.</Text>
             <Text style={styles.subhead}>just now</Text>
             <View
                 style={[
@@ -168,7 +168,7 @@ const TextSimulator = ({ onSuccess }) => {
                 </ScrollView>
                 <RoundedButton
                     onPress={done ? fullSuccess : nextAnimation}
-                    text={done ? 'Situation Resolved' : 'Next'}
+                    text={done ? 'I’m okay 👌' : 'Next'}
                     useGradient={false}
                     wrapperStyle={styles.buttonWrapper}
                     width={200}

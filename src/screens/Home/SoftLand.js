@@ -21,9 +21,14 @@ import useDimensions from '../../bits/useDimensions';
 import { openContactsScreen } from '../Contacts';
 import { getCallScripts } from '../../actions/userActions';
 import count from '../../bits/count';
+import shareFlare from '../../bits/shareFlare';
 
 import aura1528 from '../../assets/aura-1528.jpg';
-import shareFlare from '../../bits/shareFlare';
+import cardCrew from '../../assets/card-crew.png';
+import cardNotifs from '../../assets/card-notifs.png';
+import cardCallscript from '../../assets/card-callscript.png';
+import cardPermissions from '../../assets/card-permissions.png';
+import cardShare from '../../assets/card-share.png';
 
 const styles = StyleSheet.create({
     container: {
@@ -50,12 +55,12 @@ const styles = StyleSheet.create({
     },
     list: {
         flexGrow: 0,
-        marginTop: 40,
+        marginTop: 16,
         paddingBottom: 12,
     },
     listContainer: {
         alignSelf: 'stretch',
-        height: 200,
+        height: 224,
     },
     spacer: {
         width: 48,
@@ -112,6 +117,7 @@ const styles = StyleSheet.create({
 const ITEM_TEMPLATES = [
     {
         key: 'crew',
+        image: { source: cardCrew, width: 106, height: 79 },
         title: 'Choose your backup',
         body:
             'Which friends do you want your Flare cuff to text? This is your crew.',
@@ -119,6 +125,7 @@ const ITEM_TEMPLATES = [
     },
     {
         key: 'notifs',
+        image: { source: cardNotifs, width: 84, height: 88 },
         title: 'Customize Notifications',
         body:
             'How do you want to be notified that your text has been sent? Choose your level of discretion.',
@@ -126,6 +133,7 @@ const ITEM_TEMPLATES = [
     },
     {
         key: 'callscript',
+        image: { source: cardCallscript, width: 69, height: 91 },
         title: 'Pick the perfect Cuff-Call',
         body:
             'What script do you want to hear when we call you? Choose the best for you.',
@@ -133,12 +141,14 @@ const ITEM_TEMPLATES = [
     },
     {
         key: 'permissions',
+        image: { source: cardPermissions, width: 119, height: 77 },
         title: 'Allow Location and Bluetooth',
         body: '“Always allow” your location and turn Bluetooth on.',
         done: ({ locationPermission }) => locationPermission,
     },
     {
         key: 'share',
+        image: { source: cardShare, width: 83, height: 89 },
         title: 'Share Flare 💕',
         body:
             'Invite your friends to join the movement. Send a special promo code.',

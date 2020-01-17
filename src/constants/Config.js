@@ -126,7 +126,7 @@ export const USERS_CAN_ADD_JEWELRY = true;
 /**
  * Toggle logging of network calls
  */
-export const VERBOSE_NETWORK_LOGGING = true;
+export const VERBOSE_NETWORK_LOGGING = false;
 
 /**
  * Time after which a second beacon press will not be considered identical
