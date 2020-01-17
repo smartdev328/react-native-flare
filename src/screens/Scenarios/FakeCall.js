@@ -44,7 +44,7 @@ const FakeCall = ({ onBack, onSuccess }) => {
                 onBack={onBack}
                 onNext={finishedCall ? onNext : undefined}
                 headline1="Ready to try it?"
-                headline2="Press for a call."
+                headline2="Press once & release."
                 body="Press the button on your cuff and we’ll call you. Listen, react, and hang up whenever!"
                 confirm="I got the call"
                 animation={finishedCall ? undefined : TOUCH_AND_RELEASE}
