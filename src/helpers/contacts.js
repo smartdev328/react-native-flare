@@ -1,4 +1,5 @@
 import Contacts from 'react-native-contacts';
+import deburr from 'lodash/deburr';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 
@@ -34,17 +35,22 @@ export const filterContacts = (rawContacts, sortOrder) => {
                       .filter(validComponent)
                       .join(' ')
                 : company;
-            const sortKey = (haveName && sortOrder === 'family_name'
-                ? [familyName, givenName, middleName]
-                      .filter(validComponent)
-                      .join(' ')
-                : name
-            )
-                .toLocaleUpperCase()
-                .normalize('NFKD');
+
+            // sort é under E, ß under S, etc.
+            // this is not what non-English-speakers always expect but we’re
+            // English-only for now
+            const sortKey = deburr(
+                (haveName && sortOrder === 'family_name'
+                    ? [familyName, givenName, middleName]
+                          .filter(validComponent)
+                          .join(' ')
+                    : name
+                ).toLocaleUpperCase()
+            );
             const firstLetter = sortKey[0];
             const section =
                 firstLetter >= 'A' && firstLetter <= 'Z' ? firstLetter : '#';
+
             return phoneNumbers.map(({ label, number }) => ({
                 name,
                 sortKey,
