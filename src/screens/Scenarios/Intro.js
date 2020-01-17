@@ -58,8 +58,9 @@ const Intro = ({ onClose, onNext }) => {
             </Headline>
             <View style={styles.line} />
             <Text style={styles.deviceActionText}>
-                Flare gives you two low-key options to help you leave if you’re
-                feeling unsure.
+                Flare gives you two low-key options to get out of an iffy
+                situation the moment you’re feeling unsure. No need to hang
+                around.
             </Text>
             <View style={styles.imageWrapper}>
                 <Image
@@ -78,7 +79,7 @@ const Intro = ({ onClose, onNext }) => {
                     width={240}
                     onPress={onNext}
                     wrapperStyle={buttonWrapperStyle}
-                    text="Learn how to use Flare"
+                    text="Show me how"
                 />
             </View>
         </View>
