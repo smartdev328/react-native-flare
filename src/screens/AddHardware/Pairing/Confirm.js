@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Text, KeyboardAvoidingView } from 'react-native';
+import { useSafeArea } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import Headline from '../../Onboarding/Headline';
@@ -19,12 +20,13 @@ const Confirm = ({ device, submit, busy, reset, error }) => {
         },
         [reset]
     );
+    const insets = useSafeArea();
 
     const deviceLabel = FlareDeviceID.getJewelryLabelFromDeviceID(device);
     return (
         <KeyboardAvoidingView
             style={[styles.scrollContainer, { paddingTop: 0 }]}
-            keyboardVerticalOffset={96}
+            keyboardVerticalOffset={96 + insets.bottom}
             behavior="padding"
         >
             <Headline style={{ marginBottom: 8 }}>Confirm your Flare</Headline>
