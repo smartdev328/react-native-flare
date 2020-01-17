@@ -55,6 +55,7 @@ const TaskCard = ({
             <Image
                 source={cardbg}
                 style={[styles.cardbg, { width: width - 24 }]}
+                resizeMode="cover"
             />
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.body}>{body}</Text>

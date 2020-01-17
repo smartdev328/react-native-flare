@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         alignSelf: 'stretch',
-        height: 200,
+        height: 224,
     },
     spacer: {
         width: 48,
