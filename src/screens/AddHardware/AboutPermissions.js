@@ -17,16 +17,16 @@ const AboutPermissions = props => (
             Without bluetooth, your phone and bracelet can’t talk to each other.
         </HelpSection>
         <HelpSection icon={locationIcon} title="Location">
-            We need your location so that we’ve always got your back, even when
-            the app isn’t open.
+            We need your location so that we can let your Crew know where you
+            are when you need backup.
         </HelpSection>
         <HelpSection icon={contactsIcon} title="Contacts">
             When you add friends to your crew, you can add them directly from
             your phone contacts.
         </HelpSection>
         <HelpSection icon={notificationsIcon} title="Notifications">
-            In order to be discreet, you can opt for notifications to confirm
-            that your jewelry has sent a text to your friends.
+            You can opt to get secret notifications from Flare that confirm that
+            you jewelry has sent a text to your Crew.
         </HelpSection>
     </HelpScreen>
 );
