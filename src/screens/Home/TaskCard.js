@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingHorizontal: 8,
         height: 200,
+        paddingTop: 32,
     },
     card: {
         height: 200,
@@ -42,7 +43,13 @@ const styles = StyleSheet.create({
     },
 });
 
-const TaskCard = ({ title, body, onPress, width }) => (
+const TaskCard = ({
+    title,
+    body,
+    onPress,
+    width,
+    image: { source, width: imageWidth, height: imageHeight },
+}) => (
     <TouchableOpacity style={[styles.container, { width }]} onPress={onPress}>
         <View style={styles.card}>
             <Image
@@ -52,7 +59,19 @@ const TaskCard = ({ title, body, onPress, width }) => (
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.body}>{body}</Text>
         </View>
+        <Image
+            source={source}
+            width={imageWidth}
+            height={imageHeight}
+            style={{
+                position: 'absolute',
+                left: 24,
+                width: imageWidth,
+                height: imageHeight,
+                top: 91 - imageHeight,
+            }}
+        />
     </TouchableOpacity>
 );
 
-export default TaskCard;
+export default React.memo(TaskCard);
