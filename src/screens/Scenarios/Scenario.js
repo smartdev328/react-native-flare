@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, Easing, Image, View } from 'react-native';
+import { Animated, Easing, Image, StatusBar, View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -136,6 +136,7 @@ const Scenario = ({
     return (
         <View style={styles.container}>
             {/* background elements */}
+            <StatusBar barStyle="light-content" />
             <Image style={fullScreen} source={image} resizeMode="cover" />
             <LinearGradient
                 style={topGradientStyle}
