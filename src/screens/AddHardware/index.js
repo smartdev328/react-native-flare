@@ -18,6 +18,9 @@ import Aura from '../../bits/Aura';
 import aura1519 from '../../assets/aura-1519.jpg';
 import Success from './Success';
 
+export { default as HowToConnect } from './HowToConnect';
+export { default as AboutPermissions } from './AboutPermissions';
+
 class AddHardware extends React.PureComponent {
     constructor(props) {
         super(props);

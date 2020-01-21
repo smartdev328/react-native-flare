@@ -3,15 +3,15 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
-import { disclaimDevice } from '../actions/index';
-import { USERS_CAN_ADD_JEWELRY } from '../constants/Config';
-import * as actionTypes from '../actions/actionTypes';
-import Button from '../bits/Button';
-import FlareDeviceID from '../bits/FlareDeviceID';
-import JewelryList from '../bits/JewelryList';
-import Spacing from '../bits/Spacing';
-import Strings from '../locales/en';
-import Colors from '../bits/Colors';
+import { disclaimDevice } from '../../actions';
+import { USERS_CAN_ADD_JEWELRY } from '../../constants/Config';
+import * as actionTypes from '../../actions/actionTypes';
+import Button from '../../bits/Button';
+import FlareDeviceID from '../../bits/FlareDeviceID';
+import JewelryList from './JewelryList';
+import Spacing from '../../bits/Spacing';
+import Strings from '../../locales/en';
+import Colors from '../../bits/Colors';
 
 const styles = StyleSheet.create({
     container: {
@@ -61,7 +61,9 @@ class Jewelry extends React.Component {
     }
 
     confirmRemoveJewelry(deviceID) {
-        const jewelryLabel = FlareDeviceID.getJewelryLabelFromDeviceID(deviceID);
+        const jewelryLabel = FlareDeviceID.getJewelryLabelFromDeviceID(
+            deviceID
+        );
         const prompt = `${Strings.jewelry.removeConfirm.promptBegin}${jewelryLabel}${Strings.jewelry.removeConfirm.promptEnd}`;
         Navigation.showModal({
             stack: {
@@ -70,8 +72,10 @@ class Jewelry extends React.Component {
                         component: {
                             name: 'com.flarejewelry.app.Confirm',
                             passProps: {
-                                cancelLabel: Strings.jewelry.removeConfirm.cancelLabel,
-                                confirmLabel: Strings.jewelry.removeConfirm.confirmLabel,
+                                cancelLabel:
+                                    Strings.jewelry.removeConfirm.cancelLabel,
+                                confirmLabel:
+                                    Strings.jewelry.removeConfirm.confirmLabel,
                                 onConfirm: () => this.removeJewelry(deviceID),
                                 prompt,
                             },
@@ -113,7 +117,8 @@ class Jewelry extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                {(this.props.claimingDevice || this.props.disclaimingDevice) && (
+                {(this.props.claimingDevice ||
+                    this.props.disclaimingDevice) && (
                     <ActivityIndicator size={24} />
                 )}
                 <JewelryList

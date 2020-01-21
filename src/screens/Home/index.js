@@ -21,14 +21,16 @@ import {
     syncAccountDetails,
     fetchContacts,
     changeAppRoot,
-} from '../../actions/index';
+    setRootComponent,
+} from '../../actions';
 import { processQueuedBeacons } from '../../actions/beaconActions';
 import { getPermission } from '../../actions/userActions';
 import { startBleListening } from '../../actions/hardwareActions';
 import getCurrentPosition from '../../helpers/location';
 import Strings from '../../locales/en';
 import SoftLand from './SoftLand';
-import { setRootComponent } from '../../actions';
+
+export { default as PermissionsReminder } from './PermissionsReminder';
 
 class Home extends React.Component {
     constructor(props) {
