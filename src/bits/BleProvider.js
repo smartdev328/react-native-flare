@@ -22,7 +22,8 @@ import { gotLongPress, gotShortPress } from '../actions/regActions';
 export default class BleProvider {
     constructor(options) {
         this.bleManager = new BleManager({
-            onBeacon: (beacon, position) => this.handleBeacon(beacon, position),
+            onBeacon: this.handleBeacon,
+            onCounts: this.handleCounts,
         });
         this.setStore(options.store);
         this.props.dispatch(checkLocationsPermission());
@@ -75,7 +76,15 @@ export default class BleProvider {
         this.props.hardware = newState;
     }
 
-    handleBeacon(beacon, position) {
+    handleCounts = () => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: actionTypes.BEACON_COUNTS_UPDATED,
+            shortPressCounts: this.bleManager.beaconCache.getRecentShortPressCounts(),
+        });
+    };
+
+    handleBeacon = (beacon, position) => {
         const userDevices =
             (this.store && this.store.getState().user.devices) || [];
         const hasCompletedOnboarding =
@@ -96,17 +105,7 @@ export default class BleProvider {
                 if (awaitingShortPress) {
                     dispatch(gotShortPress());
                 }
-                dispatch(
-                    call(radioToken, beacon, position, forCurrentUser)
-                ).then(() => {
-                    // Track short presses for all nearby devices so we can know when users are adding jewelry
-                    if (!forCurrentUser) {
-                        dispatch({
-                            type: actionTypes.BEACON_COUNTS_UPDATED,
-                            shortPressCounts: this.bleManager.beaconCache.getRecentShortPressCounts(),
-                        });
-                    }
-                });
+                dispatch(call(radioToken, beacon, position, forCurrentUser));
                 break;
 
             case BeaconTypes.Long.name:
@@ -181,5 +180,5 @@ export default class BleProvider {
                 console.debug('@ unknown location');
             }
         }
-    }
+    };
 }
