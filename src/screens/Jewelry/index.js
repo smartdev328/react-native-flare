@@ -1,17 +1,18 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
-import { disclaimDevice } from '../../actions';
+import * as deviceActions from '../../actions/deviceActions';
+import * as hardwareActions from '../../actions/hardwareActions';
 import { USERS_CAN_ADD_JEWELRY } from '../../constants/Config';
-import * as actionTypes from '../../actions/actionTypes';
 import Button from '../../bits/Button';
 import FlareDeviceID from '../../bits/FlareDeviceID';
 import JewelryList from './JewelryList';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Colors from '../../bits/Colors';
+import { settingsNavOptions } from '../Settings';
 
 const styles = StyleSheet.create({
     container: {
@@ -24,41 +25,32 @@ const styles = StyleSheet.create({
     },
 });
 
-// eslint-disable-next-line react/prefer-stateless-function
 class Jewelry extends React.Component {
-    static options() {
-        return {
-            topBar: {
-                visible: true,
-            },
-        };
-    }
-
     constructor(props) {
         super(props);
         Navigation.events().bindComponent(this);
-        this.state = {
-            showSideMenu: false,
-        };
     }
 
-    addNewJewelry() {
-        this.props.dispatch({
-            type: actionTypes.BEACON_COUNTS_RESET,
-        });
-        Navigation.push(this.props.componentId, {
+    addNewJewelry = () => {
+        const { beaconCountsReset, componentId } = this.props;
+        beaconCountsReset();
+        Navigation.push(componentId, {
             component: {
-                name: 'com.flarejewelry.app.AddJewelry',
+                name: 'com.flarejewelry.onboarding.addhardware',
+                options: { topBar: { visible: false } },
                 passProps: {
-                    bleManager: this.props.bleManager,
+                    additionalHardware: true,
                 },
             },
         });
-    }
+    };
 
-    removeJewelry(deviceID) {
-        this.props.dispatch(disclaimDevice(this.props.authToken, deviceID));
-    }
+    removeJewelry = deviceID => {
+        const { disclaimDevice, authToken } = this.props;
+        disclaimDevice(authToken, deviceID);
+    };
+
+    static options = settingsNavOptions('Jewelry', true);
 
     confirmRemoveJewelry(deviceID) {
         const jewelryLabel = FlareDeviceID.getJewelryLabelFromDeviceID(
@@ -86,43 +78,24 @@ class Jewelry extends React.Component {
         });
     }
 
-    toggleSideMenu() {
-        const { showSideMenu } = this.state;
-        const newSideMenuState = !showSideMenu;
-
-        Navigation.mergeOptions(this.props.componentId, {
-            sideMenu: {
-                left: {
-                    visible: newSideMenuState,
-                },
-            },
-        });
-
-        this.setState({
-            showSideMenu: newSideMenuState,
-        });
-    }
-
     navigationButtonPressed({ buttonId }) {
+        const { componentId } = this.props;
+
         switch (buttonId) {
-            case 'menuButton':
-                this.toggleSideMenu();
+            case 'backButton':
+                Navigation.pop(componentId);
                 break;
             default:
-                console.warn('Unhandled button press in home screen.');
                 break;
         }
     }
 
     render() {
+        const { devices } = this.props;
         return (
             <View style={styles.container}>
-                {(this.props.claimingDevice ||
-                    this.props.disclaimingDevice) && (
-                    <ActivityIndicator size={24} />
-                )}
                 <JewelryList
-                    jewelry={this.props.devices}
+                    jewelry={devices}
                     onRemove={deviceID => this.confirmRemoveJewelry(deviceID)}
                 />
                 <View style={styles.buttonArea}>
@@ -130,7 +103,7 @@ class Jewelry extends React.Component {
                         <Button
                             dark
                             primary
-                            onPress={() => this.addNewJewelry()}
+                            onPress={this.addNewJewelry}
                             title={Strings.jewelry.addNew}
                         />
                     )}
@@ -140,12 +113,18 @@ class Jewelry extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        authToken: state.user.authToken,
-        devices: state.user.devices,
-        loading: state.user.loadingDevices === 'requested',
-    };
-}
+const mapStateToProps = state => ({
+    authToken: state.user.authToken,
+    devices: state.user.devices,
+    loading: state.user.loadingDevices === 'requested',
+});
 
-export default connect(mapStateToProps)(Jewelry);
+const mapDispatchToProps = {
+    disclaimDevice: deviceActions.disclaimDevice,
+    beaconCountsReset: hardwareActions.beaconCountsReset,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Jewelry);

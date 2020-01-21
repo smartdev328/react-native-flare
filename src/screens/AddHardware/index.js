@@ -25,7 +25,7 @@ class AddHardware extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            page: 0,
+            page: props.additionalHardware ? 2 : 0,
             firstHadPermission: props.locationPermission,
         };
     }
@@ -35,7 +35,13 @@ class AddHardware extends React.PureComponent {
     };
 
     prevPage = () => {
-        this.setState(({ page }) => ({ page: Math.max(page - 1, 0) }));
+        const { additionalHardware, componentId } = this.props;
+        const { page: currentPage } = this.state;
+        if (additionalHardware && currentPage === 2) {
+            Navigation.pop(componentId);
+        } else {
+            this.setState(({ page }) => ({ page: Math.max(page - 1, 0) }));
+        }
     };
 
     aboutPermissions = () => {
@@ -48,13 +54,17 @@ class AddHardware extends React.PureComponent {
     };
 
     finish = () => {
-        const { componentId } = this.props;
-        Navigation.push(componentId, {
-            component: {
-                name: 'com.flarejewelry.scenarios',
-                options: { topBar: { visible: false } },
-            },
-        });
+        const { additionalHardware, componentId } = this.props;
+        if (additionalHardware) {
+            Navigation.pop(componentId);
+        } else {
+            Navigation.push(componentId, {
+                component: {
+                    name: 'com.flarejewelry.scenarios',
+                    options: { topBar: { visible: false } },
+                },
+            });
+        }
     };
 
     currentScreen = ({
@@ -109,7 +119,7 @@ class AddHardware extends React.PureComponent {
     };
 
     render() {
-        const { componentId, insets } = this.props;
+        const { componentId, insets, additionalHardware } = this.props;
         const { page, firstHadPermission } = this.state;
 
         const bottomMargin = { marginBottom: insets.bottom };
@@ -123,7 +133,7 @@ class AddHardware extends React.PureComponent {
                     black={!dark}
                     showLogo={false}
                     goBack={this.prevPage}
-                    showBack={page === 3}
+                    showBack={(page === 2 && additionalHardware) || page === 3}
                 />
                 <View style={styles.pager}>
                     {this.currentScreen({
