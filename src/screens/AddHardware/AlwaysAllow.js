@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './styles';
@@ -67,7 +67,14 @@ const TaskItem = ({ emoji, icon, text, last = false }) => (
     </View>
 );
 
-const AlwaysAllow = ({ nextPage, style = [], tellMeMore, force = false }) => {
+const AlwaysAllow = ({
+    nextPage,
+    style = [],
+    tellMeMore,
+    force = false,
+    firstHadPermission,
+}) => {
+    const [visitedSettings, setVisitedSettings] = React.useState(false);
     const [didAdvance, setDidAdvance] = React.useState(force);
     const dispatch = useDispatch();
 
@@ -79,11 +86,34 @@ const AlwaysAllow = ({ nextPage, style = [], tellMeMore, force = false }) => {
     );
 
     React.useEffect(() => {
-        if (locationPermission && !didAdvance) {
+        // iOS 13 and later grant a provisional allow-always permission. if we
+        // think we have this provisional permission, refuse to advance until
+        // the user clicks the button anyway.
+        const mustClickButton = Platform.select({
+            ios: !firstHadPermission && parseInt(Platform.Version, 10) >= 13,
+            default: false,
+        });
+
+        if (
+            (!mustClickButton || visitedSettings) &&
+            locationPermission &&
+            !didAdvance
+        ) {
             setDidAdvance(true);
             nextPage();
         }
-    }, [locationPermission, didAdvance, nextPage]);
+    }, [
+        locationPermission,
+        didAdvance,
+        nextPage,
+        visitedSettings,
+        firstHadPermission,
+    ]);
+
+    const visitSettings = React.useCallback(() => {
+        setVisitedSettings(true);
+        openSettings();
+    }, []);
 
     // poll for permissions status, ugh
     React.useEffect(() => {
@@ -110,7 +140,7 @@ const AlwaysAllow = ({ nextPage, style = [], tellMeMore, force = false }) => {
             <View style={styles.spacer} />
             <RoundedButton
                 text="Visit Settings 👆"
-                onPress={openSettings}
+                onPress={visitSettings}
                 width={240}
             />
             <RoundedButton

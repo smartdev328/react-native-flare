@@ -5,6 +5,7 @@ import {
     SafeAreaConsumer,
     SafeAreaProvider,
 } from 'react-native-safe-area-context';
+import { connect } from 'react-redux';
 
 import styles from './styles';
 import GetStarted from './GetStarted';
@@ -18,10 +19,11 @@ import aura1519 from '../../assets/aura-1519.jpg';
 import Success from './Success';
 
 class AddHardware extends React.PureComponent {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             page: 0,
+            firstHadPermission: props.locationPermission,
         };
     }
 
@@ -52,7 +54,12 @@ class AddHardware extends React.PureComponent {
         });
     };
 
-    currentScreen = ({ componentId, page, bottomMargin }) => {
+    currentScreen = ({
+        componentId,
+        page,
+        bottomMargin,
+        firstHadPermission,
+    }) => {
         switch (page) {
             case 0:
                 return (
@@ -68,6 +75,7 @@ class AddHardware extends React.PureComponent {
                         style={[bottomMargin, StyleSheet.absoluteFill]}
                         nextPage={this.nextPage}
                         tellMeMore={this.aboutPermissions}
+                        firstHadPermission={firstHadPermission}
                     />
                 );
             case 2:
@@ -99,7 +107,7 @@ class AddHardware extends React.PureComponent {
 
     render() {
         const { componentId, insets } = this.props;
-        const { page } = this.state;
+        const { page, firstHadPermission } = this.state;
 
         const bottomMargin = { marginBottom: insets.bottom };
         const dark = page === 2 || page === 3;
@@ -115,7 +123,12 @@ class AddHardware extends React.PureComponent {
                     showBack={page === 3}
                 />
                 <View style={styles.pager}>
-                    {this.currentScreen({ componentId, page, bottomMargin })}
+                    {this.currentScreen({
+                        componentId,
+                        page,
+                        bottomMargin,
+                        firstHadPermission,
+                    })}
                 </View>
             </View>
         );
@@ -130,4 +143,11 @@ const AddHardwareWithProvider = props => (
     </SafeAreaProvider>
 );
 
-export default AddHardwareWithProvider;
+const mapStateToProps = ({ user: { permissions } }) => ({
+    locationPermission:
+        typeof permissions === 'object' &&
+        'location' in permissions &&
+        permissions.location,
+});
+
+export default connect(mapStateToProps)(AddHardwareWithProvider);
