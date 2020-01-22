@@ -7,9 +7,11 @@ import Headline from '../Onboarding/Headline';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import { openSettings } from '../../bits/settingsUrl';
+import { checkLocationsPermission } from '../../actions/userActions';
+import useBluetoothStatus from '../../bits/useBluetoothStatus';
 
 import locationIcon from '../../assets/ios-location-icon.png';
-import { checkLocationsPermission } from '../../actions/userActions';
+import bluetoothIcon from '../../assets/ios-bluetooth-icon.png';
 
 const localStyles = StyleSheet.create({
     cardContainer: {
@@ -31,8 +33,8 @@ const localStyles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     taskContainerBorder: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#F0F3F4',
+        borderTopWidth: 1,
+        borderTopColor: '#F0F3F4',
     },
     taskIcon: {
         width: 26,
@@ -49,11 +51,11 @@ const localStyles = StyleSheet.create({
     },
 });
 
-const TaskItem = ({ emoji, icon, text, last = false }) => (
+const TaskItem = ({ emoji, icon, text, first = false }) => (
     <View
         style={[
             localStyles.taskContainer,
-            last ? undefined : localStyles.taskContainerBorder,
+            first ? undefined : localStyles.taskContainerBorder,
         ]}
     >
         {typeof emoji === 'string' ? (
@@ -85,6 +87,8 @@ const AlwaysAllow = ({
             permissions.location
     );
 
+    const bluetoothStatus = useBluetoothStatus();
+
     React.useEffect(() => {
         // iOS 13 and later grant a provisional allow-always permission. if we
         // think we have this provisional permission, refuse to advance until
@@ -97,6 +101,7 @@ const AlwaysAllow = ({
         if (
             (!mustClickButton || visitedSettings) &&
             locationPermission &&
+            bluetoothStatus === 'on' &&
             !didAdvance
         ) {
             setDidAdvance(true);
@@ -123,19 +128,31 @@ const AlwaysAllow = ({
         return () => clearInterval(intervalId);
     }, [dispatch]);
 
+    const showBluetoothLine = !['on', ''].includes(bluetoothStatus);
+
     return (
         <View style={[styles.centerContainer, ...style]}>
             <Headline style={styles.headline}>“Always Allow”</Headline>
             <View style={styles.line} />
             <Text style={[styles.subhead, { textAlign: 'center' }]}>
                 Our connected jewelry only works if it can “always” access your
-                location.
+                location and Bluetooth is turned on.
             </Text>
             <View style={styles.spacer} />
             <View style={localStyles.cardContainer}>
-                <TaskItem emoji="👆" text="Visit Settings" />
+                <TaskItem emoji="👆" text="Visit Settings" first />
                 <TaskItem icon={locationIcon} text="Tap “Location”" />
-                <TaskItem emoji="✨" text="Select “Always”" last />
+                <TaskItem emoji="✨" text="Select “Always”" />
+                {showBluetoothLine && (
+                    <TaskItem
+                        icon={bluetoothIcon}
+                        text={
+                            bluetoothStatus === 'off'
+                                ? 'Ensure Bluetooth is turned on'
+                                : 'Turn “Bluetooth” on'
+                        }
+                    />
+                )}
             </View>
             <View style={styles.spacer} />
             <RoundedButton

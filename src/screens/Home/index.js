@@ -10,7 +10,6 @@ import { Navigation } from 'react-native-navigation';
 import moment from 'moment';
 import BackgroundTimer from 'react-native-background-timer';
 import { PERMISSIONS } from 'react-native-permissions';
-import RNBluetoothInfo from '@bitfly/react-native-bluetooth-info';
 
 import {
     ACCOUNT_SYNC_INTERVAL,
@@ -42,7 +41,6 @@ class Home extends React.Component {
 
         this.state = {
             showSideMenu: false,
-            bluetoothEnabled: true,
         };
     }
 
@@ -59,14 +57,6 @@ class Home extends React.Component {
         if (hasActiveFlare) {
             dispatch(changeAppRoot('secure-active-event'));
         }
-
-        // Update bluetooth state after first boot
-        RNBluetoothInfo.getCurrentState().then(bleState =>
-            this.handleBluetoothStateChange(bleState)
-        );
-        RNBluetoothInfo.addEventListener('change', bleState =>
-            this.handleBluetoothStateChange(bleState)
-        );
 
         // Contacts are not stored on the server. It takes a while to fetch them locally, so we
         // start that process now before users need to view them.
@@ -95,9 +85,7 @@ class Home extends React.Component {
             () => this.syncAccount(),
             this.accountSyncTimeInMs
         );
-        AppState.addEventListener('change', newState =>
-            this.handleAppStateChange(newState)
-        );
+        AppState.addEventListener('change', this.handleAppStateChange);
     }
 
     componentDidUpdate(prevProps) {
@@ -143,12 +131,7 @@ class Home extends React.Component {
     componentWillUnmount() {
         this.shuttingDown = true;
         BackgroundTimer.stopBackgroundTimer();
-        RNBluetoothInfo.removeEventListener('change', bleState =>
-            this.handleBluetoothStateChange(bleState)
-        );
-        AppState.removeEventListener('change', newState =>
-            this.handleAppStateChange(newState)
-        );
+        AppState.removeEventListener('change', this.handleAppStateChange);
     }
 
     /**
@@ -204,13 +187,6 @@ class Home extends React.Component {
             default:
                 break;
         }
-    };
-
-    handleBluetoothStateChange = bleState => {
-        const { connectionState } = bleState.type;
-        this.setState({
-            bluetoothEnabled: connectionState === 'on',
-        });
     };
 
     navigationButtonPressed({ buttonId }) {
