@@ -100,16 +100,16 @@ const TextConfirm = ({ componentId }) => {
 
     const notNow = React.useCallback(() => {
         Alert.alert(
-            'Are you sure?',
-            'We need to ensure that your crew has your back and knows what to do. If you don’t allow this action, we can’t text your friends with your cuff.',
+            'Skipping means you can’t set up a Crew',
+            'We need to inform your friends that they’re in your Crew so that they know what to do when you send them a message from your bracelet in the future. If you skip, we will not add friends to your Crew.',
             [
                 {
-                    text: 'I’m sure',
+                    text: 'Skip Crew',
                     style: 'destructive',
                     onPress: () => setResponse('cancel'),
                 },
                 {
-                    text: 'Text my crew',
+                    text: 'Add Crew',
                     style: 'default',
                     onPress: () => setResponse('confirm'),
                 },
