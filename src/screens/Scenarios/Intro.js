@@ -1,58 +1,60 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
-import LinearGradient from 'react-native-linear-gradient';
+import Video from 'react-native-video';
+import AnimatedLottieView from 'lottie-react-native';
 
 import styles from './styles';
 import Headline from '../Onboarding/Headline';
-import CloseButton from './CloseButton';
 import RoundedButton from '../../bits/RoundedButton';
+import useDimensions from '../../bits/useDimensions';
 
-import saraAndQuinn from '../../assets/sara-and-quinn.png';
+import animatedBackground from '../../assets/animated-aura.mp4';
+import gutFeeling from '../../assets/lotties/gut-feeling';
 
-const localStyles = StyleSheet.create({
-    orange: {
-        backgroundColor: '#ff8154',
-    },
-    image: {
-        flex: 1,
-        alignSelf: 'stretch',
-    },
-});
-
-const gradientColors = ['#aa473f00', '#aa433e'];
-
-const Intro = ({ onClose, onNext }) => {
+const Intro = ({ onNext }) => {
     const insets = useSafeArea();
+    const dimensions = useDimensions();
 
-    const buttonWrapperStyle = {
-        marginTop: -24,
-        marginBottom: insets.bottom + 24,
-        alignSelf: 'center',
-    };
+    const buttonWrapperStyle = React.useMemo(
+        () => ({
+            marginTop: 'auto',
+            marginBottom: insets.bottom + 24,
+            alignSelf: 'center',
+        }),
+        [insets.bottom]
+    );
 
-    const bottomGradient = {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: insets.bottom + 250,
-    };
-
-    const gradientLocations = [
-        0,
-        1 - (insets.bottom + 48) / (insets.bottom + 250),
-    ];
+    const lottieStyle = React.useMemo(
+        () => ({
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: dimensions.width,
+            height: dimensions.height,
+        }),
+        [dimensions.height, dimensions.width]
+    );
 
     return (
-        <View
-            style={[
-                styles.container,
-                localStyles.orange,
-                { paddingTop: insets.top },
-            ]}
-        >
-            <CloseButton onPress={onClose} />
+        <View style={[styles.container, { paddingTop: insets.top + 24 }]}>
+            {/* background items */}
+            <StatusBar barStyle="light-content" />
+            <Video
+                style={StyleSheet.absoluteFill}
+                repeat
+                source={animatedBackground}
+                resizeMode="cover"
+            />
+            <AnimatedLottieView
+                source={gutFeeling}
+                style={lottieStyle}
+                autoPlay
+                loop
+                resizeMode="cover"
+            />
+
+            {/* flexbox items */}
             <Headline style={styles.headline}>
                 Flare was created for that gut feeling
             </Headline>
@@ -62,26 +64,14 @@ const Intro = ({ onClose, onNext }) => {
                 situation the moment you’re feeling unsure. No need to hang
                 around.
             </Text>
-            <View style={styles.imageWrapper}>
-                <Image
-                    style={localStyles.image}
-                    source={saraAndQuinn}
-                    resizeMode="cover"
-                />
-                <LinearGradient
-                    colors={gradientColors}
-                    style={bottomGradient}
-                    locations={gradientLocations}
-                />
-                <RoundedButton
-                    useGradient={false}
-                    height={48}
-                    width={240}
-                    onPress={onNext}
-                    wrapperStyle={buttonWrapperStyle}
-                    text="Show me how"
-                />
-            </View>
+            <RoundedButton
+                useGradient={false}
+                height={48}
+                width={240}
+                onPress={onNext}
+                wrapperStyle={buttonWrapperStyle}
+                text="Show me how"
+            />
         </View>
     );
 };

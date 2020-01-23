@@ -257,21 +257,21 @@ class Contacts extends React.Component {
 
     render() {
         const {
-            hasCrew,
             contacts,
             contactsCount,
             contactsCrewLookup,
             loading,
         } = this.props;
         const { crew } = this.state;
+        const hasCrew = crew && crew.members && crew.members.length > 0;
 
         return (
             <View style={styles.container}>
                 <StatusBar barStyle="dark-content" />
                 <Text style={styles.prompt}>
                     {hasCrew
-                        ? Strings.contacts.choosePrompt
-                        : `${Strings.contacts.chooseInstruction.start} ${crew.members.length} ${Strings.contacts.chooseInstruction.end}`}
+                        ? `${Strings.contacts.chooseInstruction.start} ${crew.members.length} ${Strings.contacts.chooseInstruction.end}`
+                        : Strings.contacts.choosePrompt}
                 </Text>
                 {hasCrew && (
                     <CrewList
@@ -309,7 +309,6 @@ const mapStateToProps = ({
     return {
         authToken,
         crew,
-        hasCrew: crew && crew.members && crew.members.length > 0,
         contacts,
         contactsCount,
         contactsCrewLookup,

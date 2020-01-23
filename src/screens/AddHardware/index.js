@@ -5,6 +5,7 @@ import {
     SafeAreaConsumer,
     SafeAreaProvider,
 } from 'react-native-safe-area-context';
+import { connect } from 'react-redux';
 
 import styles from './styles';
 import GetStarted from './GetStarted';
@@ -17,11 +18,15 @@ import Aura from '../../bits/Aura';
 import aura1519 from '../../assets/aura-1519.jpg';
 import Success from './Success';
 
+export { default as HowToConnect } from './HowToConnect';
+export { default as AboutPermissions } from './AboutPermissions';
+
 class AddHardware extends React.PureComponent {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            page: 0,
+            page: props.additionalHardware ? 2 : 0,
+            firstHadPermission: props.locationPermission,
         };
     }
 
@@ -30,7 +35,13 @@ class AddHardware extends React.PureComponent {
     };
 
     prevPage = () => {
-        this.setState(({ page }) => ({ page: Math.max(page - 1, 0) }));
+        const { additionalHardware, componentId } = this.props;
+        const { page: currentPage } = this.state;
+        if (additionalHardware && currentPage === 2) {
+            Navigation.pop(componentId);
+        } else {
+            this.setState(({ page }) => ({ page: Math.max(page - 1, 0) }));
+        }
     };
 
     aboutPermissions = () => {
@@ -43,16 +54,25 @@ class AddHardware extends React.PureComponent {
     };
 
     finish = () => {
-        const { componentId } = this.props;
-        Navigation.push(componentId, {
-            component: {
-                name: 'com.flarejewelry.scenarios',
-                options: { topBar: { visible: false } },
-            },
-        });
+        const { additionalHardware, componentId } = this.props;
+        if (additionalHardware) {
+            Navigation.pop(componentId);
+        } else {
+            Navigation.push(componentId, {
+                component: {
+                    name: 'com.flarejewelry.scenarios',
+                    options: { topBar: { visible: false } },
+                },
+            });
+        }
     };
 
-    currentScreen = ({ componentId, page, bottomMargin }) => {
+    currentScreen = ({
+        componentId,
+        page,
+        bottomMargin,
+        firstHadPermission,
+    }) => {
         switch (page) {
             case 0:
                 return (
@@ -68,6 +88,7 @@ class AddHardware extends React.PureComponent {
                         style={[bottomMargin, StyleSheet.absoluteFill]}
                         nextPage={this.nextPage}
                         tellMeMore={this.aboutPermissions}
+                        firstHadPermission={firstHadPermission}
                     />
                 );
             case 2:
@@ -98,8 +119,8 @@ class AddHardware extends React.PureComponent {
     };
 
     render() {
-        const { componentId, insets } = this.props;
-        const { page } = this.state;
+        const { componentId, insets, additionalHardware } = this.props;
+        const { page, firstHadPermission } = this.state;
 
         const bottomMargin = { marginBottom: insets.bottom };
         const dark = page === 2 || page === 3;
@@ -112,10 +133,15 @@ class AddHardware extends React.PureComponent {
                     black={!dark}
                     showLogo={false}
                     goBack={this.prevPage}
-                    showBack={page === 3}
+                    showBack={(page === 2 && additionalHardware) || page === 3}
                 />
                 <View style={styles.pager}>
-                    {this.currentScreen({ componentId, page, bottomMargin })}
+                    {this.currentScreen({
+                        componentId,
+                        page,
+                        bottomMargin,
+                        firstHadPermission,
+                    })}
                 </View>
             </View>
         );
@@ -130,4 +156,11 @@ const AddHardwareWithProvider = props => (
     </SafeAreaProvider>
 );
 
-export default AddHardwareWithProvider;
+const mapStateToProps = ({ user: { permissions } }) => ({
+    locationPermission:
+        typeof permissions === 'object' &&
+        'location' in permissions &&
+        permissions.location,
+});
+
+export default connect(mapStateToProps)(AddHardwareWithProvider);

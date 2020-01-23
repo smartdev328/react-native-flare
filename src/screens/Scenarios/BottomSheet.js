@@ -70,9 +70,10 @@ const WouldYouRather = ({ fakeCall, textCrew, cardHead, cardBody }) => (
 );
 
 const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
-    const didAddToContacts = useSelector(
-        state => state.user.scenarios.addedToContacts
-    );
+    const [didAddToContacts, didCall] = useSelector(state => [
+        state.user.scenarios.addedToContacts,
+        state.user.scenarios.didCall,
+    ]);
     return (
         <>
             <Text style={styles.head}>Nice.</Text>
@@ -84,7 +85,7 @@ const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
                 busy={busy}
                 width={242}
             />
-            {!didAddToContacts && (
+            {didCall && !didAddToContacts && (
                 <RoundedButton
                     useGradient={false}
                     wrapperStyle={styles.buttonMargin}

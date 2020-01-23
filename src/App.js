@@ -210,13 +210,6 @@ export default class App extends Component {
                     },
                 });
                 break;
-            case 'secure-jewelry':
-                setDefaultOptions();
-                setRootWithDefaults(
-                    'JEWELRY_STACK',
-                    'com.flarejewelry.app.Jewelry'
-                );
-                break;
             case 'secure-account':
                 setDefaultOptions();
                 setRootWithDefaults(

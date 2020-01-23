@@ -10,10 +10,10 @@ import {
     View,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
 
 import { navOptions, styles } from './styles';
 import * as authActions from '../../actions/authActions';
-import * as navActions from '../../actions/navActions';
 import * as userActions from '../../actions/userActions';
 import Colors from '../../bits/Colors';
 import contactSupport from '../../bits/contactSupport';
@@ -32,13 +32,14 @@ const Account = ({
     referralKey,
     setPrivacyConfig,
     signOut,
-    changeAppRoot,
 }) => {
     useSlideMenu(componentId);
 
     const editJewelry = React.useCallback(() => {
-        changeAppRoot('secure-jewelry');
-    }, [changeAppRoot]);
+        Navigation.push(componentId, {
+            component: { name: 'com.flarejewelry.app.Jewelry' },
+        });
+    }, [componentId]);
 
     const setPrivacy = React.useCallback(
         value => {
@@ -84,6 +85,10 @@ const Account = ({
                     />
                 </View>
             </View>
+            <Text style={styles.explain}>
+                Flare respects your privacy. We only use analytics to make
+                better safety products for all of us and never share your data.
+            </Text>
             <TouchableOpacity
                 style={[styles.item, { marginTop: 80 }]}
                 onPress={share}
@@ -133,7 +138,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
     signOut: authActions.signOut,
     setPrivacyConfig: userActions.setPrivacyConfig,
-    changeAppRoot: navActions.changeAppRoot,
 };
 
 export default connect(

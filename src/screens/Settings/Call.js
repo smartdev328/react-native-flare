@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
 import isPlainObject from 'is-plain-object';

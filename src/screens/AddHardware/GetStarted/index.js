@@ -50,7 +50,7 @@ const GetStarted = ({ style, nextPage }) => {
             style={[styles.centerContainer, { paddingHorizontal: 0 }, ...style]}
         >
             <Headline style={[styles.headline, styles.whiteText]}>
-                Welcome to the Movement🎉
+                Welcome to the Movement 🎉
             </Headline>
 
             <View style={styles.spacer} />

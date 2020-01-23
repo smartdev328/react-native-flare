@@ -174,7 +174,7 @@ export const getNotificationPermission = () => async dispatch => {
     dispatch({
         type: types.PERMISSIONS_SUCCESS,
         permission: 'notification',
-        granted: result === RESULTS.GRANTED,
+        granted: result.status === RESULTS.GRANTED,
     });
 };
 

@@ -15,6 +15,7 @@ export default class BleManager {
         this.listening = false;
         this.beaconCache = null;
         this.onBeacon = options.onBeacon;
+        this.onCounts = options.onCounts;
     }
 
     shutdown() {
@@ -63,6 +64,9 @@ export default class BleManager {
 
             if (!this.beaconCache.hasAlreadyHandled(parsedBeacon)) {
                 this.beaconCache.markAsHandled(parsedBeacon);
+                if (typeof this.onCounts === 'function') {
+                    this.onCounts();
+                }
                 getLatestPosition()
                     .then(position => {
                         this.onBeacon(parsedBeacon, position);

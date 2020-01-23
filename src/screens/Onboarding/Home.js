@@ -6,7 +6,6 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    View,
     StatusBar,
 } from 'react-native';
 import Video from 'react-native-video';
@@ -14,6 +13,8 @@ import Video from 'react-native-video';
 import RoundedButton from '../../bits/RoundedButton';
 import Strings from '../../locales/en';
 import Colors from '../../bits/Colors';
+import { openSettings } from '../../bits/settingsUrl';
+import useBluetoothStatus from '../../bits/useBluetoothStatus';
 
 import logoWhite from '../../assets/logo-white.png';
 import animatedBackground from '../../assets/animated-aura.mp4';
@@ -43,18 +44,65 @@ const styles = StyleSheet.create({
         width: 144,
         height: 62,
     },
-    spacer: {
-        flex: 1,
-    },
     signupButton: {
+        marginTop: 'auto',
         marginBottom: 18,
     },
     signinButton: {
         marginBottom: 30,
     },
+    forceBluetooth: {
+        marginTop: 'auto',
+        marginBottom: 18,
+        alignSelf: 'stretch',
+        marginHorizontal: 32,
+        textAlign: 'center',
+        fontSize: 14,
+        color: Colors.theme.cream,
+    },
 });
 
+const ForceBluetooth = () => (
+    <>
+        <Text style={styles.forceBluetooth}>
+            Flare requires Bluetooth permission in order to communicate with
+            your smart jewelry. Please turn “Bluetooth” on in order to proceed.
+        </Text>
+        <RoundedButton
+            text="Open Settings"
+            outline
+            forceWhiteText
+            wrapperStyle={styles.signinButton}
+            onPress={openSettings}
+            width={240}
+        />
+    </>
+);
+
+const Buttons = ({ onSignUpPressed, onSignInPressed }) => (
+    <>
+        <RoundedButton
+            text={Strings.onboarding.signupButton}
+            outline
+            forceWhiteText
+            wrapperStyle={styles.signupButton}
+            onPress={onSignUpPressed}
+            width={240}
+        />
+        <RoundedButton
+            text={Strings.signin.signInLabel}
+            invisible
+            forceWhiteText
+            wrapperStyle={styles.signinButton}
+            onPress={onSignInPressed}
+            width={240}
+        />
+    </>
+);
+
 const Home = ({ onSignUpPressed, onSignInPressed }) => {
+    const bluetoothStatus = useBluetoothStatus();
+
     const openShop = React.useCallback(() => {
         Linking.openURL('https://getflare.com/');
     }, []);
@@ -72,23 +120,14 @@ const Home = ({ onSignUpPressed, onSignInPressed }) => {
                 <Text style={styles.shopLinkText}>Shop</Text>
             </TouchableOpacity>
             <Image source={logoWhite} style={styles.logo} />
-            <View style={styles.spacer} />
-            <RoundedButton
-                text={Strings.onboarding.signupButton}
-                outline
-                forceWhiteText
-                wrapperStyle={styles.signupButton}
-                onPress={onSignUpPressed}
-                width={240}
-            />
-            <RoundedButton
-                text={Strings.signin.signInLabel}
-                invisible
-                forceWhiteText
-                wrapperStyle={styles.signinButton}
-                onPress={onSignInPressed}
-                width={240}
-            />
+            {bluetoothStatus === 'unauthorized' ? (
+                <ForceBluetooth />
+            ) : (
+                <Buttons
+                    onSignUpPressed={onSignUpPressed}
+                    onSignInPressed={onSignInPressed}
+                />
+            )}
         </SafeAreaView>
     );
 };

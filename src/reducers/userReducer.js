@@ -75,6 +75,7 @@ export function user(state = initialState.user, action = {}) {
          */
         case types.ACCOUNT_DETAILS_SUCCESS:
             return state.merge({
+                callScript: action.data.call_script,
                 crewEvents: action.data.crew_events,
                 crews: action.data.crews,
                 devices: action.data.devices,

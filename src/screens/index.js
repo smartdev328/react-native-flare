@@ -1,11 +1,9 @@
 import { Navigation } from 'react-native-navigation';
-import AddJewelry from './AddJewelry';
-import AddJewelryConfirm from './AddJewelryConfirm';
-import AddJewelryManual from './AddJewelryManual';
+
 import Confirm from './Confirm';
 import Contacts, { TextConfirm } from './Contacts';
 import FlareNavBar from '../bits/FlareNavBar';
-import Home from './Home';
+import Home, { PermissionsReminder } from './Home';
 import HomeActive from './HomeActive';
 import Jewelry from './Jewelry';
 import ManufacturingMain from './ManufacturingMain';
@@ -22,33 +20,11 @@ import {
     Notifications as SetttingsNotifications,
 } from './Settings';
 import SignIn from './SignIn';
-import AddHardware from './AddHardware';
-import HowToConnect from './AddHardware/HowToConnect';
-
+import AddHardware, { HowToConnect, AboutPermissions } from './AddHardware';
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
-import AboutPermissions from './AddHardware/AboutPermissions';
 import Scenarios from './Scenarios';
-import PermissionsReminder from './Home/PermissionsReminder';
 
 export default (store, Provider) => {
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.AddJewelry',
-        () => AddJewelry,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.AddJewelryConfirm',
-        () => AddJewelryConfirm,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.AddJewelryManual',
-        () => AddJewelryManual,
-        Provider,
-        store
-    );
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.Confirm',
         () => Confirm,

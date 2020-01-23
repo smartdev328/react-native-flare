@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './styles';
@@ -7,9 +7,11 @@ import Headline from '../Onboarding/Headline';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import { openSettings } from '../../bits/settingsUrl';
+import { checkLocationsPermission } from '../../actions/userActions';
+import useBluetoothStatus from '../../bits/useBluetoothStatus';
 
 import locationIcon from '../../assets/ios-location-icon.png';
-import { checkLocationsPermission } from '../../actions/userActions';
+import bluetoothIcon from '../../assets/ios-bluetooth-icon.png';
 
 const localStyles = StyleSheet.create({
     cardContainer: {
@@ -31,8 +33,8 @@ const localStyles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     taskContainerBorder: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#F0F3F4',
+        borderTopWidth: 1,
+        borderTopColor: '#F0F3F4',
     },
     taskIcon: {
         width: 26,
@@ -49,11 +51,11 @@ const localStyles = StyleSheet.create({
     },
 });
 
-const TaskItem = ({ emoji, icon, text, last = false }) => (
+const TaskItem = ({ emoji, icon, text, first = false }) => (
     <View
         style={[
             localStyles.taskContainer,
-            last ? undefined : localStyles.taskContainerBorder,
+            first ? undefined : localStyles.taskContainerBorder,
         ]}
     >
         {typeof emoji === 'string' ? (
@@ -67,7 +69,14 @@ const TaskItem = ({ emoji, icon, text, last = false }) => (
     </View>
 );
 
-const AlwaysAllow = ({ nextPage, style = [], tellMeMore, force = false }) => {
+const AlwaysAllow = ({
+    nextPage,
+    style = [],
+    tellMeMore,
+    force = false,
+    firstHadPermission,
+}) => {
+    const [visitedSettings, setVisitedSettings] = React.useState(false);
     const [didAdvance, setDidAdvance] = React.useState(force);
     const dispatch = useDispatch();
 
@@ -78,12 +87,38 @@ const AlwaysAllow = ({ nextPage, style = [], tellMeMore, force = false }) => {
             permissions.location
     );
 
+    const bluetoothStatus = useBluetoothStatus();
+
     React.useEffect(() => {
-        if (locationPermission && !didAdvance) {
+        // iOS 13 and later grant a provisional allow-always permission. if we
+        // think we have this provisional permission, refuse to advance until
+        // the user clicks the button anyway.
+        const mustClickButton = Platform.select({
+            ios: !firstHadPermission && parseInt(Platform.Version, 10) >= 13,
+            default: false,
+        });
+
+        if (
+            (!mustClickButton || visitedSettings) &&
+            locationPermission &&
+            bluetoothStatus === 'on' &&
+            !didAdvance
+        ) {
             setDidAdvance(true);
             nextPage();
         }
-    }, [locationPermission, didAdvance, nextPage]);
+    }, [
+        locationPermission,
+        didAdvance,
+        nextPage,
+        visitedSettings,
+        firstHadPermission,
+    ]);
+
+    const visitSettings = React.useCallback(() => {
+        setVisitedSettings(true);
+        openSettings();
+    }, []);
 
     // poll for permissions status, ugh
     React.useEffect(() => {
@@ -93,24 +128,36 @@ const AlwaysAllow = ({ nextPage, style = [], tellMeMore, force = false }) => {
         return () => clearInterval(intervalId);
     }, [dispatch]);
 
+    const showBluetoothLine = !['on', ''].includes(bluetoothStatus);
+
     return (
         <View style={[styles.centerContainer, ...style]}>
             <Headline style={styles.headline}>“Always Allow”</Headline>
             <View style={styles.line} />
             <Text style={[styles.subhead, { textAlign: 'center' }]}>
                 Our connected jewelry only works if it can “always” access your
-                location.
+                location and Bluetooth is turned on.
             </Text>
             <View style={styles.spacer} />
             <View style={localStyles.cardContainer}>
-                <TaskItem emoji="👆" text="Visit Settings" />
+                <TaskItem emoji="👆" text="Visit Settings" first />
                 <TaskItem icon={locationIcon} text="Tap “Location”" />
-                <TaskItem emoji="✨" text="Select “Always”" last />
+                <TaskItem emoji="✨" text="Select “Always”" />
+                {showBluetoothLine && (
+                    <TaskItem
+                        icon={bluetoothIcon}
+                        text={
+                            bluetoothStatus === 'off'
+                                ? 'Ensure Bluetooth is turned on'
+                                : 'Turn “Bluetooth” on'
+                        }
+                    />
+                )}
             </View>
             <View style={styles.spacer} />
             <RoundedButton
                 text="Visit Settings 👆"
-                onPress={openSettings}
+                onPress={visitSettings}
                 width={240}
             />
             <RoundedButton

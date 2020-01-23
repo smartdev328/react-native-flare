@@ -17,7 +17,6 @@ export const useSlideMenu = componentId => {
 
     useNavigationButtonCallback(
         ({ buttonId }) => {
-            console.log('unbc', { buttonId, showSideMenu });
             if (buttonId === 'menuButton') {
                 Navigation.mergeOptions(componentId, {
                     sideMenu: {
