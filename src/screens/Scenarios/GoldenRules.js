@@ -26,22 +26,23 @@ const GoldenRules = ({ finishUp }) => {
                 }}
                 alwaysBounceVertical={false}
             >
-                <HelpSection emoji="👯" title="5 feet or less.">
-                    Your bracelet and phone need to be within 5 feet of each
-                    other to connect.
-                </HelpSection>
                 <HelpSection emoji="✅" title="Bluetooth On.">
-                    Leave your bluetooth on for Flare to work. (But you don’t
-                    need to pair with your bracelet again!)
+                    Leave your bluetooth on for Flare to work (but you don’t
+                    need to pair with your bracelet). Your phone needs to have
+                    service for Flare to work.
                 </HelpSection>
                 <HelpSection emoji="📍" title="Location Services.">
                     If you send a message to your crew, they will also receive
                     your location. Keep location services “always” allowed.
                 </HelpSection>
+                <HelpSection emoji="👯" title="5 feet or less.">
+                    Your phone needs to be within 5 feet of your bracelet to get
+                    the signal.
+                </HelpSection>
                 <HelpSection emoji="💕" title="Love.">
                     Use Flare with love, thoughtfulness, honesty and good
                     intention. You are now part of the movement that is breaking
-                    stereotypes about safety.
+                    stereotypes about safety and supporting one another.
                 </HelpSection>
             </ScrollView>
             <RoundedButton

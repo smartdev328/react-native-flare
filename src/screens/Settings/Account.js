@@ -85,6 +85,10 @@ const Account = ({
                     />
                 </View>
             </View>
+            <Text style={styles.explain}>
+                Flare respects your privacy. We only use analytics to make
+                better safety products for all of us and never share your data.
+            </Text>
             <TouchableOpacity
                 style={[styles.item, { marginTop: 80 }]}
                 onPress={share}

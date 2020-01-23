@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import { scenarioDidText } from '../../actions/regActions';
+import haveEmoji12 from '../../bits/haveEmoji12';
 
 const styles = StyleSheet.create({
     container: {
@@ -94,11 +95,15 @@ const Entry = ({ text, timestamp = 'just now', style }) => (
     </Animated.View>
 );
 
+// WOMAN STANDING emoji is available only on iOS 13.2+ (and Android 10.0+),
+// don't use it on older versions of the platform.
+const womanStanding = haveEmoji12() ? '🧍‍♀️' : '';
+
 const messages = [
-    'Heyhey! Looks like you’re testing your Flare! 💕 Holding down your Flare button for 3 seconds is how we know to text your designated friend(s). 🧍‍♀️👨‍👨‍👧‍👧👯',
-    'Texts from your crew will appear here so that any Flares you send are discreet (and so your phone won’t start buzzing out of nowhere.) 🐝',
-    'Add your trusty crew in-app so that you can text them with your bracelet.',
-    'Customize how YOU are notified that you sent a flare in your settings. 🤫',
+    `Heyhey! Looks like you’re testing your Flare! 💕 Holding down your Flare button for 3 seconds is how we know to text your designated friend(s). ${womanStanding}👨‍👨‍👧‍👧👯`,
+    'Text responses from your Crew will appear like this in the app. But you won’t get texts on your phone (so it won’t start buzzing out of nowhere.) 🐝',
+    'Choose contacts to add to your Crew so you’ll always have trusty friends by your side.',
+    'Press ‘I’m okay’ when you’ve left the situation and we’ll let your Crew know. Try it now to continue.',
 ];
 
 const TextSimulator = ({ onSuccess }) => {

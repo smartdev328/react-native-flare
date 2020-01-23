@@ -34,8 +34,7 @@ const Crew = ({ componentId }) => {
                 </TouchableOpacity>
             </View>
             <Text style={styles.explain}>
-                Choose who will be notified that you sent a flare when you
-                choose to text a friend with your bracelet.
+                Choose which friends to message. We call them your Crew.
             </Text>
         </SafeAreaView>
     );

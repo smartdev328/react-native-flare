@@ -121,7 +121,7 @@ const ITEM_TEMPLATES = [
         image: { source: cardCrew, width: 106, height: 79 },
         title: 'Choose your backup',
         body:
-            'Which friends do you want your Flare cuff to text? This is your crew.',
+            'Which friends do you want your Flare bracelet to text? This is your crew.',
         done: ({ haveCrew }) => haveCrew,
     },
     {

@@ -14,19 +14,20 @@ const AboutPermissions = props => (
         {...props}
     >
         <HelpSection icon={bluetoothIcon} title="Bluetooth">
-            Without bluetooth, your phone and bracelet can’t talk to each other.
+            Without Bluetooth on, your phone and bracelet can’t talk to each
+            other. And you need to have phone service.
         </HelpSection>
         <HelpSection icon={locationIcon} title="Location">
             We need your location so that we can let your Crew know where you
             are when you need backup.
         </HelpSection>
         <HelpSection icon={contactsIcon} title="Contacts">
-            When you add friends to your crew, you can add them directly from
-            your phone contacts.
+            So that you can add friends to your Crew directly from your phone
+            contacts.
         </HelpSection>
         <HelpSection icon={notificationsIcon} title="Notifications">
             You can opt to get secret notifications from Flare that confirm that
-            you jewelry has sent a text to your Crew.
+            your jewelry has sent a text to your Crew.
         </HelpSection>
     </HelpScreen>
 );
