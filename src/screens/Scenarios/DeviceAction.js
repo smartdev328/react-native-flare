@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, StatusBar, Text, View } from 'react-native';
 
 import styles from './styles';
 import Aura from '../../bits/Aura';
@@ -21,6 +21,7 @@ const DeviceAction = ({
 }) => {
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar barStyle="light-content" />
             <Aura source={aura1519} />
             <WhiteBar showLogo={false} offWhite goBack={onBack} />
             <Headline style={styles.headline}>
