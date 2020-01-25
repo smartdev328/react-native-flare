@@ -55,14 +55,11 @@ const Intro = ({ onNext }) => {
             />
 
             {/* flexbox items */}
-            <Headline style={styles.headline}>
-                Flare was created for that gut feeling
-            </Headline>
+            <Headline style={styles.headline}>For that gut feeling</Headline>
             <View style={styles.line} />
             <Text style={styles.deviceActionText}>
                 Flare gives you two low-key options to get out of an iffy
-                situation the moment you’re feeling unsure. No need to hang
-                around.
+                situation the moment you’re feeling unsure.
             </Text>
             <RoundedButton
                 useGradient={false}
