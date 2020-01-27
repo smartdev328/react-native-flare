@@ -25,6 +25,7 @@ const Onboarding = ({ componentId }) => {
         hasDevices: isArrayLike(user.devices) && user.devices.length > 0,
     }));
     const [lastAuthState, setLastAuthState] = React.useState(authState);
+    const [didProceed, setDidProceed] = React.useState(false);
     const [resume, setResume] = React.useState(false);
     const [signUp, setSignUp] = React.useState(false);
     const [signIn, setSignIn] = React.useState(false);
@@ -44,6 +45,7 @@ const Onboarding = ({ componentId }) => {
     }, [setSignIn]);
 
     const onSignUpSuccess = React.useCallback(() => {
+        setDidProceed(true);
         dispatch(resetClaim());
 
         Navigation.push(componentId, {
@@ -56,6 +58,7 @@ const Onboarding = ({ componentId }) => {
 
     const onPressResume = React.useCallback(() => {
         if (hasDevices) {
+            setDidProceed(true);
             Navigation.push(componentId, {
                 component: {
                     name: 'com.flarejewelry.scenarios',
@@ -68,7 +71,7 @@ const Onboarding = ({ componentId }) => {
     }, [componentId, hasDevices, onSignUpSuccess]);
 
     React.useEffect(() => {
-        if (typeof authState === 'undefined' && hasAuthToken) {
+        if (typeof authState === 'undefined' && hasAuthToken && !didProceed) {
             onPressResume();
         } else if (authState !== lastAuthState) {
             setLastAuthState(authState);
@@ -78,6 +81,7 @@ const Onboarding = ({ componentId }) => {
         }
     }, [
         authState,
+        didProceed,
         hasAuthToken,
         hasViewedTutorial,
         lastAuthState,
