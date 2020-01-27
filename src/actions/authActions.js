@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 import { changeAppRoot } from './navActions';
-import {
-    API_URL,
-    MANUFACTURING_MODE_ENABLED,
-    ONBOARDING_ENABLED,
-} from '../constants/Config';
+import { API_URL, MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import * as types from './actionTypes';
 import Roles from '../constants/Roles';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
@@ -19,18 +15,20 @@ export const signIn = (email, password) => async dispatch => {
             email,
             password,
         });
+
+        const viewedTutorial = !!response.data.viewed_tutorial;
+
         dispatch({
             type: types.AUTH_SUCCESS,
             data: response.data,
+            viewedTutorial,
         });
         if (
             MANUFACTURING_MODE_ENABLED &&
             response.data.role === Roles.Manufacturing
         ) {
             dispatch(changeAppRoot('secure-manufacturing'));
-        } else if (ONBOARDING_ENABLED && !response.data.viewed_tutorial) {
-            dispatch(changeAppRoot('secure-onboarding'));
-        } else {
+        } else if (viewedTutorial) {
             dispatch(changeAppRoot('secure'));
         }
     } catch (res) {

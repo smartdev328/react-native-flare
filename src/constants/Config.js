@@ -104,11 +104,6 @@ export const DEVICE_ADDITION_MIN_PRESS_COUNT = 3;
 export const MANUFACTURING_MODE_ENABLED = false;
 
 /**
- * Control whether the app boots into onboarding on first auth
- */
-export const ONBOARDING_ENABLED = true;
-
-/**
  * Required length of user's flare cancel PIN code
  */
 export const LONG_PRESS_CANCEL_PIN_LENGTH = 4;

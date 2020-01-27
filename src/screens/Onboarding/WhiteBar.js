@@ -83,4 +83,4 @@ const WhiteBar = ({
     );
 };
 
-export default WhiteBar;
+export default React.memo(WhiteBar);
