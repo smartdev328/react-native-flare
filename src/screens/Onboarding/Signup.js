@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Alert, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import { connect } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import Aura from '../../bits/Aura';
 import FlowScreen from './FlowScreen';
@@ -22,7 +23,6 @@ import {
 import WhiteBar from './WhiteBar';
 
 import aura1519 from '../../assets/aura-1519.jpg';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
     container: {

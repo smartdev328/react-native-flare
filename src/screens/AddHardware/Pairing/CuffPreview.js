@@ -72,7 +72,9 @@ const CuffPreview = ({ text = '', error = undefined, style, ...rest }) => {
                     />
                     <View style={styles.textWrapper}>
                         {textLength > 0 && (
-                            <Text style={styles.text}>{text}</Text>
+                            <Text style={styles.text} allowFontScaling={false}>
+                                {text}
+                            </Text>
                         )}
                         <TextInput
                             ref={inputRef}
@@ -89,6 +91,7 @@ const CuffPreview = ({ text = '', error = undefined, style, ...rest }) => {
                                 textLength === 6 ? '_\u2006_\u2006_' : undefined
                             }
                             placeholderTextColor="#000000"
+                            allowFontScaling={false}
                             {...rest}
                         />
                     </View>

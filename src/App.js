@@ -274,28 +274,6 @@ export default class App extends Component {
                     },
                 });
                 break;
-            case 'secure-onboarding':
-                Navigation.setRoot({
-                    root: {
-                        stack: {
-                            id: 'ONBOARDING',
-                            options: {
-                                topBar: {
-                                    visible: false,
-                                },
-                            },
-                            children: [
-                                {
-                                    component: {
-                                        name:
-                                            'com.flarejewelry.onboarding.main',
-                                    },
-                                },
-                            ],
-                        },
-                    },
-                });
-                break;
             default:
                 // eslint-disable-next-line no-console
                 console.debug('Root is not secure.');

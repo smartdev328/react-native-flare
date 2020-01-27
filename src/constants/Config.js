@@ -9,7 +9,7 @@ export const API_URL = 'https://app.flarejewelry.co/api';
  + verbose -- report all/unparsed beacons in logs
  + not-enabled (or anything else really) -- no BLE logging at all
  */
-export const BLUETOOTH_BEACON_LOGGING = 'enabled';
+export const BLUETOOTH_BEACON_LOGGING = __DEV__ ? 'enabled' : 'not-enabled';
 
 /**
  * URL to bring users to ambassador signup page
@@ -28,11 +28,6 @@ export const SHOW_ALL_BEACONS_IN_HOME_SCREEN = true;
  * Toggle logging of redux changes
  */
 export const REDUX_LOGGING = false;
-
-/**
- * Toggle bluetooth listening. This may be useful when testing in emulator.
- */
-export const BLUETOOTH_LISTENING = false;
 
 /**
  * Interval in ms for syncing account details with server.
@@ -104,16 +99,6 @@ export const DEVICE_ADDITION_MIN_PRESS_COUNT = 3;
 export const MANUFACTURING_MODE_ENABLED = false;
 
 /**
- * Control whether the app boots into onboarding on first auth
- */
-export const ONBOARDING_ENABLED = true;
-
-/**
- * Required length of user's flare cancel PIN code
- */
-export const LONG_PRESS_CANCEL_PIN_LENGTH = 4;
-
-/**
  * Left navigation width
  */
 export const LEFT_NAVIGATION_WIDTH = 300;
@@ -126,7 +111,7 @@ export const USERS_CAN_ADD_JEWELRY = true;
 /**
  * Toggle logging of network calls
  */
-export const VERBOSE_NETWORK_LOGGING = false;
+export const VERBOSE_NETWORK_LOGGING = __DEV__;
 
 /**
  * Time after which a second beacon press will not be considered identical
@@ -142,6 +127,5 @@ export const summary = [
     { key: 'API', value: API_URL },
     { key: 'Logging / Redux', value: REDUX_LOGGING.toString() },
     { key: 'Logging / BLE', value: BLUETOOTH_BEACON_LOGGING.toString() },
-    { key: 'Bluetooth', value: BLUETOOTH_LISTENING.toString() },
     { key: 'Account Sync', value: ACCOUNT_SYNC_INTERVAL },
 ];
