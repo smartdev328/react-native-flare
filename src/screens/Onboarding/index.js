@@ -12,13 +12,18 @@ import Resume from './Resume';
 
 const Onboarding = ({ componentId }) => {
     const dispatch = useDispatch();
-    const { authState, hasViewedTutorial, hasDevices } = useSelector(
-        ({ user }) => ({
-            authState: user.authState,
-            hasViewedTutorial: user.hasViewedTutorial,
-            hasDevices: isArrayLike(user.devices) && user.devices.length > 0,
-        })
-    );
+    const {
+        hasAuthToken,
+        authState,
+        hasViewedTutorial,
+        hasDevices,
+    } = useSelector(({ user }) => ({
+        hasAuthToken:
+            typeof user.authToken === 'string' && user.authToken.length > 0,
+        authState: user.authState,
+        hasViewedTutorial: user.hasViewedTutorial,
+        hasDevices: isArrayLike(user.devices) && user.devices.length > 0,
+    }));
     const [lastAuthState, setLastAuthState] = React.useState(authState);
     const [resume, setResume] = React.useState(false);
     const [signUp, setSignUp] = React.useState(false);
@@ -63,13 +68,21 @@ const Onboarding = ({ componentId }) => {
     }, [componentId, hasDevices, onSignUpSuccess]);
 
     React.useEffect(() => {
-        if (authState !== lastAuthState) {
+        if (typeof authState === 'undefined' && hasAuthToken) {
+            onPressResume();
+        } else if (authState !== lastAuthState) {
             setLastAuthState(authState);
             if (authState === 'succeeded' && !hasViewedTutorial) {
                 setResume(true);
             }
         }
-    }, [authState, hasViewedTutorial, lastAuthState]);
+    }, [
+        authState,
+        hasAuthToken,
+        hasViewedTutorial,
+        lastAuthState,
+        onPressResume,
+    ]);
 
     if (resume) {
         return <Resume onPress={onPressResume} />;
