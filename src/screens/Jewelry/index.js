@@ -32,8 +32,9 @@ class Jewelry extends React.Component {
     }
 
     addNewJewelry = () => {
-        const { beaconCountsReset, componentId } = this.props;
+        const { beaconCountsReset, resetClaim, componentId } = this.props;
         beaconCountsReset();
+        resetClaim();
         Navigation.push(componentId, {
             component: {
                 name: 'com.flarejewelry.onboarding.addhardware',
@@ -122,6 +123,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     disclaimDevice: deviceActions.disclaimDevice,
     beaconCountsReset: hardwareActions.beaconCountsReset,
+    resetClaim: deviceActions.resetClaim,
 };
 
 export default connect(
