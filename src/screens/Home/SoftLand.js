@@ -135,7 +135,7 @@ const ITEM_TEMPLATES = [
     {
         key: 'callscript',
         image: { source: cardCallscript, width: 69, height: 91 },
-        title: 'Pick the perfect Cuff-Call',
+        title: 'Pick the perfect phone call',
         body:
             'What script do you want to hear when we call you? Choose the best for you.',
         done: ({ sawCallScripts }) => sawCallScripts,

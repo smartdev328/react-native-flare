@@ -28,7 +28,9 @@ const BottomSheet = ({
             >
                 Ready to connect?
             </Headline>
-            <Text style={styles.connectSubhead}>Let’s connect your cuff</Text>
+            <Text style={styles.connectSubhead}>
+                Let’s connect your bracelet
+            </Text>
 
             <RoundedButton
                 wrapperStyle={styles.spacedButton}
