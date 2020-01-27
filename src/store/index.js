@@ -42,6 +42,7 @@ const transformerConfig = {
             'callScripts',
             'sawCallScripts',
             'sawNotifSettings',
+            'referralKey',
         ],
         beacons: ['latest', 'problems'],
     },
