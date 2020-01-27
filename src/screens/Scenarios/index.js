@@ -2,6 +2,7 @@ import * as React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { PERMISSIONS } from 'react-native-permissions';
 
 import Intro from './Intro';
 import FakeCall from './FakeCall';
@@ -29,7 +30,14 @@ const Scenarios = ({
     setOnboardingComplete,
     changeAppRoot,
     dispatch,
+    startBleListening,
+    getPermission,
 }) => {
+    React.useEffect(() => {
+        getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        startBleListening();
+    }, [getPermission, startBleListening]);
+
     React.useEffect(() => {
         if (gotPress && screen === 'textYourCrew') {
             setScenarioScreen('textSimulator');
@@ -168,6 +176,8 @@ const mapDispatchToProps = dispatch => ({
             setScenarioScreen: regActions.setScenarioScreen,
             setOnboardingComplete: userActions.setOnboardingComplete,
             changeAppRoot: actions.changeAppRoot,
+            startBleListening: actions.startBleListening,
+            getPermission: userActions.getPermission,
         },
         dispatch
     ),
