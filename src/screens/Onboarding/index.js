@@ -9,6 +9,7 @@ import Signup from './Signup';
 import { regStart } from '../../actions/regActions';
 import { resetClaim } from '../../actions/deviceActions';
 import Resume from './Resume';
+import { jwtHasValidTimestamp } from '../../bits/jwt';
 
 const Onboarding = ({ componentId }) => {
     const dispatch = useDispatch();
@@ -18,8 +19,7 @@ const Onboarding = ({ componentId }) => {
         hasViewedTutorial,
         hasDevices,
     } = useSelector(({ user }) => ({
-        hasAuthToken:
-            typeof user.authToken === 'string' && user.authToken.length > 0,
+        hasAuthToken: jwtHasValidTimestamp(user.authToken),
         authState: user.authState,
         hasViewedTutorial: user.hasViewedTutorial,
         hasDevices: isArrayLike(user.devices) && user.devices.length > 0,
