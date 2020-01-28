@@ -22,8 +22,10 @@ import { openContactsScreen } from '../Contacts';
 import { getCallScripts } from '../../actions/userActions';
 import count from '../../bits/count';
 import shareFlare from '../../bits/shareFlare';
+import addToContacts from '../AddToContacts';
 
 import aura1528 from '../../assets/aura-1528.jpg';
+import cardAddcontacts from '../../assets/card-addcontacts.png';
 import cardCrew from '../../assets/card-crew.png';
 import cardNotifs from '../../assets/card-notifs.png';
 import cardCallscript from '../../assets/card-callscript.png';
@@ -115,6 +117,36 @@ const styles = StyleSheet.create({
     },
 });
 
+const mapState = ({
+    user: {
+        authToken,
+        crews,
+        permissions: { location: locationPermission },
+        callScripts,
+        sawCallScripts,
+        sawNotifSettings,
+        referralKey,
+        addedToContacts,
+    },
+}) => ({
+    authToken,
+    locationPermission,
+    haveCrew:
+        Array.isArray(crews) &&
+        crews.some(
+            crew =>
+                'members' in crew &&
+                Array.isArray(crew.members) &&
+                crew.members.length > 0
+        ),
+    haveCallScripts:
+        isPlainObject(callScripts) && Object.keys(callScripts).length > 0,
+    sawCallScripts,
+    sawNotifSettings,
+    referralKey,
+    addedToContacts,
+});
+
 const ITEM_TEMPLATES = [
     {
         key: 'crew',
@@ -157,6 +189,13 @@ const ITEM_TEMPLATES = [
         done: () => false,
     },
     {
+        key: 'addcontacts',
+        image: { source: cardAddcontacts, width: 40, height: 95 },
+        title: 'Add Flare to Contacts',
+        body: 'Make sure you add our number to your contacts.',
+        done: ({ addedToContacts }) => addedToContacts,
+    },
+    {
         key: 'onboard',
         title: 'Onboard with Flare',
         body: 'Test your cuff to learn how it works and when to use it.',
@@ -166,43 +205,14 @@ const ITEM_TEMPLATES = [
 
 const SoftLand = ({ componentId }) => {
     const dispatch = useDispatch();
-    const selector = useSelector(
-        ({
-            user: {
-                authToken,
-                crews,
-                permissions: { location: locationPermission },
-                callScripts,
-                sawCallScripts,
-                sawNotifSettings,
-                referralKey,
-            },
-        }) => ({
-            authToken,
-            locationPermission,
-            haveCrew:
-                Array.isArray(crews) &&
-                crews.some(
-                    crew =>
-                        'members' in crew &&
-                        Array.isArray(crew.members) &&
-                        crew.members.length > 0
-                ),
-            haveCallScripts:
-                isPlainObject(callScripts) &&
-                Object.keys(callScripts).length > 0,
-            sawCallScripts,
-            sawNotifSettings,
-            referralKey,
-        })
-    );
+    const selector = useSelector(mapState);
     const insets = useSafeArea();
     const bluetoothStatus = useBluetoothStatus();
 
     const callbacks = {
-        crew: React.useCallback(() => openContactsScreen(componentId), [
-            componentId,
-        ]),
+        crew: React.useCallback(() => {
+            openContactsScreen(componentId);
+        }, [componentId]),
         callscript: React.useCallback(() => {
             Navigation.push(componentId, {
                 component: { name: 'com.flarejewelry.app.settings.Call' },
@@ -223,6 +233,9 @@ const SoftLand = ({ componentId }) => {
         share: React.useCallback(() => {
             shareFlare(selector.referralKey);
         }, [selector.referralKey]),
+        addcontacts: React.useCallback(() => {
+            addToContacts(dispatch);
+        }, [dispatch]),
     };
 
     const items = ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

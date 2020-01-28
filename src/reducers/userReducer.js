@@ -500,7 +500,7 @@ export function user(state = initialState.user, action = {}) {
         case types.USER_SCENARIO_GOT_SHORT_PRESS:
             return state.setIn(['scenarios', 'shortPress'], 'done');
         case types.USER_SCENARIO_ADDED_TO_CONTACTS:
-            return state.setIn(['scenarios', 'addedToContacts', true]);
+            return state.set('addedToContacts', true);
 
         case types.USER_TEXT_FRIENDS_RESET:
             return state.without('textFriends');
