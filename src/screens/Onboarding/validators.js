@@ -1,6 +1,6 @@
 const NAME_REGEX = /^(.*\p{Script=Latn}) +(\p{Script=Latin}.*)$/u;
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/u;
-const PHONE_REGEX = /^\+?1?[ -()]*[2-9](?:[0-9]){9}$/;
+const PHONE_REGEX = /^(?:\+?1)?[ -()]*[2-9](?:[0-9]){9}$/;
 
 export const validateName = name => {
     if (typeof name !== 'string' || name.length < 3) {

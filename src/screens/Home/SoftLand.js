@@ -32,6 +32,7 @@ import cardCallscript from '../../assets/card-callscript.png';
 import cardPermissions from '../../assets/card-permissions.png';
 import cardShare from '../../assets/card-share.png';
 import useBluetoothStatus from '../../bits/useBluetoothStatus';
+import { registerPermissionDetection } from '../../bits/NativeEmitters';
 
 const styles = StyleSheet.create({
     container: {
@@ -178,7 +179,8 @@ const ITEM_TEMPLATES = [
         title: 'Allow Location and Bluetooth',
         body: '“Always allow” your location and turn Bluetooth on.',
         done: ({ locationPermission, bluetoothStatus }) =>
-            locationPermission && bluetoothStatus === 'on',
+            locationPermission &&
+            (bluetoothStatus === 'on' || bluetoothStatus === ''),
     },
     {
         key: 'share',
@@ -208,6 +210,7 @@ const SoftLand = ({ componentId }) => {
     const selector = useSelector(mapState);
     const insets = useSafeArea();
     const bluetoothStatus = useBluetoothStatus();
+    React.useEffect(() => registerPermissionDetection(dispatch), [dispatch]);
 
     const callbacks = {
         crew: React.useCallback(() => {

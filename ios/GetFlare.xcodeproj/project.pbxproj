@@ -19,6 +19,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* GetFlareTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GetFlareTests.m */; };
 		30B10D465243A54E51336D7F /* libPods-GetFlare-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11D66B542632CF7EEC7760E9 /* libPods-GetFlare-tvOS.a */; };
 		5DD0732069C88743E6C5F0C7 /* libPods-GetFlare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A138E36E0182301663E75A1 /* libPods-GetFlare.a */; };
+		651C83D823E0BDC100619CA8 /* GFPermissionWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 651C83D723E0BDC100619CA8 /* GFPermissionWatcher.m */; };
 		6522AF2723A8308E001B5846 /* GFSettingsUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6522AF2623A8308E001B5846 /* GFSettingsUrl.m */; };
 		6522AF2A23B175F9001B5846 /* GFCallManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6522AF2923B175F9001B5846 /* GFCallManager.m */; };
 		71A06AE0BA53A4F88C94056A /* libPods-GetFlare-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D23186890331A498F7BD864F /* libPods-GetFlare-tvOSTests.a */; };
@@ -73,6 +74,8 @@
 		6046FE195D714A24AEEE8353 /* NocturnoDisplayStd-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NocturnoDisplayStd-Regular.otf"; path = "../src/fonts/NocturnoDisplayStd-Regular.otf"; sourceTree = "<group>"; };
 		613019D8BC204D15B35FB9C9 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		650215ADC20F4DE4A04E41B8 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		651C83D723E0BDC100619CA8 /* GFPermissionWatcher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GFPermissionWatcher.m; sourceTree = "<group>"; };
+		651C83D923E0BE7A00619CA8 /* GFPermissionWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFPermissionWatcher.h; sourceTree = "<group>"; };
 		6522AF2523A83044001B5846 /* GFSettingsUrl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GFSettingsUrl.h; sourceTree = "<group>"; };
 		6522AF2623A8308E001B5846 /* GFSettingsUrl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GFSettingsUrl.m; sourceTree = "<group>"; };
 		6522AF2823B175C9001B5846 /* GFCallManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GFCallManager.h; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				6522AF2523A83044001B5846 /* GFSettingsUrl.h */,
 				6522AF2623A8308E001B5846 /* GFSettingsUrl.m */,
+				651C83D723E0BDC100619CA8 /* GFPermissionWatcher.m */,
+				651C83D923E0BE7A00619CA8 /* GFPermissionWatcher.h */,
 				6522AF2823B175C9001B5846 /* GFCallManager.h */,
 				6522AF2923B175F9001B5846 /* GFCallManager.m */,
 			);
@@ -656,6 +661,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				651C83D823E0BDC100619CA8 /* GFPermissionWatcher.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				BECF1CA62346895C0010B9BC /* swift-bridge-hack.swift in Sources */,

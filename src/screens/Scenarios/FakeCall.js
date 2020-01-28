@@ -4,7 +4,7 @@ import isPlainObject from 'is-plain-object';
 
 import DeviceAction from './DeviceAction';
 import { scenarioDidCall } from '../../actions/regActions';
-import { registerCallDetection } from '../../bits/CallDetection';
+import { registerCallDetection } from '../../bits/NativeEmitters';
 import { TOUCH_AND_RELEASE } from '../Cuff';
 import Connecting from './Connecting';
 
