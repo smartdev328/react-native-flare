@@ -14,7 +14,7 @@ export const jwtHasValidTimestamp = token => {
         const header = JSON.parse(components[0]);
         const payload = JSON.parse(components[1]);
 
-        const now = Date.now();
+        const now = Math.floor(Date.now() / 1000);
         if (
             typeof header !== 'object' ||
             typeof payload !== 'object' ||
