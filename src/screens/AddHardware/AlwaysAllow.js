@@ -113,6 +113,7 @@ const AlwaysAllow = ({
         nextPage,
         visitedSettings,
         firstHadPermission,
+        bluetoothStatus,
     ]);
 
     const visitSettings = React.useCallback(() => {
