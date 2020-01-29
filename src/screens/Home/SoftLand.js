@@ -7,7 +7,6 @@ import {
     Text,
     View,
 } from 'react-native';
-import { Navigation } from 'react-native-navigation';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import isPlainObject from 'is-plain-object';
@@ -18,18 +17,13 @@ import Constellation from './Constellation';
 import TaskCard from './TaskCard';
 import DoneItem from './DoneItem';
 import useDimensions from '../../bits/useDimensions';
-import { openContactsScreen } from '../Contacts';
 import { getCallScripts } from '../../actions/userActions';
 import count from '../../bits/count';
-import shareFlare from '../../bits/shareFlare';
+import useBluetoothStatus from '../../bits/useBluetoothStatus';
+import { registerPermissionDetection } from '../../bits/NativeEmitters';
+import { useCards } from './Cards';
 
 import aura1528 from '../../assets/aura-1528.jpg';
-import cardCrew from '../../assets/card-crew.png';
-import cardNotifs from '../../assets/card-notifs.png';
-import cardCallscript from '../../assets/card-callscript.png';
-import cardPermissions from '../../assets/card-permissions.png';
-import cardShare from '../../assets/card-share.png';
-import useBluetoothStatus from '../../bits/useBluetoothStatus';
 
 const styles = StyleSheet.create({
     container: {
@@ -115,122 +109,48 @@ const styles = StyleSheet.create({
     },
 });
 
-const ITEM_TEMPLATES = [
-    {
-        key: 'crew',
-        image: { source: cardCrew, width: 106, height: 79 },
-        title: 'Choose your backup',
-        body:
-            'Which friends do you want your Flare bracelet to text? This is your crew.',
-        done: ({ haveCrew }) => haveCrew,
+const mapState = ({
+    user: {
+        authToken,
+        crews,
+        permissions: { location: locationPermission },
+        callScripts,
+        sawCallScripts,
+        sawNotifSettings,
+        referralKey,
+        addedToContacts,
     },
-    {
-        key: 'notifs',
-        image: { source: cardNotifs, width: 84, height: 88 },
-        title: 'Customize Notifications',
-        body:
-            'How do you want to be notified that your text has been sent? Choose your level of discretion.',
-        done: ({ sawNotifSettings }) => sawNotifSettings,
-    },
-    {
-        key: 'callscript',
-        image: { source: cardCallscript, width: 69, height: 91 },
-        title: 'Pick the perfect phone call',
-        body:
-            'What script do you want to hear when we call you? Choose the best for you.',
-        done: ({ sawCallScripts }) => sawCallScripts,
-    },
-    {
-        key: 'permissions',
-        image: { source: cardPermissions, width: 119, height: 77 },
-        title: 'Allow Location and Bluetooth',
-        body: '“Always allow” your location and turn Bluetooth on.',
-        done: ({ locationPermission, bluetoothStatus }) =>
-            locationPermission && bluetoothStatus === 'on',
-    },
-    {
-        key: 'share',
-        image: { source: cardShare, width: 83, height: 89 },
-        title: 'Share Flare 💕',
-        body:
-            'Invite your friends to join the movement. Send a special promo code.',
-        done: () => false,
-    },
-    {
-        key: 'onboard',
-        title: 'Onboard with Flare',
-        body: 'Test your cuff to learn how it works and when to use it.',
-        done: () => true,
-    },
-];
+}) => ({
+    authToken,
+    locationPermission,
+    haveCrew:
+        Array.isArray(crews) &&
+        crews.some(
+            crew =>
+                'members' in crew &&
+                Array.isArray(crew.members) &&
+                crew.members.length > 0
+        ),
+    haveCallScripts:
+        isPlainObject(callScripts) && Object.keys(callScripts).length > 0,
+    sawCallScripts,
+    sawNotifSettings,
+    referralKey,
+    addedToContacts,
+});
 
 const SoftLand = ({ componentId }) => {
     const dispatch = useDispatch();
-    const selector = useSelector(
-        ({
-            user: {
-                authToken,
-                crews,
-                permissions: { location: locationPermission },
-                callScripts,
-                sawCallScripts,
-                sawNotifSettings,
-                referralKey,
-            },
-        }) => ({
-            authToken,
-            locationPermission,
-            haveCrew:
-                Array.isArray(crews) &&
-                crews.some(
-                    crew =>
-                        'members' in crew &&
-                        Array.isArray(crew.members) &&
-                        crew.members.length > 0
-                ),
-            haveCallScripts:
-                isPlainObject(callScripts) &&
-                Object.keys(callScripts).length > 0,
-            sawCallScripts,
-            sawNotifSettings,
-            referralKey,
-        })
-    );
+    const selector = useSelector(mapState);
     const insets = useSafeArea();
     const bluetoothStatus = useBluetoothStatus();
+    React.useEffect(() => registerPermissionDetection(dispatch), [dispatch]);
 
-    const callbacks = {
-        crew: React.useCallback(() => openContactsScreen(componentId), [
-            componentId,
-        ]),
-        callscript: React.useCallback(() => {
-            Navigation.push(componentId, {
-                component: { name: 'com.flarejewelry.app.settings.Call' },
-            });
-        }, [componentId]),
-        notifs: React.useCallback(() => {
-            Navigation.push(componentId, {
-                component: {
-                    name: 'com.flarejewelry.app.settings.Notifications',
-                },
-            });
-        }, [componentId]),
-        permissions: React.useCallback(() => {
-            Navigation.showModal({
-                component: { name: 'com.flarejewelry.app.PermissionsReminder' },
-            });
-        }, []),
-        share: React.useCallback(() => {
-            shareFlare(selector.referralKey);
-        }, [selector.referralKey]),
-    };
-
-    const items = ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({
-        done: done({ ...selector, bluetoothStatus }),
-        key,
-        onPress: callbacks[key],
-        ...rest,
-    }));
+    const items = useCards({
+        componentId,
+        selector: { ...selector, bluetoothStatus },
+        dispatch,
+    });
     const doneCount = count(items, ({ done }) => done);
     const doneItems = items.filter(({ done }) => done);
     const undoneItems = items.filter(({ done }) => !done);

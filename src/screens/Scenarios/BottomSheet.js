@@ -71,7 +71,7 @@ const WouldYouRather = ({ fakeCall, textCrew, cardHead, cardBody }) => (
 
 const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
     const [didAddToContacts, didCall] = useSelector(state => [
-        state.user.scenarios.addedToContacts,
+        state.user.addedToContacts,
         state.user.scenarios.didCall,
     ]);
     return (

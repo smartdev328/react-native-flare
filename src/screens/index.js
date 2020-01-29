@@ -9,9 +9,6 @@ import Jewelry from './Jewelry';
 import ManufacturingMain from './ManufacturingMain';
 import LeftDrawer from './LeftDrawer';
 import Onboarding from './Onboarding';
-import Register from './Register';
-import Register2 from './Register2';
-import Root from './Root';
 import {
     Account,
     Call as SettingsCall,
@@ -19,7 +16,6 @@ import {
     Home as Settings,
     Notifications as SetttingsNotifications,
 } from './Settings';
-import SignIn from './SignIn';
 import AddHardware, { HowToConnect, AboutPermissions } from './AddHardware';
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import Scenarios from './Scenarios';
@@ -77,24 +73,6 @@ export default (store, Provider) => {
         Provider,
         store
     );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.Register',
-        () => Register,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.Register2',
-        () => Register2,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.Root',
-        () => Root,
-        Provider,
-        store
-    );
     Navigation.registerComponent(
         'com.flarejewelry.app.Settings',
         () => Settings
@@ -118,12 +96,6 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.app.settings.Notifications',
         () => SetttingsNotifications,
-        Provider,
-        store
-    );
-    Navigation.registerComponentWithRedux(
-        'com.flarejewelry.app.SignIn',
-        () => SignIn,
         Provider,
         store
     );

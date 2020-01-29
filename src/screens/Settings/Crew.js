@@ -7,14 +7,19 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { Navigation } from 'react-native-navigation';
+
 import { navOptions, styles } from './styles';
 import chevron from '../../assets/chevron.png';
-import { openContactsScreen } from '../Contacts';
 import { useSlideMenu } from '../../bits/useNavigationCallback';
 
 const Crew = ({ componentId }) => {
     const editCrew = React.useCallback(() => {
-        openContactsScreen(componentId);
+        Navigation.push(componentId, {
+            component: {
+                name: 'com.flarejewelry.app.Contacts',
+            },
+        });
     }, [componentId]);
 
     useSlideMenu(componentId);

@@ -69,7 +69,7 @@ const TaskCard = ({
                 left: 24,
                 width: imageWidth,
                 height: imageHeight,
-                top: 91 - imageHeight,
+                top: Math.max(0, 91 - imageHeight),
             }}
         />
     </TouchableOpacity>

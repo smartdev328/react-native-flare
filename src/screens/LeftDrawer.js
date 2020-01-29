@@ -16,6 +16,7 @@ import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
 import Strings from '../locales/en';
 import contactSupport from '../bits/contactSupport';
+import shareFlare from '../bits/shareFlare';
 
 import iconCrew from '../assets/menu-item-crew.png';
 import iconHome from '../assets/menu-item-home.png';
@@ -23,6 +24,7 @@ import iconProfile from '../assets/menu-item-profile.png';
 import iconSettings from '../assets/menu-item-settings.png';
 import iconContact from '../assets/menu-item-contact.png';
 import iconInfo from '../assets/menu-item-info.png';
+import iconShare from '../assets/menu-item-share.png';
 
 const styles = StyleSheet.create({
     container: {
@@ -69,7 +71,7 @@ const MenuItem = ({ onPress, label, icon, style }) => (
     </TouchableOpacity>
 );
 
-const LeftDrawer = ({ changeAppRoot, devices }) => {
+const LeftDrawer = ({ changeAppRoot, devices, referralKey }) => {
     const insets = useSafeArea();
 
     const handleHome = React.useCallback(() => {
@@ -87,6 +89,10 @@ const LeftDrawer = ({ changeAppRoot, devices }) => {
     const handleAccount = React.useCallback(() => {
         changeAppRoot('secure-account');
     }, [changeAppRoot]);
+
+    const handleShare = React.useCallback(() => {
+        shareFlare(referralKey);
+    }, [referralKey]);
 
     const handleSupport = React.useCallback(() => {
         contactSupport(devices);
@@ -136,9 +142,9 @@ const LeftDrawer = ({ changeAppRoot, devices }) => {
                     icon={iconProfile}
                 />
                 <MenuItem
-                    onPress={handleSupport}
-                    label="Contact Support"
-                    icon={iconContact}
+                    onPress={handleShare}
+                    label="Share Flare"
+                    icon={iconShare}
                 />
                 <MenuItem
                     style={styles.padded}
@@ -146,13 +152,19 @@ const LeftDrawer = ({ changeAppRoot, devices }) => {
                     label="How Flare Works"
                     icon={iconInfo}
                 />
+                <MenuItem
+                    onPress={handleSupport}
+                    label="Contact Support"
+                    icon={iconContact}
+                />
             </View>
         </View>
     );
 };
 
-const mapStateToProps = ({ user: { devices } }) => ({
+const mapStateToProps = ({ user: { devices, referralKey } }) => ({
     devices,
+    referralKey,
 });
 
 const mapDispatchToProps = {

@@ -43,6 +43,7 @@ const GetStarted = ({ style, nextPage }) => {
                 easing: Easing.ease,
             }).start();
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
     return (
