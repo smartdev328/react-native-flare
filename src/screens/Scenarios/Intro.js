@@ -5,7 +5,6 @@ import Video from 'react-native-video';
 import AnimatedLottieView from 'lottie-react-native';
 
 import styles from './styles';
-import Headline from '../Onboarding/Headline';
 import RoundedButton from '../../bits/RoundedButton';
 import useDimensions from '../../bits/useDimensions';
 
@@ -55,8 +54,6 @@ const Intro = ({ onNext }) => {
             />
 
             {/* flexbox items */}
-            <Headline style={styles.headline}>For that gut feeling</Headline>
-            <View style={styles.line} />
             <Text style={styles.deviceActionText}>
                 Flare gives you two low-key options to get out of an iffy
                 situation the moment you’re feeling unsure.
