@@ -2,7 +2,6 @@ import * as React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { PERMISSIONS } from 'react-native-permissions';
 
 import Intro from './Intro';
 import FakeCall from './FakeCall';
@@ -15,6 +14,7 @@ import TextSimulator from './TextSimulator';
 import * as userActions from '../../actions/userActions';
 import * as actions from '../../actions';
 import GoldenRules from './GoldenRules';
+import ForcePermission from './ForcePermission';
 
 const Scenarios = ({
     screen,
@@ -31,12 +31,13 @@ const Scenarios = ({
     changeAppRoot,
     dispatch,
     startBleListening,
-    getPermission,
+    locationPermission,
 }) => {
     React.useEffect(() => {
-        getPermission(PERMISSIONS.IOS.LOCATION_ALWAYS);
-        startBleListening();
-    }, [getPermission, startBleListening]);
+        if (locationPermission) {
+            startBleListening();
+        }
+    }, [locationPermission, startBleListening]);
 
     React.useEffect(() => {
         if (gotPress && screen === 'textYourCrew') {
@@ -93,6 +94,8 @@ const Scenarios = ({
         <SafeAreaProvider>
             {(() => {
                 switch (screen) {
+                    case 'permission':
+                        return <ForcePermission onNext={intro} />;
                     case 'intro':
                         return <Intro onNext={firstScenario} />;
                     case 'firstScenario':
@@ -156,15 +159,17 @@ const mapStateToProps = ({
         authToken,
         settingOnboardingComplete,
         hasViewedTutorial,
+        permissions: { location },
     },
 }) => ({
     token: authToken,
     busy: settingOnboardingComplete,
     done: hasViewedTutorial,
-    screen: scenarios.screen || 'intro',
+    screen: scenarios.screen || (location ? 'intro' : 'permission'),
     didCall: typeof scenarios.didCall === 'boolean' ? scenarios.didCall : false,
     didText: typeof scenarios.didText === 'boolean' ? scenarios.didText : false,
     gotPress: scenarios.longPress === 'done',
+    locationPermission: location,
 });
 
 const mapDispatchToProps = dispatch => ({
