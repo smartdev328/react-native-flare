@@ -45,16 +45,18 @@ const Onboarding = ({ componentId }) => {
     }, [setSignIn]);
 
     const onSignUpSuccess = React.useCallback(() => {
-        setDidProceed(true);
         dispatch(resetClaim());
 
-        Navigation.push(componentId, {
-            component: {
-                name: 'com.flarejewelry.onboarding.addhardware',
-                options: { topBar: { visible: false } },
-            },
-        });
-    }, [componentId, dispatch]);
+        if (!didProceed) {
+            setDidProceed(true);
+            Navigation.push(componentId, {
+                component: {
+                    name: 'com.flarejewelry.onboarding.addhardware',
+                    options: { topBar: { visible: false } },
+                },
+            });
+        }
+    }, [componentId, dispatch, didProceed]);
 
     const onPressResume = React.useCallback(() => {
         if (hasDevices) {
