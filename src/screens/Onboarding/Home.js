@@ -9,6 +9,7 @@ import {
     StatusBar,
 } from 'react-native';
 import Video from 'react-native-video';
+import { useDispatch } from 'react-redux';
 
 import RoundedButton from '../../bits/RoundedButton';
 import Strings from '../../locales/en';
@@ -18,6 +19,7 @@ import useBluetoothStatus from '../../bits/useBluetoothStatus';
 
 import logoWhite from '../../assets/logo-white.png';
 import animatedBackground from '../../assets/animated-aura.mp4';
+import { registerPermissionDetection } from '../../bits/NativeEmitters';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -101,6 +103,9 @@ const Buttons = ({ onSignUpPressed, onSignInPressed }) => (
 );
 
 const Home = ({ onSignUpPressed, onSignInPressed }) => {
+    const dispatch = useDispatch();
+    React.useEffect(() => registerPermissionDetection(dispatch), [dispatch]);
+
     const bluetoothStatus = useBluetoothStatus();
 
     const openShop = React.useCallback(() => {

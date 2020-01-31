@@ -7,11 +7,11 @@ import Headline from '../Onboarding/Headline';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import { openSettings } from '../../bits/settingsUrl';
-import { checkLocationsPermission } from '../../actions/userActions';
 import useBluetoothStatus from '../../bits/useBluetoothStatus';
 
 import locationIcon from '../../assets/ios-location-icon.png';
 import bluetoothIcon from '../../assets/ios-bluetooth-icon.png';
+import { registerPermissionDetection } from '../../bits/NativeEmitters';
 
 const localStyles = StyleSheet.create({
     cardContainer: {
@@ -121,13 +121,7 @@ const AlwaysAllow = ({
         openSettings();
     }, []);
 
-    // poll for permissions status, ugh
-    React.useEffect(() => {
-        const intervalId = setInterval(() => {
-            dispatch(checkLocationsPermission());
-        }, 200);
-        return () => clearInterval(intervalId);
-    }, [dispatch]);
+    React.useEffect(() => registerPermissionDetection(dispatch), [dispatch]);
 
     const showBluetoothLine = !['on', ''].includes(bluetoothStatus);
 

@@ -17,7 +17,7 @@ import Colors from './bits/Colors';
 import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
 
-import menuIcon from './assets/menu-icon.png';
+import sandwichMenu from './assets/sandwich-menu.png';
 
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
@@ -38,7 +38,7 @@ const setDefaultOptions = () => {
             leftButtons: [
                 {
                     id: 'menuButton',
-                    icon: menuIcon,
+                    icon: sandwichMenu,
                     color: Colors.black,
                 },
             ],
@@ -180,7 +180,7 @@ export default class App extends Component {
                                                             {
                                                                 id:
                                                                     'menuButton',
-                                                                icon: menuIcon,
+                                                                icon: sandwichMenu,
                                                             },
                                                         ],
                                                         title: {

@@ -20,6 +20,7 @@ import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Type from '../../bits/Type';
 import { saveButton, settingsNavOptions } from '../Settings';
+import NeedContactsPermission from './NeedContactsPermission';
 
 const MAX_CREW_SIZE = 5;
 
@@ -67,6 +68,11 @@ const styles = StyleSheet.create({
     tutorialButtons: {
         backgroundColor: Colors.theme.purple,
         paddingBottom: Spacing.medium,
+    },
+    activityWrapper: {
+        flexGrow: 1,
+        alignItems: 'center',
+        alignContent: 'center',
     },
 });
 
@@ -255,39 +261,50 @@ class Contacts extends React.Component {
         }
     }
 
+    renderContactsList = () => {
+        const { contacts, contactsCount, contactsState, loading } = this.props;
+        if (loading || contactsState === 'requested') {
+            return (
+                <View style={styles.activityWrapper}>
+                    <ActivityIndicator size="large" />
+                </View>
+            );
+        } else if (contactsState === 'failed') {
+            return <NeedContactsPermission />;
+        } else {
+            return (
+                <ContactsList
+                    contacts={contacts}
+                    contactsCount={contactsCount}
+                    onPressContact={this.handleContactPress}
+                    sectionList={this.computeSections(contacts)}
+                />
+            );
+        }
+    };
+
     render() {
-        const {
-            contacts,
-            contactsCount,
-            contactsCrewLookup,
-            loading,
-        } = this.props;
+        const { contactsState } = this.props;
         const { crew } = this.state;
         const hasCrew = crew && crew.members && crew.members.length > 0;
 
         return (
             <View style={styles.container}>
                 <StatusBar barStyle="dark-content" />
-                <Text style={styles.prompt}>
-                    {hasCrew
-                        ? `${Strings.contacts.chooseInstruction.start} ${crew.members.length} ${Strings.contacts.chooseInstruction.end}`
-                        : Strings.contacts.choosePrompt}
-                </Text>
+                {(hasCrew || contactsState !== 'failed') && (
+                    <Text style={styles.prompt}>
+                        {hasCrew
+                            ? `${Strings.contacts.chooseInstruction.start} ${crew.members.length} ${Strings.contacts.chooseInstruction.end}`
+                            : Strings.contacts.choosePrompt}
+                    </Text>
+                )}
                 {hasCrew && (
                     <CrewList
                         crew={crew}
                         onPressContact={this.removeCrewMember}
                     />
                 )}
-                <ContactsList
-                    contacts={contacts}
-                    contactsCount={contactsCount}
-                    contactsCrewLookup={contactsCrewLookup || {}}
-                    onPressContact={this.handleContactPress}
-                    sectionList={this.computeSections(contacts)}
-                />
-
-                <View>{loading && <ActivityIndicator />}</View>
+                {this.renderContactsList()}
             </View>
         );
     }
@@ -299,7 +316,7 @@ const mapStateToProps = ({
         authToken,
         contacts,
         contactsCount,
-        contactsCrewLookup,
+        contactsState,
         hasViewedTutorial,
         crewUpdateState,
         textFriends,
@@ -311,7 +328,7 @@ const mapStateToProps = ({
         crew,
         contacts,
         contactsCount,
-        contactsCrewLookup,
+        contactsState,
         hasViewedTutorial,
         crewUpdateState,
         loading: crewUpdateState === 'requested',

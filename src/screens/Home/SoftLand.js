@@ -139,7 +139,7 @@ const mapState = ({
     addedToContacts,
 });
 
-const SoftLand = ({ componentId }) => {
+const SoftLand = ({ componentId, showCompleted = false }) => {
     const dispatch = useDispatch();
     const selector = useSelector(mapState);
     const insets = useSafeArea();
@@ -208,10 +208,14 @@ const SoftLand = ({ componentId }) => {
                     decelerationRate="fast"
                     getItemLayout={getItemLayout}
                 />
-                <Text style={styles.subhead}>Completed</Text>
-                {doneItems.map(item => (
-                    <DoneItem {...item} />
-                ))}
+                {showCompleted && (
+                    <>
+                        <Text style={styles.subhead}>Completed</Text>
+                        {doneItems.map(item => (
+                            <DoneItem {...item} />
+                        ))}
+                    </>
+                )}
             </ScrollView>
         </View>
     );

@@ -77,6 +77,7 @@ export const navOptions = (titleText, back = true) => {
             background: { color: Colors.theme.cream },
             title: {
                 text: titleText,
+                color: Colors.black,
             },
         },
     };
