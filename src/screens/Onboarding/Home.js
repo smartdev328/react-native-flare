@@ -120,6 +120,8 @@ const Home = ({ onSignUpPressed, onSignInPressed }) => {
                 repeat
                 source={animatedBackground}
                 resizeMode="cover"
+                selectedAudioTrack={{ type: 'disabled' }}
+                muted
             />
             <TouchableOpacity style={styles.shopLink} onPress={openShop}>
                 <Text style={styles.shopLinkText}>Shop</Text>
