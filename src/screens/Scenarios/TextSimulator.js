@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import * as React from 'react';
 import {
     Animated,
@@ -165,6 +166,7 @@ const TextSimulator = ({ onSuccess }) => {
                         (message, index) =>
                             index <= current && (
                                 <Entry
+                                    key={index}
                                     text={message}
                                     style={{ opacity: animations[index] }}
                                 />
