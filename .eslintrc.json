@@ -1,7 +1,7 @@
 {
     "extends": ["airbnb", "prettier"],
     "parser": "babel-eslint",
-    "plugins": ["react-hooks"],
+    "plugins": ["react-hooks", "babel"],
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/prop-types": "off",
@@ -12,7 +12,9 @@
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "no-else-return": "off",
-        "jsx-a11y/accessible-emoji": "off"
+        "jsx-a11y/accessible-emoji": "off",
+        "no-unused-expressions": "off",
+        "babel/no-unused-expressions": "error"
     },
     "globals": { "fetch": false }
 }
