@@ -105,22 +105,40 @@ export default class BleProvider {
                 if (awaitingShortPress) {
                     dispatch(gotShortPress());
                 }
-                dispatch(call(radioToken, beacon, position, forCurrentUser));
+                dispatch(
+                    call({
+                        token: radioToken,
+                        beacon,
+                        position,
+                        forCurrentUser,
+                    })
+                );
                 break;
 
-            case BeaconTypes.Long.name:
+            case BeaconTypes.Long.name: {
+                let noop;
                 if (hasCompletedOnboarding) {
-                    dispatch(
-                        flare(radioToken, beacon, position, forCurrentUser)
-                    );
+                    noop = undefined;
                 } else if (awaitingLongPress) {
                     dispatch(gotLongPress());
+                    noop = 'awaiting-long-press';
                 } else {
                     console.log(
                         'Suppressing long press beacon during onboarding.'
                     );
+                    noop = 'suppress-onboarding';
                 }
+                dispatch(
+                    flare({
+                        token: radioToken,
+                        beacon,
+                        position,
+                        forCurrentUser,
+                        noop,
+                    })
+                );
                 break;
+            }
 
             case BeaconTypes.Sleep.name:
                 console.log('TODO: handle device going to sleep');

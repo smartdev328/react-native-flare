@@ -6,7 +6,7 @@ import * as types from './actionTypes';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 import { BeaconTypes } from '../bits/BleConstants';
 
-export const call = (token, beacon, position, forCurrentUser) => dispatch =>
+export const call = ({ token, beacon, position, forCurrentUser }) => dispatch =>
     ProtectedAPICall(token, API_URL, '/radio/beacon', {
         method: 'POST',
         data: {
@@ -37,8 +37,15 @@ export const call = (token, beacon, position, forCurrentUser) => dispatch =>
             }
         });
 
-export const flare = (token, beacon, position, forCurrentUser) => dispatch => {
-    if (forCurrentUser) {
+export const flare = ({
+    token,
+    beacon,
+    position,
+    forCurrentUser,
+    noop,
+}) => dispatch => {
+    const real = forCurrentUser && typeof noop !== 'string';
+    if (real) {
         dispatch({
             type: types.BEACON_LONG_PRESS,
         });
@@ -54,10 +61,11 @@ export const flare = (token, beacon, position, forCurrentUser) => dispatch => {
             nonce: beacon.nonce,
             timestamp: moment(beacon.timestamp).toISOString(),
             position,
+            'no-op': noop,
         },
     })
         .then(response => {
-            if (forCurrentUser) {
+            if (real) {
                 dispatch({
                     type: types.ACTIVATE_FLARE_SUCCESS,
                     data: {
@@ -69,7 +77,7 @@ export const flare = (token, beacon, position, forCurrentUser) => dispatch => {
             }
         })
         .catch(status => {
-            if (forCurrentUser) {
+            if (real) {
                 dispatch({
                     type: types.ACTIVATE_FLARE_FAILURE,
                     data: {
