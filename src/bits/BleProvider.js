@@ -85,16 +85,13 @@ export default class BleProvider {
     };
 
     handleBeacon = (beacon, position) => {
-        const userDevices =
-            (this.store && this.store.getState().user.devices) || [];
-        const hasCompletedOnboarding =
-            this.store && this.store.getState().user.hasViewedTutorial;
+        const userDevices = this.store?.getState()?.user?.devices ?? [];
+        const hasCompletedOnboarding = this.store?.getState()?.user
+            ?.hasViewedTutorial;
         const awaitingShortPress =
-            this.store &&
-            this.store.getState().user.scenarios.shortPress === 'wait';
+            this.store?.getState()?.user?.scenarios?.shortPress === 'wait';
         const awaitingLongPress =
-            this.store &&
-            this.store.getState().user.scenarios.longPress === 'wait';
+            this.store?.getState()?.user?.scenarios?.longPress === 'wait';
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser =
             userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
