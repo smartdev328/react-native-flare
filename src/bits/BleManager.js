@@ -10,9 +10,6 @@ import getLatestPosition from '../helpers/location';
 
 export default class BleManager {
     constructor(options) {
-        this.beaconsDidRange = null;
-        this.regionDidEnterEvent = null;
-        this.regionDidExitEvent = null;
         this.listening = false;
         this.beaconCache = null;
         this.onBeacon = options.onBeacon;
@@ -23,22 +20,19 @@ export default class BleManager {
         Regions.forEach(region => Beacons.stopMonitoringForRegion(region));
         Beacons.stopUpdatingLocation();
 
-        Beacons.BeaconsEventEmitter.removeListener('beaconsDidRange', data => {
-            this.processBeaconInRange(data);
-        });
-
-        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.removeListener(
-            'regionDidEnter',
-            region => {
-                Beacons.startRangingBeaconsInRegion(region);
-            }
+        Beacons.BeaconsEventEmitter.removeListener(
+            'beaconsDidRange',
+            this.processBeaconInRange
         );
 
-        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.removeListener(
+        Beacons.BeaconsEventEmitter.removeListener(
+            'regionDidEnter',
+            this.regionDidEnter
+        );
+
+        Beacons.BeaconsEventEmitter.removeListener(
             'regionDidExit',
-            region => {
-                Beacons.stopRangingBeaconsInRegion(region);
-            }
+            this.regionDidExit
         );
 
         this.beaconCache.shutdown();
@@ -51,7 +45,16 @@ export default class BleManager {
         return this.listening;
     }
 
-    processBeaconInRange(data) {
+    regionDidEnter = region => {
+        console.debug('regionDidEnter', region);
+        Beacons.startRangingBeaconsInRegion(region);
+    };
+
+    regionDidExit = region => {
+        Beacons.stopRangingBeaconsInRegion(region);
+    };
+
+    processBeaconInRange = data => {
         if (!this.beaconCache) {
             this.beaconCache = new BeaconCache();
         }
@@ -77,7 +80,7 @@ export default class BleManager {
                     });
             }
         });
-    }
+    };
 
     startListening() {
         if (this.listening) {
@@ -115,25 +118,19 @@ export default class BleManager {
             });
         }
 
-        this.beaconsDidRange = Beacons.BeaconsEventEmitter.addListener(
+        Beacons.BeaconsEventEmitter.addListener(
             'beaconsDidRange',
-            data => {
-                this.processBeaconInRange(data);
-            }
+            this.processBeaconInRange
         );
 
-        this.regionDidEnterEvent = Beacons.BeaconsEventEmitter.addListener(
+        Beacons.BeaconsEventEmitter.addListener(
             'regionDidEnter',
-            region => {
-                Beacons.startRangingBeaconsInRegion(region);
-            }
+            this.regionDidEnter
         );
 
-        this.regionDidExitEvent = Beacons.BeaconsEventEmitter.addListener(
+        Beacons.BeaconsEventEmitter.addListener(
             'regionDidExit',
-            region => {
-                Beacons.stopRangingBeaconsInRegion(region);
-            }
+            this.regionDidExit
         );
     }
 }
