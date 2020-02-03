@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import Beacons from '@x-guard/react-native-beacons-manager';
+import moment from 'moment';
 
 import { BLUETOOTH_BEACON_LOGGING } from '../constants/Config';
 import { Regions } from './BleConstants';
@@ -84,15 +85,28 @@ export default class BleManager {
             return;
         }
 
-        console.debug('Starting BLE listening.');
+        console.debug(
+            `Starting BLE listening. ${moment().format('HH:mm:ss.SSS')}`
+        );
         this.beaconCache = new BeaconCache();
         this.listening = true;
 
         if (Platform.OS === 'ios') {
             // IOS BLE SETUP
             Beacons.shouldDropEmptyRanges(true);
-            Regions.forEach(region => Beacons.startMonitoringForRegion(region));
-            Beacons.startUpdatingLocation();
+            Promise.all(
+                Regions.map(region => Beacons.startMonitoringForRegion(region))
+            )
+                .then(() => Beacons.startUpdatingLocation())
+                .then(
+                    () =>
+                        console.debug(
+                            `BLE listening start done ${moment().format(
+                                'HH:mm:ss.SSS'
+                            )}`
+                        ),
+                    console.error
+                );
         } else {
             // ANDROID BLE SETUP
             Beacons.detectIBeacons();
