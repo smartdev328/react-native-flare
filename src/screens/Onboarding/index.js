@@ -31,6 +31,7 @@ const Onboarding = ({ componentId }) => {
     const [signIn, setSignIn] = React.useState(false);
 
     const onSignUpPressed = React.useCallback(() => {
+        didProceed.current = false;
         dispatch(regStart());
         setSignUp(true);
     }, [dispatch, setSignUp]);

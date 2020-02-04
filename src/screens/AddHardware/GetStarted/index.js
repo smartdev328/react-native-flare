@@ -6,12 +6,17 @@ import { useDispatch } from 'react-redux';
 import Headline from '../../Onboarding/Headline';
 import styles from '../styles';
 import { setPreferredPairingMethod } from '../../../actions/regActions';
+import { startBleListening } from '../../../actions';
 import Cuff from '../../Cuff';
 import BottomSheet from './BottomSheet';
 
 const GetStarted = ({ style, nextPage }) => {
     const [translation] = React.useState(new Animated.Value(1000));
     const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        dispatch(startBleListening());
+    }, [dispatch]);
 
     const preferBluetooth = React.useCallback(() => {
         dispatch(setPreferredPairingMethod('bluetooth'));

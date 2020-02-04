@@ -8,6 +8,8 @@ import BeaconCache from './BeaconCache';
 import BleUtils from './BleUtils';
 import getLatestPosition from '../helpers/location';
 
+const TS_FORMAT = 'HH:mm:ss.SSS';
+
 export default class BleManager {
     constructor(options) {
         this.listening = false;
@@ -46,7 +48,7 @@ export default class BleManager {
     }
 
     regionDidEnter = region => {
-        console.debug('regionDidEnter', region);
+        // console.debug('regionDidEnter', moment().format(TS_FORMAT), region);
         Beacons.startRangingBeaconsInRegion(region);
     };
 
@@ -55,6 +57,7 @@ export default class BleManager {
     };
 
     processBeaconInRange = data => {
+        // console.debug('pBir', moment().format(TS_FORMAT), data);
         if (!this.beaconCache) {
             this.beaconCache = new BeaconCache();
         }
@@ -88,9 +91,7 @@ export default class BleManager {
             return;
         }
 
-        console.debug(
-            `Starting BLE listening. ${moment().format('HH:mm:ss.SSS')}`
-        );
+        console.debug(`Starting BLE listening. ${moment().format(TS_FORMAT)}`);
         this.beaconCache = new BeaconCache();
         this.listening = true;
 
@@ -100,12 +101,12 @@ export default class BleManager {
             Promise.all(
                 Regions.map(region => Beacons.startMonitoringForRegion(region))
             )
-                .then(() => Beacons.startUpdatingLocation())
+                // .then(() => Beacons.startUpdatingLocation())
                 .then(
                     () =>
                         console.debug(
                             `BLE listening start done ${moment().format(
-                                'HH:mm:ss.SSS'
+                                TS_FORMAT
                             )}`
                         ),
                     console.error
