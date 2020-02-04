@@ -25,12 +25,13 @@ const Onboarding = ({ componentId }) => {
         hasDevices: isArrayLike(user.devices) && user.devices.length > 0,
     }));
     const [lastAuthState, setLastAuthState] = React.useState(authState);
-    const [didProceed, setDidProceed] = React.useState(false);
+    const didProceed = React.useRef(false);
     const [resume, setResume] = React.useState(false);
     const [signUp, setSignUp] = React.useState(false);
     const [signIn, setSignIn] = React.useState(false);
 
     const onSignUpPressed = React.useCallback(() => {
+        didProceed.current = false;
         dispatch(regStart());
         setSignUp(true);
     }, [dispatch, setSignUp]);
@@ -47,8 +48,8 @@ const Onboarding = ({ componentId }) => {
     const onSignUpSuccess = React.useCallback(() => {
         dispatch(resetClaim());
 
-        if (!didProceed) {
-            setDidProceed(true);
+        if (!didProceed.current) {
+            didProceed.current = true;
             Navigation.push(componentId, {
                 component: {
                     name: 'com.flarejewelry.onboarding.addhardware',
@@ -60,7 +61,7 @@ const Onboarding = ({ componentId }) => {
 
     const onPressResume = React.useCallback(() => {
         if (hasDevices) {
-            setDidProceed(true);
+            didProceed.current = true;
             Navigation.push(componentId, {
                 component: {
                     name: 'com.flarejewelry.scenarios',
@@ -73,7 +74,11 @@ const Onboarding = ({ componentId }) => {
     }, [componentId, hasDevices, onSignUpSuccess]);
 
     React.useEffect(() => {
-        if (typeof authState === 'undefined' && hasAuthToken && !didProceed) {
+        if (
+            typeof authState === 'undefined' &&
+            hasAuthToken &&
+            !didProceed.current
+        ) {
             onPressResume();
         } else if (authState !== lastAuthState) {
             setLastAuthState(authState);

@@ -85,16 +85,13 @@ export default class BleProvider {
     };
 
     handleBeacon = (beacon, position) => {
-        const userDevices =
-            (this.store && this.store.getState().user.devices) || [];
-        const hasCompletedOnboarding =
-            this.store && this.store.getState().user.hasViewedTutorial;
+        const userDevices = this.store?.getState()?.user?.devices ?? [];
+        const hasCompletedOnboarding = this.store?.getState()?.user
+            ?.hasViewedTutorial;
         const awaitingShortPress =
-            this.store &&
-            this.store.getState().user.scenarios.shortPress === 'wait';
+            this.store?.getState()?.user?.scenarios?.shortPress === 'wait';
         const awaitingLongPress =
-            this.store &&
-            this.store.getState().user.scenarios.longPress === 'wait';
+            this.store?.getState()?.user?.scenarios?.longPress === 'wait';
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser =
             userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
@@ -105,22 +102,40 @@ export default class BleProvider {
                 if (awaitingShortPress) {
                     dispatch(gotShortPress());
                 }
-                dispatch(call(radioToken, beacon, position, forCurrentUser));
+                dispatch(
+                    call({
+                        token: radioToken,
+                        beacon,
+                        position,
+                        forCurrentUser,
+                    })
+                );
                 break;
 
-            case BeaconTypes.Long.name:
+            case BeaconTypes.Long.name: {
+                let noop;
                 if (hasCompletedOnboarding) {
-                    dispatch(
-                        flare(radioToken, beacon, position, forCurrentUser)
-                    );
+                    noop = undefined;
                 } else if (awaitingLongPress) {
                     dispatch(gotLongPress());
+                    noop = 'awaiting-long-press';
                 } else {
                     console.log(
                         'Suppressing long press beacon during onboarding.'
                     );
+                    noop = 'suppress-onboarding';
                 }
+                dispatch(
+                    flare({
+                        token: radioToken,
+                        beacon,
+                        position,
+                        forCurrentUser,
+                        noop,
+                    })
+                );
                 break;
+            }
 
             case BeaconTypes.Sleep.name:
                 console.log('TODO: handle device going to sleep');

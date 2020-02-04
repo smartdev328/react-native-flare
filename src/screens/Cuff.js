@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Animated, Image, StyleSheet, View } from 'react-native';
 import AnimatedLottieView from 'lottie-react-native';
 
 import cuff from '../assets/cuff-v2.png';
@@ -42,7 +42,15 @@ const animations = {
     [PRESS_AND_HOLD]: pressAndHold,
 };
 
-const Cuff = ({ button, animation, style, small = false, pause, ...rest }) => {
+const Cuff = ({
+    button,
+    animation,
+    style,
+    small = false,
+    pause,
+    animatable = false,
+    ...rest
+}) => {
     const animationRef = React.useRef();
     const [timeoutId, setTimeoutId] = React.useState(undefined);
 
@@ -63,8 +71,10 @@ const Cuff = ({ button, animation, style, small = false, pause, ...rest }) => {
         return timeoutId ? () => clearTimeout(timeoutId) : undefined;
     }, [timeoutId]);
 
+    const Wrapper = animatable ? Animated.View : View;
+
     return (
-        <View style={[wh, style]} {...rest}>
+        <Wrapper style={[wh, style]} {...rest}>
             <Image source={cuff} style={wh} />
             {button && <Image source={cuffButton} style={styles.button} />}
             {animationSource && (
@@ -79,7 +89,7 @@ const Cuff = ({ button, animation, style, small = false, pause, ...rest }) => {
                     />
                 </View>
             )}
-        </View>
+        </Wrapper>
     );
 };
 

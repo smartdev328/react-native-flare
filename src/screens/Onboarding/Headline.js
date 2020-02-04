@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Animated, StyleSheet, Text } from 'react-native';
 import Colors from '../../bits/Colors';
 
 const styles = StyleSheet.create({
@@ -14,8 +14,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const Headline = ({ children, style }) => (
-    <Text style={[styles.headline, style]}>{children}</Text>
-);
+const Headline = ({ children, style, animatable = false }) => {
+    const Component = animatable ? Animated.Text : Text;
+    return <Component style={[styles.headline, style]}>{children}</Component>;
+};
 
 export default Headline;

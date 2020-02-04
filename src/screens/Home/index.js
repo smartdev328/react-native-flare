@@ -82,7 +82,7 @@ class Home extends React.Component {
 
         BackgroundTimer.stopBackgroundTimer();
         BackgroundTimer.runBackgroundTimer(
-            () => this.syncAccount(),
+            this.syncAccount,
             this.accountSyncTimeInMs
         );
         AppState.addEventListener('change', this.handleAppStateChange);
@@ -189,21 +189,10 @@ class Home extends React.Component {
         }
     };
 
-    navigationButtonPressed({ buttonId }) {
-        switch (buttonId) {
-            case 'menuButton':
-                this.toggleSideMenu();
-                break;
-            default:
-                console.warn('Unhandled button press in home screen.');
-                break;
-        }
-    }
-
     /**
      * Submit user location and fetch any account updates.
      */
-    syncAccount() {
+    syncAccount = () => {
         const {
             analyticsEnabled,
             dispatch,
@@ -249,6 +238,17 @@ class Home extends React.Component {
             dispatch(
                 processQueuedBeacons(handleBeacon, authToken, problemBeacons)
             );
+        }
+    };
+
+    navigationButtonPressed({ buttonId }) {
+        switch (buttonId) {
+            case 'menuButton':
+                this.toggleSideMenu();
+                break;
+            default:
+                console.warn('Unhandled button press in home screen.');
+                break;
         }
     }
 

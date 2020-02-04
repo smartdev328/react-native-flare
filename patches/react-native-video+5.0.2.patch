@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-video/ios/Video/RCTVideo.m b/node_modules/react-native-video/ios/Video/RCTVideo.m
+index 98cb073..e8b4363 100644
+--- a/node_modules/react-native-video/ios/Video/RCTVideo.m
++++ b/node_modules/react-native-video/ios/Video/RCTVideo.m
+@@ -132,6 +132,8 @@ - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
+                                              selector:@selector(audioRouteChanged:)
+                                                  name:AVAudioSessionRouteChangeNotification
+                                                object:nil];
++      
++      [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+   }
+   
+   return self;

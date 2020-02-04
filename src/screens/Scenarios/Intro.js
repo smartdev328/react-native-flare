@@ -44,6 +44,8 @@ const Intro = ({ onNext }) => {
                 repeat
                 source={animatedBackground}
                 resizeMode="cover"
+                selectedAudioTrack={{ type: 'disabled' }}
+                muted
             />
             <AnimatedLottieView
                 source={gutFeeling}

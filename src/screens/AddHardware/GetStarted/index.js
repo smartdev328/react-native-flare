@@ -6,12 +6,19 @@ import { useDispatch } from 'react-redux';
 import Headline from '../../Onboarding/Headline';
 import styles from '../styles';
 import { setPreferredPairingMethod } from '../../../actions/regActions';
+import { startBleListening } from '../../../actions';
 import Cuff from '../../Cuff';
 import BottomSheet from './BottomSheet';
 
 const GetStarted = ({ style, nextPage }) => {
+    const [titleOpacity] = React.useState(new Animated.Value(0));
+    const [cuffOpacity] = React.useState(new Animated.Value(0));
     const [translation] = React.useState(new Animated.Value(1000));
     const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        dispatch(startBleListening());
+    }, [dispatch]);
 
     const preferBluetooth = React.useCallback(() => {
         dispatch(setPreferredPairingMethod('bluetooth'));
@@ -36,12 +43,26 @@ const GetStarted = ({ style, nextPage }) => {
             },
         }) => {
             translation.setValue(height);
-            Animated.timing(translation, {
-                duration: 600,
-                toValue: 0.0,
-                useNativeDriver: true,
-                easing: Easing.ease,
-            }).start();
+            Animated.sequence([
+                Animated.timing(titleOpacity, {
+                    duration: 400,
+                    toValue: 1,
+                    useNativeDriver: true,
+                    easing: Easing.ease,
+                }),
+                Animated.timing(cuffOpacity, {
+                    duration: 400,
+                    toValue: 1,
+                    useNativeDriver: true,
+                    easing: Easing.ease,
+                }),
+                Animated.timing(translation, {
+                    duration: 600,
+                    toValue: 0.0,
+                    useNativeDriver: true,
+                    easing: Easing.ease,
+                }),
+            ]).start();
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
@@ -50,12 +71,19 @@ const GetStarted = ({ style, nextPage }) => {
         <View
             style={[styles.centerContainer, { paddingHorizontal: 0 }, ...style]}
         >
-            <Headline style={[styles.headline, styles.whiteText]}>
+            <Headline
+                animatable
+                style={[
+                    styles.headline,
+                    styles.whiteText,
+                    { opacity: titleOpacity },
+                ]}
+            >
                 Welcome to the Movement 🎉
             </Headline>
 
             <View style={styles.spacer} />
-            <Cuff small />
+            <Cuff animatable small style={{ opacity: cuffOpacity }} />
             <View style={styles.spacer} />
             <BottomSheet
                 style={{ transform: [{ translateY: translation }] }}

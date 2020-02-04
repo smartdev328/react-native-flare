@@ -1,0 +1,25 @@
+diff --git a/node_modules/@x-guard/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon/RNiBeacon.m b/node_modules/@x-guard/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon/RNiBeacon.m
+index b462b7d..6daefec 100644
+--- a/node_modules/@x-guard/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon/RNiBeacon.m
++++ b/node_modules/@x-guard/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon/RNiBeacon.m
+@@ -348,10 +352,16 @@ -(void)locationManager:(CLLocationManager *)manager
+     return;
+   }
+ 
+-  NSDictionary *event = @{
+-                          @"identifier": region.identifier,
+-                          @"uuid": [region.proximityUUID UUIDString],
+-                          };
++  NSMutableDictionary *event = [NSMutableDictionary dictionaryWithCapacity:5];
++  event[@"identifier"] = region.identifier;
++  event[@"uuid"] = [region.proximityUUID UUIDString];
++    
++  if ([region respondsToSelector:@selector(major)]) {
++    event[@"major"] = region.major;
++  }
++  if ([region respondsToSelector:@selector(minor)]) {
++    event[@"minor"] = region.minor;
++  }
+ 
+   [self sendEventWithName:@"regionDidEnter" body:event];
+ }
