@@ -47,19 +47,19 @@ const ITEM_TEMPLATES = [
             (bluetoothStatus === 'on' || bluetoothStatus === ''),
     },
     {
+        key: 'addcontacts',
+        image: { source: cardAddcontacts, width: 40, height: 95 },
+        title: 'Add Flare to Contacts',
+        body: 'Make sure you add our number to your contacts.',
+        done: ({ addedToContacts }) => addedToContacts,
+    },
+    {
         key: 'share',
         image: { source: cardShare, width: 83, height: 89 },
         title: 'Share Flare 💕',
         body:
             'Invite your friends to join the movement. Send a special promo code.',
         done: () => false,
-    },
-    {
-        key: 'addcontacts',
-        image: { source: cardAddcontacts, width: 40, height: 95 },
-        title: 'Add Flare to Contacts',
-        body: 'Make sure you add our number to your contacts.',
-        done: ({ addedToContacts }) => addedToContacts,
     },
     {
         key: 'onboard',
@@ -91,12 +91,12 @@ export const useCards = ({ componentId, selector, dispatch }) => {
                 component: { name: 'com.flarejewelry.app.PermissionsReminder' },
             });
         }, []),
-        share: React.useCallback(() => {
-            shareFlare(selector.referralKey);
-        }, [selector.referralKey]),
         addcontacts: React.useCallback(() => {
             addToContacts(dispatch);
         }, [dispatch]),
+        share: React.useCallback(() => {
+            shareFlare(selector.referralKey);
+        }, [selector.referralKey]),
     };
 
     return ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

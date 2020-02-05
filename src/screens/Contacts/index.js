@@ -21,6 +21,7 @@ import Strings from '../../locales/en';
 import Type from '../../bits/Type';
 import { saveButton, settingsNavOptions } from '../Settings';
 import NeedContactsPermission from './NeedContactsPermission';
+import SuccessfullySent from './SuccessfullySent';
 
 const MAX_CREW_SIZE = 5;
 
@@ -87,6 +88,7 @@ class Contacts extends React.Component {
             crew: props.crew,
             dirty: false,
             addedMembers: false,
+            showingSuccess: false,
         };
     }
 
@@ -112,7 +114,7 @@ class Contacts extends React.Component {
             loading,
             crewUpdateState,
         } = this.props;
-        const { dirty } = this.state;
+        const { dirty, addedMembers } = this.state;
         if (
             prevTextFriendsState === 'requested' &&
             textFriendsState !== 'requested'
@@ -135,7 +137,7 @@ class Contacts extends React.Component {
             });
         }
         if (loading !== prevLoading) {
-            if (crewUpdateState === 'succeeded') {
+            if (crewUpdateState === 'succeeded' && !addedMembers) {
                 Navigation.pop(componentId);
             }
         }
@@ -284,9 +286,13 @@ class Contacts extends React.Component {
     };
 
     render() {
-        const { contactsState } = this.props;
-        const { crew } = this.state;
+        const { contactsState, crewUpdateState, componentId } = this.props;
+        const { crew, addedMembers } = this.state;
         const hasCrew = crew && crew.members && crew.members.length > 0;
+
+        if (crewUpdateState === 'succeeded' && addedMembers) {
+            return <SuccessfullySent componentId={componentId} />;
+        }
 
         return (
             <View style={styles.container}>
