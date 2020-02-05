@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 });
 
 const SuccessAnimation = ({ style, animation, onComplete, size = 400 }) => (
-    <View style={[...style, styles.container]}>
+    <View style={[style, styles.container]}>
         <Headline style={styles.headline}>Success!</Headline>
         <AnimatedLottieView
             style={{ width: size, height: size }}
