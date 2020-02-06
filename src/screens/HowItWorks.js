@@ -12,9 +12,10 @@ import { Navigation } from 'react-native-navigation';
 import Colors from '../bits/Colors';
 import CloseButton from './CloseButton';
 import Headline from './Onboarding/Headline';
+import GoldenRules from './Scenarios/GoldenRules';
+import RoundedButton from '../bits/RoundedButton';
 
 import incomingCall from '../assets/incoming-flare-call.png';
-import RoundedButton from '../bits/RoundedButton';
 
 const styles = StyleSheet.create({
     container: {
@@ -86,15 +87,23 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     button: {
-        marginVertical: 16,
+        marginTop: 16,
+        marginBottom: 24,
     },
 });
 
 const HowItWorks = ({ componentId }) => {
+    const [golden, setGolden] = React.useState(false);
     const close = React.useCallback(() => {
         Navigation.dismissModal(componentId);
     }, [componentId]);
-    const readMore = React.useCallback(() => {});
+    const toggleGolden = React.useCallback(() => {
+        setGolden(g => !g);
+    }, []);
+
+    if (golden) {
+        return <GoldenRules finishUp={toggleGolden} />;
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -128,7 +137,7 @@ const HowItWorks = ({ componentId }) => {
             <Text style={[styles.r, styles.emojis]}>👌✨💛</Text>
             <View style={styles.grow} />
             <RoundedButton
-                onPress={readMore}
+                onPress={toggleGolden}
                 wrapperStyle={styles.button}
                 text="Read More"
                 width={240}

@@ -9,7 +9,7 @@ import styles from './styles';
 import aura1521 from '../../assets/aura-1521.jpg';
 import RoundedButton from '../../bits/RoundedButton';
 
-const GoldenRules = ({ finishUp }) => {
+const GoldenRules = ({ finishUp, buttonText = 'Got it. Let’s go!' }) => {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" />
@@ -47,7 +47,7 @@ const GoldenRules = ({ finishUp }) => {
             </ScrollView>
             <RoundedButton
                 wrapperStyle={{ marginBottom: 24 }}
-                text="Got it. Let’s go!"
+                text={buttonText}
                 onPress={finishUp}
             />
         </SafeAreaView>
