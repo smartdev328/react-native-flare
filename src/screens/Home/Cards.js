@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Navigation } from 'react-native-navigation';
 
 import { openContactsScreen } from '../Contacts';
-import shareFlare from '../../bits/shareFlare';
+import { shareFlare } from '../../actions';
 import addToContacts from '../AddToContacts';
 
 import cardCrew from '../../assets/card-crew.png';
@@ -95,8 +95,8 @@ export const useCards = ({ componentId, selector, dispatch }) => {
             addToContacts(dispatch);
         }, [dispatch]),
         share: React.useCallback(() => {
-            shareFlare(selector.referralKey);
-        }, [selector.referralKey]),
+            dispatch(shareFlare(selector.referralKey));
+        }, [dispatch, selector.referralKey]),
     };
 
     return ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({
