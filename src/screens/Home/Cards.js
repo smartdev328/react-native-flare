@@ -14,6 +14,15 @@ import cardAddcontacts from '../../assets/card-addcontacts.png';
 
 const ITEM_TEMPLATES = [
     {
+        key: 'permissions',
+        image: { source: cardPermissions, width: 119, height: 77 },
+        title: 'Allow Location and Bluetooth',
+        body: '“Always allow” your location and turn Bluetooth on.',
+        done: ({ locationPermission, bluetoothStatus }) =>
+            locationPermission &&
+            (bluetoothStatus === 'on' || bluetoothStatus === ''),
+    },
+    {
         key: 'crew',
         image: { source: cardCrew, width: 106, height: 79 },
         title: 'Choose your backup',
@@ -36,15 +45,6 @@ const ITEM_TEMPLATES = [
         body:
             'What script do you want to hear when we call you? Choose the best for you.',
         done: ({ sawCallScripts }) => sawCallScripts,
-    },
-    {
-        key: 'permissions',
-        image: { source: cardPermissions, width: 119, height: 77 },
-        title: 'Allow Location and Bluetooth',
-        body: '“Always allow” your location and turn Bluetooth on.',
-        done: ({ locationPermission, bluetoothStatus }) =>
-            locationPermission &&
-            (bluetoothStatus === 'on' || bluetoothStatus === ''),
     },
     {
         key: 'addcontacts',
@@ -71,6 +71,11 @@ const ITEM_TEMPLATES = [
 
 export const useCards = ({ componentId, selector, dispatch }) => {
     const callbacks = {
+        permissions: React.useCallback(() => {
+            Navigation.showModal({
+                component: { name: 'com.flarejewelry.app.PermissionsReminder' },
+            });
+        }, []),
         crew: React.useCallback(() => {
             openContactsScreen(componentId);
         }, [componentId]),
@@ -86,11 +91,6 @@ export const useCards = ({ componentId, selector, dispatch }) => {
                 },
             });
         }, [componentId]),
-        permissions: React.useCallback(() => {
-            Navigation.showModal({
-                component: { name: 'com.flarejewelry.app.PermissionsReminder' },
-            });
-        }, []),
         addcontacts: React.useCallback(() => {
             addToContacts(dispatch);
         }, [dispatch]),
