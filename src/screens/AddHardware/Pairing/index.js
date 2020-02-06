@@ -8,6 +8,7 @@ import { claimDevice } from '../../../actions';
 import { checkLocationsPermission } from '../../../actions/userActions';
 import { startBleListening } from '../../../actions/hardwareActions';
 import { resetClaim } from '../../../actions/deviceActions';
+import { setPreferredPairingMethod } from '../../../actions/regActions';
 
 const Pairing = ({ nextPage, ...props }) => {
     const dispatch = useDispatch();
@@ -48,6 +49,10 @@ const Pairing = ({ nextPage, ...props }) => {
         dispatch(resetClaim());
     }, [dispatch]);
 
+    const switchToManual = React.useCallback(() => {
+        dispatch(setPreferredPairingMethod('manual'));
+    }, [dispatch]);
+
     React.useEffect(() => {
         dispatch(startBleListening());
         dispatch(checkLocationsPermission());
@@ -66,7 +71,7 @@ const Pairing = ({ nextPage, ...props }) => {
     } else if (device) {
         return <Confirm {...pairingProps} device={device} />;
     } else {
-        return <Bluetooth {...props} />;
+        return <Bluetooth {...props} switchToManual={switchToManual} />;
     }
 };
 

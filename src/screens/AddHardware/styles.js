@@ -90,6 +90,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 24,
     },
+    warning: {
+        alignSelf: 'stretch',
+        marginTop: 'auto',
+        padding: 24,
+        backgroundColor: '#1e1d2a',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+    },
+    warningText: {
+        color: Colors.theme.cream,
+        fontSize: 14,
+    },
 });
 
 export default styles;
