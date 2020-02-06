@@ -19,6 +19,7 @@ import {
 import AddHardware, { HowToConnect, AboutPermissions } from './AddHardware';
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import Scenarios from './Scenarios';
+import HowItWorks from './HowItWorks';
 
 export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
@@ -124,6 +125,11 @@ export default (store, Provider) => {
         () => Scenarios,
         Provider,
         store
+    );
+
+    Navigation.registerComponent(
+        'com.flarejewelry.howitworks',
+        () => HowItWorks
     );
 
     if (MANUFACTURING_MODE_ENABLED) {

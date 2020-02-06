@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-    Image,
-    Linking,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
+import { Navigation } from 'react-native-navigation';
 
 import * as navActions from '../actions/navActions';
 import { LEFT_NAVIGATION_WIDTH } from '../constants/Config';
@@ -99,7 +93,11 @@ const LeftDrawer = ({ changeAppRoot, devices, referralKey }) => {
     }, [devices]);
 
     const howFlareWorks = React.useCallback(() => {
-        Linking.openURL('https://getflare.com/pages/how-it-works');
+        Navigation.showModal({
+            component: {
+                name: 'com.flarejewelry.howitworks',
+            },
+        });
     }, []);
 
     return (
