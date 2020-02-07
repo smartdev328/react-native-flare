@@ -27,13 +27,13 @@ const ITEM_TEMPLATES = [
         image: { source: cardCrew, width: 106, height: 79 },
         title: 'Choose your backup',
         body:
-            'Which friends do you want your Flare bracelet to text? This is your crew.',
+            'Which friends do you want your Flare bracelet to text? This is your Crew.',
         done: ({ haveCrew }) => haveCrew,
     },
     {
         key: 'notifs',
         image: { source: cardNotifs, width: 84, height: 88 },
-        title: 'Customize Notifications',
+        title: 'Customize notifications',
         body:
             'How do you want to be notified that your text has been sent? Choose your level of discretion.',
         done: ({ sawNotifSettings }) => sawNotifSettings,

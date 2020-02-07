@@ -62,8 +62,8 @@ const Home = ({ componentId }) => {
                 </TouchableOpacity>
             </View>
             <Text style={styles.explain}>
-                Choose if and how you are notified that a flare was sent to your
-                crew here.
+                Choose if and how you are notified that Flare sent a message out
+                to your Crew.
             </Text>
         </SafeAreaView>
     );
