@@ -61,7 +61,7 @@ const Strings = {
         title: 'Welcome',
     },
     jewelry: {
-        addNew: 'Add New',
+        addNew: 'Add new jewelry',
         addNewAuto: {
             prompt:
                 'Please press the button on your new jewelry 3 times in a row.',

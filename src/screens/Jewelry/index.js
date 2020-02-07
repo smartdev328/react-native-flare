@@ -1,27 +1,28 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import * as deviceActions from '../../actions/deviceActions';
 import * as hardwareActions from '../../actions/hardwareActions';
 import { USERS_CAN_ADD_JEWELRY } from '../../constants/Config';
-import Button from '../../bits/Button';
 import FlareDeviceID from '../../bits/FlareDeviceID';
 import JewelryList from './JewelryList';
-import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Colors from '../../bits/Colors';
 import { settingsNavOptions } from '../Settings';
+import RoundedButton from '../../bits/RoundedButton';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingVertical: Spacing.medium,
         backgroundColor: Colors.theme.cream,
+        flexDirection: 'column',
+        alignItems: 'stretch',
     },
-    buttonArea: {
-        paddingTop: Spacing.small,
+    button: {
+        alignSelf: 'center',
+        marginVertical: 16,
     },
 });
 
@@ -51,9 +52,7 @@ class Jewelry extends React.Component {
         disclaimDevice(authToken, deviceID);
     };
 
-    static options = settingsNavOptions('Jewelry', true);
-
-    confirmRemoveJewelry(deviceID) {
+    confirmRemoveJewelry = deviceID => {
         const jewelryLabel = FlareDeviceID.getJewelryLabelFromDeviceID(
             deviceID
         );
@@ -77,7 +76,9 @@ class Jewelry extends React.Component {
                 ],
             },
         });
-    }
+    };
+
+    static options = settingsNavOptions('Jewelry', true);
 
     navigationButtonPressed({ buttonId }) {
         const { componentId } = this.props;
@@ -94,22 +95,20 @@ class Jewelry extends React.Component {
     render() {
         const { devices } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <JewelryList
                     jewelry={devices}
-                    onRemove={deviceID => this.confirmRemoveJewelry(deviceID)}
+                    onRemove={this.confirmRemoveJewelry}
                 />
-                <View style={styles.buttonArea}>
-                    {USERS_CAN_ADD_JEWELRY && (
-                        <Button
-                            dark
-                            primary
-                            onPress={this.addNewJewelry}
-                            title={Strings.jewelry.addNew}
-                        />
-                    )}
-                </View>
-            </View>
+                {USERS_CAN_ADD_JEWELRY && (
+                    <RoundedButton
+                        width={240}
+                        wrapperStyle={styles.button}
+                        onPress={this.addNewJewelry}
+                        text={Strings.jewelry.addNew}
+                    />
+                )}
+            </SafeAreaView>
         );
     }
 }
