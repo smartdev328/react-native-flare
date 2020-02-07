@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-brace-presence,react/jsx-one-expression-per-line */
 import * as React from 'react';
 import { Animated, Easing, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
