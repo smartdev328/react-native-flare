@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import { openSettings } from '../../bits/settingsUrl';
+
+import heartHands from '../../assets/heart-hands.png';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,6 +18,11 @@ const styles = StyleSheet.create({
         color: Colors.black,
         fontSize: 20,
         textAlign: 'center',
+        marginBottom: 24,
+    },
+    image: {
+        width: 318,
+        height: 236,
         marginBottom: 'auto',
     },
 });
@@ -28,6 +35,7 @@ const NeedContactsPermission = () => (
             {'\n\n'}
             We’ll never reach out to your contacts without your permission.
         </Text>
+        <Image source={heartHands} style={styles.image} />
         <RoundedButton
             onPress={openSettings}
             text="Open Settings"

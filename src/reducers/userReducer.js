@@ -468,6 +468,11 @@ export function user(state = initialState.user, action = {}) {
         case types.USER_SAW_NOTIF_SETTINGS:
             return state.merge({ sawNotifSettings: true });
 
+        // for now, all that matters is your intent to share
+        case types.USER_WILL_SHARE:
+        case types.USER_DID_SHARE:
+            return state.merge({ didShare: true });
+
         case types.USER_REG_START:
             return state.set('reg', initialState.user.reg);
         case types.USER_REG_SET_NAME:

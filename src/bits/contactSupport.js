@@ -3,7 +3,7 @@ import { stringify } from 'qs';
 
 import FlareDeviceID from './FlareDeviceID';
 
-const FLARE_EMAIL = 'hello@getflare.com';
+const FLARE_EMAIL = 'help@getflare.com';
 
 const deviceIds = devices => {
     if (Array.isArray(devices) && devices.length > 0) {

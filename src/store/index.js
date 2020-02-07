@@ -37,6 +37,7 @@ const transformerConfig = {
             'settings',
             'hasActiveFlare',
             'hasViewedTutorial',
+            'didShare',
             'role',
             'callScript',
             'callScripts',

@@ -13,12 +13,10 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { navOptions, styles } from './styles';
-import * as authActions from '../../actions/authActions';
-import * as userActions from '../../actions/userActions';
+import * as actions from '../../actions';
 import Colors from '../../bits/Colors';
 import contactSupport from '../../bits/contactSupport';
 import { useSlideMenu } from '../../bits/useNavigationCallback';
-import shareFlare from '../../bits/shareFlare';
 
 import chevron from '../../assets/chevron.png';
 import shareIcon from '../../assets/menu-item-share.png';
@@ -31,6 +29,7 @@ const Account = ({
     devices,
     referralKey,
     setPrivacyConfig,
+    shareFlare,
     signOut,
 }) => {
     useSlideMenu(componentId);
@@ -59,7 +58,7 @@ const Account = ({
     }, []);
     const share = React.useCallback(() => {
         shareFlare(referralKey);
-    }, [referralKey]);
+    }, [referralKey, shareFlare]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -136,8 +135,9 @@ const mapStateToProps = ({
 }) => ({ authToken, analyticsEnabled, devices, referralKey });
 
 const mapDispatchToProps = {
-    signOut: authActions.signOut,
-    setPrivacyConfig: userActions.setPrivacyConfig,
+    signOut: actions.signOut,
+    setPrivacyConfig: actions.setPrivacyConfig,
+    shareFlare: actions.shareFlare,
 };
 
 export default connect(

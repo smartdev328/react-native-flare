@@ -1,22 +1,15 @@
 import React from 'react';
-import {
-    Image,
-    Linking,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
+import { Navigation } from 'react-native-navigation';
 
-import * as navActions from '../actions/navActions';
+import * as actions from '../actions';
 import { LEFT_NAVIGATION_WIDTH } from '../constants/Config';
 import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
 import Strings from '../locales/en';
 import contactSupport from '../bits/contactSupport';
-import shareFlare from '../bits/shareFlare';
 
 import iconCrew from '../assets/menu-item-crew.png';
 import iconHome from '../assets/menu-item-home.png';
@@ -71,7 +64,7 @@ const MenuItem = ({ onPress, label, icon, style }) => (
     </TouchableOpacity>
 );
 
-const LeftDrawer = ({ changeAppRoot, devices, referralKey }) => {
+const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
     const insets = useSafeArea();
 
     const handleHome = React.useCallback(() => {
@@ -92,14 +85,18 @@ const LeftDrawer = ({ changeAppRoot, devices, referralKey }) => {
 
     const handleShare = React.useCallback(() => {
         shareFlare(referralKey);
-    }, [referralKey]);
+    }, [referralKey, shareFlare]);
 
     const handleSupport = React.useCallback(() => {
         contactSupport(devices);
     }, [devices]);
 
     const howFlareWorks = React.useCallback(() => {
-        Linking.openURL('https://getflare.com/pages/how-it-works');
+        Navigation.showModal({
+            component: {
+                name: 'com.flarejewelry.howitworks',
+            },
+        });
     }, []);
 
     return (
@@ -168,7 +165,8 @@ const mapStateToProps = ({ user: { devices, referralKey } }) => ({
 });
 
 const mapDispatchToProps = {
-    changeAppRoot: navActions.changeAppRoot,
+    changeAppRoot: actions.changeAppRoot,
+    shareFlare: actions.shareFlare,
 };
 
 const ConnectedLeftDrawer = connect(

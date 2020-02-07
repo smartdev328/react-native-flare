@@ -1,5 +1,6 @@
+/* eslint-disable react/jsx-curly-brace-presence,react/jsx-one-expression-per-line */
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Animated, Easing, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from '../styles';
@@ -13,8 +14,9 @@ import { setFoundDevice } from '../../../actions/regActions';
 
 import Cuff, { TOUCH_AND_RELEASE } from '../../Cuff';
 
-const Bluetooth = ({ style }) => {
+const Bluetooth = ({ style, switchToManual }) => {
     const dispatch = useDispatch();
+    const [warningOffset] = React.useState(() => new Animated.Value(1000));
     const latestPress = useSelector(state => {
         const {
             beacons: { recentShortPressCounts },
@@ -38,8 +40,29 @@ const Bluetooth = ({ style }) => {
         }
     }, [latestPress, dispatch]);
 
+    const onWarningLayout = React.useCallback(
+        ({
+            nativeEvent: {
+                layout: { height },
+            },
+        }) => {
+            warningOffset.setValue(height);
+            Animated.timing(warningOffset, {
+                toValue: 0,
+                delay: 5000,
+                useNativeDriver: true,
+                duration: 450,
+                easing: Easing.ease,
+            }).start();
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        []
+    );
+
     return (
-        <View style={[styles.centerContainer, ...style]}>
+        <View
+            style={[styles.centerContainer, { paddingHorizontal: 0 }, ...style]}
+        >
             <Headline style={[styles.headline, styles.whiteText]}>
                 Press your Flare repeatedly
             </Headline>
@@ -48,15 +71,37 @@ const Bluetooth = ({ style }) => {
                 style={[
                     styles.subhead,
                     styles.whiteText,
-                    { textAlign: 'center', marginTop: 12 },
+                    {
+                        textAlign: 'center',
+                        marginTop: 12,
+                        marginBottom: 32,
+                        marginHorizontal: 32,
+                    },
                 ]}
             >
                 Press the button on your jewelry repeatedly so that your phone
                 and jewelry can connect.
             </Text>
-            <View style={styles.spacer} />
             <Cuff button animation={TOUCH_AND_RELEASE} />
-            <View style={{ flexGrow: 2 }} />
+            <Animated.View
+                style={[
+                    styles.warning,
+                    { transform: [{ translateY: warningOffset }] },
+                ]}
+                onLayout={onWarningLayout}
+            >
+                <Text style={styles.warningText}>
+                    Sometimes it takes a few seconds to connect for the first
+                    time. Keep trying, or{' '}
+                    <Text
+                        style={{ textDecorationLine: 'underline' }}
+                        onPress={switchToManual}
+                    >
+                        connect manually
+                    </Text>
+                    .
+                </Text>
+            </Animated.View>
         </View>
     );
 };

@@ -5,6 +5,9 @@ import Strings from '../../locales/en';
 import Spacing from '../../bits/Spacing';
 
 const styles = StyleSheet.create({
+    list: {
+        flex: 1,
+    },
     emptyWarningText: {
         marginTop: Spacing.huge,
         textAlign: 'center',
@@ -18,6 +21,7 @@ const EmptyJewelry = () => (
 
 const JewelryList = ({ jewelry, onRemove }) => (
     <FlatList
+        style={styles.list}
         data={jewelry || []}
         ListEmptyComponent={EmptyJewelry}
         renderItem={({ item }) => (

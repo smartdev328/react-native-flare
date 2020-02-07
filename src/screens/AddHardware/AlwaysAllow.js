@@ -143,7 +143,7 @@ const AlwaysAllow = ({
                         icon={bluetoothIcon}
                         text={
                             bluetoothStatus === 'off'
-                                ? 'Ensure Bluetooth is turned on'
+                                ? 'Ensure Bluetooth is “on”'
                                 : 'Turn “Bluetooth” on'
                         }
                     />

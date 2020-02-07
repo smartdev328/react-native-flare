@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Navigation } from 'react-native-navigation';
 
 import { openContactsScreen } from '../Contacts';
-import shareFlare from '../../bits/shareFlare';
+import { shareFlare } from '../../actions';
 import addToContacts from '../AddToContacts';
 
 import cardCrew from '../../assets/card-crew.png';
@@ -14,17 +14,26 @@ import cardAddcontacts from '../../assets/card-addcontacts.png';
 
 const ITEM_TEMPLATES = [
     {
+        key: 'permissions',
+        image: { source: cardPermissions, width: 119, height: 77 },
+        title: 'Allow Location and Bluetooth',
+        body: '“Always allow” your location and turn Bluetooth on.',
+        done: ({ locationPermission, bluetoothStatus }) =>
+            locationPermission &&
+            (bluetoothStatus === 'on' || bluetoothStatus === ''),
+    },
+    {
         key: 'crew',
         image: { source: cardCrew, width: 106, height: 79 },
         title: 'Choose your backup',
         body:
-            'Which friends do you want your Flare bracelet to text? This is your crew.',
+            'Which friends do you want your Flare bracelet to text? This is your Crew.',
         done: ({ haveCrew }) => haveCrew,
     },
     {
         key: 'notifs',
         image: { source: cardNotifs, width: 84, height: 88 },
-        title: 'Customize Notifications',
+        title: 'Customize notifications',
         body:
             'How do you want to be notified that your text has been sent? Choose your level of discretion.',
         done: ({ sawNotifSettings }) => sawNotifSettings,
@@ -36,15 +45,6 @@ const ITEM_TEMPLATES = [
         body:
             'What script do you want to hear when we call you? Choose the best for you.',
         done: ({ sawCallScripts }) => sawCallScripts,
-    },
-    {
-        key: 'permissions',
-        image: { source: cardPermissions, width: 119, height: 77 },
-        title: 'Allow Location and Bluetooth',
-        body: '“Always allow” your location and turn Bluetooth on.',
-        done: ({ locationPermission, bluetoothStatus }) =>
-            locationPermission &&
-            (bluetoothStatus === 'on' || bluetoothStatus === ''),
     },
     {
         key: 'addcontacts',
@@ -71,6 +71,11 @@ const ITEM_TEMPLATES = [
 
 export const useCards = ({ componentId, selector, dispatch }) => {
     const callbacks = {
+        permissions: React.useCallback(() => {
+            Navigation.showModal({
+                component: { name: 'com.flarejewelry.app.PermissionsReminder' },
+            });
+        }, []),
         crew: React.useCallback(() => {
             openContactsScreen(componentId);
         }, [componentId]),
@@ -86,17 +91,12 @@ export const useCards = ({ componentId, selector, dispatch }) => {
                 },
             });
         }, [componentId]),
-        permissions: React.useCallback(() => {
-            Navigation.showModal({
-                component: { name: 'com.flarejewelry.app.PermissionsReminder' },
-            });
-        }, []),
         addcontacts: React.useCallback(() => {
             addToContacts(dispatch);
         }, [dispatch]),
         share: React.useCallback(() => {
-            shareFlare(selector.referralKey);
-        }, [selector.referralKey]),
+            dispatch(shareFlare(selector.referralKey));
+        }, [dispatch, selector.referralKey]),
     };
 
     return ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

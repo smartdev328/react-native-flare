@@ -171,8 +171,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				6522AF2523A83044001B5846 /* GFSettingsUrl.h */,
 				6522AF2623A8308E001B5846 /* GFSettingsUrl.m */,
-				651C83D723E0BDC100619CA8 /* GFPermissionWatcher.m */,
 				651C83D923E0BE7A00619CA8 /* GFPermissionWatcher.h */,
+				651C83D723E0BDC100619CA8 /* GFPermissionWatcher.m */,
 				6522AF2823B175C9001B5846 /* GFCallManager.h */,
 				6522AF2923B175F9001B5846 /* GFCallManager.m */,
 			);
