@@ -131,9 +131,11 @@ class AddHardware extends React.PureComponent {
                 {dark && <Aura source={aura1519} />}
                 <WhiteBar
                     black={!dark}
+                    offWhite={dark}
                     showLogo={false}
                     goBack={this.prevPage}
                     showBack={(page === 2 && additionalHardware) || page === 3}
+                    showHelp={page === 3}
                 />
                 <View style={styles.pager}>
                     {this.currentScreen({

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Colors from '../../bits/Colors';
+import contactSupport from '../../bits/contactSupport';
 
 import backwardArrow from '../../assets/backward-arrow.png';
 import smallestAuraLogo from '../../assets/smallest-aura-logo.png';
@@ -13,11 +14,13 @@ const styles = StyleSheet.create({
         height: 30,
         marginTop: 16,
         marginBottom: 26,
-        paddingRight: 34,
         marginLeft: 32,
         marginRight: 32,
         alignItems: 'stretch',
         alignSelf: 'stretch',
+    },
+    padding: {
+        paddingRight: 34,
     },
     backArrowWrapper: {
         width: 34,
@@ -33,21 +36,40 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: 'center',
     },
+    helpWrapper: {
+        marginLeft: 'auto',
+        marginRight: -16,
+        paddingHorizontal: 16,
+        alignSelf: 'stretch',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    help: {
+        textTransform: 'uppercase',
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
     tintBlack: {
         tintColor: Colors.black,
     },
     tintOffWhite: {
         tintColor: Colors.theme.cream,
     },
+    colorBlack: {
+        color: Colors.black,
+    },
+    colorOffWhite: {
+        color: Colors.theme.cream,
+    },
 });
 
-const computeTintStyle = (black, offWhite) => {
+const computeColorStyles = (black, offWhite) => {
     if (black) {
-        return styles.tintBlack;
+        return [styles.tintBlack, styles.colorBlack];
     } else if (offWhite) {
-        return styles.tintOffWhite;
+        return [styles.tintOffWhite, styles.colorOffWhite];
     } else {
-        return undefined;
+        return [undefined, undefined];
     }
 };
 
@@ -58,10 +80,12 @@ const WhiteBar = ({
     black = false,
     aura = false,
     offWhite = false,
+    showHelp = false,
 }) => {
-    const tintStyle = computeTintStyle(black, offWhite);
+    const [tintStyle, colorStyle] = computeColorStyles(black, offWhite);
+
     return (
-        <View style={styles.bar}>
+        <View style={[styles.bar, showHelp ? undefined : styles.padding]}>
             {showBack && (
                 <TouchableOpacity
                     style={styles.backArrowWrapper}
@@ -78,6 +102,14 @@ const WhiteBar = ({
                     source={aura ? smallestAuraLogo : smallestWhiteLogo}
                     style={[styles.logo, tintStyle]}
                 />
+            )}
+            {showHelp && (
+                <TouchableOpacity
+                    style={styles.helpWrapper}
+                    onPress={contactSupport}
+                >
+                    <Text style={[styles.help, colorStyle]}>Help</Text>
+                </TouchableOpacity>
             )}
         </View>
     );
