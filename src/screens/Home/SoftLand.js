@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import isPlainObject from 'is-plain-object';
+import isPlainObject from 'lodash/isPlainObject';
 
 import Aura from '../../bits/Aura';
 import Colors from '../../bits/Colors';
