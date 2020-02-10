@@ -59,13 +59,8 @@ const ITEM_TEMPLATES = [
         title: 'Share Flare 💕',
         body:
             'Invite your friends to join the movement. Send a special promo code.',
-        done: () => false,
-    },
-    {
-        key: 'onboard',
-        title: 'Onboard with Flare',
-        body: 'Test your cuff to learn how it works and when to use it.',
-        done: () => true,
+        done: ({ didShare }) => didShare,
+        alwaysShow: true,
     },
 ];
 
