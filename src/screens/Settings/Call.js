@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
-import isPlainObject from 'is-plain-object';
+import isPlainObject from 'lodash/isPlainObject';
 import { Navigation } from 'react-native-navigation';
 
 import * as userActions from '../../actions/userActions';

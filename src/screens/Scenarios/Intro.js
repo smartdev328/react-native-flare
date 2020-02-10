@@ -10,6 +10,7 @@ import useDimensions from '../../bits/useDimensions';
 
 import animatedBackground from '../../assets/animated-aura.mp4';
 import gutFeeling from '../../assets/lotties/gut-feeling';
+import Headline from '../Onboarding/Headline';
 
 const Intro = ({ onNext }) => {
     const insets = useSafeArea();
@@ -18,7 +19,7 @@ const Intro = ({ onNext }) => {
     const buttonWrapperStyle = React.useMemo(
         () => ({
             marginTop: 'auto',
-            marginBottom: insets.bottom + 24,
+            marginBottom: insets.bottom + 32,
             alignSelf: 'center',
         }),
         [insets.bottom]
@@ -34,6 +35,11 @@ const Intro = ({ onNext }) => {
         }),
         [dimensions.height, dimensions.width]
     );
+
+    const headline =
+        dimensions.height >= 812
+            ? 'Flare was created for that gut feeling'
+            : 'For that gut feeling';
 
     return (
         <View style={[styles.container, { paddingTop: insets.top + 24 }]}>
@@ -56,9 +62,12 @@ const Intro = ({ onNext }) => {
             />
 
             {/* flexbox items */}
-            <Text style={styles.deviceActionText}>
+            <Headline style={styles.headline}>{headline}</Headline>
+            <View style={styles.line} />
+            <Text style={[styles.deviceActionText, { marginHorizontal: 24 }]}>
                 Flare gives you two low-key options to get out of an iffy
-                situation the moment you’re feeling unsure.
+                situation the moment you’re feeling unsure. No need to hang
+                around.
             </Text>
             <RoundedButton
                 useGradient={false}

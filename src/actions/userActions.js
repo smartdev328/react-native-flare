@@ -35,10 +35,11 @@ export const setCrewMembers = (token, crewId, members) => async dispatch => {
             type: types.CREW_SET_SUCCESS,
             crew: response.data.data.crew,
         });
-    } catch (status) {
+    } catch (error) {
+        console.warn(error);
         dispatch({
             type: types.CREW_SET_FAILURE,
-            status,
+            error,
         });
     }
 };
@@ -264,6 +265,10 @@ export function setCancelPIN(token, pin) {
             });
     };
 }
+
+export const resetOnboardingComplete = () => ({
+    type: types.USER_SET_ONBOARDING_COMPLETE_RESET,
+});
 
 export const setOnboardingComplete = token => async dispatch => {
     dispatch({

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import isPlainObject from 'is-plain-object';
+import isPlainObject from 'lodash/isPlainObject';
 
 import DeviceAction from './DeviceAction';
 import { awaitShortPress, scenarioDidCall } from '../../actions/regActions';

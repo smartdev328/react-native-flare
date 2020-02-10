@@ -22,7 +22,6 @@ const Scenarios = ({
     didText,
     gotPress,
     token,
-    busy,
     done,
     awaitShortPress,
     awaitLongPress,
@@ -126,7 +125,6 @@ const Scenarios = ({
                             <SecondScenario
                                 postDemo
                                 finishUp={goldenRules}
-                                busy={busy}
                                 addToContacts={addToContacts}
                             />
                         );
@@ -157,13 +155,11 @@ const mapStateToProps = ({
     user: {
         scenarios = {},
         authToken,
-        settingOnboardingComplete,
         hasViewedTutorial,
         permissions: { location },
     },
 }) => ({
     token: authToken,
-    busy: settingOnboardingComplete,
     done: hasViewedTutorial,
     screen: scenarios.screen || (location ? 'intro' : 'permission'),
     didCall: typeof scenarios.didCall === 'boolean' ? scenarios.didCall : false,

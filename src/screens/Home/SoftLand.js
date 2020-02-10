@@ -9,13 +9,12 @@ import {
 } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import isPlainObject from 'is-plain-object';
+import isPlainObject from 'lodash/isPlainObject';
 
 import Aura from '../../bits/Aura';
 import Colors from '../../bits/Colors';
 import Constellation from './Constellation';
 import TaskCard from './TaskCard';
-import DoneItem from './DoneItem';
 import useDimensions from '../../bits/useDimensions';
 import { getCallScripts } from '../../actions/userActions';
 import count from '../../bits/count';
@@ -107,6 +106,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Nocturno Display Std',
     },
+    scroll: {
+        flex: 1,
+        alignSelf: 'stretch',
+    },
 });
 
 const mapState = ({
@@ -119,6 +122,7 @@ const mapState = ({
         sawNotifSettings,
         referralKey,
         addedToContacts,
+        didShare,
     },
 }) => ({
     authToken,
@@ -137,9 +141,10 @@ const mapState = ({
     sawNotifSettings,
     referralKey,
     addedToContacts,
+    didShare,
 });
 
-const SoftLand = ({ componentId, showCompleted = false }) => {
+const SoftLand = ({ componentId }) => {
     const dispatch = useDispatch();
     const selector = useSelector(mapState);
     const insets = useSafeArea();
@@ -152,8 +157,9 @@ const SoftLand = ({ componentId, showCompleted = false }) => {
         dispatch,
     });
     const doneCount = count(items, ({ done }) => done);
-    const doneItems = items.filter(({ done }) => done);
-    const undoneItems = items.filter(({ done }) => !done);
+    const undoneItems = items.filter(
+        ({ done, alwaysShow = false }) => !done || alwaysShow
+    );
 
     const { width: screenWidth } = useDimensions();
     const cardWidth = screenWidth - 96;
@@ -186,7 +192,7 @@ const SoftLand = ({ componentId, showCompleted = false }) => {
             <StatusBar barStyle="light-content" />
             <Aura source={aura1528} />
             <ScrollView
-                style={{ flex: 1, alignSelf: 'stretch' }}
+                style={styles.scroll}
                 contentContainerStyle={{
                     alignItems: 'center',
                     paddingBottom: insets.bottom + 32,
@@ -208,14 +214,6 @@ const SoftLand = ({ componentId, showCompleted = false }) => {
                     decelerationRate="fast"
                     getItemLayout={getItemLayout}
                 />
-                {showCompleted && (
-                    <>
-                        <Text style={styles.subhead}>Completed</Text>
-                        {doneItems.map(item => (
-                            <DoneItem {...item} />
-                        ))}
-                    </>
-                )}
             </ScrollView>
         </View>
     );

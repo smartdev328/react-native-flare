@@ -11,17 +11,18 @@ import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import memoize from 'memoize-one';
 
+import ContactsList from './ContactsList';
+import CrewList from './CrewList';
+import ErrorMessage from './ErrorMessage';
+import NeedContactsPermission from './NeedContactsPermission';
+import SuccessfullySent from './SuccessfullySent';
 import * as userActions from '../../actions/userActions';
 import * as navActions from '../../actions/navActions';
-import ContactsList from './ContactsList';
 import Colors from '../../bits/Colors';
-import CrewList from './CrewList';
 import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Type from '../../bits/Type';
 import { saveButton, settingsNavOptions } from '../Settings';
-import NeedContactsPermission from './NeedContactsPermission';
-import SuccessfullySent from './SuccessfullySent';
 
 const MAX_CREW_SIZE = 5;
 
@@ -129,10 +130,11 @@ class Contacts extends React.Component {
                     break;
             }
         }
-        if (dirty !== prevDirty) {
+        if (dirty !== prevDirty || loading !== prevLoading) {
+            const showButton = dirty && !loading;
             Navigation.mergeOptions(componentId, {
                 topBar: {
-                    rightButtons: dirty ? [saveButton] : [],
+                    rightButtons: showButton ? [saveButton] : [],
                 },
             });
         }
@@ -311,6 +313,7 @@ class Contacts extends React.Component {
                     />
                 )}
                 {this.renderContactsList()}
+                {crewUpdateState === 'failed' && <ErrorMessage />}
             </View>
         );
     }

@@ -19,6 +19,10 @@ import iconContact from '../assets/menu-item-contact.png';
 import iconInfo from '../assets/menu-item-info.png';
 import iconShare from '../assets/menu-item-share.png';
 
+import menuPhoto1 from '../assets/menu-photo-1.jpg';
+import menuPhoto2 from '../assets/menu-photo-2.jpg';
+import menuPhoto3 from '../assets/menu-photo-3.jpg';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -56,6 +60,8 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
 });
+
+const imageSources = [menuPhoto1, menuPhoto2, menuPhoto3];
 
 const MenuItem = ({ onPress, label, icon, style }) => (
     <TouchableOpacity style={[styles.menuItem, style]} onPress={onPress}>
@@ -109,14 +115,7 @@ const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
                 },
             ]}
         >
-            <RandomImage
-                sources={[
-                    { uri: 'menu-photo-1' },
-                    { uri: 'menu-photo-2' },
-                    { uri: 'menu-photo-3' },
-                ]}
-                style={styles.topImage}
-            />
+            <RandomImage sources={imageSources} style={styles.topImage} />
             <View>
                 <MenuItem
                     onPress={handleHome}

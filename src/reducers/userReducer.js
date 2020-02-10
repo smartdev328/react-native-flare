@@ -398,20 +398,23 @@ export function user(state = initialState.user, action = {}) {
         /**
          * SET USER ONBOARDING COMPLETE
          */
+        case types.USER_SET_ONBOARDING_COMPLETE_RESET:
+            return state.without('settingOnboardingCompleteStatus');
+
         case types.USER_SET_ONBOARDING_COMPLETE_REQUEST:
             return state.merge({
-                settingOnboardingComplete: true,
+                settingOnboardingCompleteStatus: 'requested',
             });
 
         case types.USER_SET_ONBOARDING_COMPLETE_SUCCESS:
             return state.merge({
-                settingOnboardingComplete: false,
+                settingOnboardingCompleteStatus: 'done',
                 hasViewedTutorial: true,
             });
 
         case types.USER_SET_ONBOARDING_COMPLETE_FAILURE:
             return state.merge({
-                settingOnboardingComplete: false,
+                settingOnboardingCompleteStatus: 'error',
             });
 
         /**
