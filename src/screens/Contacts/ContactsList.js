@@ -14,6 +14,10 @@ import Type from '../../bits/Type';
 const LIST_ITEM_HEIGHT = 50;
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flexGrow: 1,
+        flexShrink: 1,
+    },
     sectionHeader: {
         backgroundColor: Colors.backgrounds.blue,
         color: Colors.theme.blue,
@@ -107,7 +111,7 @@ const ContactsList = ({ contacts, onPressContact, sectionList }) => {
     const flatList = React.useRef();
     const onSectionPress = React.useCallback(
         index => {
-            flatList.current.scrollToLocation({
+            flatList.current?.scrollToLocation({
                 sectionIndex: index,
                 itemIndex: 0,
             });
@@ -129,7 +133,7 @@ const ContactsList = ({ contacts, onPressContact, sectionList }) => {
     );
 
     return (
-        <View style={{ flexGrow: 1 }}>
+        <View style={styles.wrapper}>
             <SectionList
                 stickySectionHeadersEnabled
                 ref={flatList}
