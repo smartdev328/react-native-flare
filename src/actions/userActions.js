@@ -266,6 +266,10 @@ export function setCancelPIN(token, pin) {
     };
 }
 
+export const resetOnboardingComplete = () => ({
+    type: types.USER_SET_ONBOARDING_COMPLETE_RESET,
+});
+
 export const setOnboardingComplete = token => async dispatch => {
     dispatch({
         type: types.USER_SET_ONBOARDING_COMPLETE_REQUEST,
