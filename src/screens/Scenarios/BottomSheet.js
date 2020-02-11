@@ -39,34 +39,43 @@ const styles = StyleSheet.create({
     },
 });
 
-const WouldYouRather = ({ fakeCall, textCrew, cardHead, cardBody }) => (
-    <>
-        <Text style={styles.head}>{cardHead}</Text>
-        <Text style={styles.body}>{cardBody}</Text>
-        <View style={styles.buttonContainer}>
-            <RoundedButton
-                useGradient={false}
-                disabled={typeof fakeCall !== 'function'}
-                onPress={fakeCall}
-                text="Get a fake call"
-                wrapperStyle={styles.firstButton}
-                height={46}
-                width={146}
-                fontSize={14}
-                color={Colors.theme.peach}
-            />
-            <RoundedButton
-                useGradient={false}
-                disabled={typeof textCrew !== 'function'}
-                onPress={textCrew}
-                text="Text your crew"
-                height={46}
-                width={146}
-                fontSize={14}
-                color={Colors.theme.purple}
-            />
-        </View>
-    </>
+const WouldYouRather = React.memo(
+    ({ fakeCall, textCrew, cardHead, cardBody }) => {
+        const showFirst = typeof fakeCall === 'function';
+        const showSecond = typeof textCrew === 'function';
+
+        return (
+            <>
+                <Text style={styles.head}>{cardHead}</Text>
+                <Text style={styles.body}>{cardBody}</Text>
+                <View style={styles.buttonContainer}>
+                    {showFirst && (
+                        <RoundedButton
+                            onPress={fakeCall}
+                            text="Get a fake call"
+                            wrapperStyle={
+                                showSecond ? styles.firstButton : undefined
+                            }
+                            height={46}
+                            width={146}
+                            fontSize={14}
+                            color={Colors.theme.peach}
+                        />
+                    )}
+                    {showSecond && (
+                        <RoundedButton
+                            onPress={textCrew}
+                            text="Text your crew"
+                            height={46}
+                            width={146}
+                            fontSize={14}
+                            color={Colors.theme.purple}
+                        />
+                    )}
+                </View>
+            </>
+        );
+    }
 );
 
 const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
