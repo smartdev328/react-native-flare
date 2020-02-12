@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Alert, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import {
+    Alert,
+    Dimensions,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    View,
+} from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import { connect } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -48,9 +55,14 @@ class Signup extends React.Component {
         super();
         this.state = {
             page: 0,
+            dimensions: Dimensions.get('screen'),
         };
         this.fieldRefs = times(4, () => React.createRef());
         this.pagerRef = React.createRef();
+    }
+
+    componentDidMount() {
+        Dimensions.addEventListener('change', this.dimensionsListener);
     }
 
     componentDidUpdate(prevProps) {
@@ -71,6 +83,14 @@ class Signup extends React.Component {
             }
         }
     }
+
+    componentWillUnmount() {
+        Dimensions.removeEventListener('change', this.dimensionsListener);
+    }
+
+    dimensionsListener = ({ window }) => {
+        this.setState({ dimensions: window });
+    };
 
     goBack = () => {
         const { close } = this.props;
@@ -101,14 +121,20 @@ class Signup extends React.Component {
 
     render() {
         const { name } = this.props;
+        const { dimensions } = this.state;
         const greeting = extractGreeting(name);
+        const squashed = dimensions.height < 650;
 
         return (
             <SafeAreaProvider>
                 <SafeAreaView style={styles.container}>
                     <StatusBar barStyle="light-content" />
                     <Aura source={aura1519} />
-                    <WhiteBar goBack={this.goBack} offWhite />
+                    <WhiteBar
+                        goBack={this.goBack}
+                        offWhite
+                        squashed={squashed}
+                    />
                     <ViewPager
                         style={styles.flex}
                         scrollEnabled={false}
@@ -127,6 +153,7 @@ class Signup extends React.Component {
                                 actionCreator={regSetName}
                                 value="name"
                                 validator={validateName}
+                                squashed={squashed}
                             />
                         </View>
                         <View key="email">
@@ -140,6 +167,7 @@ class Signup extends React.Component {
                                 actionCreator={regSetEmail}
                                 value="email"
                                 validator={validateEmail}
+                                squashed={squashed}
                             />
                         </View>
                         <View key="phone">
@@ -153,6 +181,7 @@ class Signup extends React.Component {
                                 actionCreator={regSetPhone}
                                 value="phone"
                                 validator={validatePhone}
+                                squashed={squashed}
                             />
                         </View>
                         <View key="password">
@@ -167,6 +196,7 @@ class Signup extends React.Component {
                                 value="password"
                                 validator={validatePassword}
                                 forceError="Password must be at at least 8 characters and contain at least one letter, one uppercase letter and one number or symbol"
+                                squashed={squashed}
                             />
                         </View>
                     </ViewPager>

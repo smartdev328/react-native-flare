@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         alignSelf: 'stretch',
     },
+    squashed: {
+        marginBottom: 12,
+    },
     padding: {
         paddingRight: 34,
     },
@@ -81,11 +84,18 @@ const WhiteBar = ({
     aura = false,
     offWhite = false,
     showHelp = false,
+    squashed = false,
 }) => {
     const [tintStyle, colorStyle] = computeColorStyles(black, offWhite);
 
     return (
-        <View style={[styles.bar, showHelp ? undefined : styles.padding]}>
+        <View
+            style={[
+                styles.bar,
+                showHelp ? undefined : styles.padding,
+                squashed ? styles.squashed : undefined,
+            ]}
+        >
             {showBack && (
                 <TouchableOpacity
                     style={styles.backArrowWrapper}

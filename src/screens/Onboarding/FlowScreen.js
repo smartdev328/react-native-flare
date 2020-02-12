@@ -34,6 +34,11 @@ const styles = StyleSheet.create({
         color: Colors.theme.cream,
         fontSize: 24,
     },
+    squashed: {
+        marginBottom: 0,
+        fontSize: 24,
+        lineHeight: 27,
+    },
 });
 
 class FlowScreen extends React.Component {
@@ -89,6 +94,7 @@ class FlowScreen extends React.Component {
             registrationState,
             forceError = undefined,
             insets,
+            squashed,
         } = this.props;
         const { showPassword, error } = this.state;
 
@@ -101,9 +107,11 @@ class FlowScreen extends React.Component {
             <KeyboardAvoidingView
                 behavior="padding"
                 keyboardVerticalOffset={72 + insets.bottom}
-                style={[styles.container]}
+                style={styles.container}
             >
-                <Headline>{headline}</Headline>
+                <Headline style={squashed ? styles.squashed : undefined}>
+                    {headline}
+                </Headline>
                 <TextField
                     ref={textFieldRef}
                     label={label}
