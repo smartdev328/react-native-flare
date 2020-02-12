@@ -11,8 +11,11 @@ import { resetClaim } from '../../actions/deviceActions';
 import Resume from './Resume';
 import { jwtHasValidTimestamp } from '../../bits/jwt';
 import useDimensions from '../../bits/useDimensions';
+import { MIN_NON_SQUASHED_HEIGHT } from '../../constants/Config';
 
-const selector = ({ authToken, authState, hasViewedTutorial, devices }) => ({
+const selector = ({
+    user: { authToken, authState, hasViewedTutorial, devices },
+}) => ({
     hasAuthToken: jwtHasValidTimestamp(authToken),
     authState,
     hasViewedTutorial,
@@ -34,7 +37,7 @@ const Onboarding = ({ componentId }) => {
     const [signUp, setSignUp] = React.useState(false);
     const [signIn, setSignIn] = React.useState(false);
 
-    const squashed = dimensions.height < 650;
+    const squashed = dimensions.height < MIN_NON_SQUASHED_HEIGHT;
 
     const onSignUpPressed = React.useCallback(() => {
         didProceed.current = false;

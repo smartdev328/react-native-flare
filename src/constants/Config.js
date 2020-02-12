@@ -129,3 +129,8 @@ export const summary = [
     { key: 'Logging / BLE', value: BLUETOOTH_BEACON_LOGGING.toString() },
     { key: 'Account Sync', value: ACCOUNT_SYNC_INTERVAL },
 ];
+
+/**
+ * Minimum height of a non-squashed screen
+ */
+export const MIN_NON_SQUASHED_HEIGHT = 650;
