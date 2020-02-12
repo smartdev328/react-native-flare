@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    Alert,
-    Dimensions,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    View,
-} from 'react-native';
+import { Alert, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 import ViewPager from '@react-native-community/viewpager';
 import { connect } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -55,14 +48,9 @@ class Signup extends React.Component {
         super();
         this.state = {
             page: 0,
-            dimensions: Dimensions.get('screen'),
         };
         this.fieldRefs = times(4, () => React.createRef());
         this.pagerRef = React.createRef();
-    }
-
-    componentDidMount() {
-        Dimensions.addEventListener('change', this.dimensionsListener);
     }
 
     componentDidUpdate(prevProps) {
@@ -83,14 +71,6 @@ class Signup extends React.Component {
             }
         }
     }
-
-    componentWillUnmount() {
-        Dimensions.removeEventListener('change', this.dimensionsListener);
-    }
-
-    dimensionsListener = ({ window }) => {
-        this.setState({ dimensions: window });
-    };
 
     goBack = () => {
         const { close } = this.props;
@@ -120,10 +100,8 @@ class Signup extends React.Component {
     };
 
     render() {
-        const { name } = this.props;
-        const { dimensions } = this.state;
+        const { name, squashed } = this.props;
         const greeting = extractGreeting(name);
-        const squashed = dimensions.height < 650;
 
         return (
             <SafeAreaProvider>

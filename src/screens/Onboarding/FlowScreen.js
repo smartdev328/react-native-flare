@@ -34,11 +34,6 @@ const styles = StyleSheet.create({
         color: Colors.theme.cream,
         fontSize: 24,
     },
-    squashed: {
-        marginBottom: 0,
-        fontSize: 24,
-        lineHeight: 27,
-    },
 });
 
 class FlowScreen extends React.Component {
@@ -109,9 +104,7 @@ class FlowScreen extends React.Component {
                 keyboardVerticalOffset={72 + insets.bottom}
                 style={styles.container}
             >
-                <Headline style={squashed ? styles.squashed : undefined}>
-                    {headline}
-                </Headline>
+                <Headline squashed={squashed}>{headline}</Headline>
                 <TextField
                     ref={textFieldRef}
                     label={label}

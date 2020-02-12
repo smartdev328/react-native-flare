@@ -12,11 +12,31 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginBottom: 32,
     },
+    squashed: {
+        marginBottom: 0,
+        fontSize: 24,
+        lineHeight: 27,
+    },
 });
 
-const Headline = ({ children, style, animatable = false }) => {
+const Headline = ({
+    children,
+    style,
+    squashed = false,
+    animatable = false,
+}) => {
     const Component = animatable ? Animated.Text : Text;
-    return <Component style={[styles.headline, style]}>{children}</Component>;
+    return (
+        <Component
+            style={[
+                styles.headline,
+                squashed ? styles.squashed : undefined,
+                style,
+            ]}
+        >
+            {children}
+        </Component>
+    );
 };
 
 export default Headline;

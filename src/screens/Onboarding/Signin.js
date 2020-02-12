@@ -3,6 +3,7 @@ import {
     KeyboardAvoidingView,
     Linking,
     SafeAreaView,
+    ScrollView,
     StatusBar,
     StyleSheet,
     Text,
@@ -125,69 +126,73 @@ class Signin extends React.Component {
     };
 
     render() {
-        const { close, authState } = this.props;
+        const { close, authState, squashed } = this.props;
         const { showPassword } = this.state;
         const errored = authState === 'failed';
 
+        const FieldsWrapper = squashed ? ScrollView : React.Fragment;
+
         return (
             <SafeAreaView style={styles.container}>
-                <StatusBar barStyle="light-content" />
+                <StatusBar barStyle="light-content" squashed={squashed} />
                 <Aura source={aura1521} />
                 <WhiteBar goBack={close} aura offWhite />
                 <KeyboardAvoidingView
                     behavior="padding"
                     style={styles.formContainer}
                 >
-                    <Headline>Sign In</Headline>
-                    <TextField
-                        ref={this.emailRef}
-                        label="Email address"
-                        textColor={Colors.theme.cream}
-                        tintColor={Colors.theme.cream}
-                        baseColor={Colors.theme.cream}
-                        errorColor={Colors.error}
-                        autoCapitalize="none"
-                        onSubmitEditing={this.goToPassword}
-                        returnKeyType="next"
-                        keyboardType="email-address"
-                        textContentType="emailAddress"
-                        enablesReturnKeyAutomatically
-                        onChangeText={this.emailChange}
-                        keyboardAppearance="dark"
-                        autoFocus
-                        error={errored ? ' ' : undefined}
-                    />
-                    <TextField
-                        ref={this.passwordRef}
-                        label="Password"
-                        textColor={Colors.theme.cream}
-                        tintColor={Colors.theme.cream}
-                        baseColor={Colors.theme.cream}
-                        errorColor={Colors.error}
-                        secureTextEntry={!showPassword}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        onSubmitEditing={this.onSubmit}
-                        returnKeyType="done"
-                        textContentType="password"
-                        renderRightAccessory={this.renderAccessory}
-                        enablesReturnKeyAutomatically
-                        onChangeText={this.passwordChange}
-                        keyboardAppearance="dark"
-                        error={
-                            errored
-                                ? 'Please enter a valid email and password combination.'
-                                : undefined
-                        }
-                    />
-                    <TouchableOpacity
-                        style={styles.forgotWrapper}
-                        onPress={this.forgotPassword}
-                    >
-                        <Text style={styles.forgotLink}>
-                            Forgot your password?
-                        </Text>
-                    </TouchableOpacity>
+                    <Headline squashed={squashed}>Sign In</Headline>
+                    <FieldsWrapper>
+                        <TextField
+                            ref={this.emailRef}
+                            label="Email address"
+                            textColor={Colors.theme.cream}
+                            tintColor={Colors.theme.cream}
+                            baseColor={Colors.theme.cream}
+                            errorColor={Colors.error}
+                            autoCapitalize="none"
+                            onSubmitEditing={this.goToPassword}
+                            returnKeyType="next"
+                            keyboardType="email-address"
+                            textContentType="emailAddress"
+                            enablesReturnKeyAutomatically
+                            onChangeText={this.emailChange}
+                            keyboardAppearance="dark"
+                            autoFocus={!squashed}
+                            error={errored ? ' ' : undefined}
+                        />
+                        <TextField
+                            ref={this.passwordRef}
+                            label="Password"
+                            textColor={Colors.theme.cream}
+                            tintColor={Colors.theme.cream}
+                            baseColor={Colors.theme.cream}
+                            errorColor={Colors.error}
+                            secureTextEntry={!showPassword}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            onSubmitEditing={this.onSubmit}
+                            returnKeyType="done"
+                            textContentType="password"
+                            renderRightAccessory={this.renderAccessory}
+                            enablesReturnKeyAutomatically
+                            onChangeText={this.passwordChange}
+                            keyboardAppearance="dark"
+                            error={
+                                errored
+                                    ? 'Please enter a valid email and password combination.'
+                                    : undefined
+                            }
+                        />
+                        <TouchableOpacity
+                            style={styles.forgotWrapper}
+                            onPress={this.forgotPassword}
+                        >
+                            <Text style={styles.forgotLink}>
+                                Forgot your password?
+                            </Text>
+                        </TouchableOpacity>
+                    </FieldsWrapper>
                     <RoundedButton
                         inverse
                         text="Sign In"
