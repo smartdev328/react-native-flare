@@ -127,9 +127,11 @@ export default (store, Provider) => {
         store
     );
 
-    Navigation.registerComponent(
+    Navigation.registerComponentWithRedux(
         'com.flarejewelry.howitworks',
-        () => HowItWorks
+        () => HowItWorks,
+        Provider,
+        store
     );
 
     if (MANUFACTURING_MODE_ENABLED) {

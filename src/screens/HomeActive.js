@@ -132,7 +132,7 @@ class HomeActive extends React.Component {
         }
         BackgroundTimer.stopBackgroundTimer();
         BackgroundTimer.runBackgroundTimer(
-            () => this.syncAccount(),
+            this.syncAccount,
             this.accountSyncTimeInMs
         );
 
@@ -141,17 +141,15 @@ class HomeActive extends React.Component {
         this.startTimelineRefreshInterval();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate({ hasActiveFlare: prevHasActiveFlare }) {
+        const { hasActiveFlare, dispatch } = this.props;
         /**
          * Handle transitions from active to inactive flare
          */
-        if (
-            this.props.hasActiveFlare !== prevProps.hasActiveFlare &&
-            !this.props.hasActiveFlare
-        ) {
+        if (prevHasActiveFlare && !hasActiveFlare) {
             BackgroundTimer.stop();
             BackgroundTimer.stopBackgroundTimer();
-            this.props.dispatch(changeAppRoot('secure'));
+            dispatch(changeAppRoot('secure'));
         }
     }
 
@@ -216,7 +214,7 @@ class HomeActive extends React.Component {
     /**
      * Submit user location and fetch any account updates.
      */
-    syncAccount() {
+    syncAccount = () => {
         // Don't kick off a new async request if we're shutting down. This prevents an infinite loop of syncing
         // status -> auth fail -> sign out.
         if (this.shuttingDown) {
@@ -257,7 +255,7 @@ class HomeActive extends React.Component {
                 )
             );
         }
-    }
+    };
 
     refreshTimeline = () => {
         this.props.dispatch(getCrewEventTimeline(this.props.authToken));

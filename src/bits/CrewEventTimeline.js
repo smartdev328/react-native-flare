@@ -48,84 +48,115 @@ const typeSpecificColors = [
     Colors.theme.purple, // cancel
     Colors.theme.black, // create
     Colors.theme.pink, // join
+    Colors.theme.purple, // expire
 ];
 
-const CrewActionConstantToStringToken = ['unknown', 'notify', 'response', 'cancel', 'create', 'join'];
+const CrewActionConstantToStringToken = [
+    'unknown',
+    'notify',
+    'response',
+    'cancel',
+    'create',
+    'join',
+    'expire',
+];
 
-const CrewMessage = props => (
-    <View style={[styles.commonEvent, styles.message, { borderLeftColor: typeSpecificColors[props.type] }]}>
-        <Text style={styles.messageFrom}>{props.event.name}</Text>
-        <Text style={styles.messageBody}>{props.event.message}</Text>
+const CrewMessage = ({
+    event: { name, message, timestamp, action_type: type },
+}) => (
+    <View
+        style={[
+            styles.commonEvent,
+            styles.message,
+            { borderLeftColor: typeSpecificColors[type] },
+        ]}
+    >
+        <Text style={styles.messageFrom}>{name}</Text>
+        <Text style={styles.messageBody}>{message}</Text>
         <View>
             <Text style={styles.timestamp}>
-                <FlareDate timestamp={props.event.timestamp} />
+                <FlareDate timestamp={timestamp} />
             </Text>
         </View>
     </View>
 );
 
-const CrewStatus = props => (
-    <View style={[styles.commonEvent, styles.status, { borderLeftColor: typeSpecificColors[props.type] }]}>
+const CrewStatus = ({ type, event: { name, timestamp } }) => (
+    <View
+        style={[
+            styles.commonEvent,
+            styles.status,
+            { borderLeftColor: typeSpecificColors[type] },
+        ]}
+    >
         <View>
-            {props.type !== CrewActionTypes.Join && (
+            {type !== CrewActionTypes.Join && (
                 <Text style={styles.statusHeading}>
-                    {Strings.crewEventTimeline.headings[CrewActionConstantToStringToken[props.type]]}
-                    {props.event.name && ' '}
-                    {props.event.name}
-                    {props.event.name && '.'}
+                    {[
+                        Strings.crewEventTimeline.headings[
+                            CrewActionConstantToStringToken[type]
+                        ],
+                        name,
+                        name ? '.' : undefined,
+                    ].join('')}
                 </Text>
             )}
-            {props.type === CrewActionTypes.Join && (
+            {type === CrewActionTypes.Join && (
                 <Text style={styles.statusHeading}>
-                    {props.event.name} {Strings.crewEventTimeline.headings.join}
+                    {[name, Strings.crewEventTimeline.headings.join].join(' ')}
                 </Text>
             )}
         </View>
         <View>
             <Text style={styles.timestamp}>
-                <FlareDate timestamp={props.event.timestamp} />
+                <FlareDate timestamp={timestamp} />
             </Text>
         </View>
     </View>
 );
 
-const CrewEvent = (props) => {
-    switch (props.event.action_type) {
-    case CrewActionTypes.Notification:
-    case CrewActionTypes.Cancel:
-    case CrewActionTypes.Create:
-    case CrewActionTypes.Join:
-        return <CrewStatus type={props.event.action_type} event={props.event} />;
-    case CrewActionTypes.Response:
-        return <CrewMessage event={props.event} />;
-    default:
-        return <CrewStatus type={CrewActionTypes.Unknown} event={props.event} />;
+const CrewEvent = ({ event }) => {
+    switch (event.action_type) {
+        case CrewActionTypes.Notification:
+        case CrewActionTypes.Cancel:
+        case CrewActionTypes.Create:
+        case CrewActionTypes.Join:
+        case CrewActionTypes.Expire:
+            return <CrewStatus type={event.action_type} event={event} />;
+        case CrewActionTypes.Response:
+            return <CrewMessage event={event} />;
+        default:
+            return <CrewStatus type={CrewActionTypes.Unknown} event={event} />;
     }
 };
 
-const CrewEventTimeline = props => (
-    <View style={props.containerStyle}>
-        <FlatList
-            data={props.timeline}
-            renderItem={({ item }) => <CrewEvent event={item} />}
-            keyExtractor={event => `${event.timestamp}-${event.id}`}
-            refreshing={false}
-            onRefresh={() => props.onRefresh()}
-            ref={(ref) => {
-                this.flatList = ref;
-            }}
-            onContentSizeChange={() => {
-                if (props.timeline && props.timeline.length > 0) {
-                    this.flatList.scrollToEnd({ animated: true });
-                }
-            }}
-            onLayout={() => {
-                if (props.timeline && props.timeline.length > 0) {
-                    this.flatList.scrollToEnd({ animated: true });
-                }
-            }}
-        />
-    </View>
-);
+const keyExtractor = event => `${event.timestamp}-${event.id}`;
+const renderItem = ({ item }) => <CrewEvent event={item} />;
+
+const CrewEventTimeline = ({ containerStyle, timeline, onRefresh }) => {
+    const flatListRef = React.useRef();
+
+    const haveTimeline = timeline?.length > 0;
+    const scrollToEnd = React.useCallback(() => {
+        if (haveTimeline) {
+            flatListRef?.current?.scrollToEnd({ animated: true });
+        }
+    }, [haveTimeline]);
+
+    return (
+        <View style={containerStyle}>
+            <FlatList
+                data={timeline}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+                refreshing={false}
+                onRefresh={onRefresh}
+                ref={flatListRef}
+                onContentSizeChange={scrollToEnd}
+                onLayout={scrollToEnd}
+            />
+        </View>
+    );
+};
 
 export default CrewEventTimeline;

@@ -5,4 +5,5 @@ export default {
     Cancel: 3,
     Create: 4,
     Join: 5,
+    Expire: 6,
 };

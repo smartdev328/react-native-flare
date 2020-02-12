@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
+import VersionNumber from 'react-native-version-number';
 
 import { navOptions, styles } from './styles';
 import * as actions from '../../actions';
@@ -89,7 +90,7 @@ const Account = ({
                 better safety products for all of us and never share your data.
             </Text>
             <TouchableOpacity
-                style={[styles.item, { marginTop: 80 }]}
+                style={[styles.item, { marginTop: 60 }]}
                 onPress={share}
             >
                 <Text style={styles.text}>Share Flare</Text>
@@ -114,11 +115,14 @@ const Account = ({
                 <Text style={styles.text}>Privacy Policy</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                style={[styles.item, { marginTop: 80 }]}
+                style={[styles.item, { marginTop: 60 }]}
                 onPress={signOut}
             >
                 <Text style={styles.text}>Log Out</Text>
             </TouchableOpacity>
+            <Text style={styles.explain}>
+                {`Get Flare version ${VersionNumber.appVersion} (build ${VersionNumber.buildVersion})`}
+            </Text>
         </SafeAreaView>
     );
 };
