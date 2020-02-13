@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 
 import SuccessAnimation from '../SuccessAnimation';
@@ -11,12 +11,15 @@ const SuccessfullySent = ({ componentId }) => {
     }, [componentId]);
 
     return (
-        <SuccessAnimation
-            style={StyleSheet.absoluteFill}
-            animation={paperAirplane}
-            onComplete={finish}
-            size={250}
-        />
+        <>
+            <StatusBar barStyle="dark-content" />
+            <SuccessAnimation
+                style={StyleSheet.absoluteFill}
+                animation={paperAirplane}
+                onComplete={finish}
+                size={250}
+            />
+        </>
     );
 };
 

@@ -3,6 +3,7 @@ import * as React from 'react';
 import {
     Alert,
     SafeAreaView,
+    ScrollView,
     StatusBar,
     StyleSheet,
     Text,
@@ -64,6 +65,9 @@ const styles = StyleSheet.create({
     otherButton: {
         alignSelf: 'center',
     },
+    scroller: {
+        flex: 1,
+    },
 });
 
 const generateFullName = (first, last) => {
@@ -122,26 +126,28 @@ const TextConfirm = ({ componentId }) => {
             <StatusBar barStyle="dark-content" />
             <Text style={styles.h1}>You have a crew!</Text>
             <View style={styles.line} />
-            <Text style={styles.body}>
-                We need to text your crew members individually so that they know
-                that you’ve chosen them and what that means. (It’s also nice for
-                them to already have our number.)
-                {'\n\n'}
-                Here’s what we will text them:
-            </Text>
-            <View style={styles.fakeTextContainer}>
-                <Text style={styles.fakeText}>
-                    Hey hey! {fullName} has added you to their Crew of friends
-                    in Flare (a new safety jewelry company) because you always
-                    have their back.
+            <ScrollView style={styles.scroller} alwaysBounceVertical={false}>
+                <Text style={styles.body}>
+                    We need to text your crew members individually so that they
+                    know that you’ve chosen them and what that means. (It’s also
+                    nice for them to already have our number.)
                     {'\n\n'}
-                    You will receive messages when {fullName} presses the hidden
-                    button on their bracelet to indicate that they’re in an iffy
-                    situation and want you to check up on them.
-                    {'\n\n'}
-                    Learn more at http://bit.ly/FlareCrew.
+                    Here’s what we will text them:
                 </Text>
-            </View>
+                <View style={styles.fakeTextContainer}>
+                    <Text style={styles.fakeText}>
+                        Hey hey! {fullName} has added you to their Crew of
+                        friends in Flare (a new safety jewelry company) because
+                        you always have their back.
+                        {'\n\n'}
+                        You will receive messages when {fullName} presses the
+                        hidden button on their bracelet to indicate that they’re
+                        in an iffy situation and want you to check up on them.
+                        {'\n\n'}
+                        Learn more at http://bit.ly/FlareCrew.
+                    </Text>
+                </View>
+            </ScrollView>
             <RoundedButton
                 wrapperStyle={styles.spacedButton}
                 onPress={confirm}
