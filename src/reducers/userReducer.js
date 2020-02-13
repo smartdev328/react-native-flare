@@ -503,6 +503,8 @@ export function user(state = initialState.user, action = {}) {
             return state.setIn(['scenarios', 'longPress'], 'wait');
         case types.USER_SCENARIO_GOT_LONG_PRESS:
             return state.setIn(['scenarios', 'longPress'], 'done');
+        case types.USER_SCENARIO_GOT_SHORT_WHILE_AWAITING_LONG:
+            return state.setIn(['scenarios', 'longPress'], 'gotShort');
         case types.USER_SCENARIO_AWAIT_SHORT_PRESS:
             return state.setIn(['scenarios', 'shortPress'], 'wait');
         case types.USER_SCENARIO_GOT_SHORT_PRESS:

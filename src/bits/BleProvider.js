@@ -1,3 +1,4 @@
+/* eslint-disable no-undef-init */
 import { shallowEqualObjects } from 'shallow-equal';
 
 import { BeaconTypes } from './BleConstants';
@@ -17,7 +18,11 @@ import BleManager from './BleManager';
 import ManufacturingStages from '../constants/ManufacturingStages';
 import UserRoleTypes from '../constants/Roles';
 import { checkLocationsPermission } from '../actions/userActions';
-import { gotLongPress, gotShortPress } from '../actions/regActions';
+import {
+    gotLongPress,
+    gotShortPress,
+    gotShortWhileAwaitingLong,
+} from '../actions/regActions';
 
 export default class BleProvider {
     constructor(options) {
@@ -90,17 +95,22 @@ export default class BleProvider {
             ?.hasViewedTutorial;
         const awaitingShortPress =
             this.store?.getState()?.user?.scenarios?.shortPress === 'wait';
-        const awaitingLongPress =
-            this.store?.getState()?.user?.scenarios?.longPress === 'wait';
+        const awaitingLongPress = ['wait', 'gotShort'].includes(
+            this.store?.getState()?.user?.scenarios?.longPress
+        );
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser =
             userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
         const { dispatch, radioToken } = this.props;
 
         switch (beacon.type) {
-            case BeaconTypes.Short.name:
+            case BeaconTypes.Short.name: {
+                let noop = undefined;
                 if (awaitingShortPress) {
                     dispatch(gotShortPress());
+                } else if (awaitingLongPress) {
+                    noop = 'short-while-awaiting-long';
+                    dispatch(gotShortWhileAwaitingLong());
                 }
                 dispatch(
                     call({
@@ -108,9 +118,11 @@ export default class BleProvider {
                         beacon,
                         position,
                         forCurrentUser,
+                        noop,
                     })
                 );
                 break;
+            }
 
             case BeaconTypes.Long.name: {
                 let noop;
