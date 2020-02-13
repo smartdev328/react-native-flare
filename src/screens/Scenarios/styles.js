@@ -50,6 +50,18 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         marginTop: 12,
     },
+    warning: {
+        alignSelf: 'stretch',
+        marginTop: 'auto',
+        padding: 24,
+        backgroundColor: '#1e1d2a',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+    },
+    warningText: {
+        color: Colors.theme.cream,
+        fontSize: 14,
+    },
 });
 
 export default styles;

@@ -6,36 +6,43 @@ import * as types from './actionTypes';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 import { BeaconTypes } from '../bits/BleConstants';
 
-export const call = ({ token, beacon, position, forCurrentUser }) => dispatch =>
-    ProtectedAPICall(token, API_URL, '/radio/beacon', {
-        method: 'POST',
-        data: {
-            device_id: beacon.deviceID,
-            type: BeaconTypes.Short.value,
-            nonce: beacon.nonce,
-            timestamp: moment(beacon.timestamp).toISOString(),
-            position,
-        },
-    })
-        .then(() => {
-            if (forCurrentUser) {
-                dispatch({
-                    type: types.BEACON_SHORT_PRESS,
-                    beacon,
-                    position,
-                });
-            }
-        })
-        .catch(status => {
-            if (forCurrentUser) {
-                dispatch({
-                    type: types.BEACON_HANDLING_FAILED,
-                    beacon,
-                    position,
-                    status,
-                });
-            }
+export const call = ({
+    token,
+    beacon,
+    position,
+    forCurrentUser,
+    noop,
+}) => async dispatch => {
+    try {
+        await ProtectedAPICall(token, API_URL, '/radio/beacon', {
+            method: 'POST',
+            data: {
+                device_id: beacon.deviceID,
+                type: BeaconTypes.Short.value,
+                nonce: beacon.nonce,
+                timestamp: moment(beacon.timestamp).toISOString(),
+                position,
+                'no-op': noop,
+            },
         });
+        if (forCurrentUser) {
+            dispatch({
+                type: types.BEACON_SHORT_PRESS,
+                beacon,
+                position,
+            });
+        }
+    } catch (status) {
+        if (forCurrentUser) {
+            dispatch({
+                type: types.BEACON_HANDLING_FAILED,
+                beacon,
+                position,
+                status,
+            });
+        }
+    }
+};
 
 export const flare = ({
     token,
