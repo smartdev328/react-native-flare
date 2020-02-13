@@ -16,9 +16,9 @@ import Pairing from './Pairing';
 import Aura from '../../bits/Aura';
 import Success from './Success';
 import useDimensions from '../../bits/useDimensions';
+import { MIN_NON_SQUASHED_HEIGHT } from '../../constants/Config';
 
 import aura1519 from '../../assets/aura-1519.jpg';
-import { MIN_NON_SQUASHED_HEIGHT } from '../../constants/Config';
 
 export { default as HowToConnect } from './HowToConnect';
 export { default as AboutPermissions } from './AboutPermissions';
