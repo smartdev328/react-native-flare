@@ -90,7 +90,7 @@ const Account = ({
                 better safety products for all of us and never share your data.
             </Text>
             <TouchableOpacity
-                style={[styles.item, { marginTop: 60 }]}
+                style={[styles.item, { marginTop: 'auto' }]}
                 onPress={share}
             >
                 <Text style={styles.text}>Share Flare</Text>
@@ -115,12 +115,12 @@ const Account = ({
                 <Text style={styles.text}>Privacy Policy</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                style={[styles.item, { marginTop: 60 }]}
+                style={[styles.item, { marginTop: 'auto' }]}
                 onPress={signOut}
             >
                 <Text style={styles.text}>Log Out</Text>
             </TouchableOpacity>
-            <Text style={styles.explain}>
+            <Text style={[styles.explain, { marginBottom: 16 }]}>
                 {`Get Flare version ${VersionNumber.appVersion} (build ${VersionNumber.buildVersion})`}
             </Text>
         </SafeAreaView>

@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
         color: Colors.theme.cream,
     },
     spacedButton: {
-        marginTop: 'auto',
         marginBottom: 12,
         alignSelf: 'center',
     },
