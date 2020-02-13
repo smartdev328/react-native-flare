@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     Image,
     SafeAreaView,
+    ScrollView,
     StatusBar,
     StyleSheet,
     Text,
@@ -85,6 +86,7 @@ const styles = StyleSheet.create({
     },
     grow: {
         flexGrow: 1,
+        alignSelf: 'stretch',
     },
     button: {
         marginTop: 16,
@@ -113,29 +115,30 @@ const HowItWorks = ({ componentId }) => {
             <Headline style={styles.headline}>How Flare Works</Headline>
             <View style={styles.line} />
             <Text style={styles.subhead}>The basics.</Text>
-            <Text style={[styles.l, styles.sectionhead]}>
-                Press for a call.
-            </Text>
-            <Image
-                style={[styles.l, styles.incomingCall]}
-                source={incomingCall}
-            />
-            <Text style={[styles.r, styles.sectionhead]}>
-                Hold for a friend.
-            </Text>
-            <View style={[styles.r, styles.chatItem]}>
-                <Text style={styles.chatItemText}>
-                    Are any of you with Nicky?
+            <ScrollView style={styles.grow} alwaysBounceVertical={false}>
+                <Text style={[styles.l, styles.sectionhead]}>
+                    Press for a call.
                 </Text>
-            </View>
-            <View style={[styles.r, styles.chatItem]}>
-                <Text style={styles.chatItemText}>
-                    We just talked. She’s all good! Just needed an excuse to
-                    leave.
+                <Image
+                    style={[styles.l, styles.incomingCall]}
+                    source={incomingCall}
+                />
+                <Text style={[styles.r, styles.sectionhead]}>
+                    Hold for a friend.
                 </Text>
-            </View>
-            <Text style={[styles.r, styles.emojis]}>👌✨💛</Text>
-            <View style={styles.grow} />
+                <View style={[styles.r, styles.chatItem]}>
+                    <Text style={styles.chatItemText}>
+                        Are any of you with Nicky?
+                    </Text>
+                </View>
+                <View style={[styles.r, styles.chatItem]}>
+                    <Text style={styles.chatItemText}>
+                        We just talked. She’s all good! Just needed an excuse to
+                        leave.
+                    </Text>
+                </View>
+                <Text style={[styles.r, styles.emojis]}>👌✨💛</Text>
+            </ScrollView>
             <RoundedButton
                 onPress={toggleGolden}
                 wrapperStyle={styles.button}

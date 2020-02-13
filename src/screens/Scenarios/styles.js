@@ -33,6 +33,11 @@ const styles = StyleSheet.create({
         lineHeight: 28,
         marginBottom: 60,
     },
+    deviceActionTextSquashed: {
+        fontSize: 16,
+        lineHeight: 24,
+        marginBottom: 24,
+    },
     line: {
         backgroundColor: Colors.theme.cream,
         height: 1,

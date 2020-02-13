@@ -8,7 +8,7 @@ import CuffPreview from './CuffPreview';
 import FlareDeviceID from '../../../bits/FlareDeviceID';
 import RoundedButton from '../../../bits/RoundedButton';
 
-const Confirm = ({ device, submit, busy, reset, error }) => {
+const Confirm = ({ device, submit, busy, reset, error, squashed }) => {
     const [secondFactor, setSecondFactor] = React.useState('');
     const onPress = React.useCallback(() => {
         submit({ deviceId: device, secondFactor });
@@ -21,15 +21,21 @@ const Confirm = ({ device, submit, busy, reset, error }) => {
         [reset]
     );
     const insets = useSafeArea();
-
+    const keyboardVerticalOffset = (squashed ? 84 : 96) + insets.bottom;
     const deviceLabel = FlareDeviceID.getJewelryLabelFromDeviceID(device);
+
     return (
         <KeyboardAvoidingView
             style={[styles.scrollContainer, { paddingTop: 0 }]}
-            keyboardVerticalOffset={96 + insets.bottom}
+            keyboardVerticalOffset={keyboardVerticalOffset}
             behavior="padding"
         >
-            <Headline style={{ marginBottom: 8 }}>Confirm your Flare</Headline>
+            <Headline
+                squashed={squashed}
+                style={{ marginBottom: squashed ? 0 : 8 }}
+            >
+                Confirm your Flare
+            </Headline>
             <Text
                 style={[
                     styles.helpText,
@@ -40,7 +46,7 @@ const Confirm = ({ device, submit, busy, reset, error }) => {
                 Enter the last 3 digits of your serial number
             </Text>
             <CuffPreview
-                style={{ alignSelf: 'center', marginTop: 32 }}
+                style={{ alignSelf: 'center', marginTop: squashed ? 8 : 32 }}
                 text={deviceLabel}
                 onChangeText={onChangeText}
                 onSubmitEditing={onPress}
@@ -54,7 +60,7 @@ const Confirm = ({ device, submit, busy, reset, error }) => {
                 wrapperStyle={{
                     alignSelf: 'center',
                     marginTop: 'auto',
-                    marginBottom: 16,
+                    marginBottom: squashed ? 8 : 16,
                 }}
                 text="Continue"
                 busy={busy}

@@ -10,6 +10,17 @@ import { regStart } from '../../actions/regActions';
 import { resetClaim } from '../../actions/deviceActions';
 import Resume from './Resume';
 import { jwtHasValidTimestamp } from '../../bits/jwt';
+import useDimensions from '../../bits/useDimensions';
+import { MIN_NON_SQUASHED_HEIGHT } from '../../constants/Config';
+
+const selector = ({
+    user: { authToken, authState, hasViewedTutorial, devices },
+}) => ({
+    hasAuthToken: jwtHasValidTimestamp(authToken),
+    authState,
+    hasViewedTutorial,
+    hasDevices: isArrayLike(devices) && devices.length > 0,
+});
 
 const Onboarding = ({ componentId }) => {
     const dispatch = useDispatch();
@@ -18,17 +29,15 @@ const Onboarding = ({ componentId }) => {
         authState,
         hasViewedTutorial,
         hasDevices,
-    } = useSelector(({ user }) => ({
-        hasAuthToken: jwtHasValidTimestamp(user.authToken),
-        authState: user.authState,
-        hasViewedTutorial: user.hasViewedTutorial,
-        hasDevices: isArrayLike(user.devices) && user.devices.length > 0,
-    }));
+    } = useSelector(selector);
+    const dimensions = useDimensions();
     const [lastAuthState, setLastAuthState] = React.useState(authState);
     const didProceed = React.useRef(false);
     const [resume, setResume] = React.useState(false);
     const [signUp, setSignUp] = React.useState(false);
     const [signIn, setSignIn] = React.useState(false);
+
+    const squashed = dimensions.height < MIN_NON_SQUASHED_HEIGHT;
 
     const onSignUpPressed = React.useCallback(() => {
         didProceed.current = false;
@@ -98,9 +107,15 @@ const Onboarding = ({ componentId }) => {
     if (resume) {
         return <Resume onPress={onPressResume} />;
     } else if (signUp) {
-        return <Signup close={closeSignUp} onSuccess={onSignUpSuccess} />;
+        return (
+            <Signup
+                close={closeSignUp}
+                onSuccess={onSignUpSuccess}
+                squashed={squashed}
+            />
+        );
     } else if (signIn) {
-        return <Signin close={closeSignIn} />;
+        return <Signin close={closeSignIn} squashed={squashed} />;
     } else {
         return (
             <Home

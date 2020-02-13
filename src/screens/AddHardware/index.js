@@ -14,9 +14,11 @@ import LocationPrimer from './LocationPrimer';
 import AlwaysAllow from './AlwaysAllow';
 import Pairing from './Pairing';
 import Aura from '../../bits/Aura';
+import Success from './Success';
+import useDimensions from '../../bits/useDimensions';
+import { MIN_NON_SQUASHED_HEIGHT } from '../../constants/Config';
 
 import aura1519 from '../../assets/aura-1519.jpg';
-import Success from './Success';
 
 export { default as HowToConnect } from './HowToConnect';
 export { default as AboutPermissions } from './AboutPermissions';
@@ -72,6 +74,7 @@ class AddHardware extends React.PureComponent {
         page,
         bottomMargin,
         firstHadPermission,
+        squashed,
     }) => {
         switch (page) {
             case 0:
@@ -103,6 +106,7 @@ class AddHardware extends React.PureComponent {
                 return (
                     <Pairing
                         style={[bottomMargin, StyleSheet.absoluteFill]}
+                        squashed={squashed}
                         nextPage={this.nextPage}
                     />
                 );
@@ -119,30 +123,43 @@ class AddHardware extends React.PureComponent {
     };
 
     render() {
-        const { componentId, insets, additionalHardware } = this.props;
+        const {
+            componentId,
+            insets,
+            dimensions,
+            additionalHardware,
+        } = this.props;
         const { page, firstHadPermission } = this.state;
 
         const bottomMargin = { marginBottom: insets.bottom };
         const dark = page === 2 || page === 3;
+        const squashed = dimensions.height < MIN_NON_SQUASHED_HEIGHT;
+        const showBack = (page === 2 && additionalHardware) || page === 3;
 
         return (
             <View style={[styles.container, { paddingTop: insets.top }]}>
                 <StatusBar barStyle={dark ? 'light-content' : 'dark-content'} />
                 {dark && <Aura source={aura1519} />}
-                <WhiteBar
-                    black={!dark}
-                    offWhite={dark}
-                    showLogo={false}
-                    goBack={this.prevPage}
-                    showBack={(page === 2 && additionalHardware) || page === 3}
-                    showHelp={page === 3}
-                />
+                {!squashed || showBack ? (
+                    <WhiteBar
+                        black={!dark}
+                        offWhite={dark}
+                        showLogo={false}
+                        goBack={this.prevPage}
+                        showBack={showBack}
+                        showHelp={page === 3}
+                        squashed={squashed}
+                    />
+                ) : (
+                    <View style={{ height: 16 }} />
+                )}
                 <View style={styles.pager}>
                     {this.currentScreen({
                         componentId,
                         page,
                         bottomMargin,
                         firstHadPermission,
+                        squashed,
                     })}
                 </View>
             </View>
@@ -150,13 +167,22 @@ class AddHardware extends React.PureComponent {
     }
 }
 
-const AddHardwareWithProvider = props => (
-    <SafeAreaProvider>
-        <SafeAreaConsumer>
-            {insets => <AddHardware insets={insets} {...props} />}
-        </SafeAreaConsumer>
-    </SafeAreaProvider>
-);
+const AddHardwareWithProvider = props => {
+    const dimensions = useDimensions();
+    return (
+        <SafeAreaProvider>
+            <SafeAreaConsumer>
+                {insets => (
+                    <AddHardware
+                        insets={insets}
+                        dimensions={dimensions}
+                        {...props}
+                    />
+                )}
+            </SafeAreaConsumer>
+        </SafeAreaProvider>
+    );
+};
 
 const mapStateToProps = ({ user: { permissions } }) => ({
     locationPermission:

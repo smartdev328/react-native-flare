@@ -89,6 +89,7 @@ class FlowScreen extends React.Component {
             registrationState,
             forceError = undefined,
             insets,
+            squashed,
         } = this.props;
         const { showPassword, error } = this.state;
 
@@ -101,9 +102,9 @@ class FlowScreen extends React.Component {
             <KeyboardAvoidingView
                 behavior="padding"
                 keyboardVerticalOffset={72 + insets.bottom}
-                style={[styles.container]}
+                style={styles.container}
             >
-                <Headline>{headline}</Headline>
+                <Headline squashed={squashed}>{headline}</Headline>
                 <TextField
                     ref={textFieldRef}
                     label={label}

@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
+import useDimensions from '../../bits/useDimensions';
+import { MIN_NON_SQUASHED_HEIGHT } from '../../constants/Config';
 
 const styles = StyleSheet.create({
     container: {
@@ -15,6 +17,9 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
+    },
+    containerSquashed: {
+        paddingHorizontal: 16,
     },
     head: {
         fontFamily: 'Nocturno Display Std',
@@ -120,31 +125,37 @@ const BottomSheet = ({
     cardHead,
     cardBody,
     ...props
-}) => (
-    <Animated.View
-        style={[
-            styles.container,
-            { paddingBottom: 48 + extraPaddingBottom },
-            style,
-        ]}
-        {...props}
-    >
-        {postDemo ? (
-            <Nice
-                addToContacts={addToContacts}
-                nextScenario={nextScenario}
-                finishUp={finishUp}
-                busy={busy}
-            />
-        ) : (
-            <WouldYouRather
-                fakeCall={fakeCall}
-                textCrew={textCrew}
-                cardHead={cardHead}
-                cardBody={cardBody}
-            />
-        )}
-    </Animated.View>
-);
+}) => {
+    const dimensions = useDimensions();
+    const squashed = dimensions.height < MIN_NON_SQUASHED_HEIGHT;
+
+    return (
+        <Animated.View
+            style={[
+                styles.container,
+                { paddingBottom: (squashed ? 24 : 48) + extraPaddingBottom },
+                squashed ? styles.containerSquashed : undefined,
+                style,
+            ]}
+            {...props}
+        >
+            {postDemo ? (
+                <Nice
+                    addToContacts={addToContacts}
+                    nextScenario={nextScenario}
+                    finishUp={finishUp}
+                    busy={busy}
+                />
+            ) : (
+                <WouldYouRather
+                    fakeCall={fakeCall}
+                    textCrew={textCrew}
+                    cardHead={cardHead}
+                    cardBody={cardBody}
+                />
+            )}
+        </Animated.View>
+    );
+};
 
 export default BottomSheet;
