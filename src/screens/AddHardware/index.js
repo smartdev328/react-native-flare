@@ -74,6 +74,7 @@ class AddHardware extends React.PureComponent {
         page,
         bottomMargin,
         firstHadPermission,
+        squashed,
     }) => {
         switch (page) {
             case 0:
@@ -105,6 +106,7 @@ class AddHardware extends React.PureComponent {
                 return (
                     <Pairing
                         style={[bottomMargin, StyleSheet.absoluteFill]}
+                        squashed={squashed}
                         nextPage={this.nextPage}
                     />
                 );
@@ -157,6 +159,7 @@ class AddHardware extends React.PureComponent {
                         page,
                         bottomMargin,
                         firstHadPermission,
+                        squashed,
                     })}
                 </View>
             </View>

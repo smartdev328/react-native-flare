@@ -10,25 +10,27 @@ import { startBleListening } from '../../../actions/hardwareActions';
 import { resetClaim } from '../../../actions/deviceActions';
 import { setPreferredPairingMethod } from '../../../actions/regActions';
 
+const selector = ({
+    user: {
+        claimingDevice,
+        claimedDevice,
+        claimingDeviceFailure,
+        authToken: stateAuthToken,
+        reg: { preferredPairing, foundDevice },
+    },
+}) => ({
+    busy: claimingDevice,
+    finished: !!claimedDevice,
+    error: claimingDeviceFailure,
+    method: preferredPairing,
+    device: foundDevice,
+    authToken: stateAuthToken,
+});
+
 const Pairing = ({ nextPage, ...props }) => {
     const dispatch = useDispatch();
     const { busy, finished, error, authToken, method, device } = useSelector(
-        ({
-            user: {
-                claimingDevice,
-                claimedDevice,
-                claimingDeviceFailure,
-                authToken: stateAuthToken,
-                reg: { preferredPairing, foundDevice },
-            },
-        }) => ({
-            busy: claimingDevice,
-            finished: !!claimedDevice,
-            error: claimingDeviceFailure,
-            method: preferredPairing,
-            device: foundDevice,
-            authToken: stateAuthToken,
-        })
+        selector
     );
     const submit = React.useCallback(
         ({ deviceId, secondFactor }) => {

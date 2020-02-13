@@ -20,7 +20,7 @@ const parseDeviceId = fullId => {
     };
 };
 
-const Manual = ({ submit, busy, reset, error }) => {
+const Manual = ({ submit, busy, reset, error, squashed }) => {
     const [serial, setSerial] = React.useState('');
     const parse = parseDeviceId(serial);
     const onPress = React.useCallback(() => {
@@ -36,14 +36,17 @@ const Manual = ({ submit, busy, reset, error }) => {
         [reset]
     );
     const insets = useSafeArea();
+    const keyboardVerticalOffset = (squashed ? 84 : 96) + insets.bottom;
 
     return (
         <KeyboardAvoidingView
             style={[styles.scrollContainer, { paddingTop: 0 }]}
-            keyboardVerticalOffset={96 + insets.bottom}
+            keyboardVerticalOffset={keyboardVerticalOffset}
             behavior="padding"
         >
-            <Headline>Enter your Flare serial number</Headline>
+            <Headline squashed={squashed}>
+                Enter your Flare serial number
+            </Headline>
             <CuffPreview
                 style={{ alignSelf: 'center', marginTop: 8 }}
                 onChangeText={onChangeText}
