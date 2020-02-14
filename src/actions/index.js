@@ -5,6 +5,6 @@ export {
     fetchContacts,
     setPrivacyConfig,
 } from './userActions';
-export { signIn, signOut, resetAuth } from './authActions';
+export { signIn, signOut, resetAuth, setAuthFailure } from './authActions';
 export { setBluetoothState, startBleListening } from './hardwareActions';
 export { shareFlare } from './shareFlare';

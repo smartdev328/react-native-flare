@@ -21,6 +21,8 @@ import RoundedButton from '../../bits/RoundedButton';
 import * as actions from '../../actions';
 
 import aura1521 from '../../assets/aura-1521.jpg';
+import { EMAIL_REGEX } from './validators';
+import { formatPhone } from '../../bits/cleanPhone';
 
 const styles = StyleSheet.create({
     container: {
@@ -62,7 +64,7 @@ class Signin extends React.Component {
         super();
 
         this.state = {
-            email: '',
+            emailOrPhone: '',
             password: '',
             showPassword: false,
         };
@@ -76,7 +78,7 @@ class Signin extends React.Component {
     }
 
     goToPassword = () => {
-        this.passwordRef.current.focus();
+        this.passwordRef.current?.focus();
     };
 
     togglePassword = () => {
@@ -97,7 +99,7 @@ class Signin extends React.Component {
 
     emailChange = text => {
         const { resetAuth } = this.props;
-        this.setState({ email: text });
+        this.setState({ emailOrPhone: text });
         resetAuth();
     };
 
@@ -107,17 +109,36 @@ class Signin extends React.Component {
         resetAuth();
     };
 
+    parseEmailOrPhone = () => {
+        const { emailOrPhone } = this.state;
+        if (typeof emailOrPhone !== 'string') {
+            return {};
+        } else if (EMAIL_REGEX.test(emailOrPhone.trim())) {
+            return { email: emailOrPhone.trim() };
+        } else {
+            const phone = formatPhone(emailOrPhone);
+            if (phone) {
+                return { phone };
+            } else {
+                return {};
+            }
+        }
+    };
+
     submit = () => {
-        const { signIn } = this.props;
-        const { email, password } = this.state;
+        const { signIn, setAuthFailure } = this.props;
+        const { password } = this.state;
+
+        const { email, phone } = this.parseEmailOrPhone();
 
         if (
-            typeof email === 'string' &&
+            (typeof email === 'string' || typeof phone === 'string') &&
             typeof password === 'string' &&
-            email.trim().length > 0 &&
             password.length > 0
         ) {
-            signIn(email.trim(), password);
+            signIn(email, phone, password);
+        } else {
+            setAuthFailure();
         }
     };
 
@@ -145,7 +166,7 @@ class Signin extends React.Component {
                     <FieldsWrapper>
                         <TextField
                             ref={this.emailRef}
-                            label="Email address"
+                            label="Phone number or email address"
                             textColor={Colors.theme.cream}
                             tintColor={Colors.theme.cream}
                             baseColor={Colors.theme.cream}
@@ -171,7 +192,7 @@ class Signin extends React.Component {
                             secureTextEntry={!showPassword}
                             autoCapitalize="none"
                             autoCorrect={false}
-                            onSubmitEditing={this.onSubmit}
+                            onSubmitEditing={this.submit}
                             returnKeyType="done"
                             textContentType="password"
                             renderRightAccessory={this.renderAccessory}
@@ -213,6 +234,7 @@ const mapStateToProps = ({ user: { authState } }) => ({
 const mapDispatchToProps = {
     signIn: actions.signIn,
     resetAuth: actions.resetAuth,
+    setAuthFailure: actions.setAuthFailure,
 };
 
 export default connect(

@@ -6,13 +6,14 @@ import * as types from './actionTypes';
 import Roles from '../constants/Roles';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 
-export const signIn = (email, password) => async dispatch => {
+export const signIn = (email, phone, password) => async dispatch => {
     try {
         dispatch({
             type: types.AUTH_REQUEST,
         });
         const response = await axios.post(`${API_URL}/auth/login`, {
             email,
+            phone,
             password,
         });
 
@@ -38,6 +39,8 @@ export const signIn = (email, password) => async dispatch => {
         });
     }
 };
+
+export const setAuthFailure = () => ({ type: types.AUTH_FAILURE });
 
 export const registerNewAccount = ({
     email,
