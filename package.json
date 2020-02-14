@@ -1,6 +1,6 @@
 {
     "name": "GetFlare",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "private": true,
     "scripts": {
         "postinstall": "patch-package",
@@ -8,7 +8,7 @@
         "ios": "react-native run-ios",
         "start": "react-native start",
         "test": "jest",
-        "postversion": "react-native-version"
+        "postversion": "react-native-version -A"
     },
     "dependencies": {
         "@babel/runtime": "^7.7.6",
