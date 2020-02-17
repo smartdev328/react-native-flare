@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    FlatList,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { FlatList, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import isPlainObject from 'lodash/isPlainObject';
@@ -21,8 +14,10 @@ import count from '../../bits/count';
 import useBluetoothStatus from '../../bits/useBluetoothStatus';
 import { registerPermissionDetection } from '../../bits/NativeEmitters';
 import { useCards } from './Cards';
+import Warning from '../Warning';
 
 import aura1528 from '../../assets/aura-1528.jpg';
+import { Navigation } from 'react-native-navigation';
 
 const styles = StyleSheet.create({
     container: {
@@ -106,10 +101,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Nocturno Display Std',
     },
-    scroll: {
-        flex: 1,
-        alignSelf: 'stretch',
-    },
 });
 
 const mapState = ({
@@ -178,6 +169,15 @@ const SoftLand = ({ componentId }) => {
         [cardWidth]
     );
 
+    const bluetoothHelp = React.useCallback(() => {
+        Navigation.showModal({
+            component: {
+                name: 'com.flarejewelry.app.PermissionsReminder',
+                passProps: { bluetooth: true },
+            },
+        });
+    }, []);
+
     // preload list of call scripts if we've never seen them before, so as to
     // lower the odds of them being not yet available when we want to show
     // the UI
@@ -191,30 +191,28 @@ const SoftLand = ({ componentId }) => {
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
             <Aura source={aura1528} />
-            <ScrollView
-                style={styles.scroll}
-                contentContainerStyle={{
-                    alignItems: 'center',
-                    paddingBottom: insets.bottom + 32,
-                }}
-            >
-                <Text style={styles.headline}>Your Safety Setup</Text>
-                <Constellation count={doneCount} />
-                <FlatList
-                    style={styles.list}
-                    contentContainerStyle={styles.listContainer}
-                    data={undoneItems}
-                    extraData={cardWidth}
-                    renderItem={renderItem}
-                    horizontal
-                    ListHeaderComponent={<View style={styles.spacer} />}
-                    ListFooterComponent={<View style={styles.spacer} />}
-                    snapToAlignment="start"
-                    snapToInterval={cardWidth}
-                    decelerationRate="fast"
-                    getItemLayout={getItemLayout}
-                />
-            </ScrollView>
+            <Text style={styles.headline}>Your Safety Setup</Text>
+            <Constellation count={doneCount} />
+            <FlatList
+                style={styles.list}
+                contentContainerStyle={styles.listContainer}
+                data={undoneItems}
+                extraData={cardWidth}
+                renderItem={renderItem}
+                horizontal
+                ListHeaderComponent={<View style={styles.spacer} />}
+                ListFooterComponent={<View style={styles.spacer} />}
+                snapToAlignment="start"
+                snapToInterval={cardWidth}
+                decelerationRate="fast"
+                getItemLayout={getItemLayout}
+            />
+            {bluetoothStatus === 'off' ? (
+                <Warning onPress={bluetoothHelp} bottomInset={insets.bottom}>
+                    Bluetooth is currently turned off on your device. You must
+                    turn it on to connect to your jewelry.
+                </Warning>
+            ) : null}
         </View>
     );
 };

@@ -99,14 +99,17 @@ const PermissionsScreen = ({
             text="Visit Settings 👆"
             onPress={visitSettings}
             width={240}
+            wrapperStyle={styles.spacedButton}
         />
-        <RoundedButton
-            text="Why do you need it?"
-            onPress={tellMeMore}
-            invisible
-            width={240}
-            wrapperStyle={{ marginVertical: 12 }}
-        />
+        {typeof tellMeMore === 'function' ? (
+            <RoundedButton
+                text="Why do you need it?"
+                onPress={tellMeMore}
+                invisible
+                width={240}
+                wrapperStyle={styles.spacedButton}
+            />
+        ) : null}
     </View>
 );
 

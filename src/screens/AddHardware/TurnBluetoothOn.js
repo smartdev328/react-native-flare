@@ -42,8 +42,14 @@ const Extra = () => (
     </>
 );
 
-const TurnBluetoothOn = ({ style, tellMeMore, bluetoothStatus, nextPage }) => {
-    const [didAdvance, setDidAdvance] = React.useState();
+const TurnBluetoothOn = ({
+    style,
+    tellMeMore,
+    bluetoothStatus,
+    nextPage,
+    force = false,
+}) => {
+    const [didAdvance, setDidAdvance] = React.useState(force);
 
     React.useEffect(() => {
         if (bluetoothStatus === 'on' && !didAdvance) {

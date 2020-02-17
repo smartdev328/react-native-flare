@@ -1,9 +1,32 @@
 import * as React from 'react';
-import { Animated, Easing, Text } from 'react-native';
+import {
+    Animated,
+    Easing,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+} from 'react-native';
 
-import styles from './styles';
+import Colors from '../bits/Colors';
 
-const Warning = ({ bottomInset = 0, children }) => {
+const styles = StyleSheet.create({
+    warning: {
+        alignSelf: 'stretch',
+        marginTop: 'auto',
+        padding: 24,
+        backgroundColor: '#1e1d2a',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+    },
+    warningText: {
+        color: Colors.theme.cream,
+        fontSize: 14,
+    },
+});
+
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+
+const Warning = ({ bottomInset = 0, children, onPress }) => {
     const [translation] = React.useState(() => new Animated.Value(1000));
     const containerStyles = React.useMemo(
         () => [
@@ -32,10 +55,17 @@ const Warning = ({ bottomInset = 0, children }) => {
         [translation]
     );
 
+    const Container =
+        typeof onPress === 'function' ? AnimatedTouchable : Animated.View;
+
     return (
-        <Animated.View style={containerStyles} onLayout={onLayout}>
+        <Container
+            style={containerStyles}
+            onLayout={onLayout}
+            onPress={onPress}
+        >
             <Text style={styles.warningText}>{children}</Text>
-        </Animated.View>
+        </Container>
     );
 };
 
