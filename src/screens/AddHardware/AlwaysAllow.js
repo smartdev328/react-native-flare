@@ -1,73 +1,14 @@
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import styles from './styles';
-import Headline from '../Onboarding/Headline';
-import Colors from '../../bits/Colors';
-import RoundedButton from '../../bits/RoundedButton';
+import PermissionsScreen, { TaskItem } from './PermissionsScreen';
 import { openSettings } from '../../bits/settingsUrl';
-import useBluetoothStatus from '../../bits/useBluetoothStatus';
-
-import locationIcon from '../../assets/ios-location-icon.png';
-import bluetoothIcon from '../../assets/ios-bluetooth-icon.png';
 import { registerPermissionDetection } from '../../bits/NativeEmitters';
 
-const localStyles = StyleSheet.create({
-    cardContainer: {
-        backgroundColor: Colors.white,
-        alignSelf: 'stretch',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        borderRadius: 30,
-        shadowColor: '#505C62',
-        shadowOffset: { width: 0, height: 5 },
-        shadowRadius: 10,
-        shadowOpacity: 0.13,
-    },
-    taskContainer: {
-        flexDirection: 'row',
-        paddingHorizontal: 12,
-        height: 56,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
-    taskContainerBorder: {
-        borderTopWidth: 1,
-        borderTopColor: '#F0F3F4',
-    },
-    taskIcon: {
-        width: 26,
-        height: 25,
-    },
-    taskEmoji: {
-        textAlign: 'center',
-        fontSize: 20,
-    },
-    taskText: {
-        marginLeft: 16,
-        fontSize: 20,
-        fontFamily: 'Nocturno Display Std',
-    },
-});
-
-const TaskItem = ({ emoji, icon, text, first = false }) => (
-    <View
-        style={[
-            localStyles.taskContainer,
-            first ? undefined : localStyles.taskContainerBorder,
-        ]}
-    >
-        {typeof emoji === 'string' ? (
-            <Text style={[localStyles.taskIcon, localStyles.taskEmoji]}>
-                {emoji}
-            </Text>
-        ) : (
-            <Image source={icon} style={localStyles.taskIcon} />
-        )}
-        <Text style={localStyles.taskText}>{text}</Text>
-    </View>
-);
+import icon29 from '../../assets/Icon-29.png';
+import locationIcon from '../../assets/ios-location-icon.png';
+import bluetoothIcon from '../../assets/ios-bluetooth-icon.png';
 
 const AlwaysAllow = ({
     nextPage,
@@ -75,6 +16,7 @@ const AlwaysAllow = ({
     tellMeMore,
     force = false,
     firstHadPermission,
+    bluetoothStatus,
 }) => {
     const [visitedSettings, setVisitedSettings] = React.useState(false);
     const [didAdvance, setDidAdvance] = React.useState(force);
@@ -86,8 +28,6 @@ const AlwaysAllow = ({
             'location' in permissions &&
             permissions.location
     );
-
-    const bluetoothStatus = useBluetoothStatus();
 
     React.useEffect(() => {
         // iOS 13 and later grant a provisional allow-always permission. if we
@@ -101,7 +41,7 @@ const AlwaysAllow = ({
         if (
             (!mustClickButton || visitedSettings) &&
             locationPermission &&
-            bluetoothStatus === 'on' &&
+            (bluetoothStatus === 'on' || bluetoothStatus === 'off') &&
             !didAdvance
         ) {
             setDidAdvance(true);
@@ -123,46 +63,23 @@ const AlwaysAllow = ({
 
     React.useEffect(() => registerPermissionDetection(dispatch), [dispatch]);
 
-    const showBluetoothLine = !['on', ''].includes(bluetoothStatus);
+    const showBluetoothLine = !['on', 'off', ''].includes(bluetoothStatus);
 
     return (
-        <View style={[styles.centerContainer, ...style]}>
-            <Headline style={styles.headline}>“Always Allow”</Headline>
-            <View style={styles.line} />
-            <Text style={[styles.subhead, { textAlign: 'center' }]}>
-                Our connected jewelry only works if it can “always” access your
-                location and Bluetooth is turned on.
-            </Text>
-            <View style={styles.spacer} />
-            <View style={localStyles.cardContainer}>
-                <TaskItem emoji="👆" text="Visit Settings" first />
-                <TaskItem icon={locationIcon} text="Tap “Location”" />
-                <TaskItem emoji="✨" text="Select “Always”" />
-                {showBluetoothLine && (
-                    <TaskItem
-                        icon={bluetoothIcon}
-                        text={
-                            bluetoothStatus === 'off'
-                                ? 'Ensure Bluetooth is “on”'
-                                : 'Turn “Bluetooth” on'
-                        }
-                    />
-                )}
-            </View>
-            <View style={styles.spacer} />
-            <RoundedButton
-                text="Visit Settings 👆"
-                onPress={visitSettings}
-                width={240}
-            />
-            <RoundedButton
-                text="Why do you need it?"
-                onPress={tellMeMore}
-                invisible
-                width={240}
-                wrapperStyle={{ marginVertical: 12 }}
-            />
-        </View>
+        <PermissionsScreen
+            style={style}
+            headline="“Always Allow”"
+            subhead="Our connected jewelry only works if it can “always” access your location and Bluetooth is turned on."
+            visitSettings={visitSettings}
+            tellMeMore={tellMeMore}
+        >
+            <TaskItem icon={icon29} text="Visit Flare Settings" first />
+            <TaskItem icon={locationIcon} text="Tap “Location”" />
+            <TaskItem emoji="✨" text="Select “Always”" />
+            {showBluetoothLine && (
+                <TaskItem icon={bluetoothIcon} text="Turn “Bluetooth” on" />
+            )}
+        </PermissionsScreen>
     );
 };
 

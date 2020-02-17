@@ -19,6 +19,8 @@ import useDimensions from '../../bits/useDimensions';
 import { MIN_NON_SQUASHED_HEIGHT } from '../../constants/Config';
 
 import aura1519 from '../../assets/aura-1519.jpg';
+import useBluetoothStatus from '../../bits/useBluetoothStatus';
+import TurnBluetoothOn from './TurnBluetoothOn';
 
 export { default as HowToConnect } from './HowToConnect';
 export { default as AboutPermissions } from './AboutPermissions';
@@ -27,22 +29,32 @@ class AddHardware extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            page: props.additionalHardware ? 2 : 0,
+            page: props.additionalHardware ? 3 : 0,
             firstHadPermission: props.locationPermission,
         };
     }
 
+    advancePages = n => {
+        this.setState(({ page }) => ({
+            page: Math.max(Math.min(page + n, 5), 0),
+        }));
+    };
+
     nextPage = () => {
-        this.setState(({ page }) => ({ page: Math.min(page + 1, 4) }));
+        this.advancePages(1);
+    };
+
+    skipPage = () => {
+        this.advancePages(2);
     };
 
     prevPage = () => {
         const { additionalHardware, componentId } = this.props;
         const { page: currentPage } = this.state;
-        if (additionalHardware && currentPage === 2) {
+        if (additionalHardware && currentPage === 3) {
             Navigation.pop(componentId);
         } else {
-            this.setState(({ page }) => ({ page: Math.max(page - 1, 0) }));
+            this.advancePages(-1);
         }
     };
 
@@ -75,6 +87,7 @@ class AddHardware extends React.PureComponent {
         bottomMargin,
         firstHadPermission,
         squashed,
+        bluetoothStatus,
     }) => {
         switch (page) {
             case 0:
@@ -89,12 +102,26 @@ class AddHardware extends React.PureComponent {
                 return (
                     <AlwaysAllow
                         style={[bottomMargin, StyleSheet.absoluteFill]}
-                        nextPage={this.nextPage}
+                        nextPage={
+                            bluetoothStatus === 'off'
+                                ? this.nextPage
+                                : this.skipPage
+                        }
                         tellMeMore={this.aboutPermissions}
                         firstHadPermission={firstHadPermission}
+                        bluetoothStatus={bluetoothStatus}
                     />
                 );
             case 2:
+                return (
+                    <TurnBluetoothOn
+                        style={[bottomMargin, StyleSheet.absoluteFill]}
+                        nextPage={this.nextPage}
+                        tellMeMore={this.aboutPermissions}
+                        bluetoothStatus={bluetoothStatus}
+                    />
+                );
+            case 3:
                 return (
                     <GetStarted
                         style={[StyleSheet.absoluteFill]}
@@ -102,7 +129,7 @@ class AddHardware extends React.PureComponent {
                         nextPage={this.nextPage}
                     />
                 );
-            case 3:
+            case 4:
                 return (
                     <Pairing
                         style={[bottomMargin, StyleSheet.absoluteFill]}
@@ -110,7 +137,7 @@ class AddHardware extends React.PureComponent {
                         nextPage={this.nextPage}
                     />
                 );
-            case 4:
+            case 5:
                 return (
                     <Success
                         style={[bottomMargin, StyleSheet.absoluteFill]}
@@ -128,13 +155,14 @@ class AddHardware extends React.PureComponent {
             insets,
             dimensions,
             additionalHardware,
+            bluetoothStatus,
         } = this.props;
         const { page, firstHadPermission } = this.state;
 
         const bottomMargin = { marginBottom: insets.bottom };
-        const dark = page === 2 || page === 3;
+        const dark = page === 3 || page === 4;
         const squashed = dimensions.height < MIN_NON_SQUASHED_HEIGHT;
-        const showBack = (page === 2 && additionalHardware) || page === 3;
+        const showBack = (page === 3 && additionalHardware) || page === 4;
 
         return (
             <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -147,7 +175,7 @@ class AddHardware extends React.PureComponent {
                         showLogo={false}
                         goBack={this.prevPage}
                         showBack={showBack}
-                        showHelp={page === 3}
+                        showHelp={page === 4}
                         squashed={squashed}
                     />
                 ) : (
@@ -160,6 +188,7 @@ class AddHardware extends React.PureComponent {
                         bottomMargin,
                         firstHadPermission,
                         squashed,
+                        bluetoothStatus,
                     })}
                 </View>
             </View>
@@ -169,6 +198,8 @@ class AddHardware extends React.PureComponent {
 
 const AddHardwareWithProvider = props => {
     const dimensions = useDimensions();
+    const bluetoothStatus = useBluetoothStatus();
+
     return (
         <SafeAreaProvider>
             <SafeAreaConsumer>
@@ -176,6 +207,7 @@ const AddHardwareWithProvider = props => {
                     <AddHardware
                         insets={insets}
                         dimensions={dimensions}
+                        bluetoothStatus={bluetoothStatus}
                         {...props}
                     />
                 )}
