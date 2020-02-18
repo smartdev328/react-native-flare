@@ -49,6 +49,13 @@ export const styles = StyleSheet.create({
         borderColor,
         borderTopWidth: 1,
     },
+    action: {
+        flexDirection: 'row',
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        paddingHorizontal: 12,
+        marginRight: -12,
+    },
     icon: {
         width: 24,
         height: 24,

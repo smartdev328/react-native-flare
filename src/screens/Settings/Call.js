@@ -3,6 +3,7 @@ import { SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
 import isPlainObject from 'lodash/isPlainObject';
 import { Navigation } from 'react-native-navigation';
+import Video from 'react-native-video';
 
 import * as userActions from '../../actions/userActions';
 import RadioGroup from './RadioGroup';
@@ -24,6 +25,17 @@ const SettingsCall = ({
     const [currentCallScript, setCurrentCallScript] = React.useState(
         savedCallScript
     );
+    const [currentlyPlaying, setCurrentlyPlaying] = React.useState();
+    const playingUri = React.useMemo(
+        () =>
+            typeof currentlyPlaying === 'string'
+                ? { uri: currentlyPlaying }
+                : undefined,
+        [currentlyPlaying]
+    );
+    const clearPlaying = React.useCallback(() => {
+        setCurrentlyPlaying();
+    }, []);
 
     const onCallScriptSelected = React.useCallback(script => {
         setCurrentCallScript(script);
@@ -73,12 +85,17 @@ const SettingsCall = ({
 
     const pickerItems = React.useMemo(() => {
         if (isPlainObject(callScripts)) {
-            return Object.entries(callScripts)
-                .filter(([id]) => id !== 'FounderIntro')
-                .map(([, { script_name: label, script_id: key }]) => ({
+            return Object.values(callScripts).map(
+                ({
+                    script_name: label,
+                    script_id: key,
+                    preview_url: preview,
+                }) => ({
                     key,
                     label,
-                }));
+                    preview,
+                })
+            );
         } else {
             return [];
         }
@@ -87,11 +104,22 @@ const SettingsCall = ({
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" />
+            {currentlyPlaying ? (
+                <Video
+                    audioOnly
+                    source={playingUri}
+                    onEnd={clearPlaying}
+                    ignoreSilentSwitch="ignore"
+                />
+            ) : null}
             <Text style={styles.subhead}>Select what you’ll hear</Text>
             <RadioGroup
                 items={pickerItems}
                 selectedItem={currentCallScript}
                 onSelected={onCallScriptSelected}
+                onPlay={setCurrentlyPlaying}
+                onStop={clearPlaying}
+                playingPreview={currentlyPlaying}
             />
             <Text style={styles.explain}>
                 Select which call you’ll hear when you press your cuff once.
