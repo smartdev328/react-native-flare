@@ -5,8 +5,14 @@ import { Navigation } from 'react-native-navigation';
 import Colors from '../../bits/Colors';
 import WhiteBar from '../Onboarding/WhiteBar';
 import AlwaysAllow from '../AddHardware/AlwaysAllow';
+import TurnBluetoothOn from '../AddHardware/TurnBluetoothOn';
+import useBluetoothStatus from '../../bits/useBluetoothStatus';
 
-const PermissionsReminder = ({ componentId }) => {
+const PermissionsReminder = ({ componentId, bluetooth = false }) => {
+    const bluetoothStatus = useBluetoothStatus();
+
+    const flex = React.useMemo(() => [{ flex: 1 }], []);
+
     const close = React.useCallback(() => {
         Navigation.dismissModal(componentId);
     }, [componentId]);
@@ -30,12 +36,22 @@ const PermissionsReminder = ({ componentId }) => {
         >
             <StatusBar barStyle="dark-content" />
             <WhiteBar showBack showLogo={false} black goBack={close} />
-            <AlwaysAllow
-                nextPage={close}
-                tellMeMore={tellMeMore}
-                force
-                style={[{ flex: 1 }]}
-            />
+            {bluetooth ? (
+                <TurnBluetoothOn
+                    nextPage={close}
+                    tellMeMore={tellMeMore}
+                    style={flex}
+                    bluetoothStatus={bluetoothStatus}
+                    force
+                />
+            ) : (
+                <AlwaysAllow
+                    nextPage={close}
+                    tellMeMore={tellMeMore}
+                    force
+                    style={flex}
+                />
+            )}
         </SafeAreaView>
     );
 };

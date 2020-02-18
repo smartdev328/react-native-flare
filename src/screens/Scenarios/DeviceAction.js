@@ -10,7 +10,7 @@ import RoundedButton from '../../bits/RoundedButton';
 import Cuff from '../Cuff';
 import useDimensions from '../../bits/useDimensions';
 import { MIN_NON_SQUASHED_HEIGHT } from '../../constants/Config';
-import Warning from './Warning';
+import Warning from '../Warning';
 
 import aura1519 from '../../assets/aura-1519.jpg';
 

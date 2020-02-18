@@ -91,6 +91,15 @@ const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
     return (
         <>
             <Text style={styles.head}>Nice.</Text>
+            {didCall && !didAddToContacts && (
+                <RoundedButton
+                    useGradient={false}
+                    wrapperStyle={styles.buttonMargin}
+                    onPress={addToContacts}
+                    text="Add Flare to Contacts 😉"
+                    width={242}
+                />
+            )}
             <RoundedButton
                 useGradient
                 wrapperStyle={styles.buttonMargin}
@@ -99,15 +108,6 @@ const Nice = ({ nextScenario, addToContacts, finishUp, busy }) => {
                 busy={busy}
                 width={242}
             />
-            {didCall && !didAddToContacts && (
-                <RoundedButton
-                    useGradient={false}
-                    wrapperStyle={styles.buttonMargin}
-                    onPress={addToContacts}
-                    text="Add Flare to Contacts"
-                    width={242}
-                />
-            )}
         </>
     );
 };
