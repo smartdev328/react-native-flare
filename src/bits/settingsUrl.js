@@ -12,3 +12,5 @@ export const openSettings = async () => {
     const url = await getUrl();
     return Linking.openURL(url);
 };
+
+export const deviceId = module.deviceId;
