@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, useSafeArea } from 'react-native-safe-area-context';
 import { Navigation } from 'react-native-navigation';
+import MaskedView from '@react-native-community/masked-view';
 
 import * as actions from '../actions';
 import { LEFT_NAVIGATION_WIDTH } from '../constants/Config';
@@ -10,7 +11,10 @@ import Colors from '../bits/Colors';
 import RandomImage from '../bits/RandomImage';
 import Strings from '../locales/en';
 import contactSupport from '../bits/contactSupport';
+import Aura from '../bits/Aura';
+import useDimensions from '../bits/useDimensions';
 
+import aura3 from '../assets/aura-3.jpg';
 import iconCrew from '../assets/menu-item-crew.png';
 import iconHome from '../assets/menu-item-home.png';
 import iconProfile from '../assets/menu-item-profile.png';
@@ -30,6 +34,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme.cream,
         paddingHorizontal: 32,
         width: LEFT_NAVIGATION_WIDTH,
+        justifyContent: 'flex-end',
     },
     menuItem: {
         alignSelf: 'stretch',
@@ -45,19 +50,11 @@ const styles = StyleSheet.create({
         height: 36,
         resizeMode: 'center',
         marginRight: 12,
-        tintColor: Colors.theme.black,
+        tintColor: Colors.theme.cream,
     },
     menuItemText: {
-        fontFamily: 'Nocturno Display Std',
-        fontSize: 16,
-        color: Colors.theme.black,
-    },
-    topImage: {
-        width: 180,
-        height: 300,
-        marginBottom: 'auto',
-        alignSelf: 'center',
-        resizeMode: 'contain',
+        fontSize: 18,
+        color: Colors.theme.cream,
     },
 });
 
@@ -72,6 +69,7 @@ const MenuItem = ({ onPress, label, icon, style }) => (
 
 const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
     const insets = useSafeArea();
+    const dimensions = useDimensions();
 
     const handleHome = React.useCallback(() => {
         changeAppRoot('secure');
@@ -105,6 +103,51 @@ const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
         });
     }, []);
 
+    const topImageSize = dimensions.height * 1.1;
+    const computedStyles = React.useMemo(
+        () => ({
+            purpleCircle: {
+                position: 'absolute',
+                backgroundColor: '#4C5282',
+                left: 75,
+                top: -354,
+                width: topImageSize,
+                height: topImageSize,
+                borderRadius: topImageSize / 2,
+            },
+            orangeCircle: {
+                position: 'absolute',
+                backgroundColor: '#F9885E',
+                left: 25,
+                top: -337,
+                width: topImageSize,
+                height: topImageSize,
+                borderRadius: topImageSize / 2,
+                opacity: 0.34,
+            },
+            maskContainer: {
+                position: 'absolute',
+                left: 60,
+                top: -210,
+                width: topImageSize,
+                height: topImageSize,
+            },
+            mask: {
+                width: topImageSize,
+                height: topImageSize,
+                borderRadius: topImageSize / 2,
+                backgroundColor: 'black',
+            },
+            topImageStyle: {
+                width: topImageSize / 2,
+                height: topImageSize - 20,
+                resizeMode: 'cover',
+                opacity: 0.32,
+            },
+        }),
+        [topImageSize]
+    );
+
     return (
         <View
             style={[
@@ -115,45 +158,50 @@ const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
                 },
             ]}
         >
-            <RandomImage sources={imageSources} style={styles.topImage} />
-            <View>
-                <MenuItem
-                    onPress={handleHome}
-                    label={Strings.leftDrawer.home}
-                    icon={iconHome}
+            <Aura source={aura3} />
+            <View style={computedStyles.purpleCircle} />
+            <View style={computedStyles.orangeCircle} />
+            <MaskedView
+                style={computedStyles.maskContainer}
+                maskElement={<View style={computedStyles.mask} />}
+            >
+                <RandomImage
+                    sources={imageSources}
+                    style={computedStyles.topImageStyle}
                 />
-                <MenuItem
-                    onPress={handleCrew}
-                    label="My Crew"
-                    icon={iconCrew}
-                />
-                <MenuItem
-                    onPress={handleSettings}
-                    label={Strings.leftDrawer.settings}
-                    icon={iconSettings}
-                />
-                <MenuItem
-                    onPress={handleAccount}
-                    label="My Account"
-                    icon={iconProfile}
-                />
-                <MenuItem
-                    onPress={handleShare}
-                    label="Share Flare"
-                    icon={iconShare}
-                />
-                <MenuItem
-                    style={styles.padded}
-                    onPress={howFlareWorks}
-                    label="How Flare Works"
-                    icon={iconInfo}
-                />
-                <MenuItem
-                    onPress={handleSupport}
-                    label="Contact Support"
-                    icon={iconContact}
-                />
-            </View>
+            </MaskedView>
+            <MenuItem
+                onPress={handleHome}
+                label={Strings.leftDrawer.home}
+                icon={iconHome}
+            />
+            <MenuItem onPress={handleCrew} label="My Crew" icon={iconCrew} />
+            <MenuItem
+                onPress={handleSettings}
+                label={Strings.leftDrawer.settings}
+                icon={iconSettings}
+            />
+            <MenuItem
+                onPress={handleAccount}
+                label="My Account"
+                icon={iconProfile}
+            />
+            <MenuItem
+                onPress={handleShare}
+                label="Share Flare"
+                icon={iconShare}
+            />
+            <MenuItem
+                style={styles.padded}
+                onPress={howFlareWorks}
+                label="How Flare Works"
+                icon={iconInfo}
+            />
+            <MenuItem
+                onPress={handleSupport}
+                label="Contact Support"
+                icon={iconContact}
+            />
         </View>
     );
 };

@@ -265,6 +265,8 @@ PODS:
     - React
   - RNCAsyncStorage (1.6.2):
     - React
+  - RNCMaskedView (0.1.6):
+    - React
   - RNCPushNotificationIOS (1.0.2):
     - React
   - RNPermissions (2.0.8):
@@ -322,6 +324,7 @@ DEPENDENCIES:
   - ReactNativeNavigation (from `../node_modules/react-native-navigation/ReactNativeNavigation.podspec`)
   - "RNBluetoothInfo (from `../node_modules/@bitfly/react-native-bluetooth-info`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -422,6 +425,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@bitfly/react-native-bluetooth-info"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNCPushNotificationIOS:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNPermissions:
@@ -478,6 +483,7 @@ SPEC CHECKSUMS:
   ReactNativeNavigation: aad255980f20cc5d2001ed37972319f3789fea70
   RNBluetoothInfo: 74190dc3e5241b051d4559fa7fcb71267d954202
   RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
+  RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNPermissions: 923c1506d0bde387fbcfc18a8f87945806d03c19
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
