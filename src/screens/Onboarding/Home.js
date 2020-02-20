@@ -16,10 +16,11 @@ import Strings from '../../locales/en';
 import Colors from '../../bits/Colors';
 import { openSettings } from '../../bits/settingsUrl';
 import useBluetoothStatus from '../../bits/useBluetoothStatus';
-
-import logoWhite from '../../assets/logo-white.png';
-import animatedBackground from '../../assets/animated-aura.mp4';
 import { registerPermissionDetection } from '../../bits/NativeEmitters';
+
+import logo from '../../assets/logo-aura-subtle.png';
+import iconShop from '../../assets/icon-shop.png';
+import animatedBackground from '../../assets/animated-aura.mp4';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -29,11 +30,19 @@ const styles = StyleSheet.create({
     },
     shopLink: {
         alignSelf: 'flex-end',
-        marginHorizontal: 16,
+        paddingHorizontal: 16,
+        marginRight: 32,
+        marginTop: 32,
         height: 40,
-        marginBottom: 40,
+        marginBottom: 72,
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row',
+    },
+    shopLinkIcon: {
+        width: 19,
+        height: 17,
+        marginRight: 8,
     },
     shopLinkText: {
         fontSize: 16,
@@ -43,8 +52,8 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
     },
     logo: {
-        width: 144,
-        height: 62,
+        width: 142,
+        height: 55,
     },
     signupButton: {
         marginTop: 'auto',
@@ -124,9 +133,10 @@ const Home = ({ onSignUpPressed, onSignInPressed }) => {
                 muted
             />
             <TouchableOpacity style={styles.shopLink} onPress={openShop}>
+                <Image style={styles.shopLinkIcon} source={iconShop} />
                 <Text style={styles.shopLinkText}>Shop</Text>
             </TouchableOpacity>
-            <Image source={logoWhite} style={styles.logo} />
+            <Image source={logo} style={styles.logo} />
             {bluetoothStatus === 'unauthorized' ? (
                 <ForceBluetooth />
             ) : (
