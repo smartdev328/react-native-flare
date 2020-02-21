@@ -53,11 +53,23 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     entryBodyWrapper: {
-        backgroundColor: '#F8F5F129',
+        borderRadius: 30,
+        borderBottomLeftRadius: 0,
+        marginBottom: 4,
+        shadowColor: '#FFFFFF',
+        shadowOpacity: 0.28,
+        shadowOffset: { width: -2, height: -2 },
+        shadowRadius: 2,
+    },
+    entryBodyInnerWrapper: {
+        backgroundColor: '#4C5282',
         borderRadius: 30,
         borderBottomLeftRadius: 0,
         padding: 16,
-        marginBottom: 4,
+        shadowColor: '#282737',
+        shadowOpacity: 0.57,
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 6,
     },
     entryBody: {
         fontSize: 14,
@@ -84,10 +96,12 @@ const styles = StyleSheet.create({
     },
 });
 
-const Entry = ({ text, timestamp = 'just now', style }) => (
+const Entry = ({ text, timestamp = 'Just now', style }) => (
     <Animated.View style={[styles.entry, style]}>
         <View style={styles.entryBodyWrapper}>
-            <Text style={styles.entryBody}>{text}</Text>
+            <View style={styles.entryBodyInnerWrapper}>
+                <Text style={styles.entryBody}>{text}</Text>
+            </View>
         </View>
         <View style={styles.entryDetailBox}>
             <Text style={styles.entrySender}>Flare</Text>
@@ -149,8 +163,8 @@ const TextSimulator = ({ onSuccess }) => {
     return (
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
-            <Text style={styles.headline}>You started a message.</Text>
-            <Text style={styles.subhead}>just now</Text>
+            <Text style={styles.headline}>You started a message. 📢</Text>
+            <Text style={styles.subhead}>Just now</Text>
             <View
                 style={[
                     styles.entryContainer,
@@ -174,9 +188,10 @@ const TextSimulator = ({ onSuccess }) => {
                     )}
                 </ScrollView>
                 <RoundedButton
+                    neumorphic
+                    color="#4C5282"
                     onPress={done ? fullSuccess : nextAnimation}
                     text={done ? 'I’m okay 👌' : 'Next'}
-                    useGradient={false}
                     wrapperStyle={styles.buttonWrapper}
                     width={200}
                     fontSize={14}

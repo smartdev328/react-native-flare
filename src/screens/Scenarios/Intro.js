@@ -70,6 +70,7 @@ const Intro = ({ onNext }) => {
                 around.
             </Text>
             <RoundedButton
+                neumorphicDark
                 useGradient={false}
                 height={48}
                 width={240}

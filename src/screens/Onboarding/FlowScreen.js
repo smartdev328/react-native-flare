@@ -130,6 +130,7 @@ class FlowScreen extends React.Component {
                 />
                 <View style={styles.spacer} />
                 <RoundedButton
+                    neumorphic
                     onPress={this.onSubmit}
                     text="Continue"
                     wrapperStyle={styles.buttonWrapper}

@@ -94,7 +94,8 @@ const Buttons = ({ onSignUpPressed, onSignInPressed }) => (
     <>
         <RoundedButton
             text={Strings.onboarding.signupButton}
-            outline
+            neumorphic
+            color="#576286"
             forceWhiteText
             wrapperStyle={styles.signupButton}
             onPress={onSignUpPressed}
