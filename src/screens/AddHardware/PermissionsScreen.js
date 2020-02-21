@@ -96,6 +96,7 @@ const PermissionsScreen = ({
         {extra}
         <View style={styles.spacer} />
         <RoundedButton
+            neumorphicDark
             text="Visit Settings 👆"
             onPress={visitSettings}
             width={240}

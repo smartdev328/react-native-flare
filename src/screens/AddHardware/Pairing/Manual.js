@@ -63,6 +63,7 @@ const Manual = ({ submit, busy, reset, error, squashed }) => {
                     marginTop: 'auto',
                     marginBottom: 16,
                 }}
+                neumorphic
                 text="Continue"
                 useGradient={false}
                 busy={busy}

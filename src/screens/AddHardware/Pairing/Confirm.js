@@ -62,6 +62,7 @@ const Confirm = ({ device, submit, busy, reset, error, squashed }) => {
                     marginTop: 'auto',
                     marginBottom: squashed ? 8 : 16,
                 }}
+                neumorphic
                 text="Continue"
                 busy={busy}
                 onPress={onPress}

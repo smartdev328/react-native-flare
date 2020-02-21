@@ -46,6 +46,7 @@ const LocationPrimer = ({
             />
             <View style={styles.spacer} />
             <RoundedButton
+                neumorphicDark
                 text="Allow Location"
                 onPress={allowLocation}
                 width={240}

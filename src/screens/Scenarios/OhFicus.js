@@ -74,6 +74,7 @@ const OhFicus = ({ retry }) => {
             <Image style={styles.ficus} source={ficus} />
             <View style={styles.spacer} />
             <RoundedButton
+                neumorphicDark
                 wrapperStyle={styles.spacedButton}
                 width={240}
                 text="Retry"
@@ -82,7 +83,7 @@ const OhFicus = ({ retry }) => {
             <RoundedButton
                 wrapperStyle={styles.spacedButton}
                 width={240}
-                outline
+                invisible
                 text="Contact Help Center"
                 onPress={support}
             />

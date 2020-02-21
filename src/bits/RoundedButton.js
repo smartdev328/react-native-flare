@@ -8,6 +8,7 @@ import {
     View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+
 import Colors from './Colors';
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
@@ -44,6 +45,30 @@ const styles = StyleSheet.create({
     disabled: {
         opacity: 0.4,
     },
+    shadowA: {
+        shadowColor: '#2F345A',
+        shadowOpacity: 0.8,
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 2,
+    },
+    shadowB: {
+        shadowColor: '#FFFFFF',
+        shadowOpacity: 0.33,
+        shadowOffset: { width: -2, height: -2 },
+        shadowRadius: 2,
+    },
+    shadowADark: {
+        shadowColor: '#000000',
+        shadowOpacity: 0.43,
+        shadowOffset: { width: 2, height: 2 },
+        shadowRadius: 2,
+    },
+    shadowBDark: {
+        shadowColor: '#FFFFFF',
+        shadowOpacity: 0.8,
+        shadowOffset: { width: -2, height: -2 },
+        shadowRadius: 2,
+    },
 });
 
 const gradientColors = ['#F9885E', '#C75C71'];
@@ -53,6 +78,31 @@ const GradientButton = ({ children, style }) => (
         {children}
     </LinearGradient>
 );
+
+const NeumorphicButton = ({ children, style, neumorphicDark }) => (
+    <View
+        style={[style[4], neumorphicDark ? styles.shadowADark : styles.shadowA]}
+    >
+        <View
+            style={[
+                ...style,
+                neumorphicDark ? styles.shadowADark : styles.shadowB,
+            ]}
+        >
+            {children}
+        </View>
+    </View>
+);
+
+const pickButtonComponent = ({ useGradient, neumorphic }) => {
+    if (useGradient) {
+        return GradientButton;
+    } else if (neumorphic) {
+        return NeumorphicButton;
+    } else {
+        return View;
+    }
+};
 
 const computeColorStyle = ({
     useGradient,
@@ -90,8 +140,13 @@ const RoundedButton = ({
     animated = false,
     forceWhiteText = false,
     disabled,
+    neumorphic = false,
+    neumorphicDark = false,
 }) => {
-    const ButtonComponent = useGradient ? GradientButton : View;
+    const ButtonComponent = pickButtonComponent({
+        useGradient,
+        neumorphic: neumorphic || neumorphicDark,
+    });
     const colorStyle = computeColorStyle({
         useGradient,
         outline,
@@ -111,6 +166,7 @@ const RoundedButton = ({
             disabled={busy || disabled}
         >
             <ButtonComponent
+                neumorphicDark={neumorphicDark}
                 style={[
                     styles.base,
                     colorStyle,
