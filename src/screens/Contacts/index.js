@@ -1,20 +1,10 @@
 import React from 'react';
-import {
-    ActivityIndicator,
-    Alert,
-    StatusBar,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
+import { Alert, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
-import memoize from 'memoize-one';
 
-import ContactsList from './ContactsList';
 import CrewList from './CrewList';
 import ErrorMessage from './ErrorMessage';
-import NeedContactsPermission from './NeedContactsPermission';
 import SuccessfullySent from './SuccessfullySent';
 import * as userActions from '../../actions/userActions';
 import * as navActions from '../../actions/navActions';
@@ -23,6 +13,7 @@ import Spacing from '../../bits/Spacing';
 import Strings from '../../locales/en';
 import Type from '../../bits/Type';
 import { saveButton, settingsNavOptions } from '../Settings';
+import ContactsListWrapper from './ContactsListWrapper';
 
 const MAX_CREW_SIZE = 5;
 
@@ -71,17 +62,10 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme.purple,
         paddingBottom: Spacing.medium,
     },
-    activityWrapper: {
-        flexGrow: 1,
-        alignItems: 'center',
-        alignContent: 'center',
-    },
 });
 
 class Contacts extends React.Component {
     static options = () => settingsNavOptions('My Crew', true);
-
-    computeSections = memoize(contacts => contacts.map(({ title }) => title));
 
     constructor(props) {
         super(props);
@@ -265,28 +249,6 @@ class Contacts extends React.Component {
         }
     }
 
-    renderContactsList = () => {
-        const { contacts, contactsCount, contactsState, loading } = this.props;
-        if (loading || contactsState === 'requested') {
-            return (
-                <View style={styles.activityWrapper}>
-                    <ActivityIndicator size="large" />
-                </View>
-            );
-        } else if (contactsState === 'failed') {
-            return <NeedContactsPermission />;
-        } else {
-            return (
-                <ContactsList
-                    contacts={contacts}
-                    contactsCount={contactsCount}
-                    onPressContact={this.handleContactPress}
-                    sectionList={this.computeSections(contacts)}
-                />
-            );
-        }
-    };
-
     render() {
         const { contactsState, crewUpdateState, componentId } = this.props;
         const { crew, addedMembers } = this.state;
@@ -312,7 +274,9 @@ class Contacts extends React.Component {
                         onPressContact={this.removeCrewMember}
                     />
                 )}
-                {this.renderContactsList()}
+                <ContactsListWrapper
+                    handleContactPress={this.handleContactPress}
+                />
                 {crewUpdateState === 'failed' && <ErrorMessage />}
             </View>
         );
@@ -323,20 +287,16 @@ const mapStateToProps = ({
     user: {
         crews,
         authToken,
-        contacts,
-        contactsCount,
         contactsState,
         hasViewedTutorial,
         crewUpdateState,
         textFriends,
     },
 }) => {
-    const crew = crews && crews.length ? crews[0] : { name: null, members: [] };
+    const crew = crews?.length > 0 ? crews[0] : { name: null, members: [] };
     return {
         authToken,
         crew,
-        contacts,
-        contactsCount,
         contactsState,
         hasViewedTutorial,
         crewUpdateState,

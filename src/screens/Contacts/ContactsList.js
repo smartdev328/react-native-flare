@@ -149,7 +149,12 @@ const ContactsList = ({ contacts, onPressContact, sectionList }) => {
                     index,
                 })}
             />
-            <SectionNavigator sections={sectionList} onPress={onSectionPress} />
+            {sectionList && (
+                <SectionNavigator
+                    sections={sectionList}
+                    onPress={onSectionPress}
+                />
+            )}
         </View>
     );
 };
