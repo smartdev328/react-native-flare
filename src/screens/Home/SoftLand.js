@@ -3,6 +3,7 @@ import { FlatList, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import isPlainObject from 'lodash/isPlainObject';
+import { Navigation } from 'react-native-navigation';
 
 import Aura from '../../bits/Aura';
 import Colors from '../../bits/Colors';
@@ -17,7 +18,6 @@ import { useCards } from './Cards';
 import Warning from '../Warning';
 
 import aura1528 from '../../assets/aura-1528.jpg';
-import { Navigation } from 'react-native-navigation';
 
 const styles = StyleSheet.create({
     container: {
