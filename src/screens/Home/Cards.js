@@ -90,8 +90,8 @@ export const useCards = ({ componentId, selector, dispatch }) => {
             addToContacts(dispatch);
         }, [dispatch]),
         share: React.useCallback(() => {
-            dispatch(shareFlare(selector.referralKey));
-        }, [dispatch, selector.referralKey]),
+            dispatch(shareFlare());
+        }, [dispatch]),
     };
 
     return ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({

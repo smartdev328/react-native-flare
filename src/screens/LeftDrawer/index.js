@@ -27,7 +27,7 @@ const MenuItem = ({ onPress, label, icon, style }) => (
     </TouchableOpacity>
 );
 
-const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
+const LeftDrawer = ({ changeAppRoot, shareFlare, devices }) => {
     const insets = useSafeArea();
 
     const handleHome = React.useCallback(() => {
@@ -47,8 +47,8 @@ const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
     }, [changeAppRoot]);
 
     const handleShare = React.useCallback(() => {
-        shareFlare(referralKey);
-    }, [referralKey, shareFlare]);
+        shareFlare();
+    }, [shareFlare]);
 
     const handleSupport = React.useCallback(() => {
         contactSupport(devices);
@@ -110,9 +110,8 @@ const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
     );
 };
 
-const mapStateToProps = ({ user: { devices, referralKey } }) => ({
+const mapStateToProps = ({ user: { devices } }) => ({
     devices,
-    referralKey,
 });
 
 const mapDispatchToProps = {

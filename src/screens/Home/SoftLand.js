@@ -111,7 +111,6 @@ const mapState = ({
         callScripts,
         sawCallScripts,
         sawNotifSettings,
-        referralKey,
         addedToContacts,
         didShare,
     },
@@ -130,7 +129,6 @@ const mapState = ({
         isPlainObject(callScripts) && Object.keys(callScripts).length > 0,
     sawCallScripts,
     sawNotifSettings,
-    referralKey,
     addedToContacts,
     didShare,
 });

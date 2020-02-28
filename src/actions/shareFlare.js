@@ -3,7 +3,10 @@ import { USER_DID_SHARE, USER_WILL_SHARE } from './actionTypes';
 
 const url = 'https://getflare.com/';
 
-export const shareFlare = referralKey => async dispatch => {
+export const shareFlare = () => async (dispatch, getState) => {
+    const {
+        user: { referralKey },
+    } = getState();
     const message = `Here’s $50 off your first Flare bracelet to celebrate the company’s launch! Use my referral code ${referralKey} to purchase Flare and join the movement.`;
 
     try {
