@@ -1,13 +1,16 @@
+/* global __DEV__ */
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { SafeAreaView } from 'react-native';
 import isPlainObject from 'lodash/isPlainObject';
-
 import DeviceAction from './DeviceAction';
 import { awaitShortPress, scenarioDidCall } from '../../actions/regActions';
 import { registerCallDetection } from '../../bits/NativeEmitters';
 import { TOUCH_AND_RELEASE } from '../Cuff';
 import Connecting from './Connecting';
 import OhFicus from './OhFicus';
+import RoundedButton from '../../bits/RoundedButton';
+import Colors from '../../bits/Colors';
 
 const FakeCall = ({ onBack, onSuccess }) => {
     const dispatch = useDispatch();
@@ -47,13 +50,37 @@ const FakeCall = ({ onBack, onSuccess }) => {
         setTimedOut(false);
     }, [dispatch]);
 
+    const skip = React.useCallback(() => {
+        dispatch(awaitShortPress());
+        setGotCall(true);
+        setFinishedCall(true);
+    },[dispatch])
+
     const onNext = React.useCallback(() => {
         dispatch(scenarioDidCall());
         onSuccess();
     }, [dispatch, onSuccess]);
 
     if (timedOut && !finishedCall) {
-        return <OhFicus retry={retry} />;
+        return (
+            <SafeAreaView style={{
+                flex: 1,
+                flexDirection: 'column',
+                backgroundColor: Colors.theme.cream,
+                alignItems: 'center',
+            }}
+            >
+                <OhFicus retry={retry} />
+                {__DEV__ ? (
+                    <RoundedButton
+                        neumorphicDark
+                        width={240}
+                        text="Skip (Dev)"
+                        onPress={skip}
+                    />
+                ) : null}
+            </SafeAreaView>
+        );
     } else if (shortPressStatus === 'done' && !finishedCall) {
         return <Connecting />;
     } else {
