@@ -19,6 +19,7 @@ import iconSettings from '../../assets/menu-item-settings.png';
 import iconContact from '../../assets/menu-item-contact.png';
 import iconInfo from '../../assets/menu-item-info.png';
 import iconShare from '../../assets/menu-item-share.png';
+import { showShareDialog } from '../ShareDialog';
 
 const MenuItem = ({ onPress, label, icon, style }) => (
     <TouchableOpacity style={[styles.menuItem, style]} onPress={onPress}>
@@ -116,7 +117,7 @@ const mapStateToProps = ({ user: { devices } }) => ({
 
 const mapDispatchToProps = {
     changeAppRoot: actions.changeAppRoot,
-    shareFlare: actions.shareFlare,
+    shareFlare: showShareDialog,
 };
 
 const ConnectedLeftDrawer = connect(

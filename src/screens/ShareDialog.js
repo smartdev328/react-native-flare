@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {
     Clipboard,
+    Image,
     SafeAreaView,
     StatusBar,
     StyleSheet,
     Text,
     View,
+    Alert,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
@@ -15,6 +17,7 @@ import Colors from '../bits/Colors';
 import CloseButton from './CloseButton';
 import Headline from './Onboarding/Headline';
 import RoundedButton from '../bits/RoundedButton';
+import cardCrew from '../assets/card-crew.png';
 
 const styles = StyleSheet.create({
     container: {
@@ -59,6 +62,14 @@ const styles = StyleSheet.create({
     secondButton: {
         marginBottom: 24,
     },
+    image: {
+        width: '50%',
+        height: '50%',
+    },
+    imageContainer: {
+        flex: 1,
+        flexDirection: 'row',
+    },
 });
 
 const ShareDialog = ({ componentId }) => {
@@ -70,10 +81,11 @@ const ShareDialog = ({ componentId }) => {
     }, [componentId]);
     const copy = React.useCallback(() => {
         Clipboard.setString(referralKey);
+        Alert.alert('Referral code copied!');
     }, [referralKey]);
     const share = React.useCallback(() => {
-        dispatch(shareFlare);
-    }, [dispatch]);
+        dispatch(shareFlare());
+    }, [shareFlare]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -82,9 +94,12 @@ const ShareDialog = ({ componentId }) => {
             <Headline style={styles.headline}>Share Flare!</Headline>
             <View style={styles.line} />
             <Text style={styles.subhead}>
-                Invite your friends to join the movement. They can get $50 off
+                Invite your friends to join the movement. They can get $20 off
                 and celebrate Flare’s launch 🎉
             </Text>
+            <View style={styles.imageContainer}>
+                <Image source={cardCrew} style={styles.image} />
+            </View>
             <RoundedButton
                 wrapperStyle={styles.firstButton}
                 outline
@@ -99,7 +114,7 @@ const ShareDialog = ({ componentId }) => {
             <RoundedButton
                 wrapperStyle={styles.secondButton}
                 onPress={share}
-                text="Send $50"
+                text="Send $20"
                 width={280}
             />
         </SafeAreaView>
