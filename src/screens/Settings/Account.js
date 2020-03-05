@@ -22,15 +22,14 @@ import { useSlideMenu } from '../../bits/useNavigationCallback';
 import chevron from '../../assets/chevron.png';
 import shareIcon from '../../assets/menu-item-share.png';
 import contactIcon from '../../assets/menu-item-contact.png';
+import { showShareDialog } from '../ShareDialog';
 
 const Account = ({
     componentId,
     authToken,
     analyticsEnabled,
     devices,
-    referralKey,
     setPrivacyConfig,
-    shareFlare,
     signOut,
 }) => {
     useSlideMenu(componentId);
@@ -58,8 +57,8 @@ const Account = ({
         Linking.openURL('https://getflare.com/pages/privacy-policy');
     }, []);
     const share = React.useCallback(() => {
-        shareFlare(referralKey);
-    }, [referralKey, shareFlare]);
+        showShareDialog();
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -134,14 +133,12 @@ const mapStateToProps = ({
         authToken,
         settings: { analyticsEnabled },
         devices,
-        referralKey,
     },
-}) => ({ authToken, analyticsEnabled, devices, referralKey });
+}) => ({ authToken, analyticsEnabled, devices });
 
 const mapDispatchToProps = {
     signOut: actions.signOut,
     setPrivacyConfig: actions.setPrivacyConfig,
-    shareFlare: actions.shareFlare,
 };
 
 export default connect(

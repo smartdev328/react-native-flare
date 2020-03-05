@@ -11,6 +11,7 @@ import cardCallscript from '../../assets/card-callscript.png';
 import cardPermissions from '../../assets/card-permissions.png';
 import cardShare from '../../assets/card-share.png';
 import cardAddcontacts from '../../assets/card-addcontacts.png';
+import { showShareDialog } from '../ShareDialog';
 
 const ITEM_TEMPLATES = [
     {
@@ -89,9 +90,7 @@ export const useCards = ({ componentId, selector, dispatch }) => {
         addcontacts: React.useCallback(() => {
             addToContacts(dispatch);
         }, [dispatch]),
-        share: React.useCallback(() => {
-            dispatch(shareFlare(selector.referralKey));
-        }, [dispatch, selector.referralKey]),
+        share: showShareDialog,
     };
 
     return ITEM_TEMPLATES.map(({ done, key, ...rest }) => ({
