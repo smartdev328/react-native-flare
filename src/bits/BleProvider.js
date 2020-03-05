@@ -1,5 +1,6 @@
 /* eslint-disable no-undef-init */
 import { shallowEqualObjects } from 'shallow-equal';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 import { BeaconTypes } from './BleConstants';
 import {
@@ -23,6 +24,8 @@ import {
     gotShortPress,
     gotShortWhileAwaitingLong,
 } from '../actions/regActions';
+import { changeAppRoot } from '../actions/navActions';
+import Strings from '../locales/en';
 
 export default class BleProvider {
     constructor(options) {
@@ -98,6 +101,11 @@ export default class BleProvider {
         const awaitingLongPress = ['wait', 'gotShort'].includes(
             this.store?.getState()?.user?.scenarios?.longPress
         );
+        const userHasNoCrew =
+            this.store
+                ?.getState()
+                ?.user?.crews.reduce((count, row) => count + row.length, 0) ===
+            0;
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser =
             userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
@@ -126,7 +134,15 @@ export default class BleProvider {
 
             case BeaconTypes.Long.name: {
                 let noop;
-                if (hasCompletedOnboarding) {
+                if (userHasNoCrew) {
+                    PushNotificationIOS.presentLocalNotification({
+                        alertBody:
+                            "No message was sent because you don't have a Crew.",
+                        alertTitle: 'No Crews Set',
+                    });
+                    dispatch(changeAppRoot('secure'));
+                    noop = 'no-crew';
+                } else if (hasCompletedOnboarding) {
                     noop = undefined;
                 } else if (awaitingLongPress) {
                     dispatch(gotLongPress());
