@@ -20,6 +20,7 @@ import AddHardware, { HowToConnect, AboutPermissions } from './AddHardware';
 import { MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import Scenarios from './Scenarios';
 import HowItWorks from './HowItWorks';
+import ShareDialog from './ShareDialog';
 
 export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
@@ -130,6 +131,12 @@ export default (store, Provider) => {
     Navigation.registerComponentWithRedux(
         'com.flarejewelry.howitworks',
         () => HowItWorks,
+        Provider,
+        store
+    );
+    Navigation.registerComponentWithRedux(
+        'com.flarejewelry.sharedialog',
+        () => ShareDialog,
         Provider,
         store
     );

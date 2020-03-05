@@ -19,6 +19,7 @@ import iconSettings from '../../assets/menu-item-settings.png';
 import iconContact from '../../assets/menu-item-contact.png';
 import iconInfo from '../../assets/menu-item-info.png';
 import iconShare from '../../assets/menu-item-share.png';
+import { showShareDialog } from '../ShareDialog';
 
 const MenuItem = ({ onPress, label, icon, style }) => (
     <TouchableOpacity style={[styles.menuItem, style]} onPress={onPress}>
@@ -27,7 +28,7 @@ const MenuItem = ({ onPress, label, icon, style }) => (
     </TouchableOpacity>
 );
 
-const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
+const LeftDrawer = ({ changeAppRoot, devices }) => {
     const insets = useSafeArea();
 
     const handleHome = React.useCallback(() => {
@@ -47,8 +48,8 @@ const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
     }, [changeAppRoot]);
 
     const handleShare = React.useCallback(() => {
-        shareFlare(referralKey);
-    }, [referralKey, shareFlare]);
+        showShareDialog();
+    }, []);
 
     const handleSupport = React.useCallback(() => {
         contactSupport(devices);
@@ -110,14 +111,12 @@ const LeftDrawer = ({ changeAppRoot, shareFlare, devices, referralKey }) => {
     );
 };
 
-const mapStateToProps = ({ user: { devices, referralKey } }) => ({
+const mapStateToProps = ({ user: { devices } }) => ({
     devices,
-    referralKey,
 });
 
 const mapDispatchToProps = {
     changeAppRoot: actions.changeAppRoot,
-    shareFlare: actions.shareFlare,
 };
 
 const ConnectedLeftDrawer = connect(

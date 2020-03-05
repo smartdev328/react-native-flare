@@ -15,7 +15,7 @@ const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 const styles = StyleSheet.create({
     base: {
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -124,6 +124,32 @@ const computeColorStyle = ({
     }
 };
 
+const ButtonContent = ({
+    busy,
+    darkText,
+    textColorStyle,
+    fontSize,
+    text,
+    children,
+}) => {
+    if (busy) {
+        return (
+            <ActivityIndicator
+                size="small"
+                color={darkText ? Colors.black : Colors.theme.cream}
+            />
+        );
+    } else if (typeof text === 'string') {
+        return (
+            <Text style={[styles.text, textColorStyle, { fontSize }]}>
+                {text}
+            </Text>
+        );
+    } else {
+        return children;
+    }
+};
+
 const RoundedButton = ({
     text,
     onPress,
@@ -142,6 +168,7 @@ const RoundedButton = ({
     disabled,
     neumorphic = false,
     neumorphicDark = false,
+    children,
 }) => {
     const ButtonComponent = pickButtonComponent({
         useGradient,
@@ -175,16 +202,15 @@ const RoundedButton = ({
                     { width, height, borderRadius: height / 2 },
                 ]}
             >
-                {busy ? (
-                    <ActivityIndicator
-                        size="small"
-                        color={darkText ? Colors.black : Colors.theme.cream}
-                    />
-                ) : (
-                    <Text style={[styles.text, textColorStyle, { fontSize }]}>
-                        {text}
-                    </Text>
-                )}
+                <ButtonContent
+                    fontSize={fontSize}
+                    busy={busy}
+                    darkText={darkText}
+                    text={text}
+                    textColorStyle={textColorStyle}
+                >
+                    {children}
+                </ButtonContent>
             </ButtonComponent>
         </Touchable>
     );
