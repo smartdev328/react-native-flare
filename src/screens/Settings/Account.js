@@ -22,6 +22,7 @@ import { useSlideMenu } from '../../bits/useNavigationCallback';
 import chevron from '../../assets/chevron.png';
 import shareIcon from '../../assets/menu-item-share.png';
 import contactIcon from '../../assets/menu-item-contact.png';
+import { showShareDialog } from '../ShareDialog';
 
 const Account = ({
     componentId,
@@ -29,7 +30,6 @@ const Account = ({
     analyticsEnabled,
     devices,
     setPrivacyConfig,
-    shareFlare,
     signOut,
 }) => {
     useSlideMenu(componentId);
@@ -57,8 +57,8 @@ const Account = ({
         Linking.openURL('https://getflare.com/pages/privacy-policy');
     }, []);
     const share = React.useCallback(() => {
-        shareFlare();
-    }, [shareFlare]);
+        showShareDialog();
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -139,7 +139,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
     signOut: actions.signOut,
     setPrivacyConfig: actions.setPrivacyConfig,
-    shareFlare: actions.shareFlare,
 };
 
 export default connect(
