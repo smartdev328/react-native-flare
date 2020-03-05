@@ -54,7 +54,7 @@ const FakeCall = ({ onBack, onSuccess }) => {
         dispatch(awaitShortPress());
         setGotCall(true);
         setFinishedCall(true);
-    },[dispatch])
+    }, [dispatch]);
 
     const onNext = React.useCallback(() => {
         dispatch(scenarioDidCall());
@@ -63,22 +63,23 @@ const FakeCall = ({ onBack, onSuccess }) => {
 
     if (timedOut && !finishedCall) {
         return (
-            <SafeAreaView style={{
-                flex: 1,
-                flexDirection: 'column',
-                backgroundColor: Colors.theme.cream,
-                alignItems: 'center',
-            }}
+            <SafeAreaView
+                style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    backgroundColor: Colors.theme.cream,
+                    alignItems: 'center',
+                }}
             >
                 <OhFicus retry={retry} />
-                {__DEV__ ? (
+                {__DEV__ && (
                     <RoundedButton
                         neumorphicDark
                         width={240}
                         text="Skip (Dev)"
                         onPress={skip}
                     />
-                ) : null}
+                )}
             </SafeAreaView>
         );
     } else if (shortPressStatus === 'done' && !finishedCall) {
