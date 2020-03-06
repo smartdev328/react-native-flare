@@ -25,7 +25,6 @@ import {
     gotShortWhileAwaitingLong,
 } from '../actions/regActions';
 import { changeAppRoot } from '../actions/navActions';
-import Strings from '../locales/en';
 
 export default class BleProvider {
     constructor(options) {
