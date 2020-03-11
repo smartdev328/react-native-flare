@@ -18,6 +18,7 @@ import { useCards } from './Cards';
 import Warning from '../Warning';
 
 import aura1528 from '../../assets/aura-1528.jpg';
+import { FlareLogger } from '../../actions/LogAction';
 
 const styles = StyleSheet.create({
     container: {
@@ -138,6 +139,7 @@ const SoftLand = ({ componentId }) => {
     const selector = useSelector(mapState);
     const insets = useSafeArea();
     const bluetoothStatus = useBluetoothStatus();
+    FlareLogger.debug(`Bluetooth Status: ${bluetoothStatus}`);
     React.useEffect(() => registerPermissionDetection(dispatch), [dispatch]);
 
     const items = useCards({

@@ -19,6 +19,7 @@ import registerScreens from './screens/index';
 
 import sandwichMenu from './assets/sandwich-menu.png';
 import { FlareLogger } from './actions/LogAction';
+import { NetworkLogger } from './bits/NetworkStatus';
 
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
@@ -121,7 +122,8 @@ export default class App extends Component {
         FlareLogger.initLogging();
 
         persistStore(store, null, () => {
-            const {email} = store.getState().user.profile;
+            const { email } = store.getState().user.profile;
+            console.debug('Setting Login info');
             FlareLogger.setLoginInfo(email);
 
             registerScreens(store, Provider);
@@ -131,13 +133,14 @@ export default class App extends Component {
             this.bleProvider.setStore(store);
         });
 
-        FlareLogger.debug("Hello World");
-        FlareLogger.info("Order #1234 placed, total: $500.23", {
+        FlareLogger.debug('Hello World');
+        FlareLogger.info('Order #1234 placed, total: $500.23', {
             order_placed: {
                 id: 1234,
-                total: 500.23
+                total: 500.23,
             },
         });
+        NetworkLogger.StartNetworkLogging();
     }
 
     componentDidMount() {

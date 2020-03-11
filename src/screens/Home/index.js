@@ -28,6 +28,7 @@ import { startBleListening } from '../../actions/hardwareActions';
 import getCurrentPosition from '../../helpers/location';
 import Strings from '../../locales/en';
 import SoftLand from './SoftLand';
+import { FlareLogger } from '../../actions/LogAction';
 
 export { default as PermissionsReminder } from './PermissionsReminder';
 
@@ -71,6 +72,15 @@ class Home extends React.Component {
         if (!hardware || !hardware.bleListening) {
             dispatch(startBleListening());
         }
+        PushNotificationIOS.checkPermissions(pushPermissions => {
+            FlareLogger.info('Checking Permissions', {
+                permissions: {
+                    contacts: permissions.contacts,
+                    location: permissions.location,
+                    pushNotification: pushPermissions,
+                },
+            });
+        });
 
         // Users may have modified their accounts on other devices or on the web. Keep this device
         // in sync by fetching server-stored data.
