@@ -65,8 +65,8 @@ function generateMetaData(deviceSerialNum): Promise {
 export const FlareLoggerCategory = {
     wake: 'WAKE',
     button: 'BUTTON',
-    send: 'API_SEND',
-    receive: 'API_RECEIVE',
+    sent: 'API_SENT',
+    received: 'API_RECEIVED',
 };
 
 export class FlareLogger {
@@ -100,8 +100,13 @@ export class FlareLogger {
             ? FlareDeviceID.getJewelryLabelFromDeviceID(optionalBraceletId)
             : '';
         generateMetaData(braceletId).then(metaData => {
-            console.debug('Metadata', metaData);
-            logger.error(logString, { category: categoryStr }, metaData);
+            const log = {
+                log: logString,
+                category: categoryStr,
+                meta: metaData,
+            };
+            console.debug(log);
+            logger.error(log);
         });
     }
 
@@ -110,8 +115,13 @@ export class FlareLogger {
             ? FlareDeviceID.getJewelryLabelFromDeviceID(optionalBraceletId)
             : '';
         generateMetaData(braceletId).then(metaData => {
-            console.debug('Metadata', metaData);
-            logger.warn(logString, { category: categoryStr }, metaData);
+            const log = {
+                log: logString,
+                category: categoryStr,
+                meta: metaData,
+            };
+            console.debug(log);
+            logger.warn(log);
         });
     }
 
@@ -120,8 +130,13 @@ export class FlareLogger {
             ? FlareDeviceID.getJewelryLabelFromDeviceID(optionalBraceletId)
             : '';
         generateMetaData(braceletId).then(metaData => {
-            console.debug('Metadata', metaData);
-            logger.debug(logString, { category: categoryStr }, metaData);
+            const log = {
+                log: logString,
+                category: categoryStr,
+                meta: metaData,
+            };
+            console.debug(log);
+            logger.debug(log);
         });
     }
 
@@ -130,8 +145,13 @@ export class FlareLogger {
             ? FlareDeviceID.getJewelryLabelFromDeviceID(optionalBraceletId)
             : '';
         generateMetaData(braceletId).then(metaData => {
-            console.debug('Metadata', metaData);
-            logger.info(logString, { category: categoryStr }, metaData);
+            const log = {
+                log: logString,
+                category: categoryStr,
+                meta: metaData,
+            };
+            console.debug(log);
+            logger.info(log);
         });
     }
 }

@@ -19,7 +19,6 @@ import registerScreens from './screens/index';
 
 import sandwichMenu from './assets/sandwich-menu.png';
 import { FlareLogger } from './actions/LogAction';
-import { NetworkLogger } from './bits/NetworkStatus';
 
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
@@ -131,7 +130,6 @@ export default class App extends Component {
             store.dispatch(actions.initializeApp(root));
             this.bleProvider.setStore(store);
         });
-        NetworkLogger.StartNetworkLogging();
     }
 
     componentDidMount() {

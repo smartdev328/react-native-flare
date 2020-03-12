@@ -25,7 +25,7 @@ import {
     gotShortWhileAwaitingLong,
 } from '../actions/regActions';
 import { changeAppRoot } from '../actions/navActions';
-import { FlareLogger } from '../actions/LogAction';
+import { FlareLogger, FlareLoggerCategory } from '../actions/LogAction';
 
 export default class BleProvider {
     constructor(options) {
@@ -212,16 +212,28 @@ export default class BleProvider {
             BLUETOOTH_BEACON_LOGGING === 'verbose'
         ) {
             const short = beacon.uuid.substr(0, 8);
-            const beaconStr = `Beacon type ${beacon.type}: device ${beacon.deviceID}, uuid ${short}, rssi ${beacon.rssi}`;
-            console.debug(beaconStr);
-            FlareLogger.debug(`new Beacon info: ${beaconStr}`);
+            console.debug(
+                `Beacon type ${beacon.type}: device ${beacon.deviceID}, uuid ${short}, rssi ${beacon.rssi}`
+            );
+            if (beacon.type === BeaconTypes.Short.name) {
+                FlareLogger.debug(
+                    FlareLoggerCategory.button,
+                    `Short Press`,
+                    beacon.deviceID
+                );
+            } else if (beacon.type === BeaconTypes.Long.name) {
+                FlareLogger.debug(
+                    FlareLoggerCategory.button,
+                    `Long Press`,
+                    beacon.deviceID
+                );
+            }
             if (position) {
-                const positionStr = `@ ${position.coords.latitude}, ${position.coords.longitude}`;
-                console.debug(positionStr);
-                FlareLogger.debug(`Beacon Position info: ${positionStr}`);
+                console.debug(
+                    `@ ${position.coords.latitude}, ${position.coords.longitude}`
+                );
             } else {
                 console.debug('@ unknown location');
-                FlareLogger.debug(`Beacon Position info: N/A`);
             }
         }
     };

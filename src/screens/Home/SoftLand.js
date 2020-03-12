@@ -12,6 +12,7 @@ import TaskCard from './TaskCard';
 import useDimensions from '../../bits/useDimensions';
 import { getCallScripts } from '../../actions/userActions';
 import count from '../../bits/count';
+import bluetoothStatus from '../../bits/useBluetoothStatus';
 import { registerPermissionDetection } from '../../bits/NativeEmitters';
 import { useCards } from './Cards';
 import Warning from '../Warning';
