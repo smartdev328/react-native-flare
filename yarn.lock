@@ -675,6 +675,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@cs125/wait-until@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@cs125/wait-until/-/wait-until-0.0.3.tgz#957fc279121704845300dac47ee37a3b34c203d2"
+  integrity sha512-Z3+GXZbAjiiI0cJi1si+WfBBPfmLwZ9Tk4wqyFJGeZHJilyveBCpSktHdJlmqjHBBvrMi8ymXefYi2S833LhRA==
+
 "@hapi/address@2.x.x":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.2.tgz#1c794cd6dbf2354d1eb1ef10e0303f573e1c7222"
@@ -973,6 +978,11 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.6.tgz#c7f2ac187c1f25aa8c30d11baa8f4398eca3bb84"
   integrity sha512-PpMoeXwPUoldCRKDuSi+zK5rT+sJTW6ri6RdGPkSKRzU77Q1d9IaR0O5IKvBj0XSdL3p+dcOa05gk35aGDffBQ==
+
+"@react-native-community/netinfo@^5.6.2":
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-5.6.2.tgz#a054db83a1787711f9f69029e2c9b80735ac3f75"
+  integrity sha512-IkzS78nOiPNM/MboBqqbk2eMBrflp8VML/p33pd50KZq+PvBq8Oywt1JKOgdaMxUIbGjP73zVz+f6r2f80u2Eg==
 
 "@react-native-community/push-notification-ios@^1.0.2":
   version "1.0.2"
@@ -6140,6 +6150,14 @@ react-native-background-timer@^2.1.1:
   resolved "https://registry.yarnpkg.com/react-native-background-timer/-/react-native-background-timer-2.1.1.tgz#9a2489681ab2f8033c213c73272e9d4c47572cd5"
   integrity sha512-cuXIIv+dcG8a8qkTD8pMzeqOEZCO+UGKglZWIe1osve+yJslmCowYQff+bI9xa7NOt2w+Vtd4L3d9JonlSqODg==
 
+react-native-bluetooth-status@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-bluetooth-status/-/react-native-bluetooth-status-1.4.2.tgz#cb3cdabed72d0d839ae2c664ca84c2d8a2b10d7d"
+  integrity sha512-e0skwlRF8H7F/gADLR54yKAGSK3xTuaV6td3iPAtvK/j98Cla6kiN4/ZQX9U0h6CHdbhw0/2yuPf/lQxpIXODA==
+  dependencies:
+    "@cs125/wait-until" "^0.0.3"
+    react-native "^0.61.0"
+
 react-native-contacts@^5.0.6:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-5.0.6.tgz#929aa236eced56ea5662807ce8e9afb4f4bbbfe2"
@@ -6247,7 +6265,7 @@ react-native-video@^5.0.2:
     prop-types "^15.5.10"
     shaka-player "^2.4.4"
 
-react-native@0.61.5:
+react-native@0.61.5, react-native@^0.61.0:
   version "0.61.5"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.61.5.tgz#6e21acb56cbd75a3baeb1f70201a66f42600bba8"
   integrity sha512-MXqE3NoGO0T3dUKIKkIppijBhRRMpfN6ANbhMXHDuyfA+fSilRWgCwYgR/YNCC7ntECoJYikKaNTUBB0DeQy6Q==
