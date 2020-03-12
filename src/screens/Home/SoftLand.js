@@ -12,7 +12,6 @@ import TaskCard from './TaskCard';
 import useDimensions from '../../bits/useDimensions';
 import { getCallScripts } from '../../actions/userActions';
 import count from '../../bits/count';
-import useBluetoothStatus from '../../bits/useBluetoothStatus';
 import { registerPermissionDetection } from '../../bits/NativeEmitters';
 import { useCards } from './Cards';
 import Warning from '../Warning';
@@ -138,8 +137,6 @@ const SoftLand = ({ componentId }) => {
     const dispatch = useDispatch();
     const selector = useSelector(mapState);
     const insets = useSafeArea();
-    const bluetoothStatus = useBluetoothStatus();
-    FlareLogger.debug(`Bluetooth Status: ${bluetoothStatus}`);
     React.useEffect(() => registerPermissionDetection(dispatch), [dispatch]);
 
     const items = useCards({

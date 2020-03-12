@@ -123,7 +123,6 @@ export default class App extends Component {
 
         persistStore(store, null, () => {
             const { email } = store.getState().user.profile;
-            console.debug('Setting Login info');
             FlareLogger.setLoginInfo(email);
 
             registerScreens(store, Provider);
@@ -131,14 +130,6 @@ export default class App extends Component {
             const { root } = store.getState().nav;
             store.dispatch(actions.initializeApp(root));
             this.bleProvider.setStore(store);
-        });
-
-        FlareLogger.debug('Hello World');
-        FlareLogger.info('Order #1234 placed, total: $500.23', {
-            order_placed: {
-                id: 1234,
-                total: 500.23,
-            },
         });
         NetworkLogger.StartNetworkLogging();
     }

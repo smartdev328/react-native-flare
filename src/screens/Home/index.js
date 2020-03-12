@@ -28,7 +28,6 @@ import { startBleListening } from '../../actions/hardwareActions';
 import getCurrentPosition from '../../helpers/location';
 import Strings from '../../locales/en';
 import SoftLand from './SoftLand';
-import { FlareLogger } from '../../actions/LogAction';
 
 export { default as PermissionsReminder } from './PermissionsReminder';
 
