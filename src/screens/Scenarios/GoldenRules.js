@@ -61,9 +61,7 @@ const GoldenRules = ({ finishUp, buttonText = 'Got it. Let’s go!' }) => {
                     </HelpSection>
                     <HelpSection emoji="💕" title="Love.">
                         Use Flare with love, thoughtfulness, honesty and good
-                        intention. You are now part of the movement that is
-                        breaking stereotypes about safety and supporting one
-                        another.
+                        intention.
                     </HelpSection>
                 </ScrollView>
                 <RoundedButton

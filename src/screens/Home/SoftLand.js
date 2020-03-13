@@ -189,7 +189,7 @@ const SoftLand = ({ componentId }) => {
         <View style={[styles.container, { paddingTop: insets.top }]}>
             <StatusBar barStyle="light-content" />
             <Aura source={aura1528} />
-            <Text style={styles.headline}>Your Safety Setup</Text>
+            <Text style={styles.headline}>Your Setup</Text>
             <Constellation count={doneCount} />
             <FlatList
                 style={styles.list}
