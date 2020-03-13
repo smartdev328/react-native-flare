@@ -12,13 +12,12 @@ import TaskCard from './TaskCard';
 import useDimensions from '../../bits/useDimensions';
 import { getCallScripts } from '../../actions/userActions';
 import count from '../../bits/count';
-import bluetoothStatus from '../../bits/useBluetoothStatus';
+import useBluetoothStatus from '../../bits/useBluetoothStatus';
 import { registerPermissionDetection } from '../../bits/NativeEmitters';
 import { useCards } from './Cards';
 import Warning from '../Warning';
 
 import aura1528 from '../../assets/aura-1528.jpg';
-import { FlareLogger } from '../../actions/LogAction';
 
 const styles = StyleSheet.create({
     container: {
@@ -138,6 +137,7 @@ const SoftLand = ({ componentId }) => {
     const dispatch = useDispatch();
     const selector = useSelector(mapState);
     const insets = useSafeArea();
+    const bluetoothStatus = useBluetoothStatus();
     React.useEffect(() => registerPermissionDetection(dispatch), [dispatch]);
 
     const items = useCards({
