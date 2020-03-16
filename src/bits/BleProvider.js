@@ -25,6 +25,7 @@ import {
     gotShortWhileAwaitingLong,
 } from '../actions/regActions';
 import { changeAppRoot } from '../actions/navActions';
+import { FlareLogger, FlareLoggerCategory } from '../actions/LogAction';
 
 export default class BleProvider {
     constructor(options) {
@@ -214,6 +215,19 @@ export default class BleProvider {
             console.debug(
                 `Beacon type ${beacon.type}: device ${beacon.deviceID}, uuid ${short}, rssi ${beacon.rssi}`
             );
+            if (beacon.type === BeaconTypes.Short.name) {
+                FlareLogger.debug(
+                    FlareLoggerCategory.button,
+                    `Short Press`,
+                    beacon.deviceID
+                );
+            } else if (beacon.type === BeaconTypes.Long.name) {
+                FlareLogger.debug(
+                    FlareLoggerCategory.button,
+                    `Long Press`,
+                    beacon.deviceID
+                );
+            }
             if (position) {
                 console.debug(
                     `@ ${position.coords.latitude}, ${position.coords.longitude}`

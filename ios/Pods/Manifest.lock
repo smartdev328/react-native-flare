@@ -203,11 +203,15 @@ PODS:
   - React-jsinspector (0.61.5)
   - react-native-background-timer (2.1.1):
     - React
+  - react-native-bluetooth-status (1.4.2):
+    - React
   - react-native-contacts (5.0.6):
     - React
   - react-native-geolocation (2.0.2):
     - React
   - react-native-location (2.5.0):
+    - React
+  - react-native-netinfo (5.6.2):
     - React
   - react-native-safe-area-context (0.6.1):
     - React
@@ -269,6 +273,8 @@ PODS:
     - React
   - RNCPushNotificationIOS (1.0.2):
     - React
+  - RNDeviceInfo (5.5.3):
+    - React
   - RNPermissions (2.0.8):
     - React
   - RNVectorIcons (6.6.0):
@@ -301,9 +307,11 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
+  - react-native-bluetooth-status (from `../node_modules/react-native-bluetooth-status`)
   - react-native-contacts (from `../node_modules/react-native-contacts`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-location (from `../node_modules/react-native-location`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-version-number (from `../node_modules/react-native-version-number`)
@@ -326,6 +334,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -381,12 +390,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
+  react-native-bluetooth-status:
+    :path: "../node_modules/react-native-bluetooth-status"
   react-native-contacts:
     :path: "../node_modules/react-native-contacts"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-location:
     :path: "../node_modules/react-native-location"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -429,6 +442,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPushNotificationIOS:
     :path: "../node_modules/@react-native-community/push-notification-ios"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNVectorIcons:
@@ -461,9 +476,11 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
   react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
+  react-native-bluetooth-status: 859eaa4f855e714d2a40383e6b4a4a211fe2e0f9
   react-native-contacts: 9c89131a1f63af0618d54af5ca1cd88b06d41a05
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-location: 5a40ec1cc6abf2f6d94df979f98ec76c3a415681
+  react-native-netinfo: 73303369946c2487c600418961bfdc87748b832f
   react-native-safe-area-context: 1f8a52fb0ab1321eef9a7099bd2c360d4e38264b
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
@@ -485,6 +502,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
   RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
+  RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
   RNPermissions: 923c1506d0bde387fbcfc18a8f87945806d03c19
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
