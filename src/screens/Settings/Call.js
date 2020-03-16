@@ -3,12 +3,15 @@ import { SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
 import isPlainObject from 'lodash/isPlainObject';
 import { Navigation } from 'react-native-navigation';
-import Video from 'react-native-video';
+import Sound from 'react-native-sound';
 
 import * as userActions from '../../actions/userActions';
 import RadioGroup from './RadioGroup';
 import { useNavigationButtonCallback } from '../../bits/useNavigationCallback';
 import { confirmClose, navOptions, saveButton, styles } from './styles';
+
+let cachedSoundsMap = {};
+let currentSoundClip;
 
 const SettingsCall = ({
     authToken,
@@ -26,14 +29,58 @@ const SettingsCall = ({
         savedCallScript
     );
     const [currentlyPlaying, setCurrentlyPlaying] = React.useState();
-    const playingUri = React.useMemo(
-        () =>
-            typeof currentlyPlaying === 'string'
-                ? { uri: currentlyPlaying }
-                : undefined,
-        [currentlyPlaying]
-    );
+
+    function soundDownloadCallback(soundFile, soundName, error) {
+        if (error) {
+            console.debug('failed to load the sound', error);
+            return;
+        }
+        soundFile.setCategory('Playback');
+        console.debug(
+            `duration in seconds: ${soundFile.getDuration()}number of channels: ${soundFile.getNumberOfChannels()}`
+        );
+        soundFile.setVolume(1);
+        cachedSoundsMap[soundName] = soundFile;
+    }
+
+    function cacheSoundClips(soundClips) {
+        soundClips.forEach((v, k) => {
+            const soundFile = new Sound(v.preview, null, error => {
+                soundDownloadCallback(soundFile, v.preview, error);
+            });
+        });
+    }
+
+    React.useEffect(() => {
+        if (currentlyPlaying !== undefined) {
+            console.debug('currentlyPlaying', currentlyPlaying);
+            currentSoundClip = cachedSoundsMap[currentlyPlaying];
+            if (currentSoundClip !== undefined) {
+                console.debug('found sound in cache');
+                currentSoundClip.play(success => {
+                    if (success) {
+                        console.debug('successfully finished playing');
+                    } else {
+                        console.debug(
+                            'playback failed due to audio decoding errors'
+                        );
+                    }
+                });
+            } else {
+                console.debug("couldn't find cache, downloading");
+                currentSoundClip = new Sound(currentlyPlaying, null, error => {
+                    soundDownloadCallback(
+                        currentSoundClip,
+                        currentlyPlaying,
+                        error
+                    );
+                });
+            }
+        }
+    }, [currentlyPlaying]);
+
     const clearPlaying = React.useCallback(() => {
+        currentSoundClip.stop();
         setCurrentlyPlaying();
     }, []);
 
@@ -85,7 +132,7 @@ const SettingsCall = ({
 
     const pickerItems = React.useMemo(() => {
         if (isPlainObject(callScripts)) {
-            return Object.values(callScripts).map(
+            const items = Object.values(callScripts).map(
                 ({
                     script_name: label,
                     script_id: key,
@@ -96,6 +143,8 @@ const SettingsCall = ({
                     preview,
                 })
             );
+            cacheSoundClips(items);
+            return items;
         } else {
             return [];
         }
@@ -104,14 +153,6 @@ const SettingsCall = ({
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" />
-            {currentlyPlaying ? (
-                <Video
-                    audioOnly
-                    source={playingUri}
-                    onEnd={clearPlaying}
-                    ignoreSilentSwitch="ignore"
-                />
-            ) : null}
             <Text style={styles.subhead}>Select what you’ll hear</Text>
             <RadioGroup
                 items={pickerItems}
