@@ -70,9 +70,7 @@ const SettingsCall = ({
             const newSoundClip = cachedSoundsMap[currentlyPlaying];
             if (newSoundClip !== undefined) {
                 console.debug('found sound in cache');
-                if (currentSoundClip !== undefined) {
-                    currentSoundClip.stop();
-                }
+                if (currentSoundClip !== undefined) currentSoundClip.stop();
                 currentSoundClip = newSoundClip;
                 currentSoundClip.play(success => {
                     if (success) {
@@ -84,7 +82,7 @@ const SettingsCall = ({
                     }
                 });
             } else {
-                console.debug("couldn't find cache, downloading");
+                console.debug("couldn't find sound in cache, downloading");
                 currentSoundClip = new Sound(currentlyPlaying, null, error => {
                     soundDownloadCallback(
                         currentSoundClip,
@@ -98,7 +96,7 @@ const SettingsCall = ({
     }, [currentlyPlaying]);
 
     const clearPlaying = React.useCallback(() => {
-        currentSoundClip.stop();
+        if (currentSoundClip !== undefined) currentSoundClip.stop();
         setCurrentlyPlaying();
     }, []);
 
