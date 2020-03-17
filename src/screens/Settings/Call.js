@@ -30,7 +30,7 @@ const SettingsCall = ({
     );
     const [currentlyPlaying, setCurrentlyPlaying] = React.useState();
 
-    function soundDownloadCallback(soundFile, soundName, error) {
+    function soundDownloadCallback(soundFile, soundName, error, shouldPlay) {
         if (error) {
             console.debug('failed to load the sound', error);
             return;
@@ -40,13 +40,26 @@ const SettingsCall = ({
             `duration in seconds: ${soundFile.getDuration()}number of channels: ${soundFile.getNumberOfChannels()}`
         );
         soundFile.setVolume(1);
+        console.debug(`sound clip downloaded ${soundName}`);
         cachedSoundsMap[soundName] = soundFile;
+        if (shouldPlay) {
+            currentSoundClip = soundFile;
+            currentSoundClip.play(success => {
+                if (success) {
+                    console.debug('successfully finished playing');
+                } else {
+                    console.debug(
+                        'playback failed due to audio decoding errors'
+                    );
+                }
+            });
+        }
     }
 
     function cacheSoundClips(soundClips) {
         soundClips.forEach((v, k) => {
             const soundFile = new Sound(v.preview, null, error => {
-                soundDownloadCallback(soundFile, v.preview, error);
+                soundDownloadCallback(soundFile, v.preview, error, false);
             });
         });
     }
@@ -54,9 +67,13 @@ const SettingsCall = ({
     React.useEffect(() => {
         if (currentlyPlaying !== undefined) {
             console.debug('currentlyPlaying', currentlyPlaying);
-            currentSoundClip = cachedSoundsMap[currentlyPlaying];
-            if (currentSoundClip !== undefined) {
+            const newSoundClip = cachedSoundsMap[currentlyPlaying];
+            if (newSoundClip !== undefined) {
                 console.debug('found sound in cache');
+                if (currentSoundClip !== undefined) {
+                    currentSoundClip.stop();
+                }
+                currentSoundClip = newSoundClip;
                 currentSoundClip.play(success => {
                     if (success) {
                         console.debug('successfully finished playing');
@@ -72,7 +89,8 @@ const SettingsCall = ({
                     soundDownloadCallback(
                         currentSoundClip,
                         currentlyPlaying,
-                        error
+                        error,
+                        true
                     );
                 });
             }
@@ -116,6 +134,7 @@ const SettingsCall = ({
 
     useNavigationButtonCallback(
         ({ buttonId }) => {
+            if (currentSoundClip !== undefined) currentSoundClip.stop();
             switch (buttonId) {
                 case 'backButton':
                     confirmClose(dirty, componentId);
