@@ -783,7 +783,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.flarejewelry.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.flarejewelry.app.development;
 				PRODUCT_NAME = "Get Flare";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "GetFlare-Bridging-Header.h";
@@ -814,7 +814,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.flarejewelry.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.flarejewelry.app.development;
 				PRODUCT_NAME = "Get Flare";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "GetFlare-Bridging-Header.h";
