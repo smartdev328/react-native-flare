@@ -19,7 +19,7 @@ import Headline from './Headline';
 import Colors from '../../bits/Colors';
 import RoundedButton from '../../bits/RoundedButton';
 import * as actions from '../../actions';
-
+import API_RESET_URL from '../../constants/Config';
 import aura1521 from '../../assets/aura-1521.jpg';
 import { EMAIL_REGEX } from './validators';
 import { formatPhone } from '../../bits/cleanPhone';
@@ -143,7 +143,7 @@ class Signin extends React.Component {
     };
 
     forgotPassword = () => {
-        Linking.openURL('https://app2.flarejewelry.co/reset');
+        Linking.openURL(API_RESET_URL);
     };
 
     render() {

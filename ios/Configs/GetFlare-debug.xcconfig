@@ -4,4 +4,4 @@
 CONFIG_APP_NAME = Get Flare
 CONFIG_APP_VERSION = 1.0.9
 CONFIG_APP_BUNDLE_ID = com.flarejewelry.app
-CONFIG_API_URL = https:/$()/app.flarejewelry.co/api
+CONFIG_API_URL = https:/$()/app.flarejewelry.co/
