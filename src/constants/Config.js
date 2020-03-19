@@ -1,17 +1,7 @@
 /**
- * Toggle Development Build. This is for testing/staging purposes,
- * the app2 API has different settings so we won't have to e.g. wait
- * 24 hours before seeing a flare expire (we'll just wait 2 minutes).
- * true -- using the app2 api url
- * false -- using the app api url
- */
-export const DEVELOPMENT_VERSION = true;
-/**
  * Identify the back end to communicate with:
  */
-export const API_URL = DEVELOPMENT_VERSION
-    ? 'https://app2.flarejewelry.co/api'
-    : 'https://app.flarejewelry.co/api';
+export const API_URL = 'https://app2.flarejewelry.co/api';
 
 /**
  * Toggle logging of BLE beacons:

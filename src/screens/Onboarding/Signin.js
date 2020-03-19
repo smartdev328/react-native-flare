@@ -12,7 +12,6 @@ import {
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/Entypo';
 import { connect } from 'react-redux';
-import { DEVELOPMENT_VERSION } from '../../constants/Config';
 
 import Aura from '../../bits/Aura';
 import WhiteBar from './WhiteBar';
@@ -144,11 +143,7 @@ class Signin extends React.Component {
     };
 
     forgotPassword = () => {
-        Linking.openURL(
-            DEVELOPMENT_VERSION
-                ? 'https://app2.flarejewelry.co/reset'
-                : 'https://app.flarejewelry.co/reset'
-        );
+        Linking.openURL('https://app2.flarejewelry.co/reset');
     };
 
     render() {
