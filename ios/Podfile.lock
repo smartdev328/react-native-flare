@@ -277,6 +277,11 @@ PODS:
     - React
   - RNPermissions (2.0.8):
     - React
+  - RNSound (0.11.0):
+    - React
+    - RNSound/Core (= 0.11.0)
+  - RNSound/Core (0.11.0):
+    - React
   - RNVectorIcons (6.6.0):
     - React
   - Yoga (1.14.0)
@@ -336,6 +341,7 @@ DEPENDENCIES:
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
+  - RNSound (from `../node_modules/react-native-sound`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -446,6 +452,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
+  RNSound:
+    :path: "../node_modules/react-native-sound"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -504,6 +512,7 @@ SPEC CHECKSUMS:
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
   RNPermissions: 923c1506d0bde387fbcfc18a8f87945806d03c19
+  RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 

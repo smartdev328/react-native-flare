@@ -99,12 +99,12 @@ const HowItWorks = ({ componentId }) => {
     const close = React.useCallback(() => {
         Navigation.dismissModal(componentId);
     }, [componentId]);
-    const toggleGolden = React.useCallback(() => {
-        setGolden(g => !g);
+    const showGolden = React.useCallback(() => {
+        setGolden(true);
     }, []);
 
     if (golden) {
-        return <GoldenRules finishUp={toggleGolden} />;
+        return <GoldenRules finishUp={close} />;
     }
 
     return (
@@ -140,7 +140,7 @@ const HowItWorks = ({ componentId }) => {
                 <Text style={[styles.r, styles.emojis]}>👌✨💛</Text>
             </ScrollView>
             <RoundedButton
-                onPress={toggleGolden}
+                onPress={showGolden}
                 wrapperStyle={styles.button}
                 text="Read More"
                 width={240}
