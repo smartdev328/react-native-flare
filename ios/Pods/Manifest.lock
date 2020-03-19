@@ -271,6 +271,8 @@ PODS:
     - React
   - RNCMaskedView (0.1.6):
     - React
+  - RNConfigReader (1.0.0):
+    - React
   - RNCPushNotificationIOS (1.0.2):
     - React
   - RNDeviceInfo (5.5.3):
@@ -338,6 +340,7 @@ DEPENDENCIES:
   - "RNBluetoothInfo (from `../node_modules/@bitfly/react-native-bluetooth-info`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNConfigReader (from `../node_modules/react-native-config-reader`)
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -446,6 +449,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNConfigReader:
+    :path: "../node_modules/react-native-config-reader"
   RNCPushNotificationIOS:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDeviceInfo:
@@ -509,6 +514,7 @@ SPEC CHECKSUMS:
   RNBluetoothInfo: 74190dc3e5241b051d4559fa7fcb71267d954202
   RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
   RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
+  RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
   RNPermissions: 923c1506d0bde387fbcfc18a8f87945806d03c19
