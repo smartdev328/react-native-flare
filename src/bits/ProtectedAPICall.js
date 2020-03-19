@@ -1,6 +1,7 @@
 /* global __DEV__ */
 import axios from 'axios';
 import { VERBOSE_NETWORK_LOGGING } from '../constants/Config';
+import { FlareLogger, FlareLoggerCategory } from '../actions/LogAction';
 
 const getAuthorizationHeader = userToken => ({
     Accept: 'application/json',
@@ -28,17 +29,29 @@ export default async function request(token, serverUrl, route, options) {
 
     if (VERBOSE_NETWORK_LOGGING) {
         // eslint-disable-next-line
-        console.debug(JSON.stringify(optionsWithHeaders));
+        const logMessage = JSON.stringify(optionsWithHeaders);
+        console.debug(logMessage);
+        FlareLogger.debug(
+            FlareLoggerCategory.send,
+            logMessage,
+            options.data.device_id
+        );
     }
 
     const response = await axios(optionsWithHeaders);
     if (VERBOSE_NETWORK_LOGGING) {
         const { data, status } = response;
-        console.debug({
+        const logMessage = {
             route,
             data,
             status,
-        });
+        };
+        console.debug(logMessage);
+        FlareLogger.debug(
+            FlareLoggerCategory.received,
+            logMessage,
+            options.data.device_id
+        );
     }
     return response;
 }
