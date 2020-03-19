@@ -28,6 +28,7 @@ import { startBleListening } from '../../actions/hardwareActions';
 import getCurrentPosition from '../../helpers/location';
 import Strings from '../../locales/en';
 import SoftLand from './SoftLand';
+import RNBluetoothInfo from '@bitfly/react-native-bluetooth-info';
 
 export { default as PermissionsReminder } from './PermissionsReminder';
 
@@ -86,6 +87,10 @@ class Home extends React.Component {
             this.accountSyncTimeInMs
         );
         AppState.addEventListener('change', this.handleAppStateChange);
+        RNBluetoothInfo.addEventListener(
+            'change',
+            this.bluetoothEnabledListener
+        );
     }
 
     componentDidUpdate(prevProps) {
@@ -132,7 +137,32 @@ class Home extends React.Component {
         this.shuttingDown = true;
         BackgroundTimer.stopBackgroundTimer();
         AppState.removeEventListener('change', this.handleAppStateChange);
+        RNBluetoothInfo.removeEventListener(
+            'change',
+            this.bluetoothEnabledListener
+        );
     }
+
+    bluetoothEnabledListener = resp => {
+        const connectionState = resp.type.connectionState;
+        if (connectionState === 'off') {
+            PushNotificationIOS.requestPermissions();
+            PushNotificationIOS.presentLocalNotification({
+                alertBody: Strings.notifications.bluetoothDisabled,
+                alertTitle: Strings.notifications.title,
+            });
+        } else {
+            PushNotificationIOS.getDeliveredNotifications(notifications => {
+                notifications.forEach(notification => {
+                    if (notification.title === Strings.notifications.title) {
+                        PushNotificationIOS.removeDeliveredNotifications([
+                            notification.identifier,
+                        ]);
+                    }
+                });
+            });
+        }
+    };
 
     /**
      * Fetch account details and submit app status periodically. The frequency at which we sync varies with app state.

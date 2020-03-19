@@ -18,6 +18,7 @@ import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
 
 import sandwichMenu from './assets/sandwich-menu.png';
+import { FlareLogger } from './actions/LogAction';
 
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
@@ -101,6 +102,7 @@ export default class App extends Component {
 
         this.currentRoot = 'uninitialized';
         store = configureStore(initialState);
+
         this.bleProvider = new BleProvider({ store });
 
         axios.interceptors.response.use(
@@ -116,7 +118,12 @@ export default class App extends Component {
             }
         );
 
+        FlareLogger.initLogging();
+
         persistStore(store, null, () => {
+            const { email } = store.getState().user.profile;
+            FlareLogger.setLoginInfo(email);
+
             registerScreens(store, Provider);
             store.subscribe(this.onStoreUpdate.bind(this));
             const { root } = store.getState().nav;

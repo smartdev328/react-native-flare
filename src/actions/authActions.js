@@ -5,6 +5,7 @@ import { API_URL, MANUFACTURING_MODE_ENABLED } from '../constants/Config';
 import * as types from './actionTypes';
 import Roles from '../constants/Roles';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
+import { FlareLogger } from './LogAction';
 
 export const signIn = (email, phone, password) => async dispatch => {
     try {
@@ -93,5 +94,6 @@ export const resetAuth = () => ({
 
 export const signOut = () => async dispatch => {
     await dispatch({ type: types.USER_RESET });
+    FlareLogger.removeLoginInfo();
     return dispatch(changeAppRoot('insecure'));
 };
