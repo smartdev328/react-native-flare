@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import isPlainObject from 'lodash/isPlainObject';
 import { Navigation } from 'react-native-navigation';
 import Sound from 'react-native-sound';
-
+import { FlareLogger } from '../../actions/LogAction';
 import * as userActions from '../../actions/userActions';
 import RadioGroup from './RadioGroup';
 import { useNavigationButtonCallback } from '../../bits/useNavigationCallback';
@@ -36,7 +36,7 @@ const SettingsCall = ({
             return;
         }
         soundFile.setCategory('Playback');
-        console.debug(
+        FlareLogger.debug(
             `duration in seconds: ${soundFile.getDuration()}number of channels: ${soundFile.getNumberOfChannels()}`
         );
         soundFile.setVolume(1);
