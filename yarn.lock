@@ -6158,6 +6158,11 @@ react-native-bluetooth-status@^1.4.2:
     "@cs125/wait-until" "^0.0.3"
     react-native "^0.61.0"
 
+react-native-config-reader@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-config-reader/-/react-native-config-reader-4.1.0.tgz#f5093869688963f22c19a5343fb64eadca97c5f6"
+  integrity sha512-laLvBf7/mgcItfgRLEhdBbtuVHEeZxn/y7z6V+IMxU5u8hOCz6stKXENXNlPJD8i0XoUP6t6iF1ZlcgoUj8sHA==
+
 react-native-contacts@^5.0.6:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-5.0.6.tgz#929aa236eced56ea5662807ce8e9afb4f4bbbfe2"

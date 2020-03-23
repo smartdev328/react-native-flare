@@ -1,8 +1,9 @@
+import RNConfigReader from 'react-native-config-reader';
 /**
  * Identify the back end to communicate with:
  */
-export const API_URL = 'https://app.flarejewelry.co/api';
-
+export const API_URL = `${RNConfigReader.ApiUrl}api`;
+export const API_RESET_URL = `${RNConfigReader.ApiUrl}reset`;
 /**
  * Toggle logging of BLE beacons:
  * enabled -- report parsed Flare beacons in logs
