@@ -134,7 +134,12 @@ export default class BleProvider {
 
             case BeaconTypes.Long.name: {
                 let noop;
-                if (userHasNoCrew) {
+                if (!hasCompletedOnboarding && !awaitingLongPress) {
+                    console.log(
+                        'Suppressing long press beacon during onboarding.'
+                    );
+                    noop = 'suppress-onboarding';
+                } else if (userHasNoCrew) {
                     PushNotificationIOS.presentLocalNotification({
                         alertBody:
                             "No message was sent because you don't have a Crew.",
@@ -147,11 +152,6 @@ export default class BleProvider {
                 } else if (awaitingLongPress) {
                     dispatch(gotLongPress());
                     noop = 'awaiting-long-press';
-                } else {
-                    console.log(
-                        'Suppressing long press beacon during onboarding.'
-                    );
-                    noop = 'suppress-onboarding';
                 }
                 dispatch(
                     flare({
