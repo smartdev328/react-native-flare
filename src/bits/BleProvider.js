@@ -101,11 +101,13 @@ export default class BleProvider {
         const awaitingLongPress = ['wait', 'gotShort'].includes(
             this.store?.getState()?.user?.scenarios?.longPress
         ); // Used for testing Scenarios during Onboarding
-        const userHasNoCrew =
-            this.store
-                ?.getState()
-                ?.user?.crews.reduce((count, row) => count + row.length, 0) ===
-            0;
+
+        const userCrews = this.store?.getState()?.user?.crews;
+        const userHasCrew = userCrews.reduce((hasCrew, crew) => {
+            const crewValid = crew && crew.members && crew.members.length > 0;
+            return hasCrew && crewValid;
+        }, true);
+
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser =
             userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
@@ -134,9 +136,10 @@ export default class BleProvider {
 
             case BeaconTypes.Long.name: {
                 let noop;
-
                 if (hasCompletedOnboarding) {
-                    if (userHasNoCrew) {
+                    if (userHasCrew) {
+                        noop = undefined;
+                    } else {
                         PushNotificationIOS.presentLocalNotification({
                             alertBody:
                                 "No message was sent because you don't have a Crew.",
@@ -144,8 +147,6 @@ export default class BleProvider {
                         });
                         dispatch(changeAppRoot('secure'));
                         noop = 'no-crew';
-                    } else {
-                        noop = undefined;
                     }
                 } else if (awaitingLongPress) {
                     dispatch(gotLongPress());
