@@ -97,10 +97,10 @@ export default class BleProvider {
         const hasCompletedOnboarding = this.store?.getState()?.user
             ?.hasViewedTutorial;
         const awaitingShortPress =
-            this.store?.getState()?.user?.scenarios?.shortPress === 'wait';
+            this.store?.getState()?.user?.scenarios?.shortPress === 'wait'; // Used for testing Scenarios during Onboarding
         const awaitingLongPress = ['wait', 'gotShort'].includes(
             this.store?.getState()?.user?.scenarios?.longPress
-        );
+        ); // Used for testing Scenarios during Onboarding
         const userHasNoCrew =
             this.store
                 ?.getState()
@@ -134,24 +134,27 @@ export default class BleProvider {
 
             case BeaconTypes.Long.name: {
                 let noop;
-                if (!hasCompletedOnboarding && !awaitingLongPress) {
+
+                if (hasCompletedOnboarding) {
+                    if (userHasNoCrew) {
+                        PushNotificationIOS.presentLocalNotification({
+                            alertBody:
+                                "No message was sent because you don't have a Crew.",
+                            alertTitle: 'No Crews Set',
+                        });
+                        dispatch(changeAppRoot('secure'));
+                        noop = 'no-crew';
+                    } else {
+                        noop = undefined;
+                    }
+                } else if (awaitingLongPress) {
+                    dispatch(gotLongPress());
+                    noop = 'awaiting-long-press';
+                } else {
                     console.log(
                         'Suppressing long press beacon during onboarding.'
                     );
                     noop = 'suppress-onboarding';
-                } else if (userHasNoCrew) {
-                    PushNotificationIOS.presentLocalNotification({
-                        alertBody:
-                            "No message was sent because you don't have a Crew.",
-                        alertTitle: 'No Crews Set',
-                    });
-                    dispatch(changeAppRoot('secure'));
-                    noop = 'no-crew';
-                } else if (hasCompletedOnboarding) {
-                    noop = undefined;
-                } else if (awaitingLongPress) {
-                    dispatch(gotLongPress());
-                    noop = 'awaiting-long-press';
                 }
                 dispatch(
                     flare({
