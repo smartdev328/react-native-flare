@@ -12,7 +12,6 @@ import RadioGroup from './RadioGroup';
 import { useNavigationButtonCallback } from '../../bits/useNavigationCallback';
 import { confirmClose, navOptions, saveButton, styles } from './styles';
 
-//let cachedSoundsMap = {};
 let currentSoundClip;
 
 const SettingsCall = ({
@@ -140,7 +139,6 @@ const SettingsCall = ({
                     preview,
                 })
             );
-            //cacheSoundClips(items);
             return items;
         } else {
             return [];
