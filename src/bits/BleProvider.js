@@ -97,15 +97,17 @@ export default class BleProvider {
         const hasCompletedOnboarding = this.store?.getState()?.user
             ?.hasViewedTutorial;
         const awaitingShortPress =
-            this.store?.getState()?.user?.scenarios?.shortPress === 'wait';
+            this.store?.getState()?.user?.scenarios?.shortPress === 'wait'; // Used for testing Scenarios during Onboarding
         const awaitingLongPress = ['wait', 'gotShort'].includes(
             this.store?.getState()?.user?.scenarios?.longPress
-        );
-        const userHasNoCrew =
-            this.store
-                ?.getState()
-                ?.user?.crews.reduce((count, row) => count + row.length, 0) ===
-            0;
+        ); // Used for testing Scenarios during Onboarding
+
+        const userCrews = this.store?.getState()?.user?.crews;
+        const userHasCrew = userCrews.reduce((hasCrew, crew) => {
+            const crewValid = crew && crew.members && crew.members.length > 0;
+            return hasCrew && crewValid;
+        }, true);
+
         const deviceIDs = userDevices.map(d => d.id);
         const forCurrentUser =
             userDevices.length > 0 && deviceIDs.indexOf(beacon.deviceID) !== -1;
@@ -134,16 +136,18 @@ export default class BleProvider {
 
             case BeaconTypes.Long.name: {
                 let noop;
-                if (userHasNoCrew) {
-                    PushNotificationIOS.presentLocalNotification({
-                        alertBody:
-                            "No message was sent because you don't have a Crew.",
-                        alertTitle: 'No Crews Set',
-                    });
-                    dispatch(changeAppRoot('secure'));
-                    noop = 'no-crew';
-                } else if (hasCompletedOnboarding) {
-                    noop = undefined;
+                if (hasCompletedOnboarding) {
+                    if (userHasCrew) {
+                        noop = undefined;
+                    } else {
+                        PushNotificationIOS.presentLocalNotification({
+                            alertBody:
+                                "No message was sent because you don't have a Crew.",
+                            alertTitle: 'No Crews Set',
+                        });
+                        dispatch(changeAppRoot('secure'));
+                        noop = 'no-crew';
+                    }
                 } else if (awaitingLongPress) {
                     dispatch(gotLongPress());
                     noop = 'awaiting-long-press';

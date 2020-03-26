@@ -18,7 +18,7 @@ import initialState from './reducers/initialState';
 import registerScreens from './screens/index';
 
 import sandwichMenu from './assets/sandwich-menu.png';
-import { FlareLogger } from './actions/LogAction';
+import { FlareLogger, FlareLoggerCategory } from './actions/LogAction';
 
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
@@ -119,7 +119,7 @@ export default class App extends Component {
         );
 
         FlareLogger.initLogging();
-
+        FlareLogger.debug(FlareLoggerCategory.wake, `App Started`);
         persistStore(store, null, () => {
             const { email } = store.getState().user.profile;
             FlareLogger.setLoginInfo(email);
