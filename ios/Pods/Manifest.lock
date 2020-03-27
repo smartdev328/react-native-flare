@@ -277,8 +277,6 @@ PODS:
     - React
   - RNDeviceInfo (5.5.3):
     - React
-  - RNFS (2.16.6):
-    - React
   - RNPermissions (2.0.8):
     - React
   - RNSound (0.11.0):
@@ -345,7 +343,6 @@ DEPENDENCIES:
   - RNConfigReader (from `../node_modules/react-native-config-reader`)
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - RNFS (from `../node_modules/react-native-fs`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNSound (from `../node_modules/react-native-sound`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -458,8 +455,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
-  RNFS:
-    :path: "../node_modules/react-native-fs"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNSound:
@@ -522,7 +517,6 @@ SPEC CHECKSUMS:
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPushNotificationIOS: 0b8d06ff190d84627dd17501bfb96652375970e4
   RNDeviceInfo: 310c1f43d418d950a193c7650de2f9559c906048
-  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNPermissions: 923c1506d0bde387fbcfc18a8f87945806d03c19
   RNSound: da030221e6ac7e8290c6b43f2b5f2133a8e225b0
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4

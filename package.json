@@ -40,7 +40,6 @@
         "react-native-config-reader": "^4.1.0",
         "react-native-contacts": "^5.0.6",
         "react-native-device-info": "^5.5.3",
-        "react-native-fs": "^2.16.6",
         "react-native-linear-gradient": "^2.5.6",
         "react-native-location": "^2.5.0",
         "react-native-material-textfield": "^0.16.1",
