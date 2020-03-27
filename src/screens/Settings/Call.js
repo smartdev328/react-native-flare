@@ -4,13 +4,11 @@ import { SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
 import isPlainObject from 'lodash/isPlainObject';
 import { Navigation } from 'react-native-navigation';
-import Sound from 'react-native-sound';
-import RNFS from 'react-native-fs';
-import { FlareLogger } from '../../actions/LogAction';
 import * as userActions from '../../actions/userActions';
 import RadioGroup from './RadioGroup';
 import { useNavigationButtonCallback } from '../../bits/useNavigationCallback';
 import { confirmClose, navOptions, saveButton, styles } from './styles';
+import { getCallSound, getCallScriptName } from '../../helpers/callScripts';
 
 let currentSoundClip;
 
@@ -31,48 +29,17 @@ const SettingsCall = ({
     );
     const [currentlyPlaying, setCurrentlyPlaying] = React.useState();
 
-    function soundDownloadCallback(soundFile, soundName, error) {
-        if (error) {
-            console.debug('Caching Sounds: failed to load the sound', error);
-            return;
-        }
-        soundFile.setCategory('Playback');
-        FlareLogger.debug(
-            `duration in seconds: ${soundFile.getDuration()}number of channels: ${soundFile.getNumberOfChannels()}`
-        );
-        soundFile.setVolume(1);
-        console.debug(`Caching Sounds: sound clip downloaded ${soundName}`);
-        currentSoundClip = soundFile;
-        currentSoundClip.play(success => {
-            if (success) {
-                console.debug('Caching Sounds: successfully finished playing');
-            } else {
-                console.debug(
-                    'Caching Sounds: playback failed due to audio decoding errors'
-                );
-            }
-        });
-    }
-
     React.useEffect(() => {
         if (currentlyPlaying !== undefined) {
-            console.debug('Caching Sounds: currentlyPlaying', currentlyPlaying);
-
-            const previewNameArray = currentlyPlaying.split('/');
-            const name = previewNameArray[previewNameArray.length - 1];
-            console.debug('Caching Sounds: edited Currently Playing', name);
-            const path = `${RNFS.DocumentDirectoryPath}/${name}`;
-
             if (currentSoundClip !== undefined) currentSoundClip.stop();
-            currentSoundClip = new Sound(path, null, error => {
-                soundDownloadCallback(
-                    currentSoundClip,
-                    currentlyPlaying,
-                    error
-                );
-            });
+
+            const name = getCallScriptName(currentlyPlaying);
+            console.debug('Edited Currently Playing', name);
+            currentSoundClip = getCallSound(name);
+            if (currentSoundClip !== undefined) currentSoundClip.play();
+            else setCurrentlyPlaying();
         }
-    }, [currentlyPlaying]);
+    }, [currentlyPlaying, callScripts, savedCallScript]);
 
     const clearPlaying = React.useCallback(() => {
         if (currentSoundClip !== undefined) currentSoundClip.stop();

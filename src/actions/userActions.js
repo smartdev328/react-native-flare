@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+
 import {
     check,
     checkNotifications,
@@ -8,14 +9,12 @@ import {
     RESULTS,
 } from 'react-native-permissions';
 
-import Sound from 'react-native-sound';
-import RNFS from 'react-native-fs';
-import { FlareLogger } from './LogAction';
 import * as types from './actionTypes';
 import { API_URL } from '../constants/Config';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 import { getContactsOrder } from '../bits/settingsUrl';
 import { getAllContacts } from '../helpers/contacts';
+import { cacheCallSounds } from '../helpers/callScripts';
 
 export const resetSetCrewMembers = () => ({ type: types.CREW_SET_RESET });
 
@@ -373,38 +372,6 @@ export function setCallScript(token, script) {
     };
 }
 
-function cacheCallScripts(callScripts) {
-    FlareLogger.debug('Caching Sounds: Caching Call Scripts');
-    const items = Object.values(callScripts.data).map(
-        ({ script_name: label, script_id: key, preview_url: preview }) => ({
-            key,
-            label,
-            preview,
-        })
-    );
-    items.forEach((v, k) => {
-        const previewNameArray = v.preview.split('/');
-        const name = previewNameArray[previewNameArray.length - 1];
-        const path = `${RNFS.DocumentDirectoryPath}/${name}`;
-
-        const result = RNFS.downloadFile({
-            fromUrl: v.preview,
-            toFile: path,
-        });
-        result.promise
-            .then(downloadResult => {
-                FlareLogger.debug(
-                    `Caching Sounds: Sound clip downloaded ${name}`
-                );
-            })
-            .catch(() => {
-                FlareLogger.debug(
-                    `Caching Sounds: Sound clip failed to download ${name}`
-                );
-            });
-    });
-}
-
 export const getCallScripts = token => async dispatch => {
     dispatch({ type: types.USER_GET_CALL_SCRIPTS_REQUEST });
     try {
@@ -416,13 +383,10 @@ export const getCallScripts = token => async dispatch => {
                 method: 'GET',
             }
         );
-        console.debug('Caching Sounds: Downloaded Call Scripts');
         dispatch({ type: types.USER_GET_CALL_SCRIPTS_SUCCESS, data });
-        cacheCallScripts(data);
+        cacheCallSounds(data);
     } catch (error) {
-        console.debug(
-            `Caching Sounds: Failed to Download call scripts ${error}`
-        );
+        console.debug(`Failed to Download call scripts ${error}`);
         dispatch({ type: types.USER_GET_CALL_SCRIPTS_FAILURE, error });
     }
 };
