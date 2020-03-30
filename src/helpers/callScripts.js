@@ -4,16 +4,9 @@ import Sound from 'react-native-sound';
 import { FlareLogger } from '../actions/LogAction';
 
 const cachedCallPromises = new Map();
-const cachedCallSounds = new Map();
 
 export function getCallSound(name) {
-    if (cachedCallSounds[name] !== undefined) {
-        return new Promise(function(resolve, reject) {
-            resolve(cachedCallSounds[name]);
-        });
-    } else {
-        return cachedCallPromises[name];
-    }
+    return cachedCallPromises[name];
 }
 
 export function getCallScriptName(callScriptUrl) {
@@ -44,7 +37,6 @@ export function cacheCallSounds(callScriptData) {
                 );
                 soundClip.setVolume(1);
                 console.debug(`Sound clip downloaded ${name}`);
-                cachedCallSounds[name] = soundClip;
                 resolve(soundClip);
             });
         });

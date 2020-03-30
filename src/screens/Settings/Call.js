@@ -19,7 +19,6 @@ const SettingsCall = ({
     setCallScript,
     callScripts,
     componentId,
-    getCallScripts,
     sawCallScripts,
 }) => {
     const [dirty, setDirty] = React.useState(false);
@@ -61,8 +60,7 @@ const SettingsCall = ({
 
     React.useEffect(() => {
         sawCallScripts();
-        getCallScripts(authToken);
-    }, [sawCallScripts, getCallScripts, authToken]);
+    }, [sawCallScripts, authToken]);
 
     React.useEffect(() => {
         if (didSave && !savingSetting) {
@@ -146,7 +144,6 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
     setCallScript: userActions.setCallScript,
-    getCallScripts: userActions.getCallScripts,
     sawCallScripts: userActions.sawCallScripts,
 };
 
