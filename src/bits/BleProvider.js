@@ -1,6 +1,7 @@
 /* eslint-disable no-undef-init */
 import { shallowEqualObjects } from 'shallow-equal';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import Strings from '../locales/en';
 
 import { BeaconTypes } from './BleConstants';
 import {
@@ -140,10 +141,10 @@ export default class BleProvider {
                     if (userHasCrew) {
                         noop = undefined;
                     } else {
+                        PushNotificationIOS.requestPermissions();
                         PushNotificationIOS.presentLocalNotification({
-                            alertBody:
-                                "No message was sent because you don't have a Crew.",
-                            alertTitle: 'No Crews Set',
+                            alertBody: Strings.notifications.noCrew.message,
+                            alertTitle: Strings.notifications.noCrew.title,
                         });
                         dispatch(changeAppRoot('secure'));
                         noop = 'no-crew';
