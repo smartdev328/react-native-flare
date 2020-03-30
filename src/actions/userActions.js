@@ -384,7 +384,7 @@ export const getCallScripts = token => async dispatch => {
             }
         );
         dispatch({ type: types.USER_GET_CALL_SCRIPTS_SUCCESS, data });
-        cacheCallSounds(data);
+        cacheCallSounds(data.data);
     } catch (error) {
         console.debug(`Failed to Download call scripts ${error}`);
         dispatch({ type: types.USER_GET_CALL_SCRIPTS_FAILURE, error });

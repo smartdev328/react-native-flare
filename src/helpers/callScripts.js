@@ -15,7 +15,7 @@ export function getCallScriptName(callScriptUrl) {
 }
 
 export function cacheCallSounds(callScriptData) {
-    const items = Object.values(callScriptData.data).map(
+    const items = Object.values(callScriptData).map(
         ({ script_name: label, script_id: key, preview_url: preview }) => ({
             key,
             label,

@@ -180,7 +180,7 @@ const SoftLand = ({ componentId }) => {
     // lower the odds of them being not yet available when we want to show
     // the UI
     React.useEffect(() => {
-        if (selector.authToken) {
+        if (selector.authToken && !selector.haveCallScripts) {
             dispatch(getCallScripts(selector.authToken));
         }
     }, [selector.haveCallScripts, selector.authToken, dispatch]);
