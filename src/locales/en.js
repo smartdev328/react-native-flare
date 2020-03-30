@@ -135,6 +135,11 @@ const Strings = {
                 defaultMessage: 'Get that thing done',
             },
         },
+        noCrew: {
+            title: 'You Need a Crew',
+            message:
+                "Flare could not send out a message because you haven't added contacts to your Crew yet. Add them now!",
+        },
     },
     onboarding: {
         signupButton: 'Sign up',
