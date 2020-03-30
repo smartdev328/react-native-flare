@@ -35,9 +35,11 @@ const SettingsCall = ({
 
             const name = getCallScriptName(currentlyPlaying);
             console.debug('Edited Currently Playing', name);
-            currentSoundClip = getCallSound(name);
-            if (currentSoundClip !== undefined) currentSoundClip.play();
-            else setCurrentlyPlaying();
+            getCallSound(name).then(soundClip => {
+                currentSoundClip = soundClip;
+                if (currentSoundClip !== undefined) currentSoundClip.play();
+                else setCurrentlyPlaying();
+            });
         }
     }, [currentlyPlaying, callScripts, savedCallScript]);
 

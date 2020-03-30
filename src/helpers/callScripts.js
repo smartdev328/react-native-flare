@@ -3,10 +3,17 @@
 import Sound from 'react-native-sound';
 import { FlareLogger } from '../actions/LogAction';
 
+const cachedCallPromises = new Map();
 const cachedCallSounds = new Map();
 
 export function getCallSound(name) {
-    return cachedCallSounds[name];
+    if (cachedCallSounds[name] !== undefined) {
+        return new Promise(function(resolve, reject) {
+            resolve(cachedCallSounds[name]);
+        });
+    } else {
+        return cachedCallPromises[name];
+    }
 }
 
 export function getCallScriptName(callScriptUrl) {
@@ -24,19 +31,23 @@ export function cacheCallSounds(callScriptData) {
     );
     items.forEach(v => {
         const name = getCallScriptName(v.preview);
-        const soundClip = new Sound(v.preview, null, error => {
-            if (error) {
-                console.debug(error);
-                return null;
-            }
-            soundClip.setCategory('Playback');
-            FlareLogger.debug(
-                `duration in seconds: ${soundClip.getDuration()}number of channels: ${soundClip.getNumberOfChannels()}`
-            );
-            soundClip.setVolume(1);
-            console.debug(`Sound clip downloaded ${name}`);
-
-            cachedCallSounds[name] = soundClip;
+        var promise = new Promise(function(resolve, reject) {
+            const soundClip = new Sound(v.preview, null, error => {
+                if (error) {
+                    console.debug(error);
+                    reject(error);
+                    return null;
+                }
+                soundClip.setCategory('Playback');
+                FlareLogger.debug(
+                    `duration in seconds: ${soundClip.getDuration()}number of channels: ${soundClip.getNumberOfChannels()}`
+                );
+                soundClip.setVolume(1);
+                console.debug(`Sound clip downloaded ${name}`);
+                cachedCallSounds[name] = soundClip;
+                resolve(soundClip);
+            });
         });
+        cachedCallPromises[name] = promise;
     });
 }
