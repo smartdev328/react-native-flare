@@ -1,5 +1,8 @@
 import { Timber } from '@timberio/node';
 import DeviceInfo from 'react-native-device-info';
+import { NativeModules } from 'react-native';
+//import dgram from 'react-native-udp';
+
 import {
     check,
     checkNotifications,
@@ -14,6 +17,7 @@ const apiKey =
 const sourceId = '34447';
 let logger;
 let usernameStr = '';
+const LogManager = NativeModules.LogManager;
 
 function generateMetaData(deviceSerialNum): Promise {
     return new Promise(resolve => {
@@ -95,6 +99,16 @@ export class FlareLogger {
         usernameStr = '';
     }
 
+    static sendToLogManager(logInfo, logType) {
+        let logString;
+        if (typeof logInfo === 'object') {
+            logString = JSON.stringify(logInfo);
+        } else {
+            logString = logInfo;
+        }
+        LogManager.info(logString, logType);
+    }
+
     static error(categoryStr, logString, optionalBraceletId) {
         const braceletId = optionalBraceletId
             ? FlareDeviceID.getJewelryLabelFromDeviceID(optionalBraceletId)
@@ -107,6 +121,7 @@ export class FlareLogger {
             };
             console.debug(log);
             logger.error(log);
+            sendToLogManager(logString, 'ERR');
         });
     }
 
@@ -122,6 +137,7 @@ export class FlareLogger {
             };
             console.debug(log);
             logger.warn(log);
+            sendToLogManager(logString, 'WARN');
         });
     }
 
@@ -137,6 +153,7 @@ export class FlareLogger {
             };
             console.debug(log);
             logger.debug(log);
+            sendToLogManager(logString, 'DEBUG');
         });
     }
 
@@ -152,6 +169,7 @@ export class FlareLogger {
             };
             console.debug(log);
             logger.info(log);
+            sendToLogManager(logString, 'INFO');
         });
     }
 }
