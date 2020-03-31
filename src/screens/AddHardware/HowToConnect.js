@@ -17,17 +17,17 @@ const styles = StyleSheet.create({
 });
 
 const HowToConnect = props => (
-    <HelpScreen headline="How do I connect my Flare cuff?" {...props}>
+    <HelpScreen headline="How do I connect my Flare bracelet?" {...props}>
         <Text style={styles.option}>Option 1:</Text>
         <HelpSection icon={bluetooth} title="Bluetooth">
-            By repeatedly pressing the discreet button on your cuff, your phone
-            and cuff can establish a permanent connection.
+            By repeatedly pressing the discreet button on your bracelet, your
+            phone and bracelet can establish a permanent connection.
         </HelpSection>
         <Text style={styles.option}>Option 2:</Text>
         <HelpSection icon={manual} title="Serial Number">
             You can manually enter the serial number on the underside of your
-            cuff; this also establishes a permanent connection and you can
-            ensure that you are connecting to your cuff.
+            bracelet; this also establishes a permanent connection and you can
+            ensure that you are connecting to your bracelet.
         </HelpSection>
     </HelpScreen>
 );

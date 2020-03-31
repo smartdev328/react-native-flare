@@ -125,13 +125,14 @@ const SettingsCall = ({
                 playingPreview={currentlyPlaying}
             />
             <Text style={styles.explain}>
-                Select which call you’ll hear when you press your cuff once.
+                Select which call you’ll hear when you press the button on your
+                bracelet once.
             </Text>
         </SafeAreaView>
     );
 };
 
-SettingsCall.options = () => navOptions('Cuff Call');
+SettingsCall.options = () => navOptions('Call recording');
 
 const mapStateToProps = ({
     user: { authToken, callScript, callScripts, savingSetting },
