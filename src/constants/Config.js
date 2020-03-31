@@ -1,16 +1,19 @@
+/* global __DEV__ */
 import RNConfigReader from 'react-native-config-reader';
 /**
  * Identify the back end to communicate with:
  */
 export const API_URL = `${RNConfigReader.ApiUrl}api`;
 export const API_RESET_URL = `${RNConfigReader.ApiUrl}reset`;
+export const CONFIG_DEV = `${RNConfigReader.CONFIG_DEV}` || __DEV__;
+
 /**
  * Toggle logging of BLE beacons:
  * enabled -- report parsed Flare beacons in logs
  + verbose -- report all/unparsed beacons in logs
  + not-enabled (or anything else really) -- no BLE logging at all
  */
-export const BLUETOOTH_BEACON_LOGGING = __DEV__ ? 'enabled' : 'not-enabled';
+export const BLUETOOTH_BEACON_LOGGING = CONFIG_DEV ? 'enabled' : 'not-enabled';
 
 /**
  * URL to bring users to ambassador signup page
@@ -112,7 +115,7 @@ export const USERS_CAN_ADD_JEWELRY = true;
 /**
  * Toggle logging of network calls
  */
-export const VERBOSE_NETWORK_LOGGING = __DEV__;
+export const VERBOSE_NETWORK_LOGGING = CONFIG_DEV;
 
 /**
  * Time after which a second beacon press will not be considered identical
