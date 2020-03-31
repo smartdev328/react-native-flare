@@ -509,7 +509,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1091,7 +1091,7 @@
 			};
 			name = Release;
 		};
-		F1B880F92423BF6900E8593D /* Staging */ = {
+		F18F2CD024326D1800C5DC64 /* Staging */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1144,7 +1144,7 @@
 			};
 			name = Staging;
 		};
-		F1B880FA2423BF6900E8593D /* Staging */ = {
+		F18F2CD124326D1800C5DC64 /* Staging */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F1B8810E2423C59E00E8593D /* GetFlare-staging.xcconfig */;
 			buildSettings = {
@@ -1176,7 +1176,7 @@
 			};
 			name = Staging;
 		};
-		F1B880FB2423BF6900E8593D /* Staging */ = {
+		F18F2CD224326D1800C5DC64 /* Staging */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CD37FDBD24FC093D3ECDE20C /* Pods-GetFlareTests.staging.xcconfig */;
 			buildSettings = {
@@ -1201,7 +1201,7 @@
 			};
 			name = Staging;
 		};
-		F1B880FC2423BF6900E8593D /* Staging */ = {
+		F18F2CD324326D1800C5DC64 /* Staging */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 86931D72C7A7368DDC053E8F /* Pods-GetFlare-tvOS.staging.xcconfig */;
 			buildSettings = {
@@ -1230,7 +1230,7 @@
 			};
 			name = Staging;
 		};
-		F1B880FD2423BF6900E8593D /* Staging */ = {
+		F18F2CD424326D1800C5DC64 /* Staging */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A2A3B33C553AB73DA7689156 /* Pods-GetFlare-tvOSTests.staging.xcconfig */;
 			buildSettings = {
@@ -1265,7 +1265,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
-				F1B880FB2423BF6900E8593D /* Staging */,
+				F18F2CD224326D1800C5DC64 /* Staging */,
 				00E356F71AD99517003FC87E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1275,7 +1275,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
-				F1B880FA2423BF6900E8593D /* Staging */,
+				F18F2CD124326D1800C5DC64 /* Staging */,
 				13B07F951A680F5B00A75B9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1285,7 +1285,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
-				F1B880FC2423BF6900E8593D /* Staging */,
+				F18F2CD324326D1800C5DC64 /* Staging */,
 				2D02E4981E0B4A5E006451C7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1295,7 +1295,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
-				F1B880FD2423BF6900E8593D /* Staging */,
+				F18F2CD424326D1800C5DC64 /* Staging */,
 				2D02E49A1E0B4A5E006451C7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1305,7 +1305,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
-				F1B880F92423BF6900E8593D /* Staging */,
+				F18F2CD024326D1800C5DC64 /* Staging */,
 				83CBBA211A601CBA00E9B192 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

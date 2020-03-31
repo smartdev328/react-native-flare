@@ -12,6 +12,7 @@ import {
     ACCOUNT_SYNC_INTERVAL_FLARE,
     ACCOUNT_SYNC_INTERVAL_DEV,
     FLARE_TIMELINE_REFRESH_INTERVAL,
+    CONFIG_DEV,
 } from '../constants/Config';
 
 import { syncAccountDetails, changeAppRoot } from '../actions/index';
@@ -168,7 +169,7 @@ class HomeActive extends React.Component {
     setSyncTiming() {
         if (this.props.hasActiveFlare) {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_FLARE;
-        } else if (__DEV__) {
+        } else if (CONFIG_DEV) {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_DEV;
         } else {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL;

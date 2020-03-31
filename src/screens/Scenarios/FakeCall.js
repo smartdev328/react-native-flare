@@ -11,6 +11,7 @@ import Connecting from './Connecting';
 import OhFicus from './OhFicus';
 import RoundedButton from '../../bits/RoundedButton';
 import Colors from '../../bits/Colors';
+import { CONFIG_DEV } from '../../constants/Config';
 
 const FakeCall = ({ onBack, onSuccess }) => {
     const dispatch = useDispatch();
@@ -72,7 +73,7 @@ const FakeCall = ({ onBack, onSuccess }) => {
                 }}
             >
                 <OhFicus retry={retry} />
-                {__DEV__ && (
+                {CONFIG_DEV && (
                     <RoundedButton
                         neumorphicDark
                         width={240}
