@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import {
     check,
     checkNotifications,
@@ -12,6 +14,7 @@ import { API_URL } from '../constants/Config';
 import ProtectedAPICall from '../bits/ProtectedAPICall';
 import { getContactsOrder } from '../bits/settingsUrl';
 import { getAllContacts } from '../helpers/contacts';
+import { cacheCallSounds } from '../helpers/callScripts';
 
 export const resetSetCrewMembers = () => ({ type: types.CREW_SET_RESET });
 
@@ -381,7 +384,9 @@ export const getCallScripts = token => async dispatch => {
             }
         );
         dispatch({ type: types.USER_GET_CALL_SCRIPTS_SUCCESS, data });
+        cacheCallSounds(data.data);
     } catch (error) {
+        console.debug(`Failed to Download call scripts ${error}`);
         dispatch({ type: types.USER_GET_CALL_SCRIPTS_FAILURE, error });
     }
 };

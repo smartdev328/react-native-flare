@@ -1,4 +1,6 @@
 /* global __DEV__ */
+/* eslint-disable no-console */
+
 import axios from 'axios';
 import { VERBOSE_NETWORK_LOGGING } from '../constants/Config';
 import { FlareLogger, FlareLoggerCategory } from '../actions/LogAction';
@@ -27,15 +29,14 @@ export default async function request(token, serverUrl, route, options) {
         url: `${serverUrl}${route}`,
     };
 
+    // eslint-disable-next-line camelcase
+    const deviceId = options.data?.device_id ? options.data?.device_id : '';
+
     if (VERBOSE_NETWORK_LOGGING) {
         // eslint-disable-next-line
         const logMessage = JSON.stringify(optionsWithHeaders);
         console.debug(logMessage);
-        FlareLogger.debug(
-            FlareLoggerCategory.send,
-            logMessage,
-            options.data.device_id
-        );
+        FlareLogger.debug(FlareLoggerCategory.send, logMessage, deviceId);
     }
 
     const response = await axios(optionsWithHeaders);
@@ -47,11 +48,7 @@ export default async function request(token, serverUrl, route, options) {
             status,
         };
         console.debug(logMessage);
-        FlareLogger.debug(
-            FlareLoggerCategory.received,
-            logMessage,
-            options.data.device_id
-        );
+        FlareLogger.debug(FlareLoggerCategory.received, logMessage, deviceId);
     }
     return response;
 }

@@ -1,16 +1,15 @@
+/* eslint-disable no-console */
 import * as React from 'react';
 import { SafeAreaView, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
 import isPlainObject from 'lodash/isPlainObject';
 import { Navigation } from 'react-native-navigation';
-import Sound from 'react-native-sound';
-import { FlareLogger } from '../../actions/LogAction';
 import * as userActions from '../../actions/userActions';
 import RadioGroup from './RadioGroup';
 import { useNavigationButtonCallback } from '../../bits/useNavigationCallback';
 import { confirmClose, navOptions, saveButton, styles } from './styles';
+import { getCallSound, getCallScriptName } from '../../helpers/callScripts';
 
-let cachedSoundsMap = {};
 let currentSoundClip;
 
 const SettingsCall = ({
@@ -20,7 +19,6 @@ const SettingsCall = ({
     setCallScript,
     callScripts,
     componentId,
-    getCallScripts,
     sawCallScripts,
 }) => {
     const [dirty, setDirty] = React.useState(false);
@@ -30,70 +28,19 @@ const SettingsCall = ({
     );
     const [currentlyPlaying, setCurrentlyPlaying] = React.useState();
 
-    function soundDownloadCallback(soundFile, soundName, error, shouldPlay) {
-        if (error) {
-            console.debug('failed to load the sound', error);
-            return;
-        }
-        soundFile.setCategory('Playback');
-        FlareLogger.debug(
-            `duration in seconds: ${soundFile.getDuration()}number of channels: ${soundFile.getNumberOfChannels()}`
-        );
-        soundFile.setVolume(1);
-        console.debug(`sound clip downloaded ${soundName}`);
-        cachedSoundsMap[soundName] = soundFile;
-        if (shouldPlay) {
-            currentSoundClip = soundFile;
-            currentSoundClip.play(success => {
-                if (success) {
-                    console.debug('successfully finished playing');
-                } else {
-                    console.debug(
-                        'playback failed due to audio decoding errors'
-                    );
-                }
-            });
-        }
-    }
-
-    function cacheSoundClips(soundClips) {
-        soundClips.forEach((v, k) => {
-            const soundFile = new Sound(v.preview, null, error => {
-                soundDownloadCallback(soundFile, v.preview, error, false);
-            });
-        });
-    }
-
     React.useEffect(() => {
         if (currentlyPlaying !== undefined) {
-            console.debug('currentlyPlaying', currentlyPlaying);
-            const newSoundClip = cachedSoundsMap[currentlyPlaying];
-            if (newSoundClip !== undefined) {
-                console.debug('found sound in cache');
-                if (currentSoundClip !== undefined) currentSoundClip.stop();
-                currentSoundClip = newSoundClip;
-                currentSoundClip.play(success => {
-                    if (success) {
-                        console.debug('successfully finished playing');
-                    } else {
-                        console.debug(
-                            'playback failed due to audio decoding errors'
-                        );
-                    }
-                });
-            } else {
-                console.debug("couldn't find sound in cache, downloading");
-                currentSoundClip = new Sound(currentlyPlaying, null, error => {
-                    soundDownloadCallback(
-                        currentSoundClip,
-                        currentlyPlaying,
-                        error,
-                        true
-                    );
-                });
-            }
+            if (currentSoundClip !== undefined) currentSoundClip.stop();
+
+            const name = getCallScriptName(currentlyPlaying);
+            console.debug('Edited Currently Playing', name);
+            getCallSound(name).then(soundClip => {
+                currentSoundClip = soundClip;
+                if (currentSoundClip !== undefined) currentSoundClip.play();
+                else setCurrentlyPlaying();
+            });
         }
-    }, [currentlyPlaying]);
+    }, [currentlyPlaying, callScripts, savedCallScript]);
 
     const clearPlaying = React.useCallback(() => {
         if (currentSoundClip !== undefined) currentSoundClip.stop();
@@ -113,8 +60,7 @@ const SettingsCall = ({
 
     React.useEffect(() => {
         sawCallScripts();
-        getCallScripts(authToken);
-    }, [sawCallScripts, getCallScripts, authToken]);
+    }, [sawCallScripts, authToken]);
 
     React.useEffect(() => {
         if (didSave && !savingSetting) {
@@ -160,7 +106,6 @@ const SettingsCall = ({
                     preview,
                 })
             );
-            cacheSoundClips(items);
             return items;
         } else {
             return [];
@@ -199,7 +144,6 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
     setCallScript: userActions.setCallScript,
-    getCallScripts: userActions.getCallScripts,
     sawCallScripts: userActions.sawCallScripts,
 };
 

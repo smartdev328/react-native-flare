@@ -19,6 +19,8 @@ import registerScreens from './screens/index';
 
 import sandwichMenu from './assets/sandwich-menu.png';
 import { FlareLogger, FlareLoggerCategory } from './actions/LogAction';
+import { cacheCallSounds } from './helpers/callScripts';
+import isPlainObject from 'lodash/isPlainObject';
 
 // eslint-disable-next-line no-console
 console.disableYellowBox = true;
@@ -123,6 +125,14 @@ export default class App extends Component {
         persistStore(store, null, () => {
             const { email } = store.getState().user.profile;
             FlareLogger.setLoginInfo(email);
+
+            const callScripts = store.getState().user.callScripts;
+            if (
+                isPlainObject(callScripts) &&
+                Object.keys(callScripts).length > 0
+            ) {
+                cacheCallSounds(callScripts);
+            }
 
             registerScreens(store, Provider);
             store.subscribe(this.onStoreUpdate.bind(this));
