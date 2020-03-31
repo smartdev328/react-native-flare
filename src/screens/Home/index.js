@@ -15,6 +15,7 @@ import {
     ACCOUNT_SYNC_INTERVAL,
     ACCOUNT_SYNC_INTERVAL_FLARE,
     ACCOUNT_SYNC_INTERVAL_DEV,
+    CONFIG_DEV,
 } from '../../constants/Config';
 import {
     syncAccountDetails,
@@ -173,7 +174,7 @@ class Home extends React.Component {
         const { hasActiveFlare } = this.props;
         if (hasActiveFlare) {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_FLARE;
-        } else if (__DEV__) {
+        } else if (CONFIG_DEV) {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL_DEV;
         } else {
             this.accountSyncTimeInMs = ACCOUNT_SYNC_INTERVAL;

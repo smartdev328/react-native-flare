@@ -12,13 +12,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import * as reducers from '../reducers/index';
-import { REDUX_LOGGING, summary } from '../constants/Config';
+import { REDUX_LOGGING, summary, CONFIG_DEV } from '../constants/Config';
 
 let middleware = [thunk];
 
 console.log(`App configuration ${JSON.stringify(summary)}`);
 
-if (__DEV__ && REDUX_LOGGING) {
+if (CONFIG_DEV && REDUX_LOGGING) {
     middleware = [...middleware, logger];
 } else {
     middleware = [...middleware];
@@ -56,13 +56,13 @@ const persistConfig = {
     stateReconciler: seamlessImmutableReconciler,
     transforms: [seamlessImmutableTransformCreator(transformerConfig)],
     version: 1,
-    debug: !!__DEV__,
+    debug: !!CONFIG_DEV,
 };
 const combinedReducer = persistCombineReducers(persistConfig, reducers);
 
 // eslint-disable-next-line
 export function configureStore(initialState) {
-    const composeFunction = __DEV__ ? composeWithDevTools : compose;
+    const composeFunction = CONFIG_DEV ? composeWithDevTools : compose;
     const enhancer = composeFunction(applyMiddleware(...middleware));
     return createStore(combinedReducer, initialState, enhancer);
 }
