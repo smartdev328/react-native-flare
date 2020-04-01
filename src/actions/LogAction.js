@@ -59,7 +59,6 @@ function generateMetaData(deviceSerialNum): Promise {
                         bracelet_serial_number: deviceSerialNum,
                         user_id: usernameStr,
                     },
-                    timestamp: new Date().toString(),
                 });
             }
         );
@@ -71,6 +70,7 @@ export const FlareLoggerCategory = {
     button: 'BUTTON',
     sent: 'API_SENT',
     received: 'API_RECEIVED',
+    soundDownloads: 'SOUND_RECEIVED',
 };
 
 export class FlareLogger {
@@ -99,12 +99,13 @@ export class FlareLogger {
         usernameStr = '';
     }
 
-    static sendToLogManager(logInfo, logType) {
+    static sendToLogManager(logObject, logType) {
+        console.debug('Sending Log To Manager');
         let logString;
-        if (typeof logInfo === 'object') {
-            logString = JSON.stringify(logInfo);
+        if (typeof logObject === 'object') {
+            logString = JSON.stringify(logObject);
         } else {
-            logString = logInfo;
+            logString = logObject;
         }
         LogManager.info(logString, logType);
     }
@@ -115,13 +116,13 @@ export class FlareLogger {
             : '';
         generateMetaData(braceletId).then(metaData => {
             const log = {
-                log: logString,
                 category: categoryStr,
+                log: logString,
                 meta: metaData,
             };
             console.debug(log);
             logger.error(log);
-            sendToLogManager(logString, 'ERR');
+            FlareLogger.sendToLogManager(log, 'ERR');
         });
     }
 
@@ -131,13 +132,13 @@ export class FlareLogger {
             : '';
         generateMetaData(braceletId).then(metaData => {
             const log = {
-                log: logString,
                 category: categoryStr,
+                log: logString,
                 meta: metaData,
             };
             console.debug(log);
             logger.warn(log);
-            sendToLogManager(logString, 'WARN');
+            FlareLogger.sendToLogManager(log, 'WARN');
         });
     }
 
@@ -147,13 +148,13 @@ export class FlareLogger {
             : '';
         generateMetaData(braceletId).then(metaData => {
             const log = {
-                log: logString,
                 category: categoryStr,
+                log: logString,
                 meta: metaData,
             };
             console.debug(log);
             logger.debug(log);
-            sendToLogManager(logString, 'DEBUG');
+            FlareLogger.sendToLogManager(log, 'DEBUG');
         });
     }
 
@@ -163,13 +164,13 @@ export class FlareLogger {
             : '';
         generateMetaData(braceletId).then(metaData => {
             const log = {
-                log: logString,
                 category: categoryStr,
+                log: logString,
                 meta: metaData,
             };
             console.debug(log);
             logger.info(log);
-            sendToLogManager(logString, 'INFO');
+            FlareLogger.sendToLogManager(log, 'INFO');
         });
     }
 }

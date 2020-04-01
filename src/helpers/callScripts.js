@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import Sound from 'react-native-sound';
-import { FlareLogger } from '../actions/LogAction';
+import { FlareLogger, FlareLoggerCategory } from '../actions/LogAction';
 
 const cachedCallPromises = new Map();
 
@@ -32,11 +32,14 @@ export function cacheCallSounds(callScriptData) {
                     return null;
                 }
                 soundClip.setCategory('Playback');
-                FlareLogger.debug(
+                console.debug(
                     `duration in seconds: ${soundClip.getDuration()}number of channels: ${soundClip.getNumberOfChannels()}`
                 );
                 soundClip.setVolume(1);
-                console.debug(`Sound clip downloaded ${name}`);
+                FlareLogger.info(
+                    FlareLoggerCategory.soundDownloads,
+                    `Sound clip downloaded ${name}`
+                );
                 resolve(soundClip);
             });
         });
