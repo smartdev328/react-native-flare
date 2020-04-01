@@ -1,7 +1,6 @@
 import { Timber } from '@timberio/node';
 import DeviceInfo from 'react-native-device-info';
 import { NativeModules } from 'react-native';
-//import dgram from 'react-native-udp';
 
 import {
     check,
@@ -17,7 +16,6 @@ const apiKey =
 const sourceId = '34447';
 let logger;
 let usernameStr = '';
-const LogManager = NativeModules.LogManager;
 
 function generateMetaData(deviceSerialNum): Promise {
     return new Promise(resolve => {
@@ -99,15 +97,59 @@ export class FlareLogger {
         usernameStr = '';
     }
 
+    static toByteArray(obj) {
+        var uint = new Uint8Array(obj.length);
+        for (var i = 0, l = obj.length; i < l; i++) {
+            uint[i] = obj.charCodeAt(i);
+        }
+
+        return new Uint8Array(uint);
+    }
+
+    static randomPort() {
+        return (Math.random() * 60536) | (0 + 5000); // 60536-65536
+    }
+
     static sendToLogManager(logObject, logType) {
-        console.debug('Sending Log To Manager');
         let logString;
         if (typeof logObject === 'object') {
             logString = JSON.stringify(logObject);
         } else {
             logString = logObject;
         }
-        LogManager.info(logString, logType);
+
+        var today = new Date();
+        var dateOptions = {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+        };
+        var timeOptions = {
+            hour: `2-digit`,
+            minute: `2-digit`,
+            second: `2-digit`,
+            hour12: false,
+            timeZone: 'UTC',
+        };
+        const date = today.toLocaleString('en-US', dateOptions);
+        const time = today.toLocaleString('en-US', timeOptions);
+        const dateTime = `${date} ${time}`;
+        const logNew = `<22>1 ${today.toISOString()} Mobile logger - - - [${dateTime}] ${logType}: ${logString}`;
+
+        const remoteHost = `logs6.papertrailapp.com`;
+        const remotePort = 14765;
+        var dgram = require('react-native-udp');
+        var socket = dgram.createSocket('udp4');
+        socket.bind(FlareLogger.randomPort());
+        socket.once('listening', function() {
+            const buf = FlareLogger.toByteArray(logNew);
+            socket.send(buf, 0, buf.length, remotePort, remoteHost, function(
+                err
+            ) {
+                if (err) throw err;
+                console.log('message was sent');
+            });
+        });
     }
 
     static error(categoryStr, logString, optionalBraceletId) {

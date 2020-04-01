@@ -51,9 +51,6 @@ target 'GetFlare' do
   pod 'RNBluetoothInfo', :path => '../node_modules/@bitfly/react-native-bluetooth-info'
   pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
 
-  pod 'CocoaAsyncSocket'  
-
-
   target 'GetFlareTests' do
     inherit! :search_paths
     # Pods for testing
