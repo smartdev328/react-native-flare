@@ -212,7 +212,7 @@ class Contacts extends React.Component {
         } else if (!crew || !crew.members || crew.members.length === 0) {
             this.confirmClose(
                 'Are you sure you don’t want to add a crew?',
-                'If you don’t add a crew, we can’t text your friends with your cuff.',
+                'If you don’t add a crew, we can’t text your friends with your bracelet.',
                 'Add a Crew',
                 'I’m sure'
             );
