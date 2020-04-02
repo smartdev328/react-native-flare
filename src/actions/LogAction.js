@@ -1,6 +1,6 @@
 import DeviceInfo from 'react-native-device-info';
 import { NativeModules } from 'react-native';
-
+import dgram from 'react-native-udp';
 import {
     check,
     checkNotifications,
@@ -13,7 +13,6 @@ import FlareDeviceID from '../bits/FlareDeviceID';
 let usernameStr = '';
 const remoteHost = `logs6.papertrailapp.com`;
 const remotePort = 14765;
-const dgram = require('react-native-udp');
 let socket;
 let socketInitialized = true;
 const dateOptions = {
@@ -131,19 +130,23 @@ export class FlareLogger {
             logString = logObject;
         }
 
-        const today = new Date();
-        const date = today.toLocaleString('en-US', dateOptions);
-        const time = today.toLocaleString('en-US', timeOptions);
-        const dateTime = `${date} ${time}`;
-        const logNew = `<22>1 ${today.toISOString()} Mobile logger - - - [${dateTime}] ${logType}: ${logString}`;
-        const buf = FlareLogger.toByteArray(logNew);
-        socket.send(buf, 0, buf.length, remotePort, remoteHost, function(err) {
-            if (err) {
-                throw err;
-            } else {
-                console.log('message was sent');
-            }
-        });
+        if (socketInitialized) {
+            const today = new Date();
+            const date = today.toLocaleString('en-US', dateOptions);
+            const time = today.toLocaleString('en-US', timeOptions);
+            const dateTime = `${date} ${time}`;
+            const logNew = `<22>1 ${today.toISOString()} Mobile logger - - - [${dateTime}] ${logType}: ${logString}`;
+            const buf = FlareLogger.toByteArray(logNew);
+            socket.send(buf, 0, buf.length, remotePort, remoteHost, function(
+                err
+            ) {
+                if (err) {
+                    throw err;
+                } else {
+                    console.log('message was sent');
+                }
+            });
+        }
     }
 
     static error(categoryStr, logString, optionalBraceletId) {
