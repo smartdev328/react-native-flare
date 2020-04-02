@@ -120,6 +120,7 @@ export default class App extends Component {
             }
         );
 
+        FlareLogger.initLogger();
         FlareLogger.debug(FlareLoggerCategory.wake, `App Started`);
         persistStore(store, null, () => {
             const { email } = store.getState().user.profile;

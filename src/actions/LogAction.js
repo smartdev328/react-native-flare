@@ -14,6 +14,8 @@ let usernameStr = '';
 const remoteHost = `logs6.papertrailapp.com`;
 const remotePort = 14765;
 const dgram = require('react-native-udp');
+let socket;
+let socketInitialized = true;
 const dateOptions = {
     month: '2-digit',
     day: '2-digit',
@@ -89,6 +91,18 @@ export const FlareLoggerCategory = {
 };
 
 export class FlareLogger {
+    static initLogger() {
+        socket = dgram.createSocket('udp4');
+        socket.bind(FlareLogger.getPort());
+        socket.once('listening', function() {
+            socketInitialized = true;
+        });
+        socket.once('close', function() {
+            socketInitialized = false;
+            initLogger();
+        });
+    }
+
     static setLoginInfo(username) {
         usernameStr = username;
     }
@@ -105,8 +119,8 @@ export class FlareLogger {
         return new Uint8Array(uint);
     }
 
-    static randomPort() {
-        return (Math.random() * 60536) | (0 + 5000); // 60536-65536
+    static getPort() {
+        return 60536; //(Math.random() * 60536) | (0 + 5000); // 60536-65536
     }
 
     static sendToLogManager(logObject, logType) {
@@ -122,21 +136,13 @@ export class FlareLogger {
         const time = today.toLocaleString('en-US', timeOptions);
         const dateTime = `${date} ${time}`;
         const logNew = `<22>1 ${today.toISOString()} Mobile logger - - - [${dateTime}] ${logType}: ${logString}`;
-        const socket = dgram.createSocket('udp4');
-        socket.bind(FlareLogger.randomPort());
-        socket.once('listening', function() {
-            const buf = FlareLogger.toByteArray(logNew);
-            socket.send(buf, 0, buf.length, remotePort, remoteHost, function(
-                err
-            ) {
-                if (err) {
-                    socket.close();
-                    throw err;
-                } else {
-                    console.log('message was sent');
-                    socket.close();
-                }
-            });
+        const buf = FlareLogger.toByteArray(logNew);
+        socket.send(buf, 0, buf.length, remotePort, remoteHost, function(err) {
+            if (err) {
+                throw err;
+            } else {
+                console.log('message was sent');
+            }
         });
     }
 
