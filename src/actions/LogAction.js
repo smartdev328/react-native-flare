@@ -99,7 +99,7 @@ export class FlareLogger {
         });
         socket.once('close', function() {
             socketInitialized = false;
-            initLogger();
+            FlareLogger.initLogger();
         });
     }
 
