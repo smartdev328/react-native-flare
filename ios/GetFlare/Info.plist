@@ -128,5 +128,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>isDevVersion</key>
+	<string>${CONFIG_DEV}</string>
 </dict>
 </plist>

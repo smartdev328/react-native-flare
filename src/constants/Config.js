@@ -5,7 +5,7 @@ import RNConfigReader from 'react-native-config-reader';
  */
 export const API_URL = `${RNConfigReader.ApiUrl}api`;
 export const API_RESET_URL = `${RNConfigReader.ApiUrl}reset`;
-export const CONFIG_DEV = `${RNConfigReader.CONFIG_DEV}` || __DEV__;
+export const CONFIG_DEV = RNConfigReader.isDevVersion === 'true' || __DEV__;
 
 /**
  * Toggle logging of BLE beacons:
